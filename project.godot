@@ -11,8 +11,7 @@ config_version=5
 [application]
 
 config/name="Mira's Journal"
-config/description="A prototype JRPG game
-Created by RaiDev"
+config/description="A JRPG game created by raidev"
 config/version="0.2.0"
 run/main_scene="res://UI/TitleScreen/Initializer.tscn"
 run/enable_alt_space_menu=true
@@ -26,6 +25,7 @@ run/load_shell_environment=true
 boot_splash/bg_color=Color(0.054902, 0.054902, 0.054902, 1)
 boot_splash/image="uid://cvnuw1n43hcfj"
 config/icon="res://art/Branding/icon.png"
+config/macos_native_icon="res://art/Branding/icon_mac.icns"
 
 [aseprite]
 
