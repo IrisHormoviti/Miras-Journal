@@ -111,7 +111,6 @@ func siilhouette() -> void:
 	ts.set_trans(Tween.TRANS_QUART)
 	ts.set_ease(Tween.EASE_OUT)
 	ts.tween_property($Silhouette, "position", Vector2(0, -39), 1).from(Vector2(-1000, -39))
-	load_settings()
 	await ts.finished
 	#load_save_files()
 
@@ -143,6 +142,7 @@ func _on_back_pressed() -> void:
 
 
 func close(force := false) -> void:
+	Global.save_settings()
 	Global.check_party.emit()
 	if force:
 		queue_free()
@@ -226,11 +226,13 @@ func main() -> void:
 		$SidePanel.hide()
 		$GalleryPanel.hide()
 		$MainButtons.get_child(mainIndex).grab_focus()
+	Global.save_settings()
 
 
 func game_settings() -> void:
 	if stage == "game_settings": return
 	if stage != "main": await loaded
+	load_settings(true)
 	$MainButtons/GameSettings.toggle_mode = true
 	$MainButtons/GameSettings.button_pressed = true
 	stage = "game_settings"
@@ -248,7 +250,6 @@ func game_settings() -> void:
 	Global.confirm_sound()
 	$SidePanel.show()
 	await t.finished
-	load_settings()
 
 
 func save_managment() -> void:
@@ -355,6 +356,35 @@ func gallery() -> void:
 	$GalleryPanel.show()
 
 
+func _on_quit() -> void:
+	stage = "quit"
+	var text: String
+	if is_instance_valid(Global.Area):
+		text = "Quit the game?\nYour progress will be saved."
+		if cant_save:
+			text = "Quit the game?\nYour progress cannot be saved right now, so it might be lost."
+	else: text = "Quit the game?"
+	var awnser := await Global.warning(text, "QUIT", ["Cancel", "Title Screen", "Quit Game"], Color.hex(0xe3936eff))
+	match awnser:
+		2:
+			if not cant_save and is_instance_valid(Global.Area):
+				await Loader.save()
+			Global.quit()
+		1:
+			if is_instance_valid(Global.Area):
+				Global.Area.queue_free()
+				if not cant_save: await Loader.save()
+			if get_tree().root.has_node("MainMenu"):
+				get_tree().root.get_node("MainMenu").queue_free()
+			if get_tree().root.has_node("Battle"):
+				get_tree().root.get_node("Battle").queue_free()
+			PartyUI.hide_all()
+			close()
+		0:
+			main()
+			$MainButtons/Quit.grab_focus()
+
+
 func _on_focus_changed(control: Control) -> void:
 	Global.cursor_sound(true)
 	focus = control
@@ -381,54 +411,54 @@ func _on_focus_changed(control: Control) -> void:
 		$SavePanel/ScrollContainer/Files/New/NewFile.disabled = true
 
 
-func load_settings() -> void:
-	Global.save_settings()
-	Global.apply_settings()
-	%SettingsVbox/AutoHideHUD/MenuBar.selected = Global.Settings.AutoHideHUD
-	%SettingsVbox/ControlScheme/MenuBar.selected = Global.Settings.ControlSchemeEnum
-	%SettingsVbox/Fullscreen/CheckButton.button_pressed = Global.Settings.Fullscreen
-	%SettingsVbox/Master/Slider.value = Global.Settings.MasterVolume * 10
-	%SettingsVbox/EnvSFX/Slider.value = Global.Settings.EnvSFXVolume * 10
-	%SettingsVbox/BtSFX/Slider.value = Global.Settings.BtSFXVolume * 10
-	%SettingsVbox/Music/Slider.value = Global.Settings.MusicVolume * 10
-	%SettingsVbox/UI/Slider.value = Global.Settings.UIVolume * 10
-	%SettingsVbox/Voices/Slider.value = Global.Settings.VoicesVolume * 10
-	%SettingsVbox/BCSadjust/BrtSlider.value = World.environment.adjustment_brightness
-	%SettingsVbox/BCSadjust/ConSlider.value = World.environment.adjustment_contrast
-	%SettingsVbox/BCSadjust/SatSlider.value = World.environment.adjustment_saturation
-	%SettingsVbox/DebugMode/DebugMode.button_pressed = Global.Settings.DebugMode
-	%SettingsVbox/Vsync/CheckButton.button_pressed = Global.Settings.VSync
-	%SettingsVbox/GlowEffect/CheckButton.button_pressed = Global.Settings.GlowEffect
-	%SettingsVbox/HighResTextures/CheckButton.button_pressed = Global.Settings.HighResTextures
-	%SettingsVbox/TextSpeed/MenuBar.selected = Global.Settings.TextSpeed
-	%SettingsVbox/UpscaledResolution/CheckButton.button_pressed = Global.Settings.UpscaledRes
-	%SettingsVbox/ControllerVibration/CheckButton.button_pressed = Global.Settings.ControllerVibration
-	%SettingsVbox/BlurEffect/CheckButton.button_pressed = Global.Settings.BlurEffect
-	match Global.Settings.FPS:
-		0: %SettingsVbox/FPS/MenuBar.selected = 0
-		30: %SettingsVbox/FPS/MenuBar.selected = 1
-		60: %SettingsVbox/FPS/MenuBar.selected = 2
-		144: %SettingsVbox/FPS/MenuBar.selected = 3
-	match Global.Settings.UpscaleFactor:
-		0.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 0
-		1.0: %SettingsVbox/UpscaleFactor/MenuBar.selected = 1
-		1.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 2
-		2.0: %SettingsVbox/UpscaleFactor/MenuBar.selected = 3
+func load_settings(no_check := false) -> void:
+	if stage == "game_settings" or no_check:
+		%SettingsVbox/AutoHideHUD/MenuBar.selected = Global.Settings.AutoHideHUD
+		%SettingsVbox/ControlScheme/MenuBar.selected = Global.Settings.ControlSchemeEnum
+		%SettingsVbox/Fullscreen/CheckButton.button_pressed = Global.Settings.Fullscreen
+		%SettingsVbox/Master/Slider.value = Global.Settings.MasterVolume * 10
+		%SettingsVbox/EnvSFX/Slider.value = Global.Settings.EnvSFXVolume * 10
+		%SettingsVbox/BtSFX/Slider.value = Global.Settings.BtSFXVolume * 10
+		%SettingsVbox/Music/Slider.value = Global.Settings.MusicVolume * 10
+		%SettingsVbox/UI/Slider.value = Global.Settings.UIVolume * 10
+		%SettingsVbox/Voices/Slider.value = Global.Settings.VoicesVolume * 10
+		%SettingsVbox/BCSadjust/BrtSlider.value = World.environment.adjustment_brightness
+		%SettingsVbox/BCSadjust/ConSlider.value = World.environment.adjustment_contrast
+		%SettingsVbox/BCSadjust/SatSlider.value = World.environment.adjustment_saturation
+		%SettingsVbox/DebugMode/DebugMode.button_pressed = Global.Settings.DebugMode
+		%SettingsVbox/Vsync/CheckButton.button_pressed = Global.Settings.VSync
+		%SettingsVbox/GlowEffect/CheckButton.button_pressed = Global.Settings.GlowEffect
+		%SettingsVbox/HighResTextures/CheckButton.button_pressed = Global.Settings.HighResTextures
+		%SettingsVbox/TextSpeed/MenuBar.selected = Global.Settings.TextSpeed
+		%SettingsVbox/UpscaledResolution/CheckButton.button_pressed = Global.Settings.UpscaledRes
+		%SettingsVbox/ControllerVibration/CheckButton.button_pressed = Global.Settings.ControllerVibration
+		%SettingsVbox/BlurEffect/CheckButton.button_pressed = Global.Settings.BlurEffect
+		match Global.Settings.FPS:
+			0: %SettingsVbox/FPS/MenuBar.selected = 0
+			30: %SettingsVbox/FPS/MenuBar.selected = 1
+			60: %SettingsVbox/FPS/MenuBar.selected = 2
+			144: %SettingsVbox/FPS/MenuBar.selected = 3
+		match Global.Settings.UpscaleFactor:
+			0.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 0
+			1.0: %SettingsVbox/UpscaleFactor/MenuBar.selected = 1
+			1.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 2
+			2.0: %SettingsVbox/UpscaleFactor/MenuBar.selected = 3
 
-	%SettingsVbox/ControlPreview/A.set_deferred("texture", Global.get_controller().AbilityIcon)
-	%SettingsVbox/ControlPreview/B.set_deferred("texture", Global.get_controller().AttackIcon)
-	%SettingsVbox/ControlPreview/Y.set_deferred("texture", Global.get_controller().ItemIcon)
-	%SettingsVbox/ControlPreview/X.set_deferred("texture", Global.get_controller().CommandIcon)
-	%SettingsVbox/ControlPreview/R.set_deferred("texture", Global.get_controller().R)
-	%SettingsVbox/ControlPreview/L.set_deferred("texture", Global.get_controller().L)
-	%SettingsVbox/ControlPreview/LZ.set_deferred("texture", Global.get_controller().LZ)
-	%SettingsVbox/ControlPreview/RZ.set_deferred("texture", Global.get_controller().RZ)
-	%SettingsVbox/ControlPreview/Start.set_deferred("texture", Global.get_controller().Start)
-	%SettingsVbox/ControlPreview/Select.set_deferred("texture", Global.get_controller().Select)
-	%SettingsVbox/ControlPreview/ConfirmB.set_deferred("texture", Global.get_controller().ConfirmIcon)
-	%SettingsVbox/ControlPreview/CancelB.set_deferred("texture", Global.get_controller().CancelIcon)
-	%SettingsVbox/ControlPreview/MenuB.set_deferred("texture", Global.get_controller().Menu)
-	%SettingsVbox/ControlPreview/DashB.set_deferred("texture", Global.get_controller().Dash)
+		%SettingsVbox/ControlPreview/A.set_deferred("texture", Global.get_controller().AbilityIcon)
+		%SettingsVbox/ControlPreview/B.set_deferred("texture", Global.get_controller().AttackIcon)
+		%SettingsVbox/ControlPreview/Y.set_deferred("texture", Global.get_controller().ItemIcon)
+		%SettingsVbox/ControlPreview/X.set_deferred("texture", Global.get_controller().CommandIcon)
+		%SettingsVbox/ControlPreview/R.set_deferred("texture", Global.get_controller().R)
+		%SettingsVbox/ControlPreview/L.set_deferred("texture", Global.get_controller().L)
+		%SettingsVbox/ControlPreview/LZ.set_deferred("texture", Global.get_controller().LZ)
+		%SettingsVbox/ControlPreview/RZ.set_deferred("texture", Global.get_controller().RZ)
+		%SettingsVbox/ControlPreview/Start.set_deferred("texture", Global.get_controller().Start)
+		%SettingsVbox/ControlPreview/Select.set_deferred("texture", Global.get_controller().Select)
+		%SettingsVbox/ControlPreview/ConfirmB.set_deferred("texture", Global.get_controller().ConfirmIcon)
+		%SettingsVbox/ControlPreview/CancelB.set_deferred("texture", Global.get_controller().CancelIcon)
+		%SettingsVbox/ControlPreview/MenuB.set_deferred("texture", Global.get_controller().Menu)
+		%SettingsVbox/ControlPreview/DashB.set_deferred("texture", Global.get_controller().Dash)
+		Global.apply_settings()
 
 
 func load_save_files() -> void:
@@ -676,6 +706,17 @@ func _new_file() -> void:
 	stage = "save_managment"
 
 
+func _new_game() -> void:
+	stage = "popup"
+	if not FileAccess.file_exists("user://Autosave.tres") or await Global.warning("Start a new game? Any Autosave data will be overwritten, so make sure to save it into a new file if you want to keep it.", "NEW GAME", ["Cancel", "Start New Game"]):
+		was_controllable = false
+		close(true)
+		Event.sequence("new_game")
+	else:
+		stage = "save_managment"
+		$SavePanel/ScrollContainer/Files/New/NewGame.grab_focus()
+
+
 func name_file(default: String) -> String:
 	$SavePanel/FileNaming.show()
 	var line: LineEdit = $SavePanel/FileNaming/VBoxContainer/Label2
@@ -687,6 +728,82 @@ func name_file(default: String) -> String:
 	Global.confirm_sound()
 	if line.text == "": line.text = default
 	return line.text
+
+
+func confirm() -> void:
+	if stage == "game_settings":
+		Global.confirm_sound()
+		load_settings()
+
+
+func cursor(i: int) -> void:
+	if stage == "game_settings":
+		Global.cursor_sound()
+		load_settings()
+
+## Manual
+
+
+func _manual_entry_pressed() -> void:
+	stage = "manual"
+	Global.confirm_sound()
+
+
+func _manual_entry_select() -> void:
+	if not is_instance_valid(focus): return
+	var entry: String = focus.name
+	var text: String = ""
+	for i: String in Tutorials:
+		if i.begins_with("#" + entry):
+			text = i
+			break
+	if text == "":
+		Global.toast("Entry not found")
+		return
+	text = Colorizer.colorize_explicit(text.replace("#" + entry, "[b]" + focus.text + "[/b]"))
+	$ManualPanel/Text/RichTextLabel.text = text
+
+## Extras
+
+
+func rename_alcine() -> void:
+	stage = "popup"
+	await Global.alcine_naming()
+	gallery()
+	$GalleryPanel/ScrollContainer/VBoxContainer/RenameAlcine.grab_focus()
+	stage = "gallery"
+
+
+func _on_credit_scroll(event: InputEvent) -> void:
+	if event.is_action_pressed("ui_up"):
+		$GalleryPanel/Credits.scroll_by(-100)
+	if event.is_action_pressed("ui_down"):
+		$GalleryPanel/Credits.scroll_by(100)
+	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("ui_left"):
+		$GalleryPanel/ScrollContainer/VBoxContainer/Credits.grab_focus()
+
+
+func _on_website() -> void:
+	Global.confirm()
+	OS.shell_open("https://raidev.eu")
+	Global.toast("\"raidev.eu\" was opened in your web browser.")
+
+
+func _on_reset() -> void:
+	stage = "inactive"
+	Global.confirm()
+	if await Global.warning("This will erase autosave save data, and restore settings! 
+The game will then close.\nProceed?"):
+		Global.reset_settings()
+		var dir := DirAccess.open("user://")
+		dir.remove("Settigns.res")
+		dir.remove("Autosave.tres")
+		Global.quit(false)
+	else:
+		$GalleryPanel/ScrollContainer/VBoxContainer/ResetGame.grab_focus()
+		stage = "gallery"
+
+## Setttings Buttons
 
 
 func _on_control_scheme(index: int) -> void:
@@ -712,45 +829,13 @@ func _on_control_scheme(index: int) -> void:
 			Global.Settings.ControlSchemeOverride = preload("res://UI/Input/SteamDeck.tres")
 		8:
 			Global.Settings.ControlSchemeOverride = preload("res://UI/Input/None.tres")
-	Global.save_settings()
 	load_settings()
 
 
 func _on_fullscreen(tog: bool) -> void:
 	if tog != Global.Settings.Fullscreen:
 		Global.fullscreen(tog)
-		Global.confirm_sound()
-		await get_tree().create_timer(0.5).timeout
-		load_settings()
-
-
-func _on_quit() -> void:
-	stage = "quit"
-	var text: String
-	if is_instance_valid(Global.Area):
-		text = "Quit the game?\nYour progress will be saved."
-		if cant_save:
-			text = "Quit the game?\nYour progress cannot be saved right now, so it might be lost."
-	else: text = "Quit the game?"
-	var awnser := await Global.warning(text, "QUIT", ["Cancel", "Title Screen", "Quit Game"], Color.hex(0xe3936eff))
-	match awnser:
-		2:
-			if not cant_save and is_instance_valid(Global.Area):
-				await Loader.save()
-			Global.quit()
-		1:
-			if is_instance_valid(Global.Area):
-				Global.Area.queue_free()
-				if not cant_save: await Loader.save()
-			if get_tree().root.has_node("MainMenu"):
-				get_tree().root.get_node("MainMenu").queue_free()
-			if get_tree().root.has_node("Battle"):
-				get_tree().root.get_node("Battle").queue_free()
-			PartyUI.hide_all()
-			close()
-		0:
-			main()
-			$MainButtons/Quit.grab_focus()
+		confirm()
 
 
 func _on_master_volume(value: float) -> void:
@@ -760,7 +845,6 @@ func _on_master_volume(value: float) -> void:
 	AudioServer.set_bus_volume_db(0, Global.Settings.MasterVolume)
 	$AudioTester.bus = "Master"
 	if stage == "game_settings": $AudioTester.play()
-	Global.save_settings()
 
 
 func _on_EnvSFX_volume(value: float) -> void:
@@ -770,7 +854,6 @@ func _on_EnvSFX_volume(value: float) -> void:
 	AudioServer.set_bus_volume_db(2, Global.Settings.EnvSFXVolume)
 	$AudioTester.bus = "EnvSFX"
 	if stage == "game_settings": $AudioTester.play()
-	Global.save_settings()
 
 
 func _on_volume_reset() -> void:
@@ -778,20 +861,7 @@ func _on_volume_reset() -> void:
 	AudioServer.set_bus_volume_db(0, Global.Settings.MasterVolume)
 	Global.Settings.EnvSFXVolume = 0
 	AudioServer.set_bus_volume_db(2, Global.Settings.MasterVolume)
-	Global.save_settings()
-	load_settings()
-	Global.confirm_sound()
-
-
-func confirm() -> void:
-	if stage == "game_settings":
-		Global.confirm_sound()
-
-
-func cursor(i: int) -> void:
-	if stage == "game_settings":
-		Global.cursor_sound()
-		load_settings()
+	confirm()
 
 
 func _on_brightness(value: float) -> void:
@@ -808,12 +878,12 @@ func _on_saturation(value: float) -> void:
 
 func _on_auto_hide_hud(index: int) -> void:
 	Global.Settings.AutoHideHUD = index
-	Global.confirm_sound()
+	confirm()
 
 
 func _on_text_speed(index: int) -> void:
 	Global.Settings.TextSpeed = index
-	Global.confirm_sound()
+	confirm()
 
 
 func _show_image_test() -> void:
@@ -856,32 +926,17 @@ func _upscale_factor(index: int) -> void:
 		2: Global.Settings.UpscaleFactor = 1.5
 		3: Global.Settings.UpscaleFactor = 2.0
 	confirm()
-	Global.apply_settings()
 
 
 func _vsync(toggle: bool) -> void:
 	Global.Settings.VSync = toggle
-	Global.apply_settings()
 	confirm()
 	load_settings()
 
 
 func _gloweffect(toggle: bool) -> void:
 	Global.Settings.GlowEffect = toggle
-	Global.apply_settings()
 	confirm()
-	load_settings()
-
-
-func _new_game() -> void:
-	stage = "popup"
-	if not FileAccess.file_exists("user://Autosave.tres") or await Global.warning("Start a new game? Any Autosave data will be overwritten, so make sure to save it into a new file if you want to keep it.", "NEW GAME", ["Cancel", "Start New Game"]):
-		was_controllable = false
-		close(true)
-		Event.sequence("new_game")
-	else:
-		stage = "save_managment"
-		$SavePanel/ScrollContainer/Files/New/NewGame.grab_focus()
 
 
 func _arena_mode() -> void:
@@ -907,84 +962,19 @@ func _on_credits() -> void:
 
 func _on_highres_textures(toggle: bool) -> void:
 	Global.Settings.HighResTextures = toggle
-	Global.apply_settings()
 	confirm()
-	load_settings()
-
-
-func _on_website() -> void:
-	Global.confirm()
-	OS.shell_open("https://raidev.eu")
-	Global.toast("\"raidev.eu\" was opened in your web browser.")
-
-
-func _manual_entry_pressed() -> void:
-	stage = "manual"
-	Global.confirm_sound()
-
-
-func _manual_entry_select() -> void:
-	if not is_instance_valid(focus): return
-	var entry: String = focus.name
-	var text: String = ""
-	for i: String in Tutorials:
-		if i.begins_with("#" + entry):
-			text = i
-			break
-	if text == "":
-		Global.toast("Entry not found")
-		return
-	text = Colorizer.colorize_explicit(text.replace("#" + entry, "[b]" + focus.text + "[/b]"))
-	$ManualPanel/Text/RichTextLabel.text = text
 
 
 func _on_upscaledres(toggled_on: bool) -> void:
 	Global.Settings.UpscaledRes = toggled_on
 	confirm()
-	load_settings()
-
-
-func _on_reset() -> void:
-	stage = "inactive"
-	Global.confirm()
-	if await Global.warning("This will erase autosave save data, and restore settings!
-The game will then close.
-You can backup this data by pressing F1 and copying the files.\nProceed?"):
-		var dir := DirAccess.open("user://")
-		dir.remove("Settigns.res")
-		dir.remove("Autosave.tres")
-		for file in dir.get_directories():
-			DirAccess.remove_absolute("user://" + file)
-		get_tree().quit(9)
-	else:
-		$GalleryPanel/ScrollContainer/VBoxContainer/ResetGame.grab_focus()
-		stage = "gallery"
-
-
-func _on_credit_scroll(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_up"):
-		$GalleryPanel/Credits.scroll_by(-100)
-	if event.is_action_pressed("ui_down"):
-		$GalleryPanel/Credits.scroll_by(100)
-	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("ui_left"):
-		$GalleryPanel/ScrollContainer/VBoxContainer/Credits.grab_focus()
 
 
 func _on_controller_vibration(toggled_on: bool) -> void:
 	Global.Settings.ControllerVibration = toggled_on
 	confirm()
-	load_settings()
 
 
 func _blur_effect(toggled_on: bool) -> void:
 	Global.Settings.BlurEffect = toggled_on
 	confirm()
-	load_settings()
-
-
-func rename_alcine() -> void:
-	stage = "popup"
-	await Global.alcine_naming()
-	gallery()
-	$GalleryPanel/ScrollContainer/VBoxContainer/RenameAlcine.grab_focus()
-	stage = "gallery"

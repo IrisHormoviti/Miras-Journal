@@ -5,6 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bpv6vrrg6tboq" path="res://UI/Input/A.png" id="2_3m3xe"]
 [ext_resource type="Texture2D" uid="uid://bv0rq7hr5ekhr" path="res://UI/Input/Y.png" id="3_svxw4"]
 [ext_resource type="Texture2D" uid="uid://dqlbyaselqjhc" path="res://UI/Input/X.png" id="4_0dcj4"]
+[ext_resource type="Texture2D" uid="uid://jr3txv7bapdx" path="res://UI/Input/LB.png" id="5_pa11i"]
 [ext_resource type="Texture2D" uid="uid://cgfv0fvhp3jdv" path="res://UI/Input/LT.png" id="6_wgc4u"]
 [ext_resource type="Texture2D" uid="uid://cryk2wxndq0t0" path="res://UI/Input/RB.png" id="7_gbohs"]
 [ext_resource type="Texture2D" uid="uid://c5jexglyr0fg0" path="res://UI/Input/RT.png" id="8_3s0ei"]
@@ -24,7 +25,7 @@ Select = ExtResource("9_n8mmo")
 Dash = ExtResource("4_0dcj4")
 R = ExtResource("7_gbohs")
 RZ = ExtResource("8_3s0ei")
-L = ExtResource("8_3s0ei")
+L = ExtResource("5_pa11i")
 LZ = ExtResource("6_wgc4u")
 Menu = ExtResource("3_svxw4")
 OVAttack = ExtResource("8_3s0ei")

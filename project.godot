@@ -459,6 +459,7 @@ common/physics_interpolation=true
 [rendering]
 
 rendering_device/pipeline_cache/enable=false
+rendering_device/driver.macos="vulkan"
 textures/vram_compression/import_etc2_astc=true
 shader_compiler/shader_cache/enabled=false
 anti_aliasing/quality/use_debanding=true

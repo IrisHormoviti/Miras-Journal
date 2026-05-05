@@ -40,7 +40,9 @@ func _ready() -> void:
 	error_screen.hide()
 	if game_exists:
 		focus()
-	else: _on_new_pressed()
+	else:
+		dismiss_title()
+		Event.sequence("new_game")
 
 
 func focus() -> void:

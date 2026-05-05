@@ -67,23 +67,25 @@ func _ready() -> void:
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 
 
-func quit() -> void:
-	if get_tree().root.has_node("Options"):
-		get_tree().root.get_node("Options").close()
-	if get_tree().root.has_node("MainMenu"):
-		get_tree().root.get_node("MainMenu").close()
-	if (
-		not Loader.InBattle and is_instance_valid(Player) and is_instance_valid(Area) and (
-		Global.Controllable or get_tree().root.has_node("MainMenu") or get_tree().root.has_node("Options"))
-	):
-		Loader.icon_save()
-		await Loader.save()
-	elif is_instance_valid(Area):
-		if not await warning("The game cannot be saved right now.\nQuit the game anyways?", "QUIT", ["Canel", "Quit Game"]):
-			return
-	await Loader.transition("")
-	if Engine.has_singleton("Steam") and UsingSteam:
-		Steam.steamShutdown()
+func quit(save_first := true) -> void:
+	if save_first:
+		if get_tree().root.has_node("Options"):
+			get_tree().root.get_node("Options").close()
+		if get_tree().root.has_node("MainMenu"):
+			get_tree().root.get_node("MainMenu").close()
+		if (
+			not Loader.InBattle and is_instance_valid(Player) and is_instance_valid(Area) and (
+			Global.Controllable or get_tree().root.has_node("MainMenu") or get_tree().root.has_node("Options"))
+		):
+			Loader.icon_save()
+			await Loader.save()
+		elif is_instance_valid(Area):
+			if not await warning("The game cannot be saved right now.\nQuit the game anyways?", "QUIT", ["Canel", "Quit Game"]):
+				return
+		await Loader.transition("")
+		if Engine.has_singleton("Steam") and UsingSteam:
+			Steam.steamShutdown()
+		Global.save_settings()
 	get_tree().quit()
 
 
@@ -103,48 +105,55 @@ func init_steam() -> void:
 	#Steam.inputInit()
 	#Steam.enableDeviceCallbacks()
 	#SteamInput.init()
-	match initialize_response.get("status"):
-		0:
-			print("Running with Steam")
-			UsingSteam = true
-			UserID = steam.getSteamID32(steam.getSteamID())
-			PlayerName = steam.getPersonaName()
-			print("User: ", PlayerName, " ", UserID)
-			#if Steam.isSteamRunningOnSteamDeck() and Settings.ControlSchemeEnum == 0:
-				#Settings.ControlSchemeEnum = 7
-				#Settings.ControlSchemeOverride = load("res://UI/Input/SteamDeck.tres")
-			#print(Steam.getFriendPersonaName(Steam.getSteamID()))
-		1:
-			if not steam.isSubscribed():
-				if AppID == 4059970:
-					print("The user doesn't own the game, testing playtest")
-					AppID = 4063790
-					init_steam()
-					return
-				elif AppID == 4063790:
-					print("The user doesn't own playtest either, fuckin hell")
+	if initialize_response.get("status") == 0:
+		print("Running with Steam")
+		UsingSteam = true
+		UserID = steam.getSteamID32(steam.getSteamID())
+		PlayerName = steam.getPersonaName()
+		print("User: ", PlayerName, " ", UserID)
+	elif (
+		initialize_response.get("status") == 1 and
+		initialize_response.get("verbal") != "Could not determine Steam client install directory."
+	):
+		if not steam.isSubscribed():
+			if AppID == 4059970:
+				print("The user doesn't own the game, testing playtest")
+				AppID = 4063790
+				init_steam()
+				return
+			elif AppID == 4063790:
+				print("The user doesn't own playtest either, running locally")
 
 
 func init_user() -> void:
 	UserID = 0
 	init_steam()
+
+	# If a user ID wasn't set by steam
 	if UserID == 0:
 		if FileAccess.file_exists("user://last_user_id.txt"):
 			UserID = int(FileAccess.get_file_as_string("user://last_user_id.txt"))
 			print("Using last used user ID, ", UserID)
+
+	# Create a user folder if it doesn't exist
 	if not DirAccess.dir_exists_absolute("user://" + str(UserID)):
 		print("Creating user folder for ", UserID)
 		DirAccess.make_dir_absolute("user://" + str(UserID))
-	var last_id: FileAccess = FileAccess.open("user://last_user_id.txt", FileAccess.READ_WRITE)
-	if last_id == null:
-		push_error(error_string(FileAccess.get_open_error()))
-		return
-	if FileAccess.file_exists("user://" + str(UserID)) and int(last_id.get_as_text()) == 0 and UserID != 0:
-		print("Migrating from local to account")
-		for i in DirAccess.get_files_at("user://0"):
-			if not FileAccess.file_exists("user://" + str(UserID) + "/" + i):
-				DirAccess.copy_absolute("user://0/" + i, "user://" + str(UserID) + "/" + i)
-	last_id.store_string(str(UserID))
+
+	# If there's an ID now but, the previous one was 0, migrate the save data
+	if FileAccess.file_exists("user://last_user_id.txt"):
+		var last_id: int = int(FileAccess.get_file_as_string("user://last_user_id.txt"))
+		if FileAccess.file_exists("user://" + str(UserID)) and last_id == 0 and UserID != 0:
+			print("Migrating from local to account")
+			for i in DirAccess.get_files_at("user://0"):
+				if not FileAccess.file_exists("user://" + str(UserID) + "/" + i):
+					DirAccess.copy_absolute("user://0/" + i, "user://" + str(UserID) + "/" + i)
+
+	# Write the current ID to a file
+	var last_id_file: FileAccess = FileAccess.open("user://last_user_id.txt", FileAccess.WRITE)
+	last_id_file.store_string(str(UserID))
+
+	# Move user:// to the new directory
 	ProjectSettings.set("application/config/custom_user_dir_name", "miras-journal/" + str(UserID))
 
 
@@ -153,28 +162,15 @@ func game_over() -> void:
 
 
 func _notification(what: int) -> void:
-	if what == NOTIFICATION_WM_CLOSE_REQUEST:
-		quit()
+	match what:
+		NOTIFICATION_WM_CLOSE_REQUEST:
+			quit()
+		NOTIFICATION_WM_ABOUT:
+			OS.shell_open("https://raidev.eu/miras-journal")
 
 
-##Focus the window, used as a workaround to a wayland problem
-func ready_window() -> void:
-	if not OS.get_name() == "Linux":
-		await Event.wait(0.5)
-		return
-
-
-func _process(delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	ProcessFrame += 1
-	if ProcessFrame % 100:
-		#if Settings.FPS == 0:
-			#Engine.set_physics_ticks_per_second(int(DisplayServer.screen_get_refresh_rate()))
-		#else:
-			#Engine.set_physics_ticks_per_second(Settings.FPS)
-		Engine.max_fps = Settings.FPS
-	#if UsingSteam:
-		#Steam.run_callbacks()
-		#Steam.runFrame()
 
 
 func options(submenu := 0) -> void:
@@ -387,10 +383,22 @@ func fullscreen(tog: bool = !Settings.Fullscreen) -> void:
 
 func reset_settings() -> void:
 	Settings = Setting.new()
+	customize_default_settings()
 	ResourceSaver.save(Settings, "user://Settings.res")
-	if OS.get_environment("STEAMDECK") == "1":
-		Settings.ControlSchemeAuto = false
-		Settings.ControlSchemeEnum = 7
+
+
+func customize_default_settings() -> void:
+	if UsingSteam:
+		var steam := Engine.get_singleton("Steam")
+		if OS.get_environment("STEAMDECK") == "1" or steam.isSteamRunningOnSteamDeck():
+			Settings.ControlSchemeEnum = 7
+			Settings.ControlSchemeOverride = load("res://UI/Input/SteamDeck.tres")
+			print("Running on Steam Deck, setting control scheme")
+		if steam.isSteamInBigPictureMode():
+			fullscreen(true)
+			print("Running on Big Picture, enabling fullscreen")
+	if OS.get_name() == "macOS":
+		Settings.UpscaledRes = false
 
 
 func init_settings() -> void:
@@ -418,6 +426,8 @@ func apply_settings() -> void:
 	else: World.environment.glow_enabled = false
 	if Settings.UpscaledRes:
 		get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
+	else:
+		get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 	#else:
 		#get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 		#get_window().content_scale_size = base_res * Settings.UpscaleFactor
@@ -443,6 +453,7 @@ func get_playtime() -> int:
 
 func save_settings() -> void:
 	ResourceSaver.save(Settings, "user://Settings.res")
+	print("Settings saved")
 #endregion
 
 

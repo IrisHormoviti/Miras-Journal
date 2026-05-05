@@ -201,8 +201,7 @@ func travel_to_coords(sc: String, pos: Vector2 = Vector2.ZERO, camera_ind: int =
 
 ## Takes the player to a specific room. Use ";" to specify a subroom, a marker or a transfer point
 func travel_to(sc: String, pos: Vector2 = Vector2.ZERO, camera_ind: int = 0, z := -1, trans := Query.get_dir_letter(), controllable := true) -> void:
-	if trans != "none":
-		direc = trans
+	direc = trans
 	##Pass Z < -1 for a shortcut to controllable
 	if z < -1: controllable = false
 	print("Traveling to room \"", sc, "\" in camera ID ", camera_ind, " and Z index ", z)
@@ -260,7 +259,7 @@ func travel_done(controllable := false) -> void:
 		i.position = traveled_pos
 	if controllable:
 		await Global.Player.look_to(look_dir)
-	if direc != "wait": detransition()
+	if direc != "wait" and direc != "none": detransition()
 	Global.get_cam().position_smoothing_enabled = true
 	if controllable:
 		await Event.wait(0.3, false)
@@ -527,7 +526,6 @@ func icon_load() -> void:
 	t.set_trans(Tween.TRANS_QUART)
 	t.tween_property($Can/Icon, "global_position", Vector2(1181, 900), 0.3)
 	await t.finished
-	$Can.hide()
 
 
 func hide_victory_stuff() -> void:

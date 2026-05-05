@@ -1621,6 +1621,7 @@ theme = SubResource("Theme_6ne1i")
 alignment = 2
 
 [node name="FPS" type="HBoxContainer" parent="SidePanel/ScrollContainer/SettingsVbox" unique_id=277585794]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = 64
 

@@ -2,17 +2,24 @@ extends Node
 
 
 func new_game() -> void:
+	Global.FirstStartTime = Time.get_unix_time_from_system()
+
+	# Hide any UI
 	if get_tree().root.has_node("/root/Textbox"): $"/root/Textbox"._on_close()
 	if get_tree().root.has_node("/root/Initializer"): $"/root/Initializer".queue_free()
-	Global.init_party(Global.Party)
-	Global.FirstStartTime = Time.get_unix_time_from_system()
+	PartyUI.hide_all()
+	# Initial flags
 	Event.Flags.clear()
 	Event.add_flag("Started")
 	Event.add_flag("HasBag", false)
-	PartyUI.hide_all()
 	Event.add_flag("DisableMenus", true)
 	Event.add_flag("HideDate", true)
 	Event.add_flag("DisableVeinet")
+	Event.add_flag("time", Event.TOD.NIGHT)
+	Event.add_flag("day", 0)
+	Event.Day = 0
+	Event.TimeOfDay = Event.TOD.NIGHT
+	# Initial Items
 	Item.KeyInv.clear()
 	Item.ConInv.clear()
 	Item.MatInv.clear()
@@ -20,26 +27,25 @@ func new_game() -> void:
 	Item.add_item("Wallet", &"Key", false)
 	Item.add_item("PenCase", &"Key", false)
 	Item.add_item("FoldedPaper", &"Key", false)
-	#Item.add_item("SmallPotion", &"Con", false)
 	Loader.Defeated.clear()
+	# Reset Party
 	Global.Party.reset_party()
 	Global.reset_all_members()
-	Event.TimeOfDay = Event.TOD.NIGHT
-	Event.add_flag("time", Event.TOD.NIGHT)
-	Event.Day = 0
-	Event.add_flag("day", 0)
-	Loader.white_fadeout()
+	Global.init_party(Global.Party)
+	Global.check_party.emit()
+
+	# Now start the transition
+	Loader.white_fadeout(7, 1, 0, 1)
 	Loader.travel_to("TempleWoods", Vector2.ZERO, 0, -1, "none", false)
 	get_tree().paused = false
 	await Global.area_initialized
-	await Event.take_control()
+	# Skip intro shortcut
 	if Input.is_action_pressed("Dash"):
 		Global.refresh()
 		return
 	Global.Player.BodyState = NPC.CUSTOM
-	Global.Player.set_anim("OnFloor")
-	Global.Player.get_node("%Shadow").modulate = Color.TRANSPARENT
-	Global.Player._check_party()
+	Global.Player.set_anim("OnFloor", false, true)
+	Global.Player.shadow(false)
 	var t := create_tween()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)

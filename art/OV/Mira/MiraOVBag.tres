@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://b7ptgp73l3vtp" path="res://art/OV/Mira/DashBag.png" id="4_sv8sg"]
 [ext_resource type="Texture2D" uid="uid://rp8uf0rdpmbv" path="res://art/OV/Mira/Deny.png" id="8_7ddo8"]
 [ext_resource type="Texture2D" uid="uid://cmlhbydgt44yv" path="res://art/OV/Mira/EntrancePrep.png" id="9_yvgtt"]
+[ext_resource type="Texture2D" uid="uid://dlt2hga7mq0aw" path="res://art/OV/Mira/Getup.png" id="10_7t8iq"]
 [ext_resource type="Texture2D" uid="uid://cbwc1u4rx67jv" path="res://art/OV/Mira/FlameActive.png" id="10_c1xu5"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_r2yvk"]
@@ -781,6 +782,10 @@ region = Rect2(160, 96, 32, 32)
 [sub_resource type="AtlasTexture" id="AtlasTexture_q4rh7"]
 atlas = ExtResource("1_ulfu1")
 region = Rect2(192, 96, 32, 32)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f53xh"]
+atlas = ExtResource("10_7t8iq")
+region = Rect2(0, 0, 32, 32)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_vrfaw"]
 atlas = ExtResource("1_ulfu1")
@@ -1733,6 +1738,14 @@ animations = [{
 "loop": true,
 "name": &"IdleUp",
 "speed": 4.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f53xh")
+}],
+"loop": true,
+"name": &"OnFloor",
+"speed": 5.0
 }, {
 "frames": [{
 "duration": 1.0,
