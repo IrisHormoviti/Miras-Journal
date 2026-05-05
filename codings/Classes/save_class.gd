@@ -14,11 +14,10 @@ class_name SaveFile
 @export var StartTime: float
 @export var SavedTime: float
 @export var PlayTime: float
-@export_group("Items")
-@export var Inventory: Array[String]
-@export var Flags: Dictionary[StringName, int]
 @export var Diary: Dictionary[int, PackedStringArray]
+@export var Flags: Dictionary[StringName, int]
 @export var version := 0
+@export var Inventory: Array[String]
 
 ## Depricated
 var Day: int

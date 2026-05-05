@@ -4,11 +4,11 @@ All rights reserved
 Art, concept, programming, the vast majority of the game:
 [b]Iris[/b]
 
-Co-writer, General Advisor & Maker of Squiggly line shaders: 
+Co-writer, General Assistance & Maker of Squiggly line shaders: 
 [b]Cone[/b]
 
 Playtesting and QA:
-[b]Cone, ManaRelicGames, Ifti, jedsu, Gensun, River, Minty, PanosPlays, Oso, Lumi[/b]
+[b]Cone, ManaRelicGames, Ifti, jedsu, Gensun, River, Minty, PanosPlays, Oso, Lumi, Norwis-337[/b]
 
 Software used:
 [b]Godot Engine[/b]

@@ -1,6 +1,6 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://ctw68h5rdpqm5"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_2jtsk"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_2jtsk"]
 
 [resource]
 script = ExtResource("1_2jtsk")
@@ -122,7 +122,11 @@ Defeated = ["EnemyIronHook1", "EnemyIronHook2", "EnemyIronHook3"]
 StartTime = 1773014079.152903
 SavedTime = 1774053338.552997
 PlayTime = 1643.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])
+Diary = Dictionary[int, PackedStringArray]({
+0: PackedStringArray("oct31"),
+2: PackedStringArray("boo"),
+5: PackedStringArray("boo", "bee")
+})
 Flags = Dictionary[StringName, int]({
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -162,8 +166,5 @@ Flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 5
 })
-Diary = Dictionary[int, PackedStringArray]({
-2: PackedStringArray("boo"),
-5: PackedStringArray("boo", "bee")
-})
 version = 7
+Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])

@@ -5,10 +5,11 @@
 [ext_resource type="Shader" uid="uid://dbegadw85wjwl" path="res://codings/Shaders/Blur.gdshader" id="2_oxs8c"]
 [ext_resource type="FontFile" uid="uid://cumufnoi2wx0i" path="res://UI/Fonts/cyrenia-bold.ttf" id="2_w8w16"]
 [ext_resource type="FontFile" uid="uid://sehkl0mea74i" path="res://UI/Fonts/cyrenia-regular.ttf" id="2_yay85"]
-[ext_resource type="Texture2D" uid="uid://c0o8cko7xsmmf" path="res://UI/Party/Page.png" id="3_w8w16"]
 [ext_resource type="Texture2D" uid="uid://b7nloiy8nck44" path="res://art/Journal/JournalBack.png" id="4_vunfc"]
+[ext_resource type="Texture2D" uid="uid://do4fmv85ufrph" path="res://UI/Journal/EmptyPage.png" id="7_5mnlf"]
 [ext_resource type="FontVariation" uid="uid://b26p56yb7cgso" path="res://UI/Fonts/cyrenia-button.tres" id="7_relpl"]
 [ext_resource type="Shader" uid="uid://bpx7sdi81bvy6" path="res://codings/Shaders/Unshaded.gdshader" id="8_0smgh"]
+[ext_resource type="Texture2D" uid="uid://b43smhauepc6i" path="res://UI/Journal/NotebookLines.png" id="8_5mnlf"]
 [ext_resource type="Texture2D" uid="uid://b3rlipd0auqsi" path="res://UI/Input/B.png" id="9_nfiq0"]
 [ext_resource type="Texture2D" uid="uid://bpv6vrrg6tboq" path="res://UI/Input/A.png" id="10_nfiq0"]
 
@@ -30,9 +31,9 @@ RichTextLabel/fonts/italics_font = ExtResource("2_yay85")
 RichTextLabel/fonts/normal_font = ExtResource("2_yay85")
 
 [sub_resource type="Theme" id="Theme_vunfc"]
-RichTextLabel/constants/line_separation = -6
-RichTextLabel/constants/paragraph_separation = -6
-RichTextLabel/font_sizes/normal_font_size = 36
+RichTextLabel/constants/line_separation = 0
+RichTextLabel/constants/paragraph_separation = 0
+RichTextLabel/font_sizes/normal_font_size = 35
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ct1v"]
 content_margin_left = 32.0
@@ -206,7 +207,6 @@ expand_mode = 1
 stretch_mode = 4
 
 [node name="JournalBack" type="TextureRect" parent="." unique_id=1177703639]
-visible = false
 offset_left = 171.0
 offset_top = -100.0
 offset_right = 1411.5
@@ -225,37 +225,56 @@ theme = SubResource("Theme_ttv6j")
 
 [node name="PageL" type="TextureRect" parent="Pages" unique_id=1400819960]
 layout_mode = 0
-offset_left = -20.2228
-offset_top = -0.242176
-offset_right = 517.777
-offset_bottom = 694.758
-rotation = 0.0101500675
-texture = ExtResource("3_w8w16")
+offset_left = -20.0
+offset_right = 517.99976
+offset_bottom = 695.0002
+texture = ExtResource("7_5mnlf")
 expand_mode = 1
 stretch_mode = 4
 
 [node name="TextL" type="RichTextLabel" parent="Pages/PageL" unique_id=1600387505]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 58.485046
-offset_top = 47.428787
-offset_right = 451.81836
-offset_bottom = 644.429
+offset_left = 54.444458
+offset_top = 43.33331
+offset_right = 462.2223
+offset_bottom = 681.11115
 theme = SubResource("Theme_vunfc")
 bbcode_enabled = true
 text = "This journal menu is unfinished.
 
-Maybe check it out another time :)"
+Maybe check it out another time :)
+
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello
+hello"
 scroll_active = false
+
+[node name="Lines" type="TextureRect" parent="Pages/PageL" unique_id=588335738]
+self_modulate = Color(0.2, 0.16486667, 0.132, 0.33333334)
+layout_mode = 0
+offset_left = 44.444427
+offset_top = -6.666664
+offset_right = 485.55557
+offset_bottom = 677.77783
+texture = ExtResource("8_5mnlf")
+expand_mode = 1
 
 [node name="PageR" type="TextureRect" parent="Pages" unique_id=367926668]
 layout_mode = 0
-offset_left = 478.88885
-offset_top = 4.4444404
-offset_right = 1016.8969
-offset_bottom = 699.44446
-rotation = -0.036126994
-texture = ExtResource("3_w8w16")
+offset_left = 491.11115
+offset_right = 1029.1194
+offset_bottom = 695.0
+texture = ExtResource("7_5mnlf")
 expand_mode = 1
 stretch_mode = 4
 flip_h = true
@@ -263,17 +282,28 @@ flip_h = true
 [node name="TextR" type="RichTextLabel" parent="Pages/PageR" unique_id=799535873]
 unique_name_in_owner = true
 layout_mode = 0
-offset_left = 87.66341
-offset_top = 49.094162
-offset_right = 474.6634
-offset_bottom = 644.9827
+offset_left = 80.59865
+offset_top = 44.6571
+offset_right = 489.0545
+offset_bottom = 670.508
 rotation = -0.0010446366
 theme = SubResource("Theme_vunfc")
 bbcode_enabled = true
 text = "Yes, the mechanic in the title of the game is not actually implemented yet, go figure."
 scroll_active = false
 
+[node name="Lines" type="TextureRect" parent="Pages/PageR" unique_id=1584633498]
+self_modulate = Color(0.2, 0.16486667, 0.132, 0.33333334)
+layout_mode = 0
+offset_left = 65.55551
+offset_top = -5.5555534
+offset_right = 506.66666
+offset_bottom = 678.889
+texture = ExtResource("8_5mnlf")
+expand_mode = 1
+
 [node name="RootMenu" type="VBoxContainer" parent="." unique_id=1463312290]
+visible = false
 offset_left = 254.0
 offset_top = 416.0
 offset_right = 479.0
