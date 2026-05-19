@@ -139,6 +139,9 @@ func _on_back_pressed() -> void:
 		"manual_text":
 			stage = "manual"
 			Global.cancel_sound()
+		"credits":
+			gallery()
+			$GalleryPanel/ScrollContainer/VBoxContainer/Credits.grab_focus()
 
 
 func close(force := false) -> void:
@@ -334,8 +337,7 @@ func manual() -> void:
 
 
 func gallery() -> void:
-	if stage == "gallery": return
-	if stage != "main": await loaded
+	if stage == "inactive": await loaded
 	$MainButtons/Gallery.toggle_mode = true
 	$MainButtons/Gallery.button_pressed = true
 	stage = "gallery"
@@ -347,7 +349,7 @@ func gallery() -> void:
 	$MainButtons/Gallery.z_index = 1
 	t.tween_property($MainButtons/Gallery, "position", Vector2(570, 491), 0.5)
 	for i in $MainButtons.get_children():
-		if i != $MainButtons/Gallery: t.tween_property(i, "position:x", 850, 0.5)
+		if i != $MainButtons/Gallery: t.tween_property(i, "position:x", 800, 0.5)
 	t.tween_property($GalleryPanel, "position", Vector2(800, -62), 0.5)
 	t.tween_property($Silhouette, "position", Vector2(-100, -39), 0.5)
 	t.tween_property($Background, "position", Vector2(400, 0), 0.5)
@@ -775,18 +777,32 @@ func rename_alcine() -> void:
 
 
 func _on_credit_scroll(event: InputEvent) -> void:
-	if event.is_action_pressed("ui_up"):
-		$GalleryPanel/Credits.scroll_by(-100)
-	if event.is_action_pressed("ui_down"):
-		$GalleryPanel/Credits.scroll_by(100)
-	if event.is_action_pressed("ui_cancel") or event.is_action_pressed("ui_left"):
-		$GalleryPanel/ScrollContainer/VBoxContainer/Credits.grab_focus()
+	if get_viewport().gui_get_focus_owner() == $GalleryPanel/Credits:
+		var accel: int = 100
+		if Input.is_action_just_pressed("ui_up"):
+			while Input.is_action_pressed("ui_up"):
+				$GalleryPanel/Credits.scroll_by(-accel)
+				accel += 10
+				await get_tree().physics_frame
+		elif Input.is_action_just_pressed("ui_down"):
+			while Input.is_action_pressed("ui_down"):
+				$GalleryPanel/Credits.scroll_by(accel)
+				accel += 10
+				await get_tree().physics_frame
+		elif event.is_action_pressed("ui_left"):
+			_on_back_pressed()
 
 
 func _on_website() -> void:
 	Global.confirm()
 	OS.shell_open("https://raidev.eu")
 	Global.toast("\"raidev.eu\" was opened in your web browser.")
+
+
+func _on_source_code() -> void:
+	Global.confirm()
+	OS.shell_open("https://github.com/RaiHormo/Miras-Journal")
+	Global.toast("\"github.com\" was opened in your web browser.")
 
 
 func _on_reset() -> void:
@@ -802,6 +818,37 @@ The game will then close.\nProceed?"):
 	else:
 		$GalleryPanel/ScrollContainer/VBoxContainer/ResetGame.grab_focus()
 		stage = "gallery"
+
+
+func _arena_mode() -> void:
+	await Loader.save()
+	Loader.load_game("ArenaMode", true, true)
+	close()
+
+
+func _on_credits(source: Button) -> void:
+	stage = "credits"
+	Global.confirm_sound()
+	var text: String
+	match source.name:
+		"Credits":
+			var file := FileAccess.open("res://CREDITS.txt", FileAccess.READ)
+			text = file.get_as_text()
+		"GodotLicense":
+			text = Engine.get_license_text()
+		"ProjectLicense":
+			var file := FileAccess.open("res://LICENSE.md", FileAccess.READ)
+			text = file.get_as_text()
+	$GalleryPanel/Credits/RichTextLabel.text = text
+	$GalleryPanel/Credits.grab_focus()
+	$GalleryPanel/Credits.scroll_vertical = 0
+	t = create_tween()
+	t.set_ease(Tween.EASE_OUT)
+	t.set_trans(Tween.TRANS_QUART)
+	t.set_parallel()
+	t.tween_property($GalleryPanel, "position:x", 150, 0.3)
+	t.tween_property($MainButtons/Gallery, "position:x", 12, 0.3)
+	t.tween_property($Timer, "position:x", -300, 0.3)
 
 ## Setttings Buttons
 
@@ -937,27 +984,6 @@ func _vsync(toggle: bool) -> void:
 func _gloweffect(toggle: bool) -> void:
 	Global.Settings.GlowEffect = toggle
 	confirm()
-
-
-func _arena_mode() -> void:
-	await Loader.save()
-	Loader.load_game("ArenaMode", true, true)
-	close()
-
-
-func _on_credits() -> void:
-	Global.confirm_sound()
-	var file := FileAccess.open("res://credits.txt", FileAccess.READ)
-	var text: String = file.get_as_text()
-	$GalleryPanel/Credits/RichTextLabel.text = text
-	$GalleryPanel/Credits.grab_focus()
-	$GalleryPanel/Credits.scroll_vertical = 0
-	t = create_tween()
-	t.set_ease(Tween.EASE_OUT)
-	t.set_trans(Tween.TRANS_QUART)
-	t.set_parallel()
-	t.tween_property($GalleryPanel, "position:x", 330, 0.3)
-	t.tween_property($MainButtons/Gallery, "position:x", 74, 0.3)
 
 
 func _on_highres_textures(toggle: bool) -> void:

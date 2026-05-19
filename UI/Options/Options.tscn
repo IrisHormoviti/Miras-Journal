@@ -2178,11 +2178,10 @@ bbcode_enabled = true
 fit_content = true
 
 [node name="GalleryPanel" type="Panel" parent="." unique_id=426410032]
-visible = false
-offset_left = 1335.0
-offset_top = -62.0
-offset_right = 2352.0
-offset_bottom = 812.0
+offset_left = 1335.9517
+offset_top = -78.418335
+offset_right = 2604.6475
+offset_bottom = 812.0276
 rotation = 0.057901
 pivot_offset = Vector2(-0.00598145, 62.8742)
 theme_override_styles/panel = SubResource("StyleBoxFlat_1t27v")
@@ -2226,6 +2225,14 @@ theme_override_styles/focus = SubResource("StyleBoxFlat_clguj")
 text = "Credits
 "
 
+[node name="LabelLinks" type="Label" parent="GalleryPanel/ScrollContainer/VBoxContainer" unique_id=1011324534]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = SubResource("Theme_6ne1i")
+theme_override_font_sizes/font_size = 32
+text = "Links"
+
 [node name="Website" type="Button" parent="GalleryPanel/ScrollContainer/VBoxContainer" unique_id=55180716]
 show_behind_parent = true
 custom_minimum_size = Vector2(300, 60)
@@ -2245,6 +2252,82 @@ theme_override_styles/hover = SubResource("StyleBoxFlat_clguj")
 theme_override_styles/disabled = SubResource("StyleBoxFlat_vw3v8")
 theme_override_styles/focus = SubResource("StyleBoxFlat_clguj")
 text = "Website"
+
+[node name="SourceCode" type="Button" parent="GalleryPanel/ScrollContainer/VBoxContainer" unique_id=188719475]
+show_behind_parent = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_focus_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_pressed_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_hover_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_constants/h_separation = 12
+theme_override_constants/icon_max_width = 32
+theme_override_fonts/font = ExtResource("24_41402")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_j3433")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_clguj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_clguj")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_vw3v8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_clguj")
+text = "Source Code"
+
+[node name="LabelLicense" type="Label" parent="GalleryPanel/ScrollContainer/VBoxContainer" unique_id=1994991357]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = SubResource("Theme_6ne1i")
+theme_override_font_sizes/font_size = 32
+text = "Licensing"
+
+[node name="ProjectLicense" type="Button" parent="GalleryPanel/ScrollContainer/VBoxContainer" unique_id=972427599]
+show_behind_parent = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_focus_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_pressed_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_hover_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_constants/h_separation = 12
+theme_override_constants/icon_max_width = 32
+theme_override_fonts/font = ExtResource("24_41402")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_j3433")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_clguj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_clguj")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_vw3v8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_clguj")
+text = "Project License"
+
+[node name="GodotLicense" type="Button" parent="GalleryPanel/ScrollContainer/VBoxContainer" unique_id=1709456603]
+show_behind_parent = true
+custom_minimum_size = Vector2(300, 60)
+layout_mode = 2
+mouse_filter = 1
+theme_override_colors/font_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_focus_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_pressed_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_colors/font_hover_color = Color(0.309804, 0.309804, 0.309804, 1)
+theme_override_constants/h_separation = 12
+theme_override_constants/icon_max_width = 32
+theme_override_fonts/font = ExtResource("24_41402")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_j3433")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_clguj")
+theme_override_styles/hover = SubResource("StyleBoxFlat_clguj")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_vw3v8")
+theme_override_styles/focus = SubResource("StyleBoxFlat_clguj")
+text = "Godot License"
+
+[node name="LabelActions" type="Label" parent="GalleryPanel/ScrollContainer/VBoxContainer" unique_id=1710291671]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = SubResource("Theme_6ne1i")
+theme_override_font_sizes/font_size = 32
+text = "Actions"
 
 [node name="RenameAlcine" type="Button" parent="GalleryPanel/ScrollContainer/VBoxContainer" unique_id=1011020241]
 show_behind_parent = true
@@ -2313,7 +2396,7 @@ text = "Reset Game"
 layout_mode = 0
 offset_left = 479.0
 offset_top = 80.0
-offset_right = 975.0
+offset_right = 1154.5269
 offset_bottom = 812.0
 rotation = -0.0633063
 focus_mode = 2
@@ -2325,8 +2408,11 @@ metadata/_custom_type_script = "uid://biopjphf2psbr"
 [node name="RichTextLabel" type="RichTextLabel" parent="GalleryPanel/Credits" unique_id=1820278891]
 layout_mode = 2
 size_flags_horizontal = 3
+focus_mode = 2
 mouse_filter = 1
 theme_override_colors/default_color = Color(0, 0, 0, 1)
+theme_override_colors/font_selected_color = Color(1, 1, 1, 1)
+theme_override_colors/selection_color = Color(0.7805555, 0.36871487, 0.08135044, 0.8)
 theme_override_fonts/normal_font = ExtResource("24_41402")
 theme_override_fonts/bold_font = ExtResource("17_chpua")
 theme_override_font_sizes/normal_font_size = 32
@@ -2334,6 +2420,8 @@ theme_override_font_sizes/bold_font_size = 38
 theme_override_styles/focus = SubResource("StyleBoxEmpty_vm5us")
 bbcode_enabled = true
 fit_content = true
+context_menu_enabled = true
+selection_enabled = true
 
 [node name="Confirm" type="Button" parent="." unique_id=1068814314]
 visibility_layer = 1024
@@ -2463,14 +2551,13 @@ texture = ExtResource("26_375bk")
 [connection signal="pressed" from="ManualPanel/ScrollContainer/VBoxContainer/ProtectionStates" to="." method="_manual_entry_pressed"]
 [connection signal="focus_entered" from="ManualPanel/ScrollContainer/VBoxContainer/KnockedOut" to="." method="_manual_entry_select"]
 [connection signal="pressed" from="ManualPanel/ScrollContainer/VBoxContainer/KnockedOut" to="." method="_manual_entry_pressed"]
-[connection signal="focus_entered" from="GalleryPanel/ScrollContainer/VBoxContainer/Credits" to="." method="gallery"]
-[connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/Credits" to="." method="_on_credits"]
-[connection signal="focus_entered" from="GalleryPanel/ScrollContainer/VBoxContainer/Website" to="." method="gallery"]
+[connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/Credits" to="." method="_on_credits" flags=18]
 [connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/Website" to="." method="_on_website"]
-[connection signal="focus_entered" from="GalleryPanel/ScrollContainer/VBoxContainer/RenameAlcine" to="." method="gallery"]
+[connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/SourceCode" to="." method="_on_source_code"]
+[connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/ProjectLicense" to="." method="_on_credits" flags=18]
+[connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/GodotLicense" to="." method="_on_credits" flags=18]
 [connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/RenameAlcine" to="." method="rename_alcine"]
 [connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/ArenaMode" to="." method="_arena_mode"]
-[connection signal="focus_entered" from="GalleryPanel/ScrollContainer/VBoxContainer/ResetGame" to="." method="gallery"]
 [connection signal="pressed" from="GalleryPanel/ScrollContainer/VBoxContainer/ResetGame" to="." method="_on_reset"]
 [connection signal="gui_input" from="GalleryPanel/Credits" to="." method="_on_credit_scroll"]
 [connection signal="pressed" from="Back" to="." method="_on_back_pressed"]
