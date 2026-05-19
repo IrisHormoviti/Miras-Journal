@@ -2,6 +2,8 @@ extends CanvasLayer
 
 @export var DiaryEntries: Dictionary[StringName, String]
 var stage: String
+var current_pages: Array[String]
+var page_index: int = 0
 
 
 func _ready() -> void:
@@ -61,7 +63,7 @@ func diary_load_day_list() -> void:
 	for i in Event.Diary:
 		var dub: Button = $List/List/Listing0.duplicate()
 		dub.name = str(i)
-		dub.text = Query.get_mmm(Query.get_month(i)) + " " + str(i)
+		dub.text = "%s %s" % [Query.get_mmm(Query.get_month(i)), Query.get_date_day(i)]
 		$List/List.add_child(dub)
 		dub.show()
 	$List/List/Listing0.queue_free()
@@ -70,17 +72,38 @@ func diary_load_day_list() -> void:
 func diary_focus(day: int) -> void:
 	%TextL.text = ""
 	%TextR.text = ""
-	var page := 0
 	var text: String = Query.get_month_name(Query.get_month(day)) + " " + Query.get_date_day(day) + "\n\n"
 	for i in Event.Diary[day]:
-		var prev_text := text
 		text += DiaryEntries.get(i)
 		text += "\n~~~~~~\n"
-		%TextL.text = text
-		await Event.wait()
-		if %TextL.get_line_count() > 20 or page == 1:
-			%TextL.text = prev_text
-			%TextR.text += DiaryEntries.get(i)
+	current_pages = split_by_pages(text)
+	display_text(current_pages)
+
+
+func split_by_pages(text: String) -> Array[String]:
+	const page_line_count := 10
+	var split_by_line := text.split('\n')
+	var result: Array[String]
+	var page_count: int = ceil(float(split_by_line.size()) / float(page_line_count))
+	var line: int = 0
+	for i in page_count:
+		result.append("")
+		for j in page_line_count:
+			if line <= split_by_line.size():
+				break
+			else:
+				result[i] += split_by_line[line] + "\n"
+				line += 1
+	return result
+
+
+func display_text(text: Array[String], left_page: int = page_index) -> void:
+	var pageL: int = left_page
+	var pageR: int = left_page + 1
+	if current_pages.size() > pageL:
+		%TextL.text = current_pages[pageL]
+	if current_pages.size() > pageR:
+		%TextR.text = current_pages[pageR]
 
 
 func close() -> void:
