@@ -701,27 +701,27 @@ func cmd(cmd_text := "") -> void:
 		$CanvasLayer/TextEdit.set_deferred("text", "")
 	else:
 		if cmd_text.begins_with("/"):
-			if "/clear" in cmd_text:
+			if cmd_text.begins_with("/clear"):
 				Event.Flags.clear()
 				Loader.Defeated.clear()
-			elif "/cam" in cmd_text:
+			elif cmd_text.begins_with("/cam"):
 				Global.Player.camera_follow()
-			elif "/day " in cmd_text:
+			elif cmd_text.begins_with("/day"):
 				var text := cmd_text.replace("/day ", "")
 				Event.Day = int(text)
-			elif "/time " in cmd_text:
+			elif cmd_text.begins_with("/time"):
 				var text := cmd_text.replace("/time ", "")
 				Event.TimeOfDay = text.to_int() as Event.TOD
-			elif "/comp " in cmd_text:
+			elif cmd_text.begins_with("/comp"):
 				var text := cmd_text.replace("/comp ", "")
 				Global.add_complimentary(text)
-			elif "/enrestore" in cmd_text:
+			elif cmd_text.begins_with("/enrestore"):
 				Loader.Defeated.clear()
-			elif "/timetrans" in cmd_text:
+			elif cmd_text.begins_with("/timetrans"):
 				Event.ToDay = Event.Day
 				Event.ToTime = Event.TimeOfDay
 				Event.time_transition()
-			elif "/lv " in cmd_text:
+			elif cmd_text.begins_with("/lv"):
 				Global.reset_all_members()
 				var text := cmd_text.replace("/lv ", "")
 				for i in Global.Party.array():
@@ -729,20 +729,27 @@ func cmd(cmd_text := "") -> void:
 						i.level_up_to(int(text))
 				Global.heal_party()
 				Global.check_party.emit()
-			elif "/item " in cmd_text:
+			elif cmd_text.begins_with("/item"):
 				var text: String = cmd_text.replace("/item ", "")
 				var split := text.split(":")
 				if split.size() < 2:
 					Global.toast("Item type needed")
 					return
 				Item.add_item(split[0], split[1])
-			elif "/itemrm " in cmd_text:
+			elif cmd_text.begins_with("/itemrm"):
 				var text: String = cmd_text.replace("/itemrm ", "")
 				var split := text.split(":")
 				if split.size() < 2:
 					Global.toast("Item type needed")
 					return
 				Item.remove_item(split[0], split[1])
+			elif cmd_text.begins_with("/diaryadd"):
+				var text := cmd_text.replace("/diaryadd ", "").split('>')
+				var key: String = text[0]
+				var day: int = Event.Day
+				if text.size() > 1:
+					day = int(text[1])
+				Event.add_to_diary(key, day)
 		elif cmd_text != "":
 			var text := cmd_text
 			Event.add_flag(text, !Event.check_flag(text))

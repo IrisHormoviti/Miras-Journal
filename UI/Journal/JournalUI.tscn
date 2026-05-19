@@ -106,11 +106,11 @@ border_color = Color(0.894118, 0.894118, 0.894118, 1)
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0smgh"]
 draw_center = false
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfiq0"]
-bg_color = Color(0.89, 0.89, 0.89, 0.666667)
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_relpl"]
 bg_color = Color(0.894118, 0.894118, 0.894118, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nfiq0"]
+bg_color = Color(0.89, 0.89, 0.89, 0.666667)
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vunfc"]
 shader = ExtResource("8_0smgh")
@@ -339,7 +339,6 @@ text = "Beastiary
 metadata/_edit_use_anchors_ = true
 
 [node name="List" type="PanelContainer" parent="." unique_id=1077425298]
-visible = false
 offset_right = 296.0
 offset_bottom = 798.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_oxs8c")
@@ -353,6 +352,7 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme = SubResource("Theme_nfiq0")
 theme_override_styles/normal = SubResource("StyleBoxFlat_0smgh")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_relpl")
 theme_override_styles/hover = SubResource("StyleBoxFlat_nfiq0")
 theme_override_styles/focus = SubResource("StyleBoxFlat_relpl")
 text = "Listing"

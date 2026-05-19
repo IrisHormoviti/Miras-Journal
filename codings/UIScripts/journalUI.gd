@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-@export var DiaryEntries: Dictionary[StringName, String]
+@export var DiaryEntries: Dictionary
 var stage: String
 var current_pages: Array[String]
 var page_index: int = 0
@@ -53,9 +53,9 @@ func diary() -> void:
 
 func add_test_entries() -> void:
 	Event.Diary = {
-	2: ["boo"],
-	5: ["boo", "bee"]
-}
+		2: ["boo"],
+		5: ["boo", "bee"]
+	}
 
 
 func diary_load_day_list() -> void:
@@ -77,33 +77,40 @@ func diary_focus(day: int) -> void:
 		text += DiaryEntries.get(i)
 		text += "\n~~~~~~\n"
 	current_pages = split_by_pages(text)
+	page_index = 0
 	display_text(current_pages)
 
 
 func split_by_pages(text: String) -> Array[String]:
-	const page_line_count := 10
+	text = insert_images(text)
+	const page_line_count := 18
 	var split_by_line := text.split('\n')
 	var result: Array[String]
 	var page_count: int = ceil(float(split_by_line.size()) / float(page_line_count))
+	page_count += text.count("[/img]")
 	var line: int = 0
 	for i in page_count:
 		result.append("")
 		for j in page_line_count:
-			if line <= split_by_line.size():
+			if line >= split_by_line.size():
 				break
 			else:
 				result[i] += split_by_line[line] + "\n"
 				line += 1
+				if "/img" in split_by_line[line - 1]:
+					break
 	return result
 
 
-func display_text(text: Array[String], left_page: int = page_index) -> void:
+func display_text(text: Array[String] = current_pages, left_page: int = page_index) -> void:
 	var pageL: int = left_page
 	var pageR: int = left_page + 1
 	if current_pages.size() > pageL:
 		%TextL.text = current_pages[pageL]
-	if current_pages.size() > pageR:
-		%TextR.text = current_pages[pageR]
+		if current_pages.size() > pageR:
+			%TextR.text = current_pages[pageR]
+	elif page_index > 0:
+		display_text(current_pages, left_page - 1)
 
 
 func close() -> void:
@@ -121,18 +128,34 @@ func _on_back_pressed() -> void:
 			root()
 
 
-func _input(event: InputEvent) -> void:
+func insert_images(text: String) -> String:
+	return text.replace("[diary_doodle]", "[img]res://art/Journal/DiaryDoodles/")
+
+
+func _input(_event: InputEvent) -> void:
 	$Close.icon = Global.get_controller().CancelIcon
 	$Select.icon = Global.get_controller().ConfirmIcon
 
+	if stage == "diary":
+		if Input.is_action_just_pressed("ui_right"):
+			if page_index + 2 >= current_pages.size():
+				var foc := get_viewport().gui_get_focus_owner()
+				foc.find_next_valid_focus().grab_focus()
+			else:
+				page_index += 2
+				display_text()
+		if Input.is_action_just_pressed("ui_left"):
+			if page_index - 2 < 0:
+				var foc := get_viewport().gui_get_focus_owner()
+				foc.find_prev_valid_focus().grab_focus()
+			else:
+				page_index -= 2
+				display_text()
+
 
 func load_entries() -> void:
-	var file := FileAccess.open("res://database/Text/Journal/Diary.json", FileAccess.READ)
-	var json: Array = JSON.parse_string(file.get_as_text())
-	for i: Array in json:
-		DiaryEntries.set(i[0], i[1])
+	DiaryEntries = YAMLParser.load_yaml_file("res://database/Text/Journal/Diary.yaml")
 	print(DiaryEntries)
-	file.close()
 
 
 func diary_focus_button() -> void:

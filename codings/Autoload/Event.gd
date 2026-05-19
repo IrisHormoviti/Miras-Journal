@@ -5,10 +5,7 @@ extends Node
 var List: Dictionary[String, NPC]
 var Objects: Dictionary[String, Node2D]
 var Flags: Dictionary[StringName, int]
-var Diary: Dictionary[int, PackedStringArray] = {
-	2: ["boo"],
-	5: ["boo", "bee"]
-}
+var Diary: Dictionary[int, PackedStringArray]
 var Day: int:
 	set(x):
 		Day = x
@@ -548,3 +545,10 @@ func get_reserved_date_dialog() -> String:
 	var title: String = "default"
 	if date in dialogue.get_titles(): title = date
 	return "reserved_date/" + title
+
+
+func add_to_diary(what: String, to_day: int = Day) -> void:
+	if Diary.has(to_day):
+		Diary.get(to_day).append(what)
+	else:
+		Diary.set(to_day, [what])

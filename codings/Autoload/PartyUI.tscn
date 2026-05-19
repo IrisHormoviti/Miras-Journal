@@ -1359,7 +1359,8 @@ text = "/clear
 /comp
 /lv
 /item
-/itemrm"
+/itemrm
+/diaryadd"
 
 [node name="DebugText" type="Label" parent="CanvasLayer" unique_id=473974110]
 visible = false

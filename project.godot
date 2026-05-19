@@ -108,7 +108,7 @@ TileMap=""
 
 [gui]
 
-common/snap_controls_to_pixels=false
+common/show_focus_state_on_pointer_event=2
 fonts/dynamic_fonts/use_oversampling=false
 
 [importer_defaults]
@@ -431,7 +431,7 @@ pointing/android/enable_pan_and_scale_gestures=true
 
 rendering/root_node_layout_direction=1
 locale/translation_remaps={}
-locale/translations_pot_files=PackedStringArray("res://codings/Battle.tscn", "res://database/Text/story_2.dialogue", "res://database/Text/sl_maple.dialogue", "res://database/Text/sl_linde.dialogue", "res://database/Text/inspect_item.dialogue", "res://database/Text/sl_asteria.dialogue", "res://database/Text/talk_alcine.dialogue", "res://database/Text/banter_battle.dialogue", "res://database/Text/banter_entrance.dialogue", "res://database/Text/banter_victory.dialogue", "res://database/Text/testbush.dialogue", "res://database/Text/naming.dialogue", "res://database/Text/story_0.dialogue", "res://database/Text/interact_abad.dialogue", "res://database/Text/interact_pyrson.dialogue", "res://database/Text/story_1.dialogue", "res://database/Text/banter_misc.dialogue", "res://database/Text/reserved_date.dialogue")
+locale/translations_pot_files=PackedStringArray("res://codings/Battle.tscn", "res://database/Text/sl_linde.dialogue", "res://database/Text/banter_battle.dialogue", "res://database/Text/talk_alcine.dialogue", "res://database/Text/story_1.dialogue", "res://database/Text/story_0.dialogue", "res://database/Text/testbush.dialogue", "res://database/Text/reserved_date.dialogue", "res://database/Text/banter_misc.dialogue", "res://database/Text/banter_entrance.dialogue", "res://database/Text/sl_maple.dialogue", "res://database/Text/interact_abad.dialogue", "res://database/Text/sl_asteria.dialogue", "res://database/Text/naming.dialogue", "res://database/Text/story_2.dialogue", "res://database/Text/inspect_item.dialogue", "res://database/Text/banter_victory.dialogue", "res://database/Text/interact_pyrson.dialogue")
 
 [layer_names]
 
