@@ -31,9 +31,13 @@ RichTextLabel/fonts/italics_font = ExtResource("2_yay85")
 RichTextLabel/fonts/normal_font = ExtResource("2_yay85")
 
 [sub_resource type="Theme" id="Theme_vunfc"]
-RichTextLabel/constants/line_separation = 0
+RichTextLabel/constants/line_separation = 4
 RichTextLabel/constants/paragraph_separation = 0
-RichTextLabel/font_sizes/normal_font_size = 35
+RichTextLabel/font_sizes/bold_font_size = 30
+RichTextLabel/font_sizes/bold_italics_font_size = 30
+RichTextLabel/font_sizes/italics_font_size = 30
+RichTextLabel/font_sizes/mono_font_size = 30
+RichTextLabel/font_sizes/normal_font_size = 30
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0ct1v"]
 content_margin_left = 32.0
@@ -174,6 +178,11 @@ action = &"ui_cancel"
 [sub_resource type="Shortcut" id="Shortcut_5hctv"]
 events = [SubResource("InputEventAction_p5u4y")]
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5mnlf"]
+bg_color = Color(0.16862746, 0.16862746, 0.16862746, 1)
+corner_radius_top_left = 24
+corner_radius_bottom_left = 24
+
 [node name="JournalUI" type="CanvasLayer" unique_id=1861066861]
 process_mode = 3
 layer = 2
@@ -228,22 +237,26 @@ layout_mode = 0
 offset_left = -20.0
 offset_right = 517.99976
 offset_bottom = 695.0002
+pivot_offset = Vector2(525, 0)
 texture = ExtResource("7_5mnlf")
 expand_mode = 1
 stretch_mode = 4
 
 [node name="TextL" type="RichTextLabel" parent="Pages/PageL" unique_id=1600387505]
 unique_name_in_owner = true
+z_index = 1
 layout_mode = 0
-offset_left = 54.444458
-offset_top = 43.33331
-offset_right = 462.2223
-offset_bottom = 681.11115
+offset_left = 55.0
+offset_top = 48.0
+offset_right = 483.33334
+offset_bottom = 685.77783
 theme = SubResource("Theme_vunfc")
 bbcode_enabled = true
-text = "This journal menu is unfinished.
+text = "This journal menu is 
+unfinished.
 
-Maybe check it out another time :)
+Maybe check it out another 
+time :)
 
 hello
 hello
@@ -258,6 +271,7 @@ hello
 hello
 hello"
 scroll_active = false
+autowrap_mode = 0
 
 [node name="Lines" type="TextureRect" parent="Pages/PageL" unique_id=588335738]
 self_modulate = Color(0.2, 0.16486667, 0.132, 0.33333334)
@@ -281,16 +295,20 @@ flip_h = true
 
 [node name="TextR" type="RichTextLabel" parent="Pages/PageR" unique_id=799535873]
 unique_name_in_owner = true
+z_index = 1
 layout_mode = 0
-offset_left = 80.59865
-offset_top = 44.6571
-offset_right = 489.0545
-offset_bottom = 670.508
+offset_left = 80.0
+offset_top = 49.0
+offset_right = 504.61566
+offset_bottom = 674.85095
 rotation = -0.0010446366
 theme = SubResource("Theme_vunfc")
 bbcode_enabled = true
-text = "Yes, the mechanic in the title of the game is not actually implemented yet, go figure."
+text = "Yes, the mechanic in the title 
+of the game is not actually 
+implemented yet, go figure."
 scroll_active = false
+autowrap_mode = 0
 
 [node name="Lines" type="TextureRect" parent="Pages/PageR" unique_id=1584633498]
 self_modulate = Color(0.2, 0.16486667, 0.132, 0.33333334)
@@ -397,6 +415,21 @@ text = "Select"
 icon = ExtResource("10_nfiq0")
 text_overrun_behavior = 1
 expand_icon = true
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1245844117]
+offset_left = 1161.0
+offset_top = 719.0
+offset_right = 1280.0
+offset_bottom = 784.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_5mnlf")
+
+[node name="PageIndex" type="Label" parent="PanelContainer" unique_id=746939866]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_w8w16")
+theme_override_font_sizes/font_size = 32
+text = "1/5"
+horizontal_alignment = 1
 
 [connection signal="pressed" from="RootMenu/Diary" to="." method="diary"]
 [connection signal="focus_entered" from="List/List/Listing0" to="." method="diary_focus_button"]

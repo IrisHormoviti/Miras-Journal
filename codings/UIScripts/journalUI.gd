@@ -4,12 +4,12 @@ extends CanvasLayer
 var stage: String
 var current_pages: Array[String]
 var page_index: int = 0
+var page_day: int = 0
 
 
 func _ready() -> void:
 	$Close.icon = Global.get_controller().CancelIcon
 	$Select.icon = Global.get_controller().ConfirmIcon
-	load_entries()
 	diary_load_day_list()
 	root()
 
@@ -35,6 +35,7 @@ func root() -> void:
 
 
 func diary() -> void:
+	load_entries()
 	stage = "diary"
 	$Journal.hide()
 	$RootMenu.hide()
@@ -70,15 +71,46 @@ func diary_load_day_list() -> void:
 
 
 func diary_focus(day: int) -> void:
-	%TextL.text = ""
-	%TextR.text = ""
 	var text: String = Query.get_month_name(Query.get_month(day)) + " " + Query.get_date_day(day) + "\n\n"
 	for i in Event.Diary[day]:
 		text += DiaryEntries.get(i)
-		text += "\n~~~~~~\n"
+		#text += "\n~~~~~~\n"
+
+	if page_day > day:
+		current_pages = split_by_pages(text)
+	await handle_page_turning(page_day, day, page_index, current_pages.size())
 	current_pages = split_by_pages(text)
+	page_day = day
+
+	%TextL.text = ""
+	%TextR.text = ""
 	page_index = 0
 	display_text(current_pages)
+
+
+func handle_page_turning(old_day: int, new_day: int, old_index: int, old_day_page_count: int) -> void:
+	print("---- turning page from %d to %d" % [old_day, new_day])
+	if new_day == old_day: return
+	var going_right: bool = new_day > old_day
+	var L: int = min(new_day, old_day)
+	var R: int = max(new_day, old_day)
+
+	for i in range(L, R):
+		if Event.Diary.has(i):
+			prints("day i", i)
+			if i == L and old_day_page_count > 1:
+				for j in range(old_index / 2, old_day_page_count / 2):
+					prints("	j", j)
+					if going_right: turn_page_R()
+					else: turn_page_L()
+					await Event.wait(0.1, false)
+			else:
+				print("	single page")
+
+				if going_right: turn_page_R()
+				else: turn_page_L()
+				if i != new_day:
+					await Event.wait(0.1, false)
 
 
 func split_by_pages(text: String) -> Array[String]:
@@ -88,17 +120,23 @@ func split_by_pages(text: String) -> Array[String]:
 	var result: Array[String]
 	var page_count: int = ceil(float(split_by_line.size()) / float(page_line_count))
 	page_count += text.count("[/img]")
+	page_count += text.count("[page]")
 	var line: int = 0
 	for i in page_count:
 		result.append("")
 		for j in page_line_count:
 			if line >= split_by_line.size():
 				break
+			elif "[page]" in split_by_line[line]:
+				line += 1
+				break
 			else:
 				result[i] += split_by_line[line] + "\n"
 				line += 1
 				if "/img" in split_by_line[line - 1]:
 					break
+	while result.back().is_empty() and not result.is_empty():
+		result.erase(result.back())
 	return result
 
 
@@ -111,6 +149,56 @@ func display_text(text: Array[String] = current_pages, left_page: int = page_ind
 			%TextR.text = current_pages[pageR]
 	elif page_index > 0:
 		display_text(current_pages, left_page - 1)
+
+
+func turn_page_R() -> void:
+	const time := 0.3
+	var L: TextureRect = $Pages/PageL.duplicate()
+	var R: TextureRect = $Pages/PageR.duplicate()
+	$Pages.add_child(R)
+	$Pages.add_child(L)
+	R.z_index = 5
+	L.z_index = 2
+
+	var t := create_tween()
+	t.tween_property(R, ^"scale:x", 0, time / 2).from(1)
+	await Event.wait(time / 2, false)
+
+	var L_new: TextureRect = $Pages/PageL.duplicate()
+	$Pages.add_child(L_new)
+	L_new.z_index = 5
+	t = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	t.tween_property(L_new, ^"scale:x", 1, time / 2).from(0)
+
+	await t.finished
+	L.queue_free()
+	L_new.queue_free()
+	R.queue_free()
+
+
+func turn_page_L() -> void:
+	const time := 0.3
+	var L: TextureRect = $Pages/PageL.duplicate()
+	var R: TextureRect = $Pages/PageR.duplicate()
+	$Pages.add_child(R)
+	$Pages.add_child(L)
+	R.z_index = 2
+	L.z_index = 5
+
+	var t := create_tween()
+	t.tween_property(L, ^"scale:x", 0, time / 2).from(1)
+	await Event.wait(time / 2, false)
+
+	var R_new: TextureRect = $Pages/PageR.duplicate()
+	$Pages.add_child(R_new)
+	R_new.z_index = 5
+	t = create_tween().set_trans(Tween.TRANS_CUBIC).set_ease(Tween.EASE_OUT)
+	t.tween_property(R_new, ^"scale:x", 1, time / 2).from(0)
+
+	await t.finished
+	L.queue_free()
+	R.queue_free()
+	R_new.queue_free()
 
 
 func close() -> void:
@@ -129,7 +217,8 @@ func _on_back_pressed() -> void:
 
 
 func insert_images(text: String) -> String:
-	return text.replace("[diary_doodle]", "[img]res://art/Journal/DiaryDoodles/")
+	text = text.replace("[diary_doodle]", "[img width=420]res://art/Journal/DiaryDoodles/")
+	return text
 
 
 func _input(_event: InputEvent) -> void:
@@ -143,6 +232,7 @@ func _input(_event: InputEvent) -> void:
 				foc.find_next_valid_focus().grab_focus()
 			else:
 				page_index += 2
+				turn_page_R()
 				display_text()
 		if Input.is_action_just_pressed("ui_left"):
 			if page_index - 2 < 0:
@@ -150,6 +240,7 @@ func _input(_event: InputEvent) -> void:
 				foc.find_prev_valid_focus().grab_focus()
 			else:
 				page_index -= 2
+				turn_page_L()
 				display_text()
 
 
