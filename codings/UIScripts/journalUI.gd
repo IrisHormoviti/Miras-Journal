@@ -5,6 +5,7 @@ var stage: String
 var current_pages: Array[String]
 var page_index: int = 0
 var page_day: int = 0
+@onready var page_indicator: PanelContainer = $PageIndicator
 
 
 func _ready() -> void:
@@ -23,6 +24,7 @@ func root() -> void:
 	$RootMenu.show()
 	$List.hide()
 	$RootMenu/Diary.grab_focus()
+	page_indicator.hide()
 	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
 	t.tween_property($Close, "position:x", 200, 0.3)
 	t.tween_property($Journal, "position", Vector2(600, 0), 1).from(Vector2(600, 2000))
@@ -43,6 +45,7 @@ func diary() -> void:
 	$Pages.show()
 	$List.show()
 	$Select.hide()
+	page_indicator.show()
 	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
 	t.tween_property($Close, "position:x", 320, 0.5).set_ease(Tween.EASE_OUT)
 	t.tween_property($List, "position:x", 0, 0.5).from(-300)
@@ -149,6 +152,7 @@ func display_text(text: Array[String] = current_pages, left_page: int = page_ind
 			%TextR.text = current_pages[pageR]
 	elif page_index > 0:
 		display_text(current_pages, left_page - 1)
+	%PageIndex.text = "%d/%d" % [ceil(page_index / 2) + 1, max(ceil(current_pages.size() / 2), 1)]
 
 
 func turn_page_R() -> void:

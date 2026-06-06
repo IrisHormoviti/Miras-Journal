@@ -211,7 +211,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hsf24")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Blue",
 "speed": 3.0
 }, {
@@ -228,7 +228,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ej4ih")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Cyan",
 "speed": 3.0
 }, {
@@ -245,7 +245,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_wci1a")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Green",
 "speed": 3.0
 }, {
@@ -262,7 +262,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_gvnn2")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Indigo",
 "speed": 3.0
 }, {
@@ -279,7 +279,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ngsyo")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Lime",
 "speed": 3.0
 }, {
@@ -296,7 +296,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8degq")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Orange",
 "speed": 3.0
 }, {
@@ -313,7 +313,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vafve")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Purple",
 "speed": 3.0
 }, {
@@ -336,7 +336,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0i51l")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Red",
 "speed": 3.0
 }, {
@@ -353,7 +353,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_rc3c2")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Teal",
 "speed": 3.0
 }, {
@@ -370,7 +370,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_46nu3")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Yellow",
 "speed": 3.0
 }, {
@@ -399,7 +399,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vilam")
 }],
-"loop": false,
+"loop": 0,
 "name": &"break",
 "speed": 10.0
 }]

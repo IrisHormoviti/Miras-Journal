@@ -379,7 +379,6 @@ metadata/_edit_use_anchors_ = true
 [node name="Close" type="Button" parent="." unique_id=1208998881]
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_vunfc")
-layout_direction = 1
 offset_left = 198.0
 offset_top = 742.0
 offset_right = 307.0
@@ -387,6 +386,7 @@ offset_bottom = 775.0
 scale = Vector2(1.4, 1.4)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_5mnlf")
 theme_override_font_sizes/font_size = 15
@@ -399,7 +399,6 @@ expand_icon = true
 [node name="Select" type="Button" parent="." unique_id=2078033736]
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_vunfc")
-layout_direction = 1
 offset_left = 31.0
 offset_top = 742.0
 offset_right = 140.0
@@ -407,6 +406,7 @@ offset_bottom = 775.0
 scale = Vector2(1.4, 1.4)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_5mnlf")
 theme_override_font_sizes/font_size = 15
@@ -416,14 +416,14 @@ icon = ExtResource("10_nfiq0")
 text_overrun_behavior = 1
 expand_icon = true
 
-[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1245844117]
+[node name="PageIndicator" type="PanelContainer" parent="." unique_id=1245844117]
 offset_left = 1161.0
 offset_top = 719.0
 offset_right = 1280.0
 offset_bottom = 784.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_5mnlf")
 
-[node name="PageIndex" type="Label" parent="PanelContainer" unique_id=746939866]
+[node name="PageIndex" type="Label" parent="PageIndicator" unique_id=746939866]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_w8w16")

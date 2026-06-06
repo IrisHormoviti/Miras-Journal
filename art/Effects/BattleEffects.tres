@@ -922,7 +922,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_guign")
 }],
-"loop": false,
+"loop": 0,
 "name": &"AttackUp",
 "speed": 9.0
 }, {
@@ -975,7 +975,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2yima")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DefenceUp",
 "speed": 9.0
 }, {
@@ -1052,7 +1052,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
+"loop": 0,
 "name": &"Drill",
 "speed": 12.0
 }, {
@@ -1090,7 +1090,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
+"loop": 0,
 "name": &"FlameSpark",
 "speed": 10.0
 }, {
@@ -1131,7 +1131,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
+"loop": 0,
 "name": &"HeatWave",
 "speed": 6.0
 }, {
@@ -1163,7 +1163,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2vb16")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Iceicle",
 "speed": 12.0
 }, {
@@ -1183,7 +1183,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i3715")
 }],
-"loop": false,
+"loop": 0,
 "name": &"LeechGrab1",
 "speed": 6.0
 }, {
@@ -1194,7 +1194,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_o44bl")
 }],
-"loop": true,
+"loop": 1,
 "name": &"LeechGrab2",
 "speed": 4.0
 }, {
@@ -1220,7 +1220,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_meli5")
 }],
-"loop": false,
+"loop": 0,
 "name": &"LeechGrab3",
 "speed": 10.0
 }, {
@@ -1252,7 +1252,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i1eea")
 }],
-"loop": false,
+"loop": 0,
 "name": &"LeechSeeds",
 "speed": 10.0
 }, {
@@ -1299,7 +1299,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8rcqg")
 }],
-"loop": false,
+"loop": 0,
 "name": &"MagicUp",
 "speed": 9.0
 }, {
@@ -1325,7 +1325,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0yvx8")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Miss",
 "speed": 12.0
 }, {
@@ -1357,7 +1357,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_tl00h")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Needle",
 "speed": 12.0
 }, {
@@ -1398,7 +1398,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_s2av2")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Poisoned",
 "speed": 8.0
 }, {
@@ -1433,7 +1433,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_efuy5")
 }],
-"loop": false,
+"loop": 0,
 "name": &"RemoteHit",
 "speed": 11.0
 }, {
@@ -1474,7 +1474,7 @@ animations = [{
 "duration": 2.0,
 "texture": SubResource("AtlasTexture_b7sg3")
 }],
-"loop": false,
+"loop": 0,
 "name": &"RockThrow",
 "speed": 24.0
 }, {
@@ -1515,7 +1515,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_jm0ak")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Scarf1",
 "speed": 10.0
 }, {
@@ -1529,7 +1529,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_giklh")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Scarf2",
 "speed": 18.0
 }, {
@@ -1567,7 +1567,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_kxb16")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Scarf3",
 "speed": 10.0
 }, {
@@ -1593,7 +1593,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
+"loop": 0,
 "name": &"SimpleHit",
 "speed": 12.0
 }, {
@@ -1637,7 +1637,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
+"loop": 0,
 "name": &"SoulTap",
 "speed": 8.0
 }, {
@@ -1681,7 +1681,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_j3pf1")
 }],
-"loop": false,
+"loop": 0,
 "name": &"ToxicSplash",
 "speed": 8.0
 }]

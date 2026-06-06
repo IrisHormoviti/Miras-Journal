@@ -69,10 +69,9 @@ func _process(_delta: float) -> void:
 	if Expanded and not submenu_opened:
 		handle_ui()
 
-	if not Loader.InBattle:
-		if not Global.Controllable:
-			$CanvasLayer/VirtualJoystick.hide()
+	$CanvasLayer/VirtualJoystick.visible = Global.Controllable
 
+	if not Loader.InBattle:
 		if is_instance_valid(Global.Player) and Global.Controllable and Global.Player.move_frames > 0:
 			if Global.Settings.AutoHideHUD == 0:
 				if $IdleTimer.time_left == 0:
@@ -93,21 +92,28 @@ func show_all(except_date := false, animate := true) -> void:
 	# Animate the date UI in, except_date prevents this
 	if not Loader.InBattle and not except_date:
 		if animate:
-			t = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
-			t.tween_property($CanvasLayer/CalendarBase, "position:y", 0, 0.3)
+			var tl := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
+			tl.tween_property($CanvasLayer/CalendarBase, "position:y", 0, 0.3)
 		else: $CanvasLayer/CalendarBase.position.y = 0
 		$IdleTimer.start(5)
 
+	var offset := -70
+	if Loader.InBattle: offset = -60
+
 	# Iterate through the boxes
 	for i in range(0, 4):
+		var box: Panel = Partybox.get_child(i)
+		print(i)
 		# The Leader gets position 0 since its bigger
-		var pos: int = 0 if i == 0 else -70
-		## Animate or set the X position always
-		if animate:
-			t = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
-			t.tween_property(Partybox.get_child(i), "position:x", pos, 0.2)
-			await Event.wait(0.03)
-		else: Partybox.get_child(i).position.x = pos
+		if i == 0:
+			box.offset_transform_position.x = 0
+		else:
+			if animate:
+				var tl := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
+				tl.tween_property(box, "offset_transform_position:x", offset, 0.2)
+				await Event.wait(0.03, false)
+			else:
+				box.offset_transform_position.x = offset
 		## Animate or set the X position when in battle
 		if Loader.InBattle and def_pos_partybox[i] != Vector2.ONE:
 			t = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
@@ -123,11 +129,11 @@ func hide_all(animate := true) -> void:
 		t.set_trans(Tween.TRANS_QUART)
 		t.set_parallel()
 		for i in range(0, 4):
-			t.tween_property(Partybox.get_child(i), "position:x", -250, 0.3)
+			t.tween_property(Partybox.get_child(i), "offset_transform_position:x", -250, 0.3)
 		t.tween_property($CanvasLayer/CalendarBase, "position:y", -150, 0.3)
 	else:
 		for i in range(0, 4):
-			Partybox.get_child(i).position.x = -250
+			Partybox.get_child(i).offset_transform_position.x = -250
 
 
 func _check_party() -> void:
@@ -356,11 +362,9 @@ func expand_panel(Pan: Panel, mem := 0) -> void:
 	t.tween_property(Pan.get_node("Aura/ApText"), "modulate", Color(1, 1, 1, 1), 0.4)
 	t.tween_property(Pan.get_node("Health/HpText"), "position", Vector2(115, 1), 0.4)
 	t.tween_property(Pan.get_node("Aura/ApText"), "position", Vector2(115, 12), 0.4)
-	t.tween_property(Pan, "position:x", 0, 0.4)
+	t.tween_property(Pan, "offset_transform_position:x", 0, 0.4)
 	await t.finished
 	Partybox.queue_sort()
-	#if mem != 0:
-		#t.tween_property(Pan, "position:y", CursorPosition[mem].y - 60, 0.4)
 
 
 func _on_shrink(hurry_up := false) -> void:
@@ -440,8 +444,7 @@ func shrink_panel(Pan: Panel, mem := 0, time := 0.4) -> void:
 	t.tween_property(Pan.get_node("Health/HpText"), "modulate", Color.TRANSPARENT, time)
 	t.tween_property(Pan.get_node("Aura/ApText"), "modulate", Color.TRANSPARENT, time)
 	if mem != 0 and UIvisible:
-		t.tween_property(Pan, "position:x", -70, time)
-		#t.tween_property(Pan, "position:y", CursorPosition[mem].y - 120, 0.4)
+		t.tween_property(Pan, "offset_transform_position:x", -70, time)
 
 
 func handle_ui() -> void:
@@ -541,7 +544,7 @@ func battle_state(from := false) -> void:
 			t.set_ease(Tween.EASE_OUT)
 			t.set_trans(Tween.TRANS_QUART)
 			t.set_parallel()
-			t.tween_property(Partybox.get_child(i), "position:x", 0 if i == 0 else -60, 0.3)
+			t.tween_property(Partybox.get_child(i), "offset_transform_position:x", 0 if i == 0 else -60, 0.3)
 		else: Partybox.get_child(i).hide()
 	for i in range(0, 4):
 		if def_pos_partybox[i] != Vector2.ONE:
@@ -569,11 +572,11 @@ func only_current() -> void:
 	for member in Global.Party.array():
 		var i := Global.Party.member_index(member)
 		if member == Global.Bt.CurrentChar:
-			t.tween_property(Partybox.get_child(i), "position:x", 0 if i == 0 else -70, 0.2)
+			t.tween_property(Partybox.get_child(i), "offset_transform_position:x", 0 if i == 0 else -70, 0.2)
 			if Global.Bt.CurrentChar != Global.Party.Leader:
 				t.tween_property(Partybox.get_child(i), "position:y", 20, 0.2)
 		else:
-			t.tween_property(Partybox.get_child(i), "position:x", -400, 0.2)
+			t.tween_property(Partybox.get_child(i), "offset_transform_position:x", -400, 0.2)
 
 
 func check_for_levelups(mem: Actor, node: Panel) -> void:
@@ -899,8 +902,6 @@ func hit_partybox(x: int, am: int, rep: int) -> void:
 
 func _on_partybox_sort_children() -> void:
 	if not Expanded:
-		for i in range(1, 4):
-			Partybox.get_child(i).position.x = -70
 		save_box_positions()
 
 

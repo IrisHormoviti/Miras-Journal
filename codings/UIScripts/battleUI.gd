@@ -394,7 +394,7 @@ func _on_item() -> void:
 
 	await get_tree().physics_frame
 
-	if not not %BattleItems.get_children().is_empty():
+	if not %BattleItems.get_children().is_empty():
 		%BattleItems.get_child(0).grab_focus()
 	elif not %Consumables.get_children().is_empty():
 		%Consumables.get_child(0).grab_focus()
@@ -821,8 +821,12 @@ func fetch_inventory() -> void:
 
 	if inventory_grid["bti"].get_children().is_empty():
 		$Inventory/BIbutton.disabled = true
+		%BattleItems.hide()
+		%BtiLabel.hide()
 	if inventory_grid["con"].get_children().is_empty():
 		$Inventory/Cbutton.disabled = true
+		%Consumables.hide()
+		%ConLabel.hide()
 	if $Inventory/Cbutton.disabled and $Inventory/BIbutton.disabled:
 		$Item.disabled = true
 		return

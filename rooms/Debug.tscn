@@ -285,7 +285,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_lbvu1")
 }],
-"loop": false,
+"loop": 0,
 "name": &"break",
 "speed": 8.0
 }, {
@@ -296,7 +296,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_va2q4")
 }],
-"loop": true,
+"loop": 1,
 "name": &"default",
 "speed": 1.0
 }]
@@ -601,6 +601,7 @@ ActionType = "item"
 file = "testbush"
 dialogue_file = "testbush"
 itemtype = "Key"
+item = "LightweightAxe"
 hidesprite = true
 hide_parent = true
 

@@ -189,7 +189,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_t3516")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleDown",
 "speed": 3.0
 }, {
@@ -212,7 +212,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_t236d")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleLeft",
 "speed": 3.0
 }, {
@@ -235,7 +235,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_t2x34")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleRight",
 "speed": 3.0
 }, {
@@ -276,7 +276,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_sm874")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleUp",
 "speed": 3.0
 }, {
@@ -317,7 +317,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_54xru")
 }],
-"loop": true,
+"loop": 1,
 "name": &"WalkDown",
 "speed": 5.0
 }, {
@@ -334,7 +334,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3q5dr")
 }],
-"loop": true,
+"loop": 1,
 "name": &"WalkLeft",
 "speed": 5.0
 }, {
@@ -351,7 +351,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_blep6")
 }],
-"loop": true,
+"loop": 1,
 "name": &"WalkRight",
 "speed": 5.0
 }, {
@@ -392,7 +392,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5gbm2")
 }],
-"loop": true,
+"loop": 1,
 "name": &"WalkUp",
 "speed": 5.0
 }]

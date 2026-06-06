@@ -18,7 +18,6 @@
 [ext_resource type="Script" uid="uid://cu8vq74axypex" path="res://codings/UIScripts/calendarUI.gd" id="12_wtwla"]
 [ext_resource type="Texture2D" uid="uid://bq3dxko5coeh1" path="res://UI/Calendar/Morning.png" id="14_fmwou"]
 [ext_resource type="Texture2D" uid="uid://b3rlipd0auqsi" path="res://UI/Input/B.png" id="15_rt2n5"]
-[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://UI/joystick/virtual_joystick.tscn" id="16_86i7e"]
 [ext_resource type="FontFile" uid="uid://bks6fau84dtru" path="res://UI/Fonts/Faktos.ttf" id="19_xr4ts"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_j4job"]
@@ -590,6 +589,7 @@ texture_filter = 2
 custom_minimum_size = Vector2(230, 98)
 layout_mode = 2
 size_flags_horizontal = 0
+offset_transform_enabled = true
 theme_override_styles/panel = SubResource("StyleBoxFlat_el5ff")
 
 [node name="Icon" type="Sprite2D" parent="CanvasLayer/Partybox/Leader" unique_id=190986066]
@@ -722,6 +722,7 @@ texture_filter = 2
 custom_minimum_size = Vector2(222, 110)
 layout_mode = 2
 size_flags_horizontal = 0
+offset_transform_enabled = true
 theme_override_styles/panel = SubResource("StyleBoxFlat_el5ff")
 
 [node name="Icon" type="Sprite2D" parent="CanvasLayer/Partybox/Member1" unique_id=510320069]
@@ -861,7 +862,6 @@ texture = ExtResource("6_w2g12")
 visibility_layer = 1024
 texture_filter = 1
 material = SubResource("ShaderMaterial_llexj")
-layout_direction = 1
 layout_mode = 0
 offset_left = 166.0
 offset_top = 27.0
@@ -870,6 +870,7 @@ offset_bottom = 63.0
 scale = Vector2(4, 4)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 theme = SubResource("Theme_uwpxh")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
@@ -895,9 +896,9 @@ layout_mode = 2
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_jf75l")
 custom_minimum_size = Vector2(0, 33)
-layout_direction = 1
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_xncxc")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -913,9 +914,9 @@ icon = ExtResource("10_l2ivr")
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_jf75l")
 custom_minimum_size = Vector2(0, 33)
-layout_direction = 1
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_xncxc")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -931,9 +932,9 @@ icon = ExtResource("11_k5mql")
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_jf75l")
 custom_minimum_size = Vector2(0, 33)
-layout_direction = 1
 layout_mode = 2
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_xncxc")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -1058,7 +1059,6 @@ alignment = 2
 visibility_layer = 1024
 texture_filter = 1
 material = SubResource("ShaderMaterial_ovcy8")
-layout_direction = 1
 layout_mode = 0
 offset_left = -1750.0
 offset_top = 208.0
@@ -1067,6 +1067,7 @@ offset_bottom = 244.0
 scale = Vector2(5, 5)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_6s6fi")
 theme_override_font_sizes/font_size = 18
@@ -1166,7 +1167,6 @@ texture = ExtResource("6_w2g12")
 [node name="Back" type="Button" parent="CanvasLayer" unique_id=131082473]
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_jf75l")
-layout_direction = 1
 offset_left = -150.0
 offset_top = 750.0
 offset_right = -41.0
@@ -1174,6 +1174,7 @@ offset_bottom = 783.0
 scale = Vector2(1.4, 1.4)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_xncxc")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -1201,9 +1202,6 @@ shortcut = SubResource("Shortcut_dk2bs")
 shortcut_feedback = false
 shortcut_in_tooltip = false
 flat = true
-
-[node name="VirtualJoystick" parent="CanvasLayer" unique_id=1295526431 instance=ExtResource("16_86i7e")]
-mouse_filter = 2
 
 [node name="Pages" type="Control" parent="CanvasLayer" unique_id=461101647]
 unique_name_in_owner = true
@@ -1373,6 +1371,14 @@ theme_override_fonts/font = ExtResource("19_xr4ts")
 theme_override_font_sizes/font_size = 32
 text = "DEBUG"
 horizontal_alignment = 2
+
+[node name="VirtualJoystick" type="VirtualJoystick" parent="CanvasLayer" unique_id=1929564097]
+offset_left = 125.0
+offset_top = 665.0
+offset_right = 125.0
+offset_bottom = 665.0
+joystick_mode = 1
+visibility_mode = 1
 
 [node name="Audio" type="AudioStreamPlayer" parent="." unique_id=786867749]
 bus = &"UI"

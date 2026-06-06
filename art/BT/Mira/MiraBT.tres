@@ -714,7 +714,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ybu4q")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Ability",
 "speed": 12.0
 }, {
@@ -743,7 +743,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_4vkbc")
 }],
-"loop": true,
+"loop": 1,
 "name": &"AbilityLoop",
 "speed": 5.0
 }, {
@@ -757,7 +757,7 @@ animations = [{
 "duration": 20.0,
 "texture": SubResource("AtlasTexture_7rpdh")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Attack1",
 "speed": 8.0
 }, {
@@ -771,7 +771,7 @@ animations = [{
 "duration": 3.0,
 "texture": SubResource("AtlasTexture_6vddi")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Attack2",
 "speed": 8.0
 }, {
@@ -794,7 +794,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ac2jd")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Bag",
 "speed": 8.0
 }, {
@@ -817,7 +817,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_1vtxr")
 }],
-"loop": true,
+"loop": 1,
 "name": &"BagLoop",
 "speed": 4.0
 }, {
@@ -843,7 +843,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vjyym")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Bleed",
 "speed": 4.0
 }, {
@@ -881,7 +881,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qpqaa")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Cast",
 "speed": 8.0
 }, {
@@ -898,7 +898,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_x32se")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Command",
 "speed": 6.0
 }, {
@@ -927,7 +927,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_hcaun")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Entrance",
 "speed": 8.0
 }, {
@@ -1121,7 +1121,7 @@ animations = [{
 "duration": 0.75,
 "texture": SubResource("AtlasTexture_0r3mr")
 }],
-"loop": false,
+"loop": 0,
 "name": &"FirstBattle",
 "speed": 6.0
 }, {
@@ -1156,7 +1156,7 @@ animations = [{
 "duration": 3.0,
 "texture": SubResource("AtlasTexture_8cw50")
 }],
-"loop": false,
+"loop": 0,
 "name": &"FlameSpark",
 "speed": 10.0
 }, {
@@ -1176,7 +1176,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2ne62")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Hit",
 "speed": 6.0
 }, {
@@ -1211,7 +1211,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3sox4")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Idle",
 "speed": 6.0
 }, {
@@ -1258,7 +1258,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_l51w8")
 }],
-"loop": false,
+"loop": 0,
 "name": &"KnockOut",
 "speed": 10.0
 }, {
@@ -1323,7 +1323,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jp8fl")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Victory",
 "speed": 8.0
 }, {
@@ -1349,7 +1349,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xcyx6")
 }],
-"loop": true,
+"loop": 1,
 "name": &"VictoryLoop",
 "speed": 3.0
 }, {
@@ -1357,7 +1357,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_35nk1")
 }],
-"loop": true,
+"loop": 1,
 "name": &"new_animation",
 "speed": 5.0
 }]

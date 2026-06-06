@@ -490,7 +490,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cef4v")
 }],
-"loop": true,
+"loop": 1,
 "name": &"AttackUp",
 "speed": 6.0
 }, {
@@ -504,7 +504,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_klu7i")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Bound",
 "speed": 5.0
 }, {
@@ -530,7 +530,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_e73g2")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Burned",
 "speed": 4.0
 }, {
@@ -553,7 +553,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xccjj")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Confused",
 "speed": 5.0
 }, {
@@ -600,7 +600,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_do05l")
 }],
-"loop": true,
+"loop": 1,
 "name": &"DefenceUp",
 "speed": 6.0
 }, {
@@ -638,7 +638,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_g3s8c")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Frozen",
 "speed": 4.0
 }, {
@@ -655,7 +655,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_yfv4i")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Leeched",
 "speed": 4.0
 }, {
@@ -693,7 +693,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_23aa0")
 }],
-"loop": true,
+"loop": 1,
 "name": &"MagicUp",
 "speed": 6.0
 }, {
@@ -701,7 +701,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": true,
+"loop": 1,
 "name": &"None",
 "speed": 5.0
 }, {
@@ -736,7 +736,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2qukr")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Poisoned",
 "speed": 5.0
 }, {
@@ -771,7 +771,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_neihi")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Zapped",
 "speed": 6.0
 }]
@@ -1528,8 +1528,8 @@ tracks/4/path = NodePath("../BattleUI/Ability:position")
 tracks/4/interp = 2
 tracks/4/loop_wrap = true
 tracks/4/keys = {
-"times": PackedFloat32Array(0, 0.26666668),
-"transitions": PackedFloat32Array(0.5, 1),
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(0.5, 0.5),
 "update": 2,
 "values": [Vector2(85, -20), Vector2(190, -175)]
 }
@@ -4436,7 +4436,6 @@ polygon = PackedVector2Array(811.811, -766.054, 811.127, 286.293, 768.113, 396.2
 visibility_layer = 1024
 z_index = 12
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 layout_mode = 0
 offset_left = -110.0
 offset_top = 46.667
@@ -4446,6 +4445,7 @@ rotation = 0.106465
 scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 theme_override_font_sizes/font_size = 15
@@ -4457,7 +4457,6 @@ expand_icon = true
 visible = false
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 layout_mode = 0
 offset_left = -165.0
 offset_top = 289.0
@@ -4467,6 +4466,7 @@ rotation = 0.0910519
 scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 theme_override_font_sizes/font_size = 15
@@ -4479,7 +4479,6 @@ expand_icon = true
 visibility_layer = 1024
 z_index = 12
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 layout_mode = 0
 offset_left = -130.0
 offset_top = 13.0
@@ -4489,6 +4488,7 @@ rotation = 0.106465
 scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(20, 15)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 theme_override_font_sizes/font_size = 15
@@ -4503,7 +4503,6 @@ visibility_layer = 1024
 z_index = 12
 z_as_relative = false
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 layout_mode = 0
 offset_left = -190.0
 offset_top = -130.0
@@ -4513,6 +4512,7 @@ rotation = -2.0943952
 scale = Vector2(0.5, 0.5)
 pivot_offset = Vector2(90, 190)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 theme_override_font_sizes/font_size = 15
@@ -4643,7 +4643,6 @@ horizontal_alignment = 2
 [node name="ShowWheel" type="Button" parent="BattleUI/DescPaper" unique_id=1416435802]
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 layout_mode = 0
 offset_left = 123.0
 offset_top = -44.0
@@ -4652,6 +4651,7 @@ offset_bottom = -10.0
 scale = Vector2(1.8, 1.8)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 theme_override_constants/icon_max_width = 24
@@ -4984,6 +4984,7 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="BtiLabel" type="Label" parent="BattleUI/Inventory/ScrollContainer/Items" unique_id=1444057317]
+unique_name_in_owner = true
 light_mask = 0
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.47058824)
@@ -5041,6 +5042,7 @@ icon_alignment = 1
 expand_icon = true
 
 [node name="ConLabel" type="Label" parent="BattleUI/Inventory/ScrollContainer/Items" unique_id=1052589997]
+unique_name_in_owner = true
 light_mask = 0
 layout_mode = 2
 theme_override_colors/font_color = Color(1, 1, 1, 0.47058824)
@@ -5202,13 +5204,13 @@ horizontal_alignment = 2
 [node name="Desc" type="RichTextLabel" parent="BattleUI/Inventory/DescPaper" unique_id=1113279538]
 light_mask = 0
 use_parent_material = true
-layout_direction = 3
 layout_mode = 0
 offset_left = 119.341
 offset_top = 147.512
 offset_right = 523.341
 offset_bottom = 446.512
 rotation = -0.0763998
+layout_direction = 3
 theme = SubResource("Theme_gsplh")
 bbcode_enabled = true
 text = "This item is very cool, almost too cool for you."
@@ -5233,7 +5235,6 @@ light_mask = 0
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_ojm6j")
 use_parent_material = true
-layout_direction = 1
 layout_mode = 0
 offset_left = 150.0
 offset_top = -59.0
@@ -5242,6 +5243,7 @@ offset_bottom = -26.0
 scale = Vector2(2, 2)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 1
 theme = SubResource("Theme_qsibl")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -5353,7 +5355,6 @@ expand_icon = true
 [node name="Command" type="Button" parent="BattleUI" unique_id=285599713]
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 layout_mode = 0
 offset_left = -90.0
 offset_top = -164.0
@@ -5362,6 +5363,7 @@ offset_bottom = -116.0
 pivot_offset = Vector2(24, 0)
 pivot_offset_ratio = Vector2(0, 0.5)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 shortcut_in_tooltip = false
@@ -5495,8 +5497,8 @@ theme_override_constants/separation = 18
 visible = false
 texture_filter = 2
 custom_minimum_size = Vector2(130, 76)
-layout_direction = 1
 layout_mode = 2
+layout_direction = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_86gc4")
 
 [node name="Health" type="ProgressBar" parent="EnemyUI/AllEnemies/Temp" unique_id=1488785257]
@@ -5555,8 +5557,8 @@ theme = SubResource("Theme_fkhdn")
 show_behind_parent = true
 texture_filter = 2
 custom_minimum_size = Vector2(130, 0)
-layout_direction = 1
 layout_mode = 2
+layout_direction = 1
 theme_override_styles/panel = SubResource("StyleBoxFlat_bwtm7")
 
 [node name="Margin" type="MarginContainer" parent="EnemyUI/AllEnemies/OtherEnemies" unique_id=673764006]
@@ -5654,13 +5656,13 @@ vertical_alignment = 1
 [node name="Confirm" type="Button" parent="Canvas" unique_id=1988872992]
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 offset_left = 10.0
 offset_top = 810.0
 offset_right = 159.99994
 offset_bottom = 858.0
 pivot_offset_ratio = Vector2(0.5, 0.5)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 shortcut = SubResource("Shortcut_o1kt8")
@@ -5688,13 +5690,13 @@ expand_icon = true
 [node name="Give" type="Button" parent="Canvas" unique_id=75391151]
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 offset_left = 332.0
 offset_top = 810.0
 offset_right = 482.0
 offset_bottom = 858.0
 pivot_offset_ratio = Vector2(0.5, 0.5)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
@@ -5818,13 +5820,13 @@ expand_icon = true
 [node name="Continue" type="Button" parent="Canvas" unique_id=77002511]
 visibility_layer = 1024
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 offset_left = -210.0
 offset_top = 645.0
 offset_right = -31.0
 offset_bottom = 693.0
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_4kcni")
 action_mode = 0
@@ -5838,7 +5840,6 @@ expand_icon = true
 visibility_layer = 1024
 texture_filter = 1
 material = SubResource("ShaderMaterial_nmg3k")
-layout_direction = 1
 offset_left = 1350.0
 offset_top = 536.0
 offset_right = 1499.0005
@@ -5846,6 +5847,7 @@ offset_bottom = 572.0
 scale = Vector2(1.5, 1.5)
 pivot_offset = Vector2(19.2536, 14.8241)
 size_flags_stretch_ratio = 0.0
+layout_direction = 1
 focus_mode = 0
 theme = SubResource("Theme_5tvnb")
 theme_override_font_sizes/font_size = 15
@@ -6015,13 +6017,13 @@ pivot_offset = Vector2(640, 400)
 mouse_filter = 2
 
 [node name="Text" type="Label" parent="Canvas/FollowUp" unique_id=180404440]
-layout_direction = 3
 layout_mode = 0
 offset_left = 1545.0
 offset_top = 600.0
 offset_right = 2280.0
 offset_bottom = 751.0001
 pivot_offset = Vector2(0.50787354, 1.3183594)
+layout_direction = 3
 theme_override_fonts/font = ExtResource("12_2samf")
 theme_override_font_sizes/font_size = 150
 text = "FOLLOW UP"

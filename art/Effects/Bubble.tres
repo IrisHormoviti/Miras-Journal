@@ -244,7 +244,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_20l1x")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Ellipsis",
 "speed": 3.0
 }, {
@@ -288,7 +288,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
+"loop": 0,
 "name": &"Excited",
 "speed": 16.0
 }, {
@@ -332,7 +332,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_6y4r3")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Question",
 "speed": 10.0
 }, {
@@ -382,7 +382,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_f7nct")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Surprise",
 "speed": 20.0
 }, {
@@ -426,7 +426,7 @@ animations = [{
 "duration": 1.0,
 "texture": null
 }],
-"loop": false,
+"loop": 0,
 "name": &"Sweat",
 "speed": 12.0
 }]

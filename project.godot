@@ -19,7 +19,7 @@ config/use_custom_user_dir=true
 config/custom_user_dir_name="miras-journal"
 config/auto_accept_quit=false
 config/quit_on_go_back=false
-config/features=PackedStringArray("4.6", "Mobile")
+config/features=PackedStringArray("4.7", "Mobile")
 run/low_processor_mode=true
 run/load_shell_environment=true
 boot_splash/bg_color=Color(0.054902, 0.054902, 0.054902, 1)
@@ -108,6 +108,7 @@ TileMap=""
 
 [gui]
 
+common/snap_controls_to_pixels=false
 common/show_focus_state_on_pointer_event=2
 fonts/dynamic_fonts/use_oversampling=false
 
@@ -426,6 +427,7 @@ RightTrigger={
 [input_devices]
 
 pointing/android/enable_pan_and_scale_gestures=true
+pointing/emulate_touch_from_mouse=true
 
 [internationalization]
 

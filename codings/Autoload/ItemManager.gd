@@ -89,9 +89,7 @@ func use_animation(icon: Texture2D, named: String, pos: Vector2) -> void:
 	t.tween_property(panel, "size:x", panel_size, 0.5).set_delay(0.3)
 	t.set_trans(Tween.TRANS_BACK)
 	t.tween_property(panel, "scale", Vector2.ONE, 0.5).from(Vector2(0.9, 0.9))
-	#t.tween_property(border, "modulate", Color.WHITE, 0.5).from(Color.TRANSPARENT).set_delay(0.6)
-	#t.tween_property(border, "size", Vector2(panel_size + 42, 76), 2).from(Vector2(panel_size + 30, 64)).set_delay(0.6)
-	await get_tree().create_timer(2).timeout
+	await get_tree().create_timer(1).timeout
 	t = create_tween()
 	t.set_parallel()
 	t.set_ease(Tween.EASE_IN)
