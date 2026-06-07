@@ -1,7 +1,7 @@
 extends Node
 var game_exists := false
 var inactive := false
-var focused := 0
+var focused := 1
 
 @onready var title_screen: CanvasLayer = $TitleScreen
 #unique node names would also be a solution, and makes it less of a pain to write all these vars
