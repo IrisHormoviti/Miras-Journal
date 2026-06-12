@@ -3,4 +3,5 @@
 [ext_resource type="Shader" uid="uid://mfwllxei66td" path="res://codings/Shaders/Pixelart.gdshader" id="1_upu8h"]
 
 [resource]
+render_priority = 0
 shader = ExtResource("1_upu8h")
