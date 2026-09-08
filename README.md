@@ -1,11 +1,13 @@
-# Miras-Journal
+# Miras Journal
 A turn-based JRPG made with godot that is currently in early development.
+> Comb a deteriorating land, fight enemies in Color-based battles, and reveal what's been forgotten. 
 
-## [Wishlist on steam](https://store.steampowered.com/app/4059970?snr=5000_5100__)
-[<img src="https://github.com/RaiHormo/Miras-Journal/blob/main/art/Branding/Library Horizontal.png">](https://store.steampowered.com/app/4059970?snr=5000_5100__)
+# [Wishlist on steam](https://store.steampowered.com/app/4059970?snr=5000_5100__)
+<img src="https://codeberg.org/RaiDev/Miras-Journal/raw/branch/main/art/Branding/Library%20Horizontal.png">
+<img src="https://github.com/RaiHormo/Miras-Journal/blob/main/art/Branding/Library Horizontal.png">
 
 ## Trying the game
-You may try one of the available releases on the right of the github interface. These are meant for playtesting and don't fully represent the full game. 
+You may try one of the available releases on the right of the github interface. These are meant for playtesting and don't fully represent the full game. They also might be really outdated depending on when you're visiting.
 
 ## Is this open source
 In terms of code, Yes! The art assets are under copyright. You may look at them, but not reuse them.
