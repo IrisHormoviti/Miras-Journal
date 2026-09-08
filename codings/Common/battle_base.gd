@@ -1610,8 +1610,13 @@ func victory(ignore_seq := false) -> void:
 
 	$Canvas.layer = 1
 	battle_result = Result.VICTORY
-
-	Audio.fade_out_music(3)
+	
+	if sequence.Music.victory_track != null:
+		Audio.change_music(sequence.Music.victory_track)
+	elif sequence.Music.victory > 0:
+		Audio.change_music_from_to(sequence.Music.track, sequence.Music.victory)
+	else:
+		Audio.fade_out_music(3)
 
 	for i in Party.current:
 		victory_anim(i)

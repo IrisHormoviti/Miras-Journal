@@ -49,7 +49,7 @@ func change_music(track: AudioStream) -> void:
 
 
 func change_music_from_to(track: AudioStream, from: float = 0, to: float = 0) -> void:
-	bgm_player.stream = track.duplicate()
+	bgm_player.stream = track
 	bgm_player.play(from)
 	if to != 0:
 		while bgm_player.stream == track and bgm_player.get_playback_position() <= to:
@@ -69,6 +69,15 @@ func _music_finished() -> void:
 	if not music_queue.is_empty():
 		bgm_player.stream = music_queue.pop_front()
 		bgm_player.play()
+
+
+func get_music_title() -> String:
+	if bgm_player.playing:
+		var title := bgm_player.stream.resource_path
+		title = title.get_file().trim_suffix("."+title.get_extension())
+		return title
+	else:
+		return ""
 
 
 func stop_music() -> void:

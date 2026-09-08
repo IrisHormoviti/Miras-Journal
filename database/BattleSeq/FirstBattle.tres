@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_44rbb"]
 [ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="2_68ui3"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_kk4y6"]
-[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Music/v17-Set.tres" id="6_afpnf"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_afpnf"]
 
 [sub_resource type="Resource" id="Resource_kgu6i"]
 script = ExtResource("2_kk4y6")

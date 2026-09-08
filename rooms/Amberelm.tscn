@@ -24,7 +24,7 @@
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="14_fac0c"]
 [ext_resource type="PackedScene" uid="uid://d0xlx8uwtl3tj" path="res://rooms/components/Breakable.tscn" id="15_frp5k"]
 [ext_resource type="Resource" uid="uid://c4vpbxeag0n74" path="res://database/Enemies/Steelkee.tres" id="16_0o4df"]
-[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Music/v17-Set.tres" id="16_q80mj"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="16_q80mj"]
 [ext_resource type="Resource" uid="uid://gk43qq3jxxgn" path="res://database/Enemies/CrimsonFlowent.tres" id="17_dejne"]
 [ext_resource type="Resource" uid="uid://dhcj1318p3b4g" path="res://database/Enemies/CrawlingSludge.tres" id="17_fac0c"]
 [ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="17_q80mj"]
@@ -177,6 +177,12 @@ EscPosition = Vector2i(48, 19)
 metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
 [sub_resource type="Resource" id="Resource_unhv8"]
+script = ExtResource("17_q80mj")
+
+[sub_resource type="Resource" id="Resource_70ffl"]
+script = ExtResource("17_q80mj")
+
+[sub_resource type="Resource" id="Resource_wi37m"]
 script = ExtResource("17_q80mj")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ylfhl"]
@@ -592,8 +598,12 @@ collision_mask = 0
 motion_mode = 1
 script = ExtResource("8_spg60")
 speed = 50
+facing = SubResource("Resource_70ffl")
 default_state = 1
-only_on_index = 1
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Bubble" type="AnimatedSprite2D" parent="EvEntranceCutscene/AlcineCut" unique_id=364060494]
 light_mask = 0
@@ -614,7 +624,11 @@ animation = &"WalkUp"
 [node name="MiraCut" parent="EvEntranceCutscene" unique_id=344934070 instance=ExtResource("26_r6fn3")]
 z_index = 4
 position = Vector2(302, 1336)
-only_on_index = 1
+facing = SubResource("Resource_wi37m")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 dont_use_collision = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EvEntranceCutscene/MiraCut" unique_id=1076550043]

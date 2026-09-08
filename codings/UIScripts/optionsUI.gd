@@ -36,7 +36,7 @@ func _ready() -> void:
 		var battle_ui := Global.bt.ui
 
 		if (battle_ui.stage == "root" or battle_ui.PrevStage == "root") and battle_ui.active:
-			Battle.current.stage = "options"
+			Battle.current.ui.stage = "options"
 			cant_save = true
 		else:
 			queue_free()
@@ -147,6 +147,9 @@ func tick() -> void:
 	var playtime: Dictionary = Time.get_time_dict_from_unix_time(Global.get_playtime())
 	$Timer/HSplitContainer/Label.text = "%02d:%02d:%02d" % [playtime.hour, playtime.minute, playtime.second]
 
+	$MusicTrack.text = Audio.get_music_title()
+	$MusicTrack.visible = not $MusicTrack.text.is_empty()
+
 
 func _input(event: InputEvent) -> void:
 	if Controller.last_input == Global.process_frame: return
@@ -213,8 +216,8 @@ func close(force := false) -> void:
 	t.tween_property($SidePanel/Tooltip, "scale", Vector2.ZERO, 0.5)
 	t.tween_property($SidePanel/Tooltip, "modulate:a", 0, 0.5)
 	if Battle.in_battle:
-		Battle.current.active = true
-		Battle.current.stage = "root"
+		Battle.current.ui.active = true
+		Battle.current.ui.stage = "root"
 
 	stage = "closing"
 	await t.finished

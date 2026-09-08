@@ -26,7 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://b0pk66kwtm38a" path="res://rooms/components/HideOnFlag.tscn" id="19_3p2gw"]
 [ext_resource type="Resource" uid="uid://cod3sfmno6veq" path="res://database/Enemies/Skullish.tres" id="20_ceufj"]
 [ext_resource type="Script" uid="uid://b05nwmod2wbs2" path="res://codings/Components/hide_on_flag.gd" id="20_nxfet"]
-[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Music/v17-Set.tres" id="21_8pygo"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="21_8pygo"]
 [ext_resource type="Resource" uid="uid://c4vpbxeag0n74" path="res://database/Enemies/Steelkee.tres" id="21_ohbkp"]
 [ext_resource type="PackedScene" uid="uid://c2p687bjfd64q" path="res://rooms/components/JumpPointH.tscn" id="22_5vs6x"]
 [ext_resource type="Resource" uid="uid://bsu5mmo1yulev" path="res://database/BattleSeq/SkritcherRootParty.tres" id="22_it168"]

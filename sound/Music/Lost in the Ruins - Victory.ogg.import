@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://ci5i63oqkmt1k"
+path="res://.godot/imported/Lost in the Ruins - Victory.ogg-aa383920cbddb122768d8be0e0a689fc.oggvorbisstr"
+
+[deps]
+
+source_file="res://sound/Music/Lost in the Ruins - Victory.ogg"
+dest_files=["res://.godot/imported/Lost in the Ruins - Victory.ogg-aa383920cbddb122768d8be0e0a689fc.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
