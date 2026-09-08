@@ -1,6 +1,10 @@
 # Miras Journal
-A turn-based JRPG made with godot that is currently in early development.
-> Comb a deteriorating land, fight enemies in Color-based battles, and reveal what's been forgotten. 
+[Codeberg](https://codeberg.org/RaiDev/Miras-Journal) | [Github](https://github.com/IrisHormoviti/Miras-Journal)
+
+A turn-based JRPG made with Godot that is currently in development.
+```
+Comb a deteriorating land, fight enemies in Color-based battles, and reveal what's been forgotten. 
+```
 
 # [Wishlist on steam](https://store.steampowered.com/app/4059970?snr=5000_5100__)
 <img src="https://codeberg.org/RaiDev/Miras-Journal/raw/branch/main/art/Branding/Library%20Horizontal.png">
