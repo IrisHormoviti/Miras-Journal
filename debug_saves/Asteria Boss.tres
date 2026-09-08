@@ -1,17 +1,13 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://68ajb3j0fgyo"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_skvew"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_skvew"]
 
 [resource]
 script = ExtResource("1_skvew")
-Name = "Asteria Boss"
-Party = Array[StringName]([&"Mira", &"Alcine", &"Daze", &""])
-RoomPath = "res://rooms/BunkerSectorA.tscn"
-RoomName = "Bunker Sector A"
-Position = Vector2(-321.33334, 306)
-Camera = 1
-Z = 0
-Members = Array[Dictionary]([{
+title = "Asteria Boss"
+room_name = "Bunker Sector A"
+party = Array[StringName]([&"Mira", &"Alcine", &"Daze", &""])
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 25,
 "CantAttack": false,
@@ -117,11 +113,12 @@ Members = Array[Dictionary]([{
 "WeaponPower": 15,
 "codename": &"Mira"
 }])
-StartTime = 1759087800.664549
-SavedTime = 1775747348.646132
-PlayTime = 10514.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
-Flags = Dictionary[StringName, int]({
+player_position = Vector2(-321.33334, 306)
+camera_index = 1
+start_time = 1759087800.664549
+saved_time = 1775747348.646132
+play_time = 10514.0
+flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -155,4 +152,4 @@ Flags = Dictionary[StringName, int]({
 &"day": 2,
 &"time": 2
 })
-version = 7
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])

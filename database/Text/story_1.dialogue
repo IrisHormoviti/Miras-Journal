@@ -13,7 +13,7 @@ Sleeping next to him is quite akward...
 My fur touching his bare Human skin feels weird.
 I do want to sleep a bit longer though-
 I don't think I can ever get enough rest with all that's happened.
-I wonder what {{alcine()}} is doing now... I left them all alone...
+I wonder what {{alcine}} is doing now... I left them all alone...
 Maybe I should ask Daze to go back to Amberelm so I can find them.
 [hide]
 set ToTime = 2
@@ -39,7 +39,7 @@ do ungray.emit()
 Mira.Curious: Um... would you mind if we went towards that abandoned city you found me in again?
 Daze.Neutral: Did you forget something there?
 Mira.Neutral: Remember that spirit I mentioned?
-Mira.Smile: {{alcine()}}, they really helped me out with healing magic in that place...
+Mira.Smile: {{alcine}}, they really helped me out with healing magic in that place...
 Mira.Upset: But I lost them when the... Guardian attacked.
 Mira.Neutral: You think we can take a look..?
 Daze.Neutral: I was planning on exploring further today.
@@ -74,7 +74,7 @@ Mira.Angry: Can you please not treat me like child?
 Mira.Angry: I know plenty about magic, I've studied these things thoroughly!
 Mira.Angry: You just wanted to show off [i]how much better you are[/i]!
 do! npc("F1").move_dir(Vector2.DOWN*6)
-Mira.Neutral: Let's just just hurry up, I want to see {{alcine()}}.
+Mira.Neutral: Let's just just hurry up, I want to see {{alcine}}.
 Daze.Neutral: *sigh*
 [hide]
 do! travel_to("WitheredLeaves", npc("F1").position)
@@ -113,7 +113,7 @@ Mira: Possibly.
 Daze: I think we should take this, it seems to still contain a lot of power.
 Mira: Mhm.
 (hide)
-Mira: Still no traces of {{alcine()}} though... Where did they wander off to?
+Mira: Still no traces of {{alcine}} though... Where did they wander off to?
 do! sequence("where_is_alcine_1")
 => END
 
@@ -132,12 +132,12 @@ elif Event.Day == 0:
 => END
 
 ~ amberelm_reunion
-Mira.Neutral: {{alcine()}}!!
+Mira.Neutral: {{alcine}}!!
 Alcine.Happy: Mewaaa!!
-Daze.Neutral: So this is the {{alcine()}} you were talking about.
+Daze.Neutral: So this is the {{alcine}} you were talking about.
 do! npc("P").bubble("Question")
 Alcine.Neutral: Mwwoo?
-Mira.Neutral: Oh {{alcine()}}, this is Daze. He saved us from that big rock monster!
+Mira.Neutral: Oh {{alcine}}, this is Daze. He saved us from that big rock monster!
 do npc("P").move_dir(Vector2.RIGHT)
 Alcine.Upset: Sheww...
 do! npc("Mira").bubble("Question")
@@ -149,8 +149,8 @@ Daze.Neutral: Did I do something wrong?
 $> add_flag("InCamp")
 $> add_flag("HasBag")
 $> travel_to("WitheredLeaves", Vector2(777, -218))
-We setup a camp again, now reunited with {{alcine()}}.
-{{alcine()}}... does't seem to be very fond of him though.
+We setup a camp again, now reunited with {{alcine}}.
+{{alcine}}... does't seem to be very fond of him though.
 Every time he approaches, they hide behind me...
 [hide]
 I should fill in my journal for today...[wait=1] Oh I just remembered!
@@ -161,21 +161,21 @@ $> save()
 
 ~ nov2_morning
 While sleeping I feel like I can barely breathe, like something liquid is surrounding me...
-I jump up. Then I see {{alcine()}} fall off my face.
+I jump up. Then I see {{alcine}} fall off my face.
 if f_past("AlcineIsTheLeaderReal", 2):
-	Mira: Hey {{alcine()}}, I don't think sitting on your allies' face is part of leadership...
+	Mira: Hey {{alcine}}, I don't think sitting on your allies' face is part of leadership...
 else: 
-	Mira: Oh, morning {{alcine()}}...
+	Mira: Oh, morning {{alcine}}...
 	Mira: Could you not sleep on my face, pretty please?
 Alcine.Tired: Whooomm...
 (hide)[wait=1]
 I notice Daze is not in the tent.
 Mira: Yawnn...[wait=0.5] Do you know where Daze is?
-{{alcine()}} looks outside the tent. Then shakes their head at me.
+{{alcine}} looks outside the tent. Then shakes their head at me.
 Mira: Mmh, I think I'll sleep a bit longer. He's out hunting or something.
 Alcine: Sho?
-Mira: I dunno {{alcine()}}, that guy probably eats monsters for breakfast.
-{{alcine()}} gets out of the tent.
+Mira: I dunno {{alcine}}, that guy probably eats monsters for breakfast.
+{{alcine}} gets out of the tent.
 (hide)
 do! gray_out(1)
 do wait(2)
@@ -207,7 +207,7 @@ Daze.Neutral: It's over here.
 
 ~ nov2_call_1
 Mira.Neutral: Hello..?
-Mira.Neutral: {{alcine()}}? Are you here?
+Mira.Neutral: {{alcine}}? Are you here?
 => END
 
 ~ nov2_call_2
@@ -310,10 +310,10 @@ You people, that have kept us caged all these years. Then going playing around l
 Mira: What in the Depths are you talking about?!
 do next_box("Asteria")
 Don't play dumb! I've seen what you've done!
-{{alcine()}} just slips out of the scarf and gets them out.
+{{alcine}} just slips out of the scarf and gets them out.
 do next_box("Asteria")
 Wha..?
-Mira: Good thinking {{alcine()}}!
+Mira: Good thinking {{alcine}}!
 The Frayse girl calls back the scarf
 do next_box("Asteria")
 I won't let you go that easily!
@@ -375,7 +375,7 @@ Asteria: From time to time, they appear. People say they're our key to freedom, 
 Mira: Key to freedom..?
 Daze: And do these keepers tend to be teams of Humans, Cyrenians and water blobs...?
 Asteria: I don't know... I just jumped to conclusions because you had access to this place.
-Placeholder description: {{alcine()}} is making Asteria's ears swing around
+Placeholder description: {{alcine}} is making Asteria's ears swing around
 do! npc("AsteriaCamp").look_to("R")
 do  npc("AsteriaCamp").bubble("Surprise")
 Asteria.Neutral: Hey-[wait=0.3] Will you quit doing that!
@@ -423,7 +423,7 @@ This must be what she was reffering to.
 
 ~ enter_pyrson
 Placeholder description: Asteria comes out of a gate and lands gracefully, Daze comes out striking a cool pose as he lands.
-Placeholder description: Mira falls out and land right on her face, {{alcine()}} lands and becomes a puddle, then reforms.
+Placeholder description: Mira falls out and land right on her face, {{alcine}} lands and becomes a puddle, then reforms.
 do npc("Asteria").look_to("L")
 Asteria.Neutral: Well, here we are.\nHow did you like the trip?
 Alcine.Tired: Weeww..
@@ -455,7 +455,7 @@ Feni.Neutral: Oh, this must be them.
 Asteria.Neutral: Well everyone, this is my mother and... "Mayor" of this village, Feni Versea.
 Asteria.Neutral: And mom, this is... uhh...
 Asteria.Neutral: [small]I don't think I ever got your names...
-Daze.Neutral: I'm Daze, this is Mira and... this little blob is {{alcine()}}. \nNice to meet you Ms. Versea.
+Daze.Neutral: I'm Daze, this is Mira and... this little blob is {{alcine}}. \nNice to meet you Ms. Versea.
 Alcine.Happy: Wheeah!
 Feni.Neutral: A Human, a Cyrenian and a spirit. Quite an intresting group you got.
 Feni.Neutral: It's great that you all banded togeather so quickly.
@@ -486,7 +486,7 @@ do! npc("Alcine").look_to("U")
 Asteria.Neutral: Here, this is the building.
 [hide]
 do add_flag("PyrsonHome")
-do Party.set_to_strarr(["Mira"])
+do Party.set_to(["Mira"])
 do Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(112, 439), 0, 2, "", false)
 do spawn("Daze", Vector2(153, 474), "U", 0)
 do spawn("Asteria", Vector2(164, 428), "L", 0)
@@ -598,7 +598,7 @@ Daze.Neutral: Levenor calm down!
 Daze.Neutral: I know this is a lot to take in but this hysteria won't help!
 Mira: Hysteria? How can you stay so calm after hearing that?!
 Alcine.Upset: Wiieouu!!
-Daze.Neutral: You're scaring {{alcine()}}!
+Daze.Neutral: You're scaring {{alcine}}!
 Asteria.Neutral: We're just doing the best we can!
 Mira: [b]You don't know what it's like![/b] You've never REALLY had to flee a hopeless situation!
 do! npc("P").set_anim("EvCoverFaceWings")

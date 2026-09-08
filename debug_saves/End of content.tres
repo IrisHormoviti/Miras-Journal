@@ -4,14 +4,14 @@
 
 [resource]
 script = ExtResource("1_7v0ps")
-Name = "End of content"
-Party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
-RoomPath = "res://rooms/ShardGardens.tscn"
-RoomName = "Shard gardens"
-Position = Vector2(324, -1399.645)
-Camera = 2
+title = "End of content"
+party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
+room = "res://rooms/ShardGardens.tscn"
+room_name = "Shard gardens"
+player_position = Vector2(324, -1399.645)
+camera_index = 2
 Z = 0
-Members = Array[Dictionary]([{
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 14,
 "CantAttack": false,
@@ -117,12 +117,12 @@ Members = Array[Dictionary]([{
 "WeaponPower": 80000,
 "codename": &"Mira"
 }])
-Defeated = ["EnemySG8", "EnemySG9", "EnemySG5"]
-StartTime = 1759087800.664549
-SavedTime = 1773014034.178484
-PlayTime = 14951.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "CyanFragment:Mat", "CyanFragment:Mat", "OrangeFragment:Mat", "RedFragment:Mat", "StrangeFruit:Con"])
-Flags = Dictionary[StringName, int]({
+defeated_enemies = ["EnemySG8", "EnemySG9", "EnemySG5"]
+start_time = 1759087800.664549
+saved_time = 1773014034.178484
+play_time = 14951.0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "CyanFragment:Mat", "CyanFragment:Mat", "OrangeFragment:Mat", "RedFragment:Mat", "StrangeFruit:Con"])
+flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -181,4 +181,4 @@ Flags = Dictionary[StringName, int]({
 &"sl_linde_1": 1,
 &"time": 4
 })
-version = 7
+version = 0

@@ -11,27 +11,27 @@ signal passive_close
 enum TOD {DARKHOUR = 0, MORNING = 1, DAYTIME = 2, AFTERNOON = 3, EVENING = 4, NIGHT = 5}
 
 ##An [Array] of all [NPC] nodes in the current scene
-var List: Dictionary[String, NPC]
-## Objects identified with object identifier script
-var Objects: Dictionary[String, Node2D]
+var npc_list: Dictionary[String, NPC]
+## object_list identified with object identifier script
+var object_list: Dictionary[String, Node2D]
 ## Various values for remembering game states
-var Flags: Dictionary[StringName, int]
-## Diary entries for the journal
-var Diary: Dictionary[int, PackedStringArray]
+var flags: Dictionary[StringName, int]
+## diary entries for the journal
+var diary: Dictionary[int, PackedStringArray]
 
-var Day: int:
+var day: int:
 	set(x):
-		Day = x
+		day = x
 		add_flag("day", x)
-var Month: String = "November"
-var TimeOfDay := TOD.DARKHOUR:
+var month: String = "November"
+var time_of_day := TOD.DARKHOUR:
 	set(x):
-		TimeOfDay = x
+		time_of_day = x
 		add_flag("time", x)
 
 ## New time for the next time transition
-var ToTime := TOD.DARKHOUR
-var ToDay: int
+var to_time := TOD.DARKHOUR
+var to_day: int
 
 @onready var sequences: Node = $Sequences
 
@@ -42,14 +42,14 @@ func _ready() -> void:
 
 ##Character is added to the list of NPCS
 func add_char(b: NPC) -> void:
-	if List.has(b.ID) and is_instance_valid(List.get(b.ID)):
+	if npc_list.has(b.ID) and is_instance_valid(npc_list.get(b.ID)):
 		push_warning("Duplicate npc spawned: ", b.ID)
-		if is_instance_valid(List.get(b.ID)):
+		if is_instance_valid(npc_list.get(b.ID)):
 			return
 
 	if not is_instance_valid(b) or not b.is_inside_tree(): return
 
-	List.set(b.ID, b)
+	npc_list.set(b.ID, b)
 	DialogueManager.unregister_state_context(b.ID)
 
 	var context := DialogueStateContext.new()
@@ -59,17 +59,17 @@ func add_char(b: NPC) -> void:
 
 
 ##Get the [NPC] node from a [String] ID
-func npc(ID: String) -> NPC:
-	var rtn: NPC = List.get(ID)
+func npc(id: String) -> NPC:
+	var rtn: NPC = npc_list.get(id)
 
 	if not is_instance_valid(rtn):
-		push_error("NPC with ID ", ID, " isn't valid.")
+		push_error("NPC with id ", id, " isn't valid.")
 
 	return rtn
 
 
-func obj(ID: String) -> Node2D:
-	return Objects.get(ID)
+func obj(id: String) -> Node2D:
+	return object_list.get(id)
 
 
 ##Move an [NPC] relative to their current coords
@@ -99,7 +99,7 @@ func twean_to(pos: Vector2, time: float = 1, chara: String = "P") -> void:
 	var t := create_tween()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_CUBIC)
-	t.tween_property(npc(chara), "global_position", Global.Area.map_to_local(pos), time)
+	t.tween_property(npc(chara), "global_position", Global.room.map_to_local(pos), time)
 	await t.finished
 
 
@@ -107,7 +107,14 @@ func tween_linear(object: Node, property: String, to: Variant, time := 0.3) -> v
 	await tween(object, property, to, time, Tween.EASE_IN_OUT, Tween.TRANS_LINEAR)
 
 
-func tween(object: Node, property: String, to: Variant, time := 0.3, ease_type := Tween.EASE_OUT, trans := Tween.TRANS_CUBIC) -> void:
+func tween(
+	object: Node,
+	property: String,
+	to: Variant,
+	time := 0.3,
+	ease_type := Tween.EASE_OUT,
+	trans := Tween.TRANS_CUBIC
+) -> void:
 	var t := create_tween()
 	t.set_ease(ease_type)
 	t.set_trans(trans)
@@ -117,37 +124,49 @@ func tween(object: Node, property: String, to: Variant, time := 0.3, ease_type :
 
 ## Make an [NPC] jump to specified coords. The height and time is relative, but keep the numbers low
 func jump_to(chara: Variant, pos: Vector2, time: float = 5, height: float = 0.5) -> void:
-	await jump_to_global(chara, Global.Area.to_global(pos), time, height)
+	await jump_to_global(chara, Global.room.to_global(pos), time, height)
 
 
-func jump_to_global(chara: Variant, position: Vector2, time: float = 5, height: float = 0.1, vibrate := true) -> void:
+func jump_to_global(
+	chara: Variant,
+	position: Vector2,
+	time: float = 5,
+	height: float = 0.1,
+	vibrate := true
+) -> void:
 	var character := resolve_chara_input(chara)
 	var t: Tween = create_tween()
 	var start: Vector2 = character.global_position
 	var jump_distance: float = start.distance_to(position)
-	var jump_height: float = jump_distance * height #will need tweaking
+	var jump_height: float = jump_distance * height
 	var midpoint := start.lerp(position, 0.5) + Vector2.UP * jump_height
-	var jump_time := jump_distance * (time * 0.001) #will also need tweaking, this controls how fast the jump is
-	t.tween_method(Query.quad_bezier.bind(start, midpoint, position, character), 0.0, 1.0, jump_time)
+	var jump_time := jump_distance * (time * 0.001)
+	t.tween_method(
+		Query.quad_bezier.bind(start, midpoint, position, character), 0.0, 1.0, jump_time
+	)
 	await t.finished
-	if character == Global.Player and vibrate:
+	if character == Global.player and vibrate:
 		Controller.rumble(0, abs(height) / 3, 0.06)
 
 	anim_done.emit()
 
 
-func screen_shake(amount: float = 15, times: float = 7, ShakeDuration: float = 0.2) -> void:
+func screen_shake(
+	amount: float = 15,
+	times: float = 7,
+	shake_duration: float = 0.2
+) -> void:
 	var t := create_tween()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)
-	var dur := ShakeDuration / times
+	var dur := shake_duration / times
 	var am := amount
 
 	for i in range(0, times):
 		am = am - (amount / times)
-		t.tween_property(Global.Camera, "offset",
+		t.tween_property(Global.camera, "offset",
 		Vector2(randf_range(-am, am), randf_range(-am, am)), dur).as_relative()
-		t.tween_property(Global.Camera, "offset", Vector2.ZERO, dur)
+		t.tween_property(Global.camera, "offset", Vector2.ZERO, dur)
 
 	await t.finished
 
@@ -173,7 +192,10 @@ func node_shake(node: CanvasItem, amount := 10, repeat := randi_range(4, 8), tim
 
 
 func heal_in_overworld(target: Actor, ab: Ability) -> void:
-	var amount := int(max(Query.calc_num(ab), target.MaxHP * ((Query.calc_num(ab) * target.Magic) * 0.02)))
+	var amount := (
+		int(max(Query.calc_num(ab),
+		target.MaxHP * ((Query.calc_num(ab) * target.Magic) * 0.02)))
+	)
 	target.add_health(amount)
 	Global.check.emit()
 
@@ -245,8 +267,8 @@ func match_profile(named: String) -> BoxProfile:
 func check_flag(flag: StringName, value := 1) -> bool:
 	flag = flag.replace(" ", "_")
 
-	if flag in Flags:
-		return Flags.get(flag) == value
+	if flag in flags:
+		return flags.get(flag) == value
 
 	if value == 0:
 		return true
@@ -354,7 +376,7 @@ func f(flag: StringName) -> bool:
 		return not f(flag.replace("!", ""))
 
 	# If just a flag is left, just return if this flag exists and is greater than 0
-	if Flags.has(flag) and Flags.get(flag) == 1:
+	if flags.has(flag) and flags.get(flag) == 1:
 		return true
 	else:
 		return false
@@ -368,14 +390,14 @@ func add_flag(flag: StringName, value := 1) -> bool:
 		var split := flag.split("=")
 		return add_flag(str(split[0]), int(split[1]))
 
-	Flags.set(flag, value)
+	flags.set(flag, value)
 	print_rich("[color=purple]Set flag \"", flag, "\" to ", value)
 	return value
 
 
 func remove_flag(flag: StringName) -> void:
-	if flag in Flags:
-		Flags.erase(flag)
+	if flag in flags:
+		flags.erase(flag)
 
 	print_rich("[color=purple]Removed flag \"", flag, "\"")
 
@@ -387,44 +409,44 @@ func pop_tutorial(id: String) -> void:
 
 
 func take_control(keep_ui := false, keep_followers := false, idle := false) -> void:
-	if not is_instance_valid(Global.Player):
-		Global.Controllable = false
+	if not is_instance_valid(Global.player):
+		Global.controllable = false
 		return
 
-	var pos := Global.Player.position
+	var pos: Vector2= Global.player.position
 	print_rich("[color=purple]Taking control")
-	Global.Controllable = false
+	Global.controllable = false
 	await wait()
-	if not is_instance_valid(Global.Player) or not is_instance_valid(Global.Area):
+	if not is_instance_valid(Global.player) or not is_instance_valid(Global.room):
 		return
 
-	if Global.Player.dashing:
-		await Global.Player.stop_dash(false)
-		Global.Player.dashing = false
+	if Global.player.dashing:
+		await Global.player.stop_dash(false)
+		Global.player.dashing = false
 
-	Global.Player.speed = Global.Player.walk_speed
-	Global.Player.dashdir = Vector2.ZERO
-	Global.Player.winding_attack = false
-	Global.Player.direction = Vector2.ZERO
-	PartyUI.UIvisible = keep_ui
-	Global.Controllable = false
+	Global.player.speed = Global.player.WALK_SPEED
+	Global.player.dashdir = Vector2.ZERO
+	Global.player.winding_attack = false
+	Global.player.direction = Vector2.ZERO
+	Hud.ui_visible = keep_ui
+	Global.controllable = false
 
 	if not keep_followers:
-		for i in Global.Area.followers:
+		for i in Global.room.followers:
 			i.dont_follow = true
 
 	await wait()
-	if is_instance_valid(Global.Player):
-		Global.Controllable = false
-		Global.Player.position = pos
+	if is_instance_valid(Global.player):
+		Global.controllable = false
+		Global.player.position = pos
 		Global.check.emit()
 		if idle:
-			Global.Player.state = NPC.S.IDLE
-			Global.Player.set_anim()
+			Global.player.state = NPC.S.IDLE
+			Global.player.set_anim()
 
 
 func give_control(camera_follow := false, bring_followers := true, reset_zoom := true) -> void:
-	if Global.Player == null:
+	if Global.player == null:
 		return
 
 	print_rich("[color=purple]Giving control")
@@ -434,26 +456,26 @@ func give_control(camera_follow := false, bring_followers := true, reset_zoom :=
 
 	#if get_tree().root.has_node("MainMenu"):
 	#get_tree().root.get_node("MainMenu").close()
-	Global.Player.direction = Vector2.ZERO
-	Global.Player.collision(true)
-	PartyUI.UIvisible = true
-	Global.Controllable = true
+	Global.player.direction = Vector2.ZERO
+	Global.player.collision(true)
+	Hud.ui_visible = true
+	Global.controllable = true
 
 	if camera_follow:
-		Global.Player.camera_follow(true)
+		Global.player.camera_follow(true)
 
 	get_tree().paused = false
 
 	if bring_followers:
-		for i in Global.Area.followers:
+		for i in Global.room.followers:
 			i.dont_follow = false
 
 		#Event.teleport_followers()
 
 	if reset_zoom:
-		Global.Area.setup_zoom(true)
+		Global.room.setup_zoom(true)
 
-	Global.Player.local_controllable = true
+	Global.player.local_controllable = true
 	Global.check.emit()
 
 
@@ -462,8 +484,8 @@ func flag_int(string: String) -> int:
 	if string.is_valid_int():
 		return int(string)
 
-	if Flags.has(string) and Flags.get(string) is int:
-		return Flags.get(string)
+	if flags.has(string) and flags.get(string) is int:
+		return flags.get(string)
 	else:
 		return 0
 
@@ -473,7 +495,7 @@ func flag_progress(stri: String, to := 1) -> void:
 	if to == 0:
 		remove_flag(stri)
 	else:
-		Flags.set(stri, max(flag_int(stri), to))
+		flags.set(stri, max(flag_int(stri), to))
 
 
 ## Check if the flag is equal or greater than the given value
@@ -491,39 +513,39 @@ func bubble(animation: String, on_npc: String) -> void:
 
 ## Sets up a time change. Run time_transition() to properly move time
 func progress_by_time(amount: int) -> void:
-	ToDay = get_day_progress_from_now(amount)
-	ToTime = get_time_progress_from_now(amount)
+	to_day = get_day_progress_from_now(amount)
+	to_time = get_time_progress_from_now(amount)
 
 
 func get_time_progress_from_now(amount: int) -> TOD:
-	var toad := TimeOfDay as int
+	var toad := time_of_day as int
 	toad += amount
 	toad = wrapi(toad, 1, 6)
 	return toad as TOD
 
 
 func get_day_progress_from_now(amount: int) -> int:
-	var toad := TimeOfDay as int
+	var toad := time_of_day as int
 	toad += amount
 
 	if toad > 5:
-		return Day + 1
+		return day + 1
 	else:
-		return Day
+		return day
 
 
 func set_time(tod: TOD) -> void:
-	setup_time_changes(TimeOfDay, (ToDay - Day) * 5 + ToTime)
-	TimeOfDay = tod
+	setup_time_changes(time_of_day, (to_day - day) * 5 + to_time)
+	time_of_day = tod
 	time_changed.emit()
 
 
 func teleport_followers() -> void:
 	#for i in Global.Area.Followers:
 	#i.jump_to_player()
-	Global.Player.path.curve.clear_points()
-	Global.Player.path.curve.add_point(Global.Player.position.round())
-	Global.Player.path.curve.add_point(Global.Player.position.round())
+	Global.player.path.curve.clear_points()
+	Global.player.path.curve.add_point(Global.player.position.round())
+	Global.player.path.curve.add_point(Global.player.position.round())
 
 
 func sequence(title: String) -> Node:
@@ -560,7 +582,7 @@ func get_marker_pos(title: String) -> Vector2:
 
 		title = title.split("+")[0]
 
-	for marker in Global.Area.markers:
+	for marker in Global.room.markers:
 		if marker.name.replace("Marker", "") == title:
 			return marker.global_position + offset
 
@@ -568,7 +590,7 @@ func get_marker_pos(title: String) -> Vector2:
 	return Vector2.ZERO
 
 
-func spawn(id: String, pos: Variant, animation: Variant = Direction.DOWN, z: int = Global.Area.get_z(), no_shadow := false, no_collision := true) -> NPC:
+func spawn(id: String, pos: Variant, animation: Variant = Direction.DOWN, z: int = Global.room.get_z(), no_shadow := false, no_collision := true) -> NPC:
 	if pos is String:
 		pos = Event.get_marker_pos(pos)
 
@@ -598,11 +620,11 @@ func spawn(id: String, pos: Variant, animation: Variant = Direction.DOWN, z: int
 	chara.position = pos
 	chara.z_index = z
 
-	if Global.Area.current_subroom == null:
-		Global.Area.add_child.call_deferred(chara)
+	if Global.room.current_subroom == null:
+		Global.room.add_child.call_deferred(chara)
 	else:
-		Global.Area.current_subroom.add_child.call_deferred(chara)
-		chara.position -= Global.Area.current_subroom.position
+		Global.room.current_subroom.add_child.call_deferred(chara)
+		chara.position -= Global.room.current_subroom.position
 
 	print_rich("[color=purple]Spawned: ", chara.ID)
 
@@ -619,20 +641,20 @@ func spawn(id: String, pos: Variant, animation: Variant = Direction.DOWN, z: int
 
 
 func no_player() -> void:
-	Global.Controllable = false
+	Global.controllable = false
 
-	if is_instance_valid(Global.Player):
-		Global.Player.queue_free()
-		for i in Global.Area.followers:
+	if is_instance_valid(Global.player):
+		Global.player.queue_free()
+		for i in Global.room.followers:
 			i.queue_free()
 			await get_tree().physics_frame
 
-	PartyUI.hide_all()
+	Hud.hide_all()
 
 
-## Take the current value of ToDay and ToTime, and begin a proper transition to that time.
+## Take the current value of to_day and to_time, and begin a proper transition to that time.
 ## Never run this from a dialogue file without do!
-func time_transition(location := Global.Area.codename()) -> void:
+func time_transition(location := Global.room.codename()) -> void:
 	if get_tree().root.has_node("Textbox"):
 		get_tree().root.get_node("Textbox")._on_close()
 		#await Event.wait(0.3, false)
@@ -640,22 +662,22 @@ func time_transition(location := Global.Area.codename()) -> void:
 	await Event.take_control()
 	await Loader.transition()
 	Loader.ungray.emit()
-	await Loader.flip_time(TimeOfDay, ToTime)
-	if Day != ToDay:
-		Day = ToDay
-		Global.toast(Query.get_month_name(Query.get_month(Day)) + " " + str(Day) + " cin16")
+	await Loader.flip_time(time_of_day, to_time)
+	if day != to_day:
+		day = to_day
+		Global.toast(Query.get_month_name(Query.get_month(day)) + " " + str(day) + " cin16")
 		Loader.defeated.clear()
 
-	set_time(ToTime)
+	set_time(to_time)
 	await start_time_events(location)
 
 
 ## Abstraction for setting the camera zoom
 func zoom(val: float, maintain := false) -> void:
-	Global.Camera.zoom = Vector2(val, val)
+	Global.camera.zoom = Vector2(val, val)
 
 	if maintain:
-		Global.Area.overwrite_zoom = val
+		Global.room.overwrite_zoom = val
 
 
 ## An abstraction for setting the camera's position
@@ -663,28 +685,28 @@ func zoom(val: float, maintain := false) -> void:
 func camera_move(to: Vector2, time: float = -1, easing := Tween.EASE_IN_OUT, trans := Tween.TRANS_QUAD) -> void:
 	camera_unlock()
 	if time > 0:
-		Global.Camera.position_smoothing_enabled = false
+		Global.camera.position_smoothing_enabled = false
 		var t := create_tween().set_ease(easing).set_trans(trans).set_parallel()
-		t.tween_property(Global.Camera, "position", to, time)
+		t.tween_property(Global.camera, "position", to, time)
 		await t.finished
-		Global.Camera.position_smoothing_enabled = true
+		Global.camera.position_smoothing_enabled = true
 	elif time == 0:
-		Global.Camera.position_smoothing_enabled = false
-		Global.Camera.position = to
-		Global.Camera.position_smoothing_enabled = true
+		Global.camera.position_smoothing_enabled = false
+		Global.camera.position = to
+		Global.camera.position_smoothing_enabled = true
 	else:
-		Global.Camera.position = to
+		Global.camera.position = to
 
 
 ## Move the camera by adding to its current position
 func camera_move_relative(to: Vector2, time: float = -1, easing := Tween.EASE_IN_OUT, trans := Tween.TRANS_QUAD) -> void:
-	await camera_move(Global.Camera.position + to, time, easing, trans)
+	await camera_move(Global.camera.position + to, time, easing, trans)
 
 
 ## Make the camera not follow the player
 func camera_unlock() -> void:
-	if is_instance_valid(Global.Player):
-		Global.Player.camera_follow(false)
+	if is_instance_valid(Global.player):
+		Global.player.camera_follow(false)
 
 
 ## Start any events specified for this day and time
@@ -708,7 +730,7 @@ func start_time_events(location: String) -> void:
 	else:
 		match location:
 			"Pyrson":
-				if Global.Area.is_dungeon:
+				if Global.room.is_dungeon:
 					await sequence("return_home_pyrson")
 				else:
 					await sequence("wake_home")
@@ -726,8 +748,8 @@ func start_time_events(location: String) -> void:
 
 #TODO Make this adapt to diffrent months
 ## Get an id for the current date, such as "nov1_morning"
-func get_date_identifier(day := Day, time := TimeOfDay) -> String:
-	return Query.get_mmm(Query.get_month(day)).to_lower() + Query.get_date_day(day) + "_" + Query.to_tod_text(time).to_lower()
+func get_date_identifier(of_day := day, time := time_of_day) -> String:
+	return Query.get_mmm(Query.get_month(of_day)).to_lower() + Query.get_date_day(of_day) + "_" + Query.to_tod_text(time).to_lower()
 
 
 ## Run a condition script and return the number
@@ -746,7 +768,7 @@ func setup_time_changes(from: int, to: int) -> void:
 	if f_past("eepy", 1):
 		var eepy := flag_int("eepy")
 		add_flag("eepy", eepy + to - from)
-		if eepy >= 2 or TimeOfDay == TOD.MORNING:
+		if eepy >= 2 or time_of_day == TOD.MORNING:
 			remove_flag("eepy")
 
 
@@ -773,8 +795,8 @@ func get_reserved_date_dialog() -> String:
 	return "reserved_date/" + title
 
 
-func add_to_diary(what: String, to_day: int = Day) -> void:
-	if Diary.has(to_day):
-		Diary.get(to_day).append(what)
+func add_to_diary(what: String, in_day: int = day) -> void:
+	if diary.has(in_day):
+		diary.get(in_day).append(what)
 	else:
-		Diary.set(to_day, [what])
+		diary.set(in_day, [what])

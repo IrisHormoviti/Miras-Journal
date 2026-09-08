@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://sql6r7jv7fjq"]
 
-[ext_resource type="Material" uid="uid://bk3wcarpqpgmi" path="res://codings/Shaders/Pixelart.tres" id="1_srkwi"]
 [ext_resource type="Script" uid="uid://d0udqc2dg3nk0" path="res://codings/Common/player_movement.gd" id="2_d6ige"]
+[ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="2_xnlgi"]
 [ext_resource type="SpriteFrames" uid="uid://cad11u5nsdi8q" path="res://art/OV/Mira/MiraOVBag.tres" id="4_4h6w5"]
 [ext_resource type="Texture2D" uid="uid://cslhxxrst7p4j" path="res://art/OV/Mira/FlameWalk.png" id="5_4ul0y"]
 [ext_resource type="Texture2D" uid="uid://cbwc1u4rx67jv" path="res://art/OV/Mira/FlameActive.png" id="5_xllow"]
@@ -11,6 +11,9 @@
 [ext_resource type="Script" uid="uid://ddh88evqiuxdk" path="res://codings/Interactions/flickering_light.gd" id="12_1md4f"]
 [ext_resource type="PackedScene" uid="uid://cx1hh5a1t043t" path="res://sound/Sets/FootstepsSoundSet.tscn" id="13_av38v"]
 [ext_resource type="Shader" uid="uid://dbegadw85wjwl" path="res://codings/Shaders/Blur.gdshader" id="14_kgs5v"]
+
+[sub_resource type="Resource" id="Resource_bgprx"]
+script = ExtResource("2_xnlgi")
 
 [sub_resource type="Gradient" id="Gradient_s6doo"]
 interpolation_mode = 2
@@ -642,15 +645,20 @@ size = Vector2(13, 6)
 [node name="Mira" type="CharacterBody2D" unique_id=1955284413 node_paths=PackedStringArray("Nav")]
 process_mode = 3
 z_as_relative = false
-material = ExtResource("1_srkwi")
 use_parent_material = true
 collision_layer = 3
 collision_mask = 15
 motion_mode = 1
 script = ExtResource("2_d6ige")
+ID = "P"
 speed = 100
+facing = SubResource("Resource_bgprx")
 default_state = 6
 Nav = NodePath("Nav")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Flame" type="PointLight2D" parent="." unique_id=680748428]
 texture_filter = 2
@@ -673,14 +681,14 @@ texture_scale = 1.5
 
 [node name="Sprite" type="CanvasGroup" parent="." unique_id=1951205845]
 light_mask = 3
-texture_filter = 2
+use_parent_material = true
 position = Vector2(0, -5)
 
 [node name="Base" type="AnimatedSprite2D" parent="Sprite" unique_id=288160506]
 unique_name_in_owner = true
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9NaXJhb3YuYXNlcHJpdGUKbGF5ZXJ8PUJhc2UKb3BfZXhwfD1mYWxzZQpvX2ZvbGRlcnw9cmVzOi8vYXJ0L3NoZWV0cwpvX25hbWV8PUJhc2UKb25seV92aXNpYmxlfD1mYWxzZQpvX2V4X3B8PQo="
 light_mask = 3
-texture_filter = 1
+use_parent_material = true
 position = Vector2(0, -4)
 sprite_frames = ExtResource("4_4h6w5")
 animation = &"DashLeftStart"
@@ -711,7 +719,7 @@ unique_name_in_owner = true
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9NaXJhL01pcmFvdi5hc2Vwcml0ZQpsYXllcnw9RmxhbWUKb3BfZXhwfD1mYWxzZQpvX2ZvbGRlcnw9cmVzOi8vYXJ0L3NoZWV0cwpvX25hbWV8PWZsYW1lCm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
 visible = false
 light_mask = 3
-material = ExtResource("1_srkwi")
+use_parent_material = true
 position = Vector2(0, -4)
 sprite_frames = SubResource("SpriteFrames_spx3p")
 animation = &"ReachOut2"
@@ -725,7 +733,6 @@ texture = ExtResource("10_dxclp")
 [node name="Bubble" type="AnimatedSprite2D" parent="." unique_id=1706025424]
 light_mask = 0
 z_index = 3
-material = ExtResource("1_srkwi")
 position = Vector2(-0.00622558, -34.0003)
 sprite_frames = ExtResource("11_buww2")
 animation = &"Surprise"
@@ -735,6 +742,7 @@ frame_progress = 1.0
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=970471933]
 rotation = 1.5708
 shape = SubResource("CapsuleShape2D_ss1lh")
+disabled = true
 one_way_collision_margin = 15.4
 
 [node name="DirectionMarker" type="Marker2D" parent="." unique_id=1161425471]
@@ -766,10 +774,6 @@ path_max_distance = 20.0
 [node name="StdrFootsteps" parent="." unique_id=936257518 instance=ExtResource("13_av38v")]
 
 [node name="Ear" type="AudioListener2D" parent="." unique_id=984354471]
-
-[node name="Camera2D" type="RemoteTransform2D" parent="." unique_id=1856948275]
-update_rotation = false
-update_scale = false
 
 [node name="Fader" type="ColorRect" parent="." unique_id=1841963060]
 process_mode = 1
@@ -811,3 +815,5 @@ debug_color = Color(0.321569, 0.533333, 0.870588, 0.419608)
 
 [node name="Audio" type="AudioStreamPlayer2D" parent="." unique_id=1543988533]
 bus = &"SFX"
+
+[node name="Camera2D" type="RemoteTransform2D" parent="." unique_id=1283575545]

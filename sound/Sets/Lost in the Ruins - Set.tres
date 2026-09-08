@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BattleMusicSet" format=3 uid="uid://da5vu0jhf55sc"]
+
+[ext_resource type="Script" uid="uid://d1s1l8qt47tvu" path="res://codings/Classes/battle_music_set.gd" id="1_t0lqp"]
+[ext_resource type="AudioStream" uid="uid://bjuxfnxmw8tea" path="res://sound/Music/Lost in the Ruins.ogg" id="2_4c7b7"]
+[ext_resource type="AudioStream" uid="uid://ci5i63oqkmt1k" path="res://sound/Music/Lost in the Ruins - Victory.ogg" id="3_mf842"]
+
+[resource]
+script = ExtResource("1_t0lqp")
+track = ExtResource("2_4c7b7")
+intro_end = 1.9
+battle_start = 1.9
+victory_track = ExtResource("3_mf842")
+metadata/_custom_type_script = "uid://d1s1l8qt47tvu"

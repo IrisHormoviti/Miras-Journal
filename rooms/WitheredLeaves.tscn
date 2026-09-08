@@ -26,6 +26,7 @@
 [ext_resource type="PackedScene" uid="uid://b0pk66kwtm38a" path="res://rooms/components/HideOnFlag.tscn" id="19_3p2gw"]
 [ext_resource type="Resource" uid="uid://cod3sfmno6veq" path="res://database/Enemies/Skullish.tres" id="20_ceufj"]
 [ext_resource type="Script" uid="uid://b05nwmod2wbs2" path="res://codings/Components/hide_on_flag.gd" id="20_nxfet"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="21_8pygo"]
 [ext_resource type="Resource" uid="uid://c4vpbxeag0n74" path="res://database/Enemies/Steelkee.tres" id="21_ohbkp"]
 [ext_resource type="PackedScene" uid="uid://c2p687bjfd64q" path="res://rooms/components/JumpPointH.tscn" id="22_5vs6x"]
 [ext_resource type="Resource" uid="uid://bsu5mmo1yulev" path="res://database/BattleSeq/SkritcherRootParty.tres" id="22_it168"]
@@ -80,6 +81,15 @@ colors = PackedColorArray(1, 1, 1, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_vctnq"]
 gradient = SubResource("Gradient_auwcy")
+
+[sub_resource type="Resource" id="Resource_4ctaf"]
+script = ExtResource("15_ncxtw")
+
+[sub_resource type="Resource" id="Resource_ff2rv"]
+script = ExtResource("15_ncxtw")
+
+[sub_resource type="Resource" id="Resource_aj1h1"]
+script = ExtResource("15_ncxtw")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ha88r"]
 size = Vector2(55.453, 21.0225)
@@ -385,6 +395,11 @@ Energy = Array[float]([0.8, 0.2, 0.5, 0.8, 1.0])
 [node name="AlcineCamp" parent="." unique_id=96461054 instance=ExtResource("5_6fdth")]
 z_index = 0
 position = Vector2(824, -251)
+facing = SubResource("Resource_4ctaf")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="AlcineCamp" unique_id=245814845]
 use_parent_material = true
@@ -407,6 +422,11 @@ bubble_always = true
 [node name="DazeCamp" parent="." unique_id=1420936725 instance=ExtResource("5_6fdth")]
 z_index = 0
 position = Vector2(698, -221)
+facing = SubResource("Resource_ff2rv")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DazeCamp" unique_id=1318976911]
 use_parent_material = true
@@ -429,6 +449,11 @@ Height = 10
 [node name="AsteriaCamp" parent="." unique_id=267053427 instance=ExtResource("5_6fdth")]
 z_index = 0
 position = Vector2(732, -229)
+facing = SubResource("Resource_aj1h1")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="AsteriaCamp" unique_id=611286719]
 use_parent_material = true
@@ -511,7 +536,6 @@ patrol_speed = 220
 chase_speed = 220
 speed = 100
 facing = SubResource("Resource_lk1yj")
-only_on_index = 0
 
 [node name="HomePoints" type="Node2D" parent="EnemyFlowent1" unique_id=776446670]
 
@@ -545,7 +569,6 @@ patrol_speed = 220
 chase_speed = 220
 speed = 100
 facing = SubResource("Resource_lk1yj")
-only_on_index = 0
 
 [node name="HomePoints" type="Node2D" parent="EnemyFlowent4" unique_id=907208272]
 
@@ -579,7 +602,6 @@ patrol_speed = 220
 chase_speed = 220
 speed = 100
 facing = SubResource("Resource_4p2pc")
-only_on_index = 0
 
 [node name="HomePoints" type="Node2D" parent="EnemySullish" unique_id=61674447]
 
@@ -616,7 +638,6 @@ patrol_speed = 100
 chase_speed = 220
 speed = 100
 facing = SubResource("Resource_8pygo")
-only_on_index = 0
 
 [node name="HomePoints" type="Node2D" parent="EnemyFlowent2" unique_id=763906550]
 
@@ -652,7 +673,6 @@ BattleSeq = SubResource("Resource_ofsxd")
 patrol_speed = 80
 chase_speed = 200
 facing = SubResource("Resource_hngf4")
-only_on_index = 0
 
 [node name="HomePoints" type="Node2D" parent="EnemyFlowent3" unique_id=431234657]
 

@@ -1,9 +1,9 @@
 shader_type canvas_item;
 
-// Texture must have 'Filter'-flag enabled!
-
-// Automatic smoothing
-// independent of geometry and perspective
+//// Texture must have 'Filter'-flag enabled!
+//
+//// Automatic smoothing
+//// independent of geometry and perspective
 vec4 texturePointSmooth(sampler2D smp, vec2 uv, vec2 pixel_size)
 {
 	vec2 ddx = dFdx(uv);

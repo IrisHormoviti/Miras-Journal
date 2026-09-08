@@ -4,12 +4,12 @@
 
 [resource]
 script = ExtResource("1_w3lrs")
-Name = "Test revive"
-Party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
-RoomPath = "res://rooms/Debug.tscn"
-RoomName = "Debug room"
-Position = Vector2(2, -29.511839)
-Members = Array[Dictionary]([{
+title = "Test revive"
+party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
+room = "res://rooms/Debug.tscn"
+room_name = "Debug room"
+player_position = Vector2(2, -29.511839)
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 15,
 "CantAttack": false,
@@ -115,11 +115,11 @@ Members = Array[Dictionary]([{
 "WeaponPower": 15,
 "codename": &"Mira"
 }])
-StartTime = 1759087800.664549
-SavedTime = 1775820978.190764
-PlayTime = 10656.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
-Flags = Dictionary[StringName, int]({
+start_time = 1759087800.664549
+saved_time = 1775820978.190764
+play_time = 10656.0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
+flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -153,4 +153,4 @@ Flags = Dictionary[StringName, int]({
 &"day": 2,
 &"time": 2
 })
-version = 7
+version = 0

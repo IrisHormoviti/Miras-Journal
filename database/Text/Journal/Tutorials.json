@@ -43,7 +43,7 @@ With the dash you can get around quickly, but only at one direction at a time. W
 "#AuraAffinity2\n\nIf an enemy was attacking Mira ([color=#e87b33]Orange[/color] aura) with a [color=#269468]Cyan[/color] attack, the graph would look like this.\n[img height=240]res://art/Journal/Manual/AuraAffinity3.png[/img]\n\nThe graph works by rotating the lonley X mark to the attacker's color.\n\nIn this case, [color=#e87b33]Orange[/color] is in the X area, meaning the attack will not be very effective.",
 
 
-"#HittingWeaknesses\n\nBy hitting an enemy's weakness, the enemy will not only take more HP damage, but will also take proportional AP damage. The enemies can also do that to the party.\n\nWhen an actor's AP bar is empty, they enter the \"Aura Break\" state, in which they're weak to everything. The Actor who caused this will also get a FollowUp.",
+"#HittingWeaknesses\n\nBy hitting an enemy's weakness, the enemy will not only take more HP damage, but will also take proportional AP damage. The enemies can also do that to the Party.\n\nWhen an actor's AP bar is empty, they enter the \"Aura Break\" state, in which they're weak to everything. The Actor who caused this will also get a FollowUp.",
 
 
 "#FollowUp\n\nThe Actor gets to move again. They can also use a special FollowUp move if they have one.\n\nTo get a FollowUp, empty the AP of an enemy by hitting weaknesses.",

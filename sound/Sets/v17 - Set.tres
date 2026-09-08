@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="BattleMusicSet" format=3 uid="uid://du1nsfbow8xd8"]
+
+[ext_resource type="Script" uid="uid://d1s1l8qt47tvu" path="res://codings/Classes/battle_music_set.gd" id="1_wf2ux"]
+[ext_resource type="AudioStream" uid="uid://c8w6g5l1j02sa" path="res://sound/Music/v17.mp3" id="2_6emax"]
+
+[resource]
+script = ExtResource("1_wf2ux")
+track = ExtResource("2_6emax")
+intro_end = 1.9
+battle_start = 1.9
+victory = 83.3
+metadata/_custom_type_script = "uid://d1s1l8qt47tvu"

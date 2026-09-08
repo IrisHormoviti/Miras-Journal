@@ -42,7 +42,7 @@ var IsEnemy: bool = true
 @export var SummonedAllies: Array[Actor]
 @export var CustomPosition: Vector2i = Vector2i.ZERO
 
-@export_group("Party specific")
+@export_group("party specific")
 ##Used for the Aura gauge, purely cosmetic. If left black, the color will be automatically generated.
 @export var SecondaryColor: Color = Color.BLACK
 ##Used for textboxes for this character and their box with their stats. If left null, the box will be automatically generated.
@@ -229,7 +229,7 @@ func calc_dmg(power: float, is_magic: bool, E: Actor = null) -> int:
 	return int(max(((power * atk_stat) / ((Defence * 2 * DefenceMultiplier) + 0.3)), 1))
 
 
-func add_state(x: Variant, turns := -1, inflicter: Actor = Global.Bt.CurrentChar, effect := true) -> State:
+func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar, effect := true) -> State:
 	var state: State
 	if x is State:
 		state = x
@@ -250,13 +250,13 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.Bt.CurrentChar
 		if state.turns != -1:
 			if state.filename != "KnockedOut":
 				prev_state.turns += state.turns
-				Global.Bt.battle_msg("state_extended", FirstName, state.name)
+				Global.bt.battle_msg("state_extended", FirstName, state.name)
 		elif state.name == "Poisoned":
 			prev_state.turns *= 2
-			Global.Bt.battle_msg("poison_intensified", FirstName)
+			Global.bt.battle_msg("poison_intensified", FirstName)
 		elif state.name == "Confused":
 			prev_state.turns = -1
-			Global.Bt.battle_msg("state_extended", FirstName, state.name)
+			Global.bt.battle_msg("state_extended", FirstName, state.name)
 
 		#else: Global.toast(FirstName+" is already "+state.name)
 		return prev_state
@@ -267,9 +267,9 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.Bt.CurrentChar
 	state.inflicter = inflicter
 	States.append(state)
 	if node:
-		Global.Bt.on_state_add(state, self, effect)
-		if Global.Bt.get_node("Act/Effects").sprite_frames.has_animation(state.name):
-			Global.Bt.play_effect(state.name, self)
+		Global.bt.on_state_add(state, self, effect)
+		if Global.bt.effects.sprite_frames.has_animation(state.name):
+			Global.bt.play_effect(state.name, self)
 
 	return state
 
@@ -282,7 +282,7 @@ func remove_state(x: Variant) -> void:
 
 	if state == null: return
 	print(FirstName, "'s ", state.name, " state was removed")
-	Global.Bt.remove_state_effect(state.filename, self)
+	Global.bt.remove_state_effect(state.filename, self)
 	States.erase(state)
 
 

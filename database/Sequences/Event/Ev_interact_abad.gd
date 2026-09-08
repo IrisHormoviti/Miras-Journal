@@ -16,28 +16,28 @@ func WL_void() -> void:
 
 
 func hurt_1() -> void:
-	Global.Party.Leader.Health -= 1
+	Party.Leader.Health -= 1
 	Audio.ui_sound("Crunch")
-	PartyUI.hit_partybox(0, 4, 3)
-	if Global.Party.Leader.Health < 10:
-		if not Event.f("ShardsLowHP") and Global.Party.has_member("Asteria"):
+	Hud.hit_partybox(0, 4, 3)
+	if Party.Leader.Health < 10:
+		if not Event.f("ShardsLowHP") and Party.has_member("Asteria"):
 			Event.take_control(false, true, true)
 			Event.add_flag("ShardsLowHP")
 			await Textbox.open("interact_abad", "shards_low_hp")
 			Event.give_control()
-		Global.Party.Leader.Health += 1
+		Party.Leader.Health += 1
 	Global.check.emit()
 
 
 func wake_home() -> void:
-	Global.Party.reset_party()
+	Party.reset_party()
 	await Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(106, 414))
-	Global.Player.look_to(Direction.RIGHT)
+	Global.player.look_to(Direction.RIGHT)
 	Event.give_control()
 
 
 func return_home_pyrson() -> void:
-	Global.Party.reset_party()
+	Party.reset_party()
 	Global.heal_party()
 	await Loader.travel_to("Pyrson", Vector2(97, 157))
 	await Textbox.open("interact_pyrson", "return_home_pyrson")

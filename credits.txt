@@ -1,17 +1,21 @@
-[b]Created by Iris Hormoviti (RaiDev)[/b]
+[b]Created by Iris Hormoviti / RaiDev[/b]
 All rights reserved
 
 Art, concept, programming, the vast majority of the game:
 [b]Iris[/b]
 
+Music composer:
+[b]Danni[/b]
+
 Co-writer, General Assistance & Maker of Squiggly line shaders: 
 [b]Cone[/b]
 
 Playtesting and QA:
-[b]Cone, ManaRelicGames, Ifti, jedsu, Gensun, River, Minty, PanosPlays, Oso, Lumi, Norwis-337[/b]
+[b]ManaRelicGames, Ifti, jedsu, Gensun, River, PanosPlays, Oso, Lumi, Norwis-337, Danni, Cone[/b]
 
 Software used:
 [b]Godot Engine[/b]
+[b]Audacity[/b]
 [b]Aseprite[/b]
 [b]Krita[/b]
 [b]Obsidian[/b]
@@ -19,13 +23,14 @@ Software used:
 Plugins used:
 - [b]Dialogue Manager[/b]
 	by Nathan Hoad
-- [b]SmoothScroll[/b]
-	by SpyrexDEs
 - [b]Aseprite Wizard[/b]
 	by Vinicius Gerevini
-- [b]MouseCoordinates[/b] (Forked)
-	by CrayonApe
 - [b]Scene Tree Sorter[/b] (Forked)
 	by phinix-dev
+- [b]GodotSteam[/b]
+- [b]YAML.gd[/b]
+	by lowlevel.1989
+- Antialiased Line2D
+	by Calinou
 - [b]pretty.gd[/b]
 	by poeticAndroid

@@ -4,19 +4,19 @@
 
 [resource]
 script = ExtResource("1_yaix8")
-Name = "File8"
-RoomPath = "res://rooms/WitheredLeaves.tscn"
-RoomName = "Withered Leaves"
-Position = Vector2(776.3328, -240)
+title = "File8"
+room = "res://rooms/WitheredLeaves.tscn"
+room_name = "Withered Leaves"
+player_position = Vector2(776.3328, -240)
 Z = 0
-Members = Array[Dictionary]([{
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
+"complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Alcine",
 "Health": 60,
@@ -37,7 +37,7 @@ Members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
+"complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Asteria",
 "Health": 90,
@@ -58,7 +58,7 @@ Members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
+"complimentaries": Dictionary[String, int]({}),
 "Controllable": false,
 "FirstName": "Daze",
 "Health": 150,
@@ -79,7 +79,7 @@ Members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
+"complimentaries": Dictionary[String, int]({}),
 "Controllable": false,
 "FirstName": "Erinn",
 "Health": 85,
@@ -100,7 +100,7 @@ Members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
+"complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Mira",
 "Health": 100,
@@ -115,12 +115,12 @@ Members = Array[Dictionary]([{
 "WeaponPower": 14,
 "codename": &"Mira"
 }])
-Defeated = ["CS1"]
-StartTime = 1759087800.664549
-SavedTime = 1764353007.476843
-PlayTime = 10304.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
-Flags = Dictionary[StringName, int]({
+defeated_enemies = ["CS1"]
+start_time = 1759087800.664549
+saved_time = 1764353007.476843
+play_time = 10304.0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
+flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -152,4 +152,4 @@ Flags = Dictionary[StringName, int]({
 &"day": 1,
 &"time": 5
 })
-version = 7
+version = 0

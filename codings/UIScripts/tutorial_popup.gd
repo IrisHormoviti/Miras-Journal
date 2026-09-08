@@ -45,12 +45,12 @@ func ov_attack() -> void:
 
 
 func party() -> void:
-	%Text.text = "[center]Press [img]" + (Controller.get_scheme().Select).resource_path + "[/img] to check on your party.[/center]"
+	%Text.text = "[center]Press [img]" + (Controller.get_scheme().Select).resource_path + "[/img] to check on your Party.[/center]"
 	await pop_down()
 	await Event.wait(2)
 	while not Input.is_action_pressed("MainMenu"):
 		await Event.wait()
-		if Global.Controllable == false: break
+		if Global.controllable == false: break
 
 	await close()
 	queue_free()
@@ -62,7 +62,7 @@ func bag() -> void:
 	await pop_down()
 	while not Input.is_action_pressed("PartyMenu"):
 		await Event.wait()
-		if Global.Controllable == false: break
+		if Global.controllable == false: break
 
 	await close()
 	queue_free()
@@ -80,25 +80,25 @@ func walk() -> void:
 
 func weapon_attack() -> void:
 	await Event.wait(0.1, false)
-	Global.Bt.focus_cam(Global.Party.Leader)
+	Global.bt.focus_cam(Party.Leader)
 	$Border2.show()
 	$Border2/Control/Arrow.hide()
 	$Border2.position = Vector2(50, 201)
 	$Border2/Control/Next.hide()
 	$Border2/Text.text = "Press [img width=48]" + (Controller.get_scheme().AttackIcon).resource_path + "[/img] to use a Weapon Attack."
-	await Global.Bt.get_node("BattleUI").attack
+	await Global.bt.get_node("BattleUI").attack
 	queue_free()
 
 
 func ability() -> void:
 	await Event.wait(0.1, false)
-	Global.Bt.focus_cam(Global.Party.Leader)
+	Global.bt.focus_cam(Party.Leader)
 	$Border2.show()
 	$Border2/Control/Arrow.hide()
 	$Border2.position = Vector2(50, 201)
 	$Border2/Control/Next.hide()
 	$Border2/Text.text = "Press [img width=48]" + (Controller.get_scheme().AbilityIcon).resource_path + "[/img] to use a Magic Ability."
-	await Global.Bt.get_node("BattleUI").ability
+	await Global.bt.get_node("BattleUI").ability
 	queue_free()
 
 
@@ -112,7 +112,7 @@ func aura1() -> void:
 	await await_next()
 	$Border2/Text.text = Colorizer.colorize("This meter will be drained whenever a magic Ability is used.")
 	await await_next()
-	Global.Bt.lock_turn = false
+	Global.bt.lock_turn = false
 	queue_free()
 
 
@@ -134,14 +134,14 @@ func complimentary() -> void:
 	await await_next()
 	$Border2/Text.text = Colorizer.colorize("But with enough practice, anyone can master them!")
 	await await_next()
-	$Border2/Text.text = Colorizer.colorize("To equip one, go to the Party menu, select a member, go to Abilities, then \"Set Complimentary\".")
+	$Border2/Text.text = Colorizer.colorize("To equip one, go to the party menu, select a member, go to Abilities, then \"Set Complimentary\".")
 	await await_next()
 	queue_free()
 
 
 func aura2() -> void:
 	await Event.wait(1, false)
-	Global.Bt.focus_cam(Global.Party.Leader)
+	Global.bt.focus_cam(Party.Leader)
 	$Border2.show()
 	$Border2/Control/Arrow.hide()
 	$Border2.position = Vector2(612, 201)
@@ -155,13 +155,13 @@ func aura2() -> void:
 	$Border2.position = Vector2(104, 279)
 	$Border2/Text.text = Colorizer.colorize("Using her Aura Guard ability, Mira will take less damage, while increasing her AP when hit.").replace("guard", "Guard")
 	await await_next()
-	Global.Bt.lock_turn = false
+	Global.bt.lock_turn = false
 	queue_free()
 
 
 func aura3() -> void:
 	await Event.wait(1, false)
-	Global.Bt.focus_cam(Global.Party.Leader)
+	Global.bt.focus_cam(Party.Leader)
 	$Border2.show()
 	$Border2/Control/Arrow.hide()
 	$Border2/Control/Arrow.hide()
@@ -170,7 +170,7 @@ func aura3() -> void:
 	await await_next()
 	$Border2/Text.text = "So go on and finish off this enemy!"
 	await await_next()
-	Global.Bt.lock_turn = false
+	Global.bt.lock_turn = false
 	queue_free()
 
 

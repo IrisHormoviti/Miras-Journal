@@ -4,5 +4,5 @@ extends Node2D
 
 
 func _ready() -> void:
-	reparent.call_deferred(Global.Camera, false)
+	reparent.call_deferred(Global.camera, false)
 	position = offset

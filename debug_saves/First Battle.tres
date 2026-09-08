@@ -4,11 +4,11 @@
 
 [resource]
 script = ExtResource("1_80hds")
-Name = "First Battle"
-RoomPath = "res://rooms/TempleWoods.tscn"
-RoomName = "Temple Woods"
-Position = Vector2(668.9987, 501)
-Members = Array[Dictionary]([{
+title = "First Battle"
+room = "res://rooms/TempleWoods.tscn"
+room_name = "Temple Woods"
+player_position = Vector2(668.9987, 501)
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 20,
 "CantDie": false,
@@ -104,14 +104,14 @@ Members = Array[Dictionary]([{
 "WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-StartTime = 1787949504.270411
-SavedTime = 1787949697.596124
-PlayTime = 430.0
-Diary = Dictionary[int, PackedStringArray]({
+start_time = 1787949504.270411
+saved_time = 1787949697.596124
+play_time = 430.0
+diary = Dictionary[int, PackedStringArray]({
 2: PackedStringArray("boo"),
 5: PackedStringArray("boo", "bee")
 })
-Flags = Dictionary[StringName, int]({
+flags = Dictionary[StringName, int]({
 &"DisableMenus": 1,
 &"DisableVeinet": 1,
 &"EvDashTutorial": 1,
@@ -122,5 +122,5 @@ Flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 5
 })
-version = 7
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key"])
+version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key"])

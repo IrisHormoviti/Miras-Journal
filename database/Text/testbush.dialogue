@@ -11,7 +11,7 @@ Mira.Neutral: Yes, this is [[indeed|in fact]] a bush
 	Feni.Neutral: Are yall serious? This can't be anything but a bush!
 - Scream
 	Mira.OpenMouth: AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA
-	if Query.is_in_party("Erinn"):
+	if Party.has_member("Erinn"):
 		Erinn: Mira, what are you doing?
 - Talk a lot
 	Mira.Smile: Yeah, sure i can say a *bunch of stuff*.
@@ -183,11 +183,11 @@ System: (You've been sent back before resting, there's nothing else to do here.)
 ~ battle_test
 Choose battle
 - Dummy
-	do! start_battle(load("res://database/BattleSeq/DebugDummy.tres"))
+	do! Battle.start(load("res://database/BattleSeq/DebugDummy.tres"))
 - Lazulite Heart
-	do! start_battle(load("res://database/BattleSeq/LazuliteHeartBoss.tres"))
+	do! Battle.start(load("res://database/BattleSeq/LazuliteHeartBoss.tres"))
 - Stone Guardian
-	do! start_battle(load("res://database/BattleSeq/StoneGuardianBoss.tres"))
+	do! Battle.start(load("res://database/BattleSeq/StoneGuardianBoss.tres"))
 => END
 
 ~ chapter_select

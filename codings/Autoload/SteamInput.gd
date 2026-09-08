@@ -27,7 +27,7 @@ var action_names := {
 	"Tab Right": false,
 	"Bag Menu": false,
 	"Options Menu": false,
-	"Party Menu": false
+	"party Menu": false
 }
 
 # Track if we've gotten the handles yet.

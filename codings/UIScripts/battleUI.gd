@@ -1,14 +1,13 @@
 extends Control
 
-@onready var Bt: Battle = $".."
-@onready var canvas: CanvasLayer = $"../Canvas"
+@export var Bt: Battle
+@export var canvas: CanvasLayer
 @onready var t: Tween
 @onready var trw: Tween
 @onready var animation: AnimationPlayer = $"AnimationPlayer"
 
 var TurnOrder: Array[Actor]
 var CurrentChar: Actor
-var Party: PartyData
 var Troop: Array[Actor]
 var active: bool
 var stage: StringName
@@ -68,7 +67,7 @@ func _on_battle_get_control() -> void:
 	Audio.ui_sound("GetControl")
 	active = true
 	Loader.battle_bars(1)
-	PartyUI.battle_state()
+	Hud.battle_state()
 	Bt.Action = false
 	stage = &"root"
 	PrevStage = &"root"
@@ -84,7 +83,6 @@ func _on_battle_get_control() -> void:
 	Troop = Bt.Troop
 	TurnOrder = Bt.TurnOrder
 	CurrentChar = Bt.CurrentChar
-	Party = Bt.Party
 	Abilities = CurrentChar.get_abilities()
 	move_to(CurrentChar.node.position, 0)
 	$Item.mouse_filter = MouseFilter.MOUSE_FILTER_STOP
@@ -240,7 +238,7 @@ func _input(event: InputEvent) -> void:
 					Audio.cancel_sound()
 					emit_signal(PrevStage)
 
-				if Input.is_action_just_pressed("LeftTrigger") and Bt.Seq.CanEscape:
+				if Input.is_action_just_pressed("LeftTrigger") and Bt.sequence.CanEscape:
 					_on_escape()
 
 				if Input.is_action_just_pressed(&"ui_accept"):
@@ -294,7 +292,7 @@ func _on_root() -> void:
 	PrevStage = &"root"
 	stage = &"root"
 
-	PartyUI.battle_state()
+	Hud.battle_state()
 	set_controller_icons()
 	Bt.get_node("EnemyUI").all_enemy_ui()
 
@@ -344,7 +342,7 @@ func _on_ability() -> void:
 	canvas.get_node("Back").text = "Back"
 	CurrentChar.NextAction = Actor.BtAction.MAGIC
 
-	PartyUI.only_current()
+	Hud.only_current()
 	Audio.confirm_sound()
 
 	$Ability.icon = null
@@ -396,7 +394,7 @@ func _on_command() -> void:
 	Bt.zoom(5.5, 0.3)
 	Bt.move_cam(CurrentChar.node.position + Vector2(-30, 0), 0.3)
 
-	if not Bt.Seq.CanEscape:
+	if not Bt.sequence.CanEscape:
 		$CommandMenu/Escape.modulate = Color(1, 1, 1, 0.6)
 	else:
 		$CommandMenu/Escape.modulate = Color(1, 1, 1, 1)
@@ -429,7 +427,7 @@ func _on_item() -> void:
 	Bt.zoom(5.5, 0.3)
 	Bt.move_cam(CurrentChar.node.position + Vector2(-80, 0), 0.3)
 
-	PartyUI.only_current()
+	Hud.only_current()
 
 	await get_tree().physics_frame
 
@@ -447,7 +445,7 @@ func close() -> void:
 	if stage == "target" and animation.is_playing() and animation.assigned_animation == "target":
 		await animation.animation_changed
 
-	PartyUI.battle_state()
+	Hud.battle_state()
 	stage = &"inactive"
 	animation.play("close")
 
@@ -570,7 +568,7 @@ func get_target(faction: Array[Actor], ab := CurrentChar.NextMove) -> void:
 
 	emit_signal('targetFoc', CurrentTarget)
 	wheel.show_trg_color(CurrentTarget.MainColor)
-	PartyUI.show_all()
+	Hud.show_all()
 
 
 func get_target_pos(tar: Actor) -> Vector2:

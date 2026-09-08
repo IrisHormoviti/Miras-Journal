@@ -4,14 +4,14 @@
 
 [resource]
 script = ExtResource("1_bg8jv")
-Name = "Stone Guardian"
-Party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
-RoomPath = "res://rooms/Amberelm.tscn"
-RoomName = "Amberelm"
-Position = Vector2(2333.3328, -149)
-Camera = 2
+title = "Stone Guardian"
+party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
+room = "res://rooms/Amberelm.tscn"
+room_name = "Amberelm"
+player_position = Vector2(2333.3328, -149)
+camera_index = 2
 Z = 4
-Members = Array[Dictionary]([{
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantDie": false,
@@ -109,15 +109,15 @@ Members = Array[Dictionary]([{
 "WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-Defeated = ["EnemyIronHook1", "EnemyIronHook2", "EnemyIronHook3"]
-StartTime = 1773014079.152903
-SavedTime = 1787781365.687761
-PlayTime = 1376.0
-Diary = Dictionary[int, PackedStringArray]({
+defeated_enemies = ["EnemyIronHook1", "EnemyIronHook2", "EnemyIronHook3"]
+start_time = 1773014079.152903
+saved_time = 1787781365.687761
+play_time = 1376.0
+diary = Dictionary[int, PackedStringArray]({
 2: PackedStringArray("boo"),
 5: PackedStringArray("boo", "bee")
 })
-Flags = Dictionary[StringName, int]({
+flags = Dictionary[StringName, int]({
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
 &"BreakablePurpleOre0": 1,
@@ -155,5 +155,5 @@ Flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 3
 })
-version = 7
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])
+version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])

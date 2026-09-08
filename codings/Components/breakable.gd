@@ -112,13 +112,13 @@ func _on_area_prompt_area_entered(area: Area2D) -> void:
 	if broken:
 		return
 
-	if Loader.in_battle or not Global.Controllable or not is_instance_valid(Global.Player):
+	if Battle.in_battle or not Global.controllable or not is_instance_valid(Global.player):
 		return
 
 	if not Item.check_item("LightweightAxe"):
 		return
 
-	if area == Global.Player.get_node_or_null("DirectionMarker/Finder"):
+	if area == Global.player.get_node_or_null("DirectionMarker/Finder"):
 		appear()
 
 
@@ -126,7 +126,7 @@ func _on_area_prompt_area_exited(area: Area2D) -> void:
 	if broken:
 		return
 
-	if area == Global.Player.get_node_or_null("DirectionMarker/Finder"):
+	if area == Global.player.get_node_or_null("DirectionMarker/Finder"):
 		disappear()
 
 
@@ -136,7 +136,7 @@ func appear() -> void:
 
 	$Pack/Button/Icon.texture = Controller.get_scheme().OVAttack
 
-	if to_local(Global.Player.position).x <= 0:
+	if to_local(Global.player.position).x <= 0:
 		$Pack/Button.scale.x = 1
 		$Pack/Button/Label.scale.x = 1
 		$Pack/Button/Icon.scale.x = 1
@@ -148,7 +148,7 @@ func appear() -> void:
 	$Pack.show()
 	$Pack/AnimationPlayer.play("Appear")
 	await Event.wait(0.2)
-	if not Global.Player.get_node("DirectionMarker/Finder") in $AreaPrompt.get_overlapping_areas():
+	if not Global.player.get_node("DirectionMarker/Finder") in $AreaPrompt.get_overlapping_areas():
 		disappear()
 		return
 

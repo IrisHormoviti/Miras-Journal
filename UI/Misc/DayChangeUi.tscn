@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ckvpempt84wyr"]
 
-[ext_resource type="Script" uid="uid://cfo375xc53mm8" path="res://codings/UIScripts/day_change_ui.gd" id="1_0cnvx"]
+[ext_resource type="Script" uid="uid://cfo375xc53mm8" path="res://codings/UIScripts/day_changeUI.gd" id="1_0cnvx"]
 [ext_resource type="FontFile" uid="uid://cumufnoi2wx0i" path="res://UI/Fonts/cyrenia-bold.ttf" id="2_7fpk2"]
 [ext_resource type="FontFile" uid="uid://sehkl0mea74i" path="res://UI/Fonts/cyrenia-regular.ttf" id="3_nxysf"]
 [ext_resource type="FontVariation" uid="uid://b26p56yb7cgso" path="res://UI/Fonts/cyrenia-button.tres" id="4_wm8im"]

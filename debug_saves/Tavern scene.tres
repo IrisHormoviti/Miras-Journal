@@ -4,12 +4,12 @@
 
 [resource]
 script = ExtResource("1_hq4er")
-Name = "Tavern scene"
-RoomPath = "res://rooms/Pyrson.tscn"
-RoomName = "Pyrson"
-Position = Vector2(504.33325, 829)
+title = "Tavern scene"
+room = "res://rooms/Pyrson.tscn"
+room_name = "Pyrson"
+player_position = Vector2(504.33325, 829)
 Z = 0
-Members = Array[Dictionary]([{
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 15,
 "CantAttack": false,
@@ -117,12 +117,12 @@ Members = Array[Dictionary]([{
 "WeaponPower": 15,
 "codename": &"Mira"
 }])
-Complimentaries = Array[String](["FluidBlast"])
-StartTime = 1774043227.769998
-SavedTime = 1774052828.806751
-PlayTime = 1580.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "RustySword:Bti", "RustySword:Bti", "SharpRock:Bti"])
-Flags = Dictionary[StringName, int]({
+complimentaries = Array[String](["FluidBlast"])
+start_time = 1774043227.769998
+saved_time = 1774052828.806751
+play_time = 1580.0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "RustySword:Bti", "RustySword:Bti", "SharpRock:Bti"])
+flags = Dictionary[StringName, int]({
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
 &"AlcineIsTheLeaderReal": 1,
@@ -167,8 +167,8 @@ Flags = Dictionary[StringName, int]({
 &"eepy1": 1,
 &"time": 2
 })
-Diary = Dictionary[int, PackedStringArray]({
+diary = Dictionary[int, PackedStringArray]({
 2: PackedStringArray("boo"),
 5: PackedStringArray("boo", "bee")
 })
-version = 7
+version = 0

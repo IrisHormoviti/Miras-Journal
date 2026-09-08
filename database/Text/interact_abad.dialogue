@@ -1,7 +1,7 @@
 import "res://database/Text/reserved_date.dialogue" as reserved_date
 
 ~ vein_point_idk
-if Query.is_in_party("Daze"):
+if Party.has_member("Daze"):
 	Mira.Neutral: Any idea what these are?
 	Daze.Neutral: I'm not quite sure... [p]They seem to be around everywhere.
 else:
@@ -119,13 +119,13 @@ if date_is_reserved():
 	=>< {{get_reserved_date_dialog()}}
 else:
 	do progress_by_time(1)
-	if PartyUI.confirm_time_passage("Rest", "Stay in the camp for a while. Restores all Health."):
+	if Hud.confirm_time_passage("Rest", "Stay in the camp for a while. Restores all Health."):
 		do heal_party()
 		do! time_transition()
 => END
 
 ~ WL_void
-if Query.check_member("Mira") and Query.check_member("Daze"):
+if Party.has_member_index("Mira") and Party.has_member_index("Daze"):
 	Daze.Neutral: Ms. Levenor stop.
 	Mira.Neutral: Huh?
 	Daze takes a pebble and throws it forward.

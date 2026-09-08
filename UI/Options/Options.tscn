@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://ba1164hwmukxq" path="res://UI/MenuTextures/toggle_off.svg" id="9_t6ahs"]
 [ext_resource type="Texture2D" uid="uid://d2cju0uv5rmjr" path="res://UI/MenuTextures/radio_enabled.png" id="9_xvg8c"]
 [ext_resource type="Texture2D" uid="uid://btup6lcmt8k28" path="res://UI/MenuTextures/radio_disabled.png" id="10_bx0nk"]
+[ext_resource type="Texture2D" uid="uid://fiepj15wr6v2" path="res://UI/Options/MusicNote.svg" id="11_eb7ok"]
 [ext_resource type="Texture2D" uid="uid://b10ixw0ybj06y" path="res://UI/MenuTextures/grabber_unfocused.png" id="11_ojav3"]
 [ext_resource type="Texture2D" uid="uid://bfbdvjkpc0gvr" path="res://UI/MenuTextures/grabber.svg" id="11_wuq6k"]
 [ext_resource type="FontFile" uid="uid://cumufnoi2wx0i" path="res://UI/Fonts/cyrenia-bold.ttf" id="17_chpua"]
@@ -804,6 +805,28 @@ text = "12:23:02"
 
 [node name="Tick" type="Timer" parent="Timer" unique_id=1893913468]
 autostart = true
+
+[node name="MusicTrack" type="Label" parent="." unique_id=377184249]
+custom_maximum_size = Vector2(450, 100)
+offset_left = 75.0
+offset_top = 108.0
+offset_right = 525.0
+offset_bottom = 208.0
+theme_override_fonts/font = ExtResource("24_41402")
+theme_override_font_sizes/font_size = 32
+text = "This is the currently playing music track"
+autowrap_mode = 3
+
+[node name="TextureRect" type="TextureRect" parent="MusicTrack" unique_id=1448639769]
+modulate = Color(0.3725179, 0.75387114, 0.69063437, 1)
+layout_mode = 0
+offset_left = -48.0
+offset_top = -1.0
+offset_right = -8.0
+offset_bottom = 32.0
+texture = ExtResource("11_eb7ok")
+expand_mode = 3
+stretch_mode = 4
 
 [node name="SavePanel" type="Panel" parent="." unique_id=2111716590]
 visible = false

@@ -59,8 +59,8 @@ func _on_body_exited(body: Node2D) -> void:
 
 
 func go_up() -> void:
-	Global.Area.change_index(up_index)
+	Global.room.change_index(up_index)
 
 
 func go_down() -> void:
-	Global.Area.change_index(down_index)
+	Global.room.change_index(down_index)

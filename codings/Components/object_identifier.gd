@@ -4,7 +4,7 @@ extends Node
 
 
 func _ready() -> void:
-	Event.Objects.set(ID, get_parent())
+	Event.object_list.set(ID, get_parent())
 
 	DialogueManager.unregister_state_context(ID)
 	DialogueManager.register_state_context(ID, get_parent())

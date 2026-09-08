@@ -4,12 +4,9 @@
 
 [resource]
 script = ExtResource("1_2jtsk")
-Name = "after daze meet"
-RoomPath = "res://rooms/WitheredLeaves.tscn"
-RoomName = "Withered Leaves"
-Position = Vector2(800, -235)
-Z = 0
-Members = Array[Dictionary]([{
+title = "after daze meet"
+room_name = "Withered Leaves"
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 5,
 "CantAttack": false,
@@ -117,17 +114,18 @@ Members = Array[Dictionary]([{
 "WeaponPower": 14,
 "codename": &"Mira"
 }])
-Complimentaries = Array[String](["FluidBlast"])
-Defeated = ["EnemyIronHook1", "EnemyIronHook2", "EnemyIronHook3"]
-StartTime = 1773014079.152903
-SavedTime = 1774053338.552997
-PlayTime = 1643.0
-Diary = Dictionary[int, PackedStringArray]({
+player_position = Vector2(800, -235)
+complimentaries = Array[String](["FluidBlast"])
+defeated_enemies = ["EnemyIronHook1", "EnemyIronHook2", "EnemyIronHook3"]
+start_time = 1773014079.152903
+saved_time = 1774053338.552997
+play_time = 1643.0
+diary = Dictionary[int, PackedStringArray]({
 0: PackedStringArray("oct31"),
 2: PackedStringArray("boo"),
 5: PackedStringArray("boo", "bee")
 })
-Flags = Dictionary[StringName, int]({
+flags = Dictionary[StringName, int]({
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
 &"BeatStoneGuardian": 1,
@@ -166,5 +164,4 @@ Flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 5
 })
-version = 7
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])

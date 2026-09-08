@@ -13,7 +13,7 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body == Global.Player:
+	if body == Global.player:
 		if is_instance_valid(t): t.kill()
 		texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 		use_parent_material = false
@@ -22,7 +22,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body == Global.Player:
+	if body == Global.player:
 		if is_instance_valid(t): t.kill()
 		t = create_tween()
 		t.tween_property(self, "modulate", Color.WHITE, 0.5)

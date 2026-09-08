@@ -4,13 +4,13 @@
 
 [resource]
 script = ExtResource("1_0d8lm")
-Name = "test thund"
-Party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
-RoomPath = "res://rooms/ShardGardens.tscn"
-RoomName = "Shard gardens"
-Position = Vector2(564, 900)
+title = "test thund"
+party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
+room = "res://rooms/ShardGardens.tscn"
+room_name = "Shard gardens"
+player_position = Vector2(564, 900)
 Z = 0
-Members = Array[Dictionary]([{
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 9,
 "CantAttack": false,
@@ -123,13 +123,13 @@ Members = Array[Dictionary]([{
 "WeaponPower": 15,
 "codename": &"Mira"
 }])
-Complimentaries = Array[String](["FluidBlast", "Thunderstorm"])
-Defeated = ["EnemySG1", "EnemySG2"]
-StartTime = 1773014079.152903
-SavedTime = 1773062617.799657
-PlayTime = 3406.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "LifeLave:Con", "LifeLave:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])
-Flags = Dictionary[StringName, int]({
+complimentaries = Array[String](["FluidBlast", "Thunderstorm"])
+defeated_enemies = ["EnemySG1", "EnemySG2"]
+start_time = 1773014079.152903
+saved_time = 1773062617.799657
+play_time = 3406.0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "LifeLave:Con", "LifeLave:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])
+flags = Dictionary[StringName, int]({
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
 &"AlcineIsTheLeaderReal": 2,
@@ -189,8 +189,8 @@ Flags = Dictionary[StringName, int]({
 &"day": 3,
 &"time": 3
 })
-Diary = Dictionary[int, PackedStringArray]({
+diary = Dictionary[int, PackedStringArray]({
 2: PackedStringArray("boo"),
 5: PackedStringArray("boo", "bee")
 })
-version = 7
+version = 0

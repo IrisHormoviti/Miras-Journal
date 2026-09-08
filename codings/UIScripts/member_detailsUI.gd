@@ -9,7 +9,7 @@ func _ready() -> void:
 
 
 func draw_character(chara: Actor, menu := 0) -> void:
-	if Global.Complimentaries.is_empty():
+	if Global.complimentaries.is_empty():
 		$AbilityPanel/Complimentary.disabled = true
 		$AbilityPanel/Border1/Scroller/AbilityList/CompTxt.hide()
 	else:
@@ -74,7 +74,7 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	$StatPanel/Wheel.draw_wheel()
 	$Render.texture = await Loader.load_res(chara.RenderArtwork) if not chara.RenderArtwork.is_empty() else null
 	$Render/Shadow.texture = await chara.RenderShadow()
-	$Render.global_position = PartyUI.get_node("CanvasLayer/Pages/Page" + str(PartyUI.focus) + "/Render").global_position
+	$Render.global_position = Hud.get_node("%Pages/Page" + str(Hud.focus) + "/Render").global_position
 
 	fetch_abilities(chara)
 
@@ -103,7 +103,7 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUINT)
 	#t.tween_property($Render, "modulate", Color.WHITE, 0.5).from(Color.TRANSPARENT)
-	PartyUI.get_node("CanvasLayer/Pages/Page" + str(PartyUI.focus) + "/Render").hide()
+	Hud.get_node("%Pages/Page" + str(Hud.focus) + "/Render").hide()
 	t.tween_property($Render, "global_position", Vector2(587, -2), 0.8)
 	t.tween_property($Render/Shadow, "modulate:a", 0.4, 0.6)
 	t.tween_property($Render, "scale", Vector2(0.245, 0.245), 0.8).from(Vector2(0.215, 0.215))
@@ -175,7 +175,7 @@ func _on_back_pressed() -> void:
 	$Back.hide()
 	$AbilityPanel.hide()
 	$StatPanel.hide()
-	PartyUI.close_submenu()
+	Hud.close_submenu()
 	await Event.wait(0.1, false)
 	queue_free()
 
@@ -238,19 +238,19 @@ func _on_complimentary() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if not inactive and actor in Global.Party.array():
+	if not inactive and actor in Party.current:
 		if event.is_action_pressed("RightTrigger"):
 			var next_char: Actor
-			if Global.Party.array().size() > Global.Party.array().find(actor) + 1:
-				next_char = Global.Party.array()[Global.Party.array().find(actor) + 1]
+			if Party.current.size() > Party.current.find(actor) + 1:
+				next_char = Party.current[Party.current.find(actor) + 1]
 			else:
-				next_char = Global.Party.Leader
+				next_char = Party.Leader
 
 			if is_instance_valid(next_char):
 				Global.member_details(next_char, stability_menu)
 				queue_free()
 		elif event.is_action_pressed("LeftTrigger"):
-			var next_char := Global.Party.array()[Global.Party.array().find(actor) - 1]
+			var next_char := Party.current[Party.current.find(actor) - 1]
 
 			if is_instance_valid(next_char):
 				Global.member_details(next_char, stability_menu)

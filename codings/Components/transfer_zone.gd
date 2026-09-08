@@ -48,8 +48,8 @@ func _validate_property(property: Dictionary) -> void:
 
 
 func _on_entered(body: Node2D) -> void:
-	if body == Global.Player:
-		if Global.Controllable or Global.Player.dashing or Global.Player.attacking:
+	if body == Global.player:
+		if Global.controllable or Global.player.dashing or Global.player.attacking:
 			proceed()
 
 
@@ -62,12 +62,12 @@ func come_from() -> Vector2:
 
 
 func proceed() -> void:
-	var frame := Global.Player.sprite.frame
-	Global.Player.camera_follow(false)
+	var frame := Global.player.sprite.frame
+	Global.player.camera_follow(false)
 	await Event.take_control(true, true)
-	Global.Player.collision(false)
-	Global.Player.move_dir(direction.vector * 48)
-	Global.Player.sprite.frame = frame
+	Global.player.collision(false)
+	Global.player.move_dir(direction.vector * 48)
+	Global.player.sprite.frame = frame
 	#print(name, " to ", room, " with camera index ", ToCamera)
 
 	var room_string: String = room
@@ -79,14 +79,14 @@ func proceed() -> void:
 
 
 func _on_preview_exited(body: Node2D) -> void:
-	if body == Global.Player: $Cursor.hide()
+	if body == Global.player: $Cursor.hide()
 
 
 func _on_preview_entered(body: Node2D) -> void:
-	if body == Global.Player: $Cursor.hide()
+	if body == Global.player: $Cursor.hide()
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body == Global.Player and Direction.from(to_local(body.position)).equals(direction):
+	if body == Global.player and Direction.from(to_local(body.position)).equals(direction):
 		body.position = position - direction.vector * 48
 		_on_entered(body)

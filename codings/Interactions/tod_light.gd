@@ -18,6 +18,6 @@ func _ready() -> void:
 
 
 func update() -> void:
-	if Event.TimeOfDay == Event.TOD.DARKHOUR or Event.TimeOfDay > 5: return
-	energy = Energy[Event.TimeOfDay - 1]
-	color = Colors[Event.TimeOfDay - 1]
+	if Event.time_of_day == Event.TOD.DARKHOUR or Event.time_of_day > 5: return
+	energy = Energy[Event.time_of_day - 1]
+	color = Colors[Event.time_of_day - 1]

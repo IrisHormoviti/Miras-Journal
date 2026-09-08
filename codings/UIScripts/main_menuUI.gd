@@ -6,8 +6,8 @@ var prevRootIndex := 1
 var prevPos: Vector2
 var zoom: Vector2
 var z: int
-@onready var Cam: Camera2D = Global.Camera
-@onready var CamPrev: Camera2D = Global.Camera.duplicate()
+@onready var Cam: Camera2D = Global.camera
+@onready var CamPrev: Camera2D = Global.camera.duplicate()
 @onready var Fader: Control
 var PrevCtrl: Control = null
 var player: Mira
@@ -23,16 +23,16 @@ func _ready() -> void:
 		Audio.buzzer_sound()
 		queue_free()
 		get_tree().paused = false
-		Global.Controllable = true
+		Global.controllable = true
 		return
 
-	cam_follow = Global.Player.get_node("Camera2D").update_position
+	cam_follow = Global.player.get_node("Camera2D").update_position
 	await Event.take_control(true, false, false)
-	if abs(Global.Player.global_position - Global.Camera.get_screen_center_position()).length() > 15:
+	if abs(Global.player.global_position - Global.camera.get_screen_center_position()).length() > 15:
 		duplicated = true
-		player = Global.Player.duplicate()
+		player = Global.player.duplicate()
 		player.is_clone = true
-		Global.Area.add_child(player)
+		Global.room.add_child(player)
 		await Event.wait()
 		player.remove_light()
 		player.collision_layer = 0
@@ -40,7 +40,7 @@ func _ready() -> void:
 		player.get_node("%Shadow").hide()
 		player.get_node("Flame").free()
 		player.bag_anim()
-	else: player = Global.Player
+	else: player = Global.player
 	Cam.limit_smoothed = true
 	Cam.position_smoothing_enabled = true
 	Cam.process_mode = Node.PROCESS_MODE_ALWAYS
@@ -56,7 +56,7 @@ func _ready() -> void:
 	if Fader == null: queue_free(); get_tree().paused = false; return
 	Fader.show()
 	stage = "pre_root"
-	zoom = Global.Camera.zoom
+	zoom = Global.camera.zoom
 	prevPos = player.global_position
 	t = create_tween()
 	t.set_ease(Tween.EASE_OUT)
@@ -68,7 +68,7 @@ func _ready() -> void:
 	t.tween_property($Back, "position", Vector2(210, 742), 0.4).from(Vector2(210, 850))
 	t.tween_property($Party, "position", Vector2(274, 28), 0.4).from(Vector2(274, -50))
 	player.get_node("%Shadow").z_index = -1
-	PartyUI.show_all()
+	Hud.show_all()
 	z = player.z_index
 	player.z_index = 9
 
@@ -76,13 +76,13 @@ func _ready() -> void:
 		i.get_child(0).position = Vector2(-30, -30)
 		i.get_child(0).size.x = 64
 
-	t.tween_property(Global.Camera, "zoom", Vector2(5, 5), 0.5)
+	t.tween_property(Global.camera, "zoom", Vector2(5, 5), 0.5)
 	t.tween_property(Fader, "modulate", Color(0, 0, 0, 0.6), 0.5)
 	if duplicated:
-		Cam.position = Global.Camera.get_screen_center_position()
-		t.tween_property(player, "global_position", Global.Camera.get_screen_center_position(), 0.5)
-		t.tween_property(Fader.material, "shader_parameter/lod", int(Global.Settings.BlurEffect) * 2.5, 0.5).from(0.0)
-	else: t.tween_property(Fader.material, "shader_parameter/lod", int(Global.Settings.BlurEffect) * 1.0, 0.5).from(0.0)
+		Cam.position = Global.camera.get_screen_center_position()
+		t.tween_property(player, "global_position", Global.camera.get_screen_center_position(), 0.5)
+		t.tween_property(Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 2.5, 0.5).from(0.0)
+	else: t.tween_property(Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 1.0, 0.5).from(0.0)
 	get_inventory()
 	$Confirm.icon = Controller.get_scheme().ConfirmIcon
 	$Back.icon = Controller.get_scheme().CancelIcon
@@ -118,7 +118,7 @@ func _input(event: InputEvent) -> void:
 	$Confirm.icon = Controller.get_scheme().ConfirmIcon
 	$Back.icon = Controller.get_scheme().CancelIcon
 	$Party.icon = Controller.get_scheme().Select
-	Global.Controllable = false
+	Global.controllable = false
 
 	if input_frame == Global.process_frame: return
 	match stage:
@@ -160,13 +160,13 @@ func _on_focus_changed(control: Control) -> void:
 func close(give_control := true) -> void:
 	$AnimationPlayer.speed_scale = 2
 	$AnimationPlayer.play_backwards("open")
-	Global.Player.get_node("DirectionMarker/Finder/Shape").disabled = false
+	Global.player.get_node("DirectionMarker/Finder/Shape").disabled = false
 	stage = "inactive"
 	get_tree().paused = false
 
 	if t: t.kill()
 	t = create_tween()
-	Global.Area.get_node("Mira").set_anim()
+	Global.room.get_node("Mira").set_anim()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_CUBIC)
 	t.set_parallel()
@@ -194,8 +194,8 @@ func close(give_control := true) -> void:
 	t.tween_property($Ring/Glow, "modulate", Color.TRANSPARENT, 0.3)
 	if Fader: t.tween_property(Fader.material, "shader_parameter/lod", 0.0, 0.5)
 	Cam.position = CamPrev.position
-	t.tween_property(Global.Camera, "zoom", zoom, 0.3)
-	if not duplicated: Global.Area.setup_z(z)
+	t.tween_property(Global.camera, "zoom", zoom, 0.3)
+	if not duplicated: Global.room.setup_z(z)
 	else: t.tween_property(player, "modulate", Color(0, 0, 0, 0), 0.5)
 	if is_instance_valid(player):
 		player.get_node("%Shadow").z_index = 0
@@ -203,13 +203,13 @@ func close(give_control := true) -> void:
 	await t.finished
 	if duplicated:
 		player.free()
-		Global.Player = Global.Area.get_child(0)
+		Global.player = Global.room.get_child(0)
 
 	if give_control:
 		Event.give_control(cam_follow)
 
-	Global.Player.set_anim()
-	Global.Camera.enabled = true
+	Global.player.set_anim()
+	Global.camera.enabled = true
 
 	if is_instance_valid(Fader): Fader.hide()
 	queue_free()
@@ -321,7 +321,7 @@ func _root() -> void:
 	$Back.text = "Close"
 	$Confirm.show()
 	$Back.show()
-	PartyUI.UIvisible = true
+	Hud.ui_visible = true
 	$Confirm.disabled = false
 	t = create_tween()
 	t.set_ease(Tween.EASE_OUT)
@@ -354,7 +354,7 @@ func _root() -> void:
 	t.tween_property($Party, "position", Vector2(274, 28), 0.4)
 	$Confirm.show()
 	$Back.show()
-	PartyUI.darken(false)
+	Hud.darken(false)
 	await t.finished
 	if stage == "inactive-root":
 		stage = "root"
@@ -396,14 +396,14 @@ func _journal() -> void:
 	$Confirm.hide()
 	$Back.hide()
 	get_tree().root.add_child(journalui)
-	PartyUI.hide_all()
+	Hud.hide_all()
 
 
 func _item() -> void:
 	if stage == "inactive": return
 	rootIndex = 1
 	move_root()
-	PartyUI.UIvisible = false
+	Hud.ui_visible = false
 	$DescPaper.show()
 	$Confirm.text = "Use"
 	$Back.text = "Back"
@@ -470,7 +470,7 @@ func _options() -> void:
 		move_root()
 
 	stage = "options"
-	PartyUI.UIvisible = false
+	Hud.ui_visible = false
 	get_tree().root.add_child((await Loader.load_res("res://UI/Options/Options.tscn")).instantiate())
 	Audio.confirm_sound()
 	t = create_tween()
@@ -521,9 +521,9 @@ func _on_back_button_down() -> void:
 				$Confirm.show()
 
 		"choose_member":
-			if not PartyUI.Expanded: return
+			if not Hud.expanded: return
 			get_inventory()
-			await PartyUI._on_shrink()
+			await Hud._on_shrink()
 			await Event.wait()
 			stage = "item"
 			#print(Item.item.Name)
@@ -533,8 +533,8 @@ func _on_back_button_down() -> void:
 			if get_viewport().gui_get_focus_owner() == null and $Inventory/Margin/Scroller/Vbox/Consumables.get_child(0):
 				$Inventory/Margin/Scroller/Vbox/Consumables.get_child(0).grab_focus()
 			elif get_viewport().gui_get_focus_owner() == null: $Inventory/Margin/Scroller/Vbox/KeyItems.get_child(0).grab_focus()
-			PartyUI.UIvisible = false
-			PartyUI.MemberChoosing = false
+			Hud.ui_visible = false
+			Hud.member_choosing = false
 
 
 func get_inventory() -> void:
@@ -648,7 +648,7 @@ func focus_item(node: Button) -> void:
 func _on_party_pressed() -> void:
 	if stage == "root":
 		get_viewport().gui_release_focus()
-		PartyUI.expand.emit()
+		Hud.expand()
 		stage = "party"
 		t = create_tween().set_parallel().set_ease(Tween.EASE_IN)
 		t.tween_property($Confirm, "position:y", 900, 0.3)

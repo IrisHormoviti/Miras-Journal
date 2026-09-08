@@ -3,8 +3,8 @@ extends Node
 
 func jump_playtest() -> void:
 	await Textbox.open("testbush", "jump_playtest")
-	Event.Day = 3
-	Event.ToTime = Event.TOD.AFTERNOON
+	Event.day = 3
+	Event.to_time = Event.TOD.AFTERNOON
 	Event.remove_flag("HideDate")
 	Event.time_transition()
 

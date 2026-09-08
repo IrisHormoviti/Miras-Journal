@@ -94,6 +94,7 @@ func _ready() -> void:
 	if Nav == null: Nav = get_node_or_null("Nav")
 	process_mode = Node.PROCESS_MODE_PAUSABLE
 	default_position = global_position
+	
 	default()
 
 
@@ -134,7 +135,7 @@ func _physics_process(delta: float) -> void:
 
 	extended_process()
 	if self.get_path() in Loader.defeated: queue_free()
-	if Global.Area: coords = Global.Area.local_to_map(global_position)
+	if Global.room: coords = Global.room.local_to_map(global_position)
 	RealVelocity = (PrevPosition - position) / get_physics_process_delta_time()
 	PrevPosition = position
 
@@ -145,7 +146,7 @@ func _physics_process(delta: float) -> void:
 
 		S.IDLE:
 			direction = Vector2.ZERO
-			position = round(position)
+			#position = round(position)
 			move_and_collide(Vector2.ZERO)
 
 		S.CONTROLLED:
@@ -207,7 +208,7 @@ func handle_step_sounds(for_sprite: AnimatedSprite2D) -> void:
 		if i in for_sprite.animation: frames = step_frames.get(i)
 
 	if frames.has(for_sprite.frame):
-		var terrain := Global.Area.get_terrain(coords)
+		var terrain := Global.room.get_terrain(coords)
 
 		if "Generic" == terrain: return
 		var rand: int
@@ -220,7 +221,7 @@ func handle_step_sounds(for_sprite: AnimatedSprite2D) -> void:
 
 func single_footstep() -> void:
 	if has_node("StdrFootsteps"):
-		var terrain := Global.Area.get_terrain(coords)
+		var terrain := Global.room.get_terrain(coords)
 		var sound := terrain + str(randi_range(1, 6))
 		play_footstep_sound(sound)
 
@@ -239,7 +240,7 @@ func check_terrain(terrain: String, layer := 1) -> bool:
 
 
 func get_tile(layer: int) -> TileData:
-	return Global.Area.get_tile(Global.Area.local_to_map(global_position), layer)
+	return Global.room.get_tile(Global.room.local_to_map(global_position), layer)
 
 
 ## Move towards a direction x24
@@ -279,12 +280,12 @@ func look_to(dir: Variant) -> void:
 
 func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector2 = Vector2.ZERO) -> void:
 	if Nav == null: return
-	if self is Mira and Global.Controllable: await Event.take_control()
+	if self is Mira and Global.controllable: await Event.take_control()
 	#await stop_going()
-	Nav.set_target_position(Global.Area.map_to_local(pos))
+	Nav.set_target_position(Global.room.map_to_local(pos))
 	state = S.MOVE
 	#print("Target: ", Vector2(pos))
-	while (not Nav.is_target_reached() and (not Global.Area.local_to_map(global_position) == Vector2i(pos))) and state == S.MOVE:
+	while (not Nav.is_target_reached() and (not Global.room.local_to_map(global_position) == Vector2i(pos))) and state == S.MOVE:
 		await Event.wait()
 		direction = to_local(Nav.get_next_path_position()).normalized()
 		#print(not Global.Area.local_to_map(global_position) == Vector2i(pos), not Nav.is_target_reached(), BodyState)
@@ -293,10 +294,10 @@ func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector
 			state = S.IDLE
 			return
 
-	if Global.Area.map_to_local(pos) != global_position and Global.Area.local_to_map(global_position) == Vector2i(pos) and exact:
+	if Global.room.map_to_local(pos) != global_position and Global.room.local_to_map(global_position) == Vector2i(pos) and exact:
 		#print("finished")
 		var t := create_tween()
-		t.tween_property(self, "global_position", Global.Area.map_to_local(pos), Nav.distance_to_target() / speed)
+		t.tween_property(self, "global_position", Global.room.map_to_local(pos), Nav.distance_to_target() / speed)
 		await t.finished
 
 	state = S.IDLE
@@ -316,7 +317,7 @@ func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Varia
 	if pos is String:
 		pos = Event.get_marker_pos(pos)
 
-	if self is Mira and Global.Player.controllable(): return
+	if self is Mira and Global.player.controllable(): return
 	await stop_going()
 	
 	if use_coords: pos *= 24
@@ -365,7 +366,7 @@ func defeat() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("DebugD") and Global.Settings.DebugMode:
+	if Input.is_action_just_pressed("DebugD") and Global.settings.DebugMode:
 		go_to(get_global_mouse_position(), false)
 
 
@@ -400,7 +401,7 @@ func chain_moves(moves: Array) -> void:
 
 func chain_positions(moves: Array[Vector2]) -> void:
 	for i in moves:
-		if Loader.in_battle:
+		if Battle.in_battle:
 			await Event.wait()
 
 		await go_to(i)

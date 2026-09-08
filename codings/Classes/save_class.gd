@@ -1,22 +1,58 @@
 extends Resource
 class_name SaveFile
 
-@export var Name: String = "Autosave"
-@export var Party: Array[StringName] = [&"Mira", &"", &"", &""]
-@export var RoomPath: String
-@export var RoomName: String = "???"
-@export var Position: Vector2
-@export var Camera: int = 0
-@export var Members: Array[Dictionary]
-@export var Complimentaries: Array[String]
-@export var Defeated: Array
-@export var StartTime: float
-@export var SavedTime: float
-@export var PlayTime: float
-@export var Diary: Dictionary[int, PackedStringArray]
-@export var Flags: Dictionary[StringName, int]
+const VERSION := 8
+
+## Title of the save file, independent of the save file name
+@export var title: String = "Autosave"
+
+## Path to the room the player is in
+@export var room: String
+
+## Name of the room the player is in, independent of the room path
+@export var room_name: String = "???"
+
+## String array of the party member codenames, 
+## must be 4 in length, empty strings for empty slots
+@export var party: Array[StringName] = [&"Mira", &"", &"", &""]
+
+## Array of dictionaries containing member data
+## Refer to the Actor class for the structure of the dictionary
+@export var members: Array[Dictionary]
+
+## Position of the player in the room, in global coordinates
+@export var player_position: Vector2
+
+## The "camera index" to be used in the room
+@export var camera_index: int = 0
+
+## Array of names of unlocked complimentary abilities
+@export var complimentaries: Array[String]
+
+## IDs of defeated enemies
+@export var defeated_enemies: Array
+
+## The time the save file was created, in unix time
+@export var start_time: float
+
+## The time the save file was created, in unix time
+@export var saved_time: float
+
+## The time played in seconds
+@export var play_time: float
+
+## Array of diary entries for each day ID
+@export var diary: Dictionary[int, PackedStringArray]
+
+## List of flags and their value
+@export var flags: Dictionary[StringName, int]
+
+## List of item filenames
+@export var inventory: Array[String]
+
+## The version of the save file
+## 0 will be ignored and loaded anyways
 @export var version := 0
-@export var Inventory: Array[String]
 
 ## Depricated
 var Day: int
@@ -24,7 +60,7 @@ var TimeOfDay: int
 
 
 func preview() -> Texture:
-	match Party:
+	match party:
 		["Mira", "Alcine"]:
 			return await Loader.load_res("res://art/Previews/2.png")
 
@@ -37,8 +73,8 @@ func migrate() -> SaveFile:
 
 	match version:
 		6:
-			Flags.set("day", Day)
-			Flags.set("time", TimeOfDay)
+			flags.set("day", Day)
+			flags.set("time", TimeOfDay)
 			version = 7
 
 		_:

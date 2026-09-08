@@ -72,6 +72,12 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
+[sub_resource type="InputEventAction" id="InputEventAction_nx28g"]
+action = &"ui_accept"
+
+[sub_resource type="Shortcut" id="Shortcut_ktniu"]
+events = [SubResource("InputEventAction_nx28g")]
+
 [node name="Interactable" type="Area2D" unique_id=789642836]
 process_mode = 3
 physics_interpolation_mode = 2
@@ -87,8 +93,16 @@ position = Vector2(-3.8147e-06, -3.8147e-06)
 shape = SubResource("CircleShape2D_tykot")
 debug_color = Color(0.745, 0.337, 0.804, 0.072)
 
+[node name="Icon" type="Sprite2D" parent="." unique_id=1758546671]
+light_mask = 0
+z_index = 10
+z_as_relative = false
+position = Vector2(-7.1054274e-15, -14.999998)
+scale = Vector2(0.271667, 0.271667)
+texture = ExtResource("7_tykot")
+script = ExtResource("8_ibccg")
+
 [node name="Pack" type="CanvasGroup" parent="." unique_id=1040141046]
-visible = false
 scale = Vector2(0.4, 0.4)
 
 [node name="Arrow" type="TextureRect" parent="Pack" unique_id=932353223]
@@ -129,31 +143,23 @@ theme_override_styles/normal = SubResource("StyleBoxFlat_pwch7")
 theme_override_styles/pressed = SubResource("StyleBoxFlat_pwch7")
 theme_override_styles/hover = SubResource("StyleBoxFlat_t8kem")
 theme_override_styles/focus = SubResource("StyleBoxFlat_pwch7")
+shortcut = SubResource("Shortcut_ktniu")
+shortcut_in_tooltip = false
 text = "Inspect"
 icon = ExtResource("5_je23j")
 text_overrun_behavior = 1
 clip_text = true
 expand_icon = true
 
-[node name="Dots" type="TextureRect" parent="Pack/Cnt/Button" unique_id=1637509118]
+[node name="Dots" type="TextureRect" parent="Pack" unique_id=1637509118]
 light_mask = 0
-layout_mode = 0
-offset_left = 4.0
-offset_top = -4.9999924
-offset_right = 83.999985
-offset_bottom = 74.99999
-scale = Vector2(0.5, 0.5)
+offset_left = -15.0
+offset_top = -40.0
+offset_right = 17.5
+offset_bottom = -8.0
 texture = ExtResource("6_t8kem")
 expand_mode = 1
-
-[node name="Icon" type="Sprite2D" parent="." unique_id=1758546671]
-light_mask = 0
-z_index = 10
-z_as_relative = false
-position = Vector2(-7.1054274e-15, -14.999998)
-scale = Vector2(0.271667, 0.271667)
-texture = ExtResource("7_tykot")
-script = ExtResource("8_ibccg")
+stretch_mode = 4
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

@@ -32,11 +32,11 @@ func _ready() -> void:
 		queue_free()
 		return
 
-	if Loader.in_battle and is_instance_valid(Global.Bt):
-		var battle_ui := Global.Bt.ui
+	if Battle.in_battle and is_instance_valid(Global.bt):
+		var battle_ui := Global.bt.ui
 
 		if (battle_ui.stage == "root" or battle_ui.PrevStage == "root") and battle_ui.active:
-			get_tree().root.get_node_or_null("Battle/BattleUI").stage = "options"
+			Battle.current.ui.stage = "options"
 			cant_save = true
 		else:
 			queue_free()
@@ -48,7 +48,7 @@ func _ready() -> void:
 
 	$MainButtons/SaveManagment.grab_focus()
 
-	if not ResourceLoader.exists("user://Autosave.tres") or not is_instance_valid(Global.Area):
+	if not ResourceLoader.exists("user://Autosave.tres") or not is_instance_valid(Global.room):
 		cant_save = true
 		$MainButtons/SaveManagment.text = "Start the Game"
 
@@ -58,8 +58,8 @@ func _ready() -> void:
 	$Silhouette.texture = Loader.preview
 	tick()
 	get_viewport().connect("gui_focus_changed", _on_focus_changed)
-	was_controllable = Global.Controllable
-	Global.Controllable = false
+	was_controllable = Global.controllable
+	Global.controllable = false
 	was_paused = get_tree().paused
 	Global.check.emit()
 	get_tree().paused = true
@@ -76,7 +76,7 @@ func _ready() -> void:
 	t.set_trans(Tween.TRANS_QUART)
 	t.set_ease(Tween.EASE_OUT)
 	t.set_parallel()
-	t.tween_property($Fader.material, "shader_parameter/lod", int(Global.Settings.BlurEffect) * 3.0, 1).from(0.0)
+	t.tween_property($Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3.0, 1).from(0.0)
 	t.tween_property($Fader, "modulate", Color(0, 0, 0, 0.4), 1).from(Color(0, 0, 0, 0))
 	if no_main:
 		$Background.position = Vector2(1500, 0)
@@ -111,7 +111,7 @@ func fetch_platform_info() -> void:
 	if Global.using_steam:
 		$Background/Info/LoggedIn.texture = await Loader.load_res("res://UI/Misc/Platforms/steam.svg")
 
-	$Background/Info/User.text = Global.Settings.PlayerName
+	$Background/Info/User.text = Global.settings.PlayerName
 	var platform_icon: Texture
 	match OS.get_name():
 		"Windows": platform_icon = await Loader.load_res("res://UI/Misc/Platforms/windows.svg")
@@ -146,6 +146,9 @@ func siilhouette() -> void:
 func tick() -> void:
 	var playtime: Dictionary = Time.get_time_dict_from_unix_time(Global.get_playtime())
 	$Timer/HSplitContainer/Label.text = "%02d:%02d:%02d" % [playtime.hour, playtime.minute, playtime.second]
+
+	$MusicTrack.text = Audio.get_music_title()
+	$MusicTrack.visible = not $MusicTrack.text.is_empty()
 
 
 func _input(event: InputEvent) -> void:
@@ -183,7 +186,7 @@ func close(force := false) -> void:
 		return
 
 	if stage == "closing": return
-	if is_instance_valid(Global.Player):
+	if is_instance_valid(Global.player):
 		if $/root.get_node_or_null("MainMenu"):
 			$/root.get_node("MainMenu")._on_back_button_down()
 		else:
@@ -212,16 +215,16 @@ func close(force := false) -> void:
 	t.tween_property($GalleryPanel, "position", Vector2(1335, -62), 0.5)
 	t.tween_property($SidePanel/Tooltip, "scale", Vector2.ZERO, 0.5)
 	t.tween_property($SidePanel/Tooltip, "modulate:a", 0, 0.5)
-	if Loader.in_battle:
-		$/root/Battle/BattleUI.active = true
-		$/root/Battle/BattleUI.stage = "root"
+	if Battle.in_battle:
+		Battle.current.ui.active = true
+		Battle.current.ui.stage = "root"
 
 	stage = "closing"
 	await t.finished
 	get_tree().paused = was_paused
-	Global.Controllable = was_controllable
+	Global.controllable = was_controllable
 
-	if !is_instance_valid(Global.Area):
+	if !is_instance_valid(Global.room):
 		Global.title_screen()
 
 	Global.check.emit()
@@ -241,7 +244,7 @@ func main() -> void:
 	t.set_parallel()
 	$MainButtons.get_child(mainIndex).grab_focus()
 	t.tween_property($Background, "position", Vector2(560, 0), 0.5)
-	t.tween_property($Fader.material, "shader_parameter/lod", int(Global.Settings.BlurEffect) * 3.0, 1)
+	t.tween_property($Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3.0, 1)
 	t.tween_property($Fader, "modulate", Color(0, 0, 0, 0.4), 1)
 	t.tween_property($Timer, "position", Vector2(27, 27), 0.5)
 	t.tween_property($Silhouette, "position", Vector2(0, -39), 0.5)
@@ -417,7 +420,7 @@ func _on_quit() -> void:
 	#if stage != "main": await loaded
 	stage = "quit"
 	var text: String
-	if is_instance_valid(Global.Area):
+	if is_instance_valid(Global.room):
 		text = "Quit the game?\nYour progress will be saved."
 
 		if cant_save:
@@ -427,14 +430,14 @@ func _on_quit() -> void:
 
 	match awnser:
 		2:
-			if not cant_save and is_instance_valid(Global.Area):
+			if not cant_save and is_instance_valid(Global.room):
 				await Loader.save()
 
 			Global.quit()
 
 		1:
-			if is_instance_valid(Global.Area):
-				Global.Area.queue_free()
+			if is_instance_valid(Global.room):
+				Global.room.queue_free()
 				if not cant_save: await Loader.save()
 
 			if get_tree().root.has_node("MainMenu"):
@@ -443,7 +446,7 @@ func _on_quit() -> void:
 			if get_tree().root.has_node("Battle"):
 				get_tree().root.get_node("Battle").queue_free()
 
-			PartyUI.hide_all()
+			Hud.hide_all()
 			close()
 
 		0:
@@ -492,36 +495,36 @@ func _on_focus_changed(control: Control) -> void:
 
 func load_settings(no_check := false) -> void:
 	if stage == "game_settings" or no_check:
-		%SettingsVbox/AutoHideHUD/MenuBar.selected = Global.Settings.AutoHideHUD
-		%SettingsVbox/ControlScheme/MenuBar.selected = Global.Settings.ControlSchemeEnum
-		%SettingsVbox/Fullscreen/CheckButton.button_pressed = Global.Settings.Fullscreen
+		%SettingsVbox/AutoHideHUD/MenuBar.selected = Global.settings.AutoHideHUD
+		%SettingsVbox/ControlScheme/MenuBar.selected = Global.settings.ControlSchemeEnum
+		%SettingsVbox/Fullscreen/CheckButton.button_pressed = Global.settings.Fullscreen
 
-		%SettingsVbox/Master/Slider.value = Global.Settings.MasterVolume
-		%SettingsVbox/SFX/Slider.value = Global.Settings.SFXVolume
-		%SettingsVbox/Music/Slider.value = Global.Settings.MusicVolume
-		%SettingsVbox/SoundEffects/UI/Slider.value = Global.Settings.UIVolume
-		%SettingsVbox/SoundEffects/Footsteps/Slider.value = Global.Settings.FootstepsVolume
-		%SettingsVbox/SoundEffects/Voices/Slider.value = Global.Settings.VoicesVolume
+		%SettingsVbox/Master/Slider.value = Global.settings.MasterVolume
+		%SettingsVbox/SFX/Slider.value = Global.settings.SFXVolume
+		%SettingsVbox/Music/Slider.value = Global.settings.MusicVolume
+		%SettingsVbox/SoundEffects/UI/Slider.value = Global.settings.UIVolume
+		%SettingsVbox/SoundEffects/Footsteps/Slider.value = Global.settings.FootstepsVolume
+		%SettingsVbox/SoundEffects/Voices/Slider.value = Global.settings.VoicesVolume
 
 		%SettingsVbox/BCSadjust/BrtSlider.value = World.environment.adjustment_brightness
 		%SettingsVbox/BCSadjust/ConSlider.value = World.environment.adjustment_contrast
 		%SettingsVbox/BCSadjust/SatSlider.value = World.environment.adjustment_saturation
-		%SettingsVbox/DebugMode/DebugMode.button_pressed = Global.Settings.DebugMode
-		%SettingsVbox/Vsync/CheckButton.button_pressed = Global.Settings.VSync
-		%SettingsVbox/GlowEffect/CheckButton.button_pressed = Global.Settings.GlowEffect
-		%SettingsVbox/HighResTextures/CheckButton.button_pressed = Global.Settings.HighResTextures
-		%SettingsVbox/TextSpeed/MenuBar.selected = Global.Settings.TextSpeed
-		%SettingsVbox/UpscaledResolution/CheckButton.button_pressed = Global.Settings.UpscaledRes
-		%SettingsVbox/ControllerVibration/CheckButton.button_pressed = Global.Settings.ControllerVibration
-		%SettingsVbox/BlurEffect/CheckButton.button_pressed = Global.Settings.BlurEffect
+		%SettingsVbox/DebugMode/DebugMode.button_pressed = Global.settings.DebugMode
+		%SettingsVbox/Vsync/CheckButton.button_pressed = Global.settings.VSync
+		%SettingsVbox/GlowEffect/CheckButton.button_pressed = Global.settings.GlowEffect
+		%SettingsVbox/HighResTextures/CheckButton.button_pressed = Global.settings.HighResTextures
+		%SettingsVbox/TextSpeed/MenuBar.selected = Global.settings.TextSpeed
+		%SettingsVbox/UpscaledResolution/CheckButton.button_pressed = Global.settings.UpscaledRes
+		%SettingsVbox/ControllerVibration/CheckButton.button_pressed = Global.settings.ControllerVibration
+		%SettingsVbox/BlurEffect/CheckButton.button_pressed = Global.settings.BlurEffect
 
-		match Global.Settings.FPS:
+		match Global.settings.FPS:
 			0: %SettingsVbox/FPS/MenuBar.selected = 0
 			30: %SettingsVbox/FPS/MenuBar.selected = 1
 			60: %SettingsVbox/FPS/MenuBar.selected = 2
 			144: %SettingsVbox/FPS/MenuBar.selected = 3
 
-		match Global.Settings.UpscaleFactor:
+		match Global.settings.UpscaleFactor:
 			0.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 0
 			1.0: %SettingsVbox/UpscaleFactor/MenuBar.selected = 1
 			1.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 2
@@ -622,47 +625,46 @@ func draw_file(file: SaveFile, node: Control) -> void:
 		panel.get_node("Date/Day").text = "Delete"
 		panel.get_node("Location").text = "Now"
 		return
-	elif file.version < Loader.save_file_version:
-		node.get_node("Info/FileName").text = file.Name
+	elif file.version and file.version < SaveFile.VERSION:
+		node.get_node("Info/FileName").text = file.title
 		panel.get_node("Date/Month").text = "Old"
 		panel.get_node("Date/Day").text = "Version"
 		panel.get_node("Location").text = "Load to migrate"
 		return
-	elif file.version > Loader.save_file_version:
-		node.get_node("Info/FileName").text = file.Name
+	elif file.version and file.version > SaveFile.VERSION:
+		node.get_node("Info/FileName").text = file.title
 		panel.get_node("Date/Month").text = "Newer"
 		panel.get_node("Date/Day").text = "Version"
 		panel.get_node("Location").text = "Please update the game"
 		return
 
 	# Set time for sorting
-	node.set_meta("sort", file.SavedTime)
+	node.set_meta("sort", file.saved_time)
 
 	#Now load in everything
-	node.get_node("Info/FileName").text = file.Name
-	panel.get_node("Date/Day").text = str(file.Flags.get("day"))
+	node.get_node("Info/FileName").text = file.title
+	panel.get_node("Date/Day").text = str(file.flags.get("day"))
 
-	if file.Flags.get("day") <= 30 and file.Flags.get("day") > 0:
-		panel.get_node("Date/Month").text = "November"
-	elif file.Flags.get("day") == 0:
-		panel.get_node("Date/Month").text = "Date"
-		panel.get_node("Date/Day").text = "Unknown"
-	else:
-		panel.get_node("Date/Month").text = "Beyond"
-		panel.get_node("Date/Day").text = "Time"
-
-	panel.get_node("Party/Icon0").texture = Query.find_member(file.Party[0]).PartyIcon
+	if file.flags.has("day"):
+		if file.flags.get("day") <= 30 and file.flags.get("day") > 0:
+			panel.get_node("Date/Month").text = "November"
+		elif file.flags.get("day") == 0:
+			panel.get_node("Date/Month").text = "Date"
+			panel.get_node("Date/Day").text = "Unknown"
+		else:
+			panel.get_node("Date/Month").text = "Beyond"
+			panel.get_node("Date/Day").text = "Time"
 
 	for i in range(0, 4):
-		if file.Party[i] != &"":
-			var member := Query.find_member(file.Party[i])
+		if file.party[i] != &"":
+			var member: Actor = Party.get_member(file.party[i])
 			panel.get_node("Party/Icon" + str(i)).texture = member.PartyIcon if member else load("uid://cdys3kc6ljylm")
 		else: panel.get_node("Party/Icon" + str(i)).texture = null
-	var playtime: Dictionary = Time.get_datetime_dict_from_unix_time(int(file.PlayTime))
+	var playtime: Dictionary = Time.get_datetime_dict_from_unix_time(int(file.play_time))
 	panel.get_node("Time/Playtime").text = "%02d:%02d:%02d" % [playtime.hour, playtime.minute, playtime.second]
-	panel.get_node("Location").text = file.RoomName
-	var savedtime: Dictionary = Time.get_datetime_dict_from_unix_time(int(file.SavedTime))
-	var starttime: Dictionary = Time.get_datetime_dict_from_unix_time(int(file.StartTime))
+	panel.get_node("Location").text = file.room_name
+	var savedtime: Dictionary = Time.get_datetime_dict_from_unix_time(int(file.saved_time))
+	var starttime: Dictionary = Time.get_datetime_dict_from_unix_time(int(file.start_time))
 	panel.get_node("SavedDate").text = "%02d %s %d %d:%d\nStarted: %02d %s %d" % [savedtime.day, Query.get_mmm(savedtime.month),
 	savedtime.year, savedtime.hour, savedtime.minute, starttime.day, Query.get_mmm(starttime.month), starttime.year]
 	panel.get_parent().get_node("ProgressBar").value = 0
@@ -773,7 +775,7 @@ func _on_save_load() -> void:
 		await Loader.ungray
 
 	const press_speed := 4
-	var quick_load := Global.Area == null
+	var quick_load := Global.room == null
 
 	if stage != "save_managment" or not is_instance_valid(focus): return
 	var panel := focus.get_parent()
@@ -1007,42 +1009,42 @@ func _on_credits(source: Button) -> void:
 
 func _on_control_scheme(index: int) -> void:
 	Audio.confirm_sound()
-	Global.Settings.ControlSchemeAuto = false
-	Global.Settings.ControlSchemeEnum = %SettingsVbox/ControlScheme/MenuBar.get_selected_id()
+	Global.settings.ControlSchemeAuto = false
+	Global.settings.ControlSchemeEnum = %SettingsVbox/ControlScheme/MenuBar.get_selected_id()
 
-	match Global.Settings.ControlSchemeEnum:
+	match Global.settings.ControlSchemeEnum:
 		0:
-			Global.Settings.ControlSchemeAuto = true
+			Global.settings.ControlSchemeAuto = true
 
 		1:
-			Global.Settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Keyboard.tres")
+			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Keyboard.tres")
 
 		2:
-			Global.Settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Nintendo.tres")
+			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Nintendo.tres")
 
 		3:
-			Global.Settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Xbox.tres")
+			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Xbox.tres")
 
 		4:
-			Global.Settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Generic.tres")
+			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Generic.tres")
 
 		5:
-			Global.Settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/PlayStation.tres")
+			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/PlayStation.tres")
 
 		6:
-			Global.Settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/PlayStationOld.tres")
+			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/PlayStationOld.tres")
 
 		7:
-			Global.Settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/SteamDeck.tres")
+			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/SteamDeck.tres")
 
 		8:
-			Global.Settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/None.tres")
+			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/None.tres")
 
 	load_settings()
 
 
 func _on_fullscreen(tog: bool) -> void:
-	if tog != Global.Settings.Fullscreen:
+	if tog != Global.settings.Fullscreen:
 		Global.fullscreen(tog)
 		confirm()
 
@@ -1050,7 +1052,7 @@ func _on_fullscreen(tog: bool) -> void:
 func _on_volume(value: float, origin: Slider) -> void:
 	var bus := origin.get_parent().name
 
-	Global.Settings.set(bus+"Volume", value)
+	Global.settings.set(bus+"Volume", value)
 	if value == origin.min_value:
 		value -= 100
 
@@ -1064,9 +1066,9 @@ func _on_volume(value: float, origin: Slider) -> void:
 func _on_volume_reset() -> void:
 	confirm()
 
-	for i in Global.Settings.get_property_list():
+	for i in Global.settings.get_property_list():
 		if "Volume" in i.get("name"):
-			Global.Settings.set(i.name, 0)
+			Global.settings.set(i.name, 0)
 
 	load_settings()
 
@@ -1084,12 +1086,12 @@ func _on_saturation(value: float) -> void:
 
 
 func _on_auto_hide_hud(index: int) -> void:
-	Global.Settings.AutoHideHUD = index
+	Global.settings.AutoHideHUD = index
 	confirm()
 
 
 func _on_text_speed(index: int) -> void:
-	Global.Settings.TextSpeed = index
+	Global.settings.TextSpeed = index
 	confirm()
 
 
@@ -1117,51 +1119,51 @@ func _on_adjust_image(toggle: bool) -> void:
 
 
 func _debug_mode(toggled_on: bool) -> void:
-	Global.Settings.DebugMode = toggled_on
+	Global.settings.DebugMode = toggled_on
 	confirm()
 
 
 func _fps(index: int) -> void:
-	Global.Settings.FPS = %SettingsVbox/FPS/MenuBar.get_selected_id()
+	Global.settings.FPS = %SettingsVbox/FPS/MenuBar.get_selected_id()
 	confirm()
 
 
 func _upscale_factor(index: int) -> void:
 	match index:
-		0: Global.Settings.UpscaleFactor = 0.5
-		1: Global.Settings.UpscaleFactor = 1
-		2: Global.Settings.UpscaleFactor = 1.5
-		3: Global.Settings.UpscaleFactor = 2.0
+		0: Global.settings.UpscaleFactor = 0.5
+		1: Global.settings.UpscaleFactor = 1
+		2: Global.settings.UpscaleFactor = 1.5
+		3: Global.settings.UpscaleFactor = 2.0
 
 	confirm()
 
 
 func _vsync(toggle: bool) -> void:
-	Global.Settings.VSync = toggle
+	Global.settings.VSync = toggle
 	confirm()
 	load_settings()
 
 
 func _gloweffect(toggle: bool) -> void:
-	Global.Settings.GlowEffect = toggle
+	Global.settings.GlowEffect = toggle
 	confirm()
 
 
 func _on_highres_textures(toggle: bool) -> void:
-	Global.Settings.HighResTextures = toggle
+	Global.settings.HighResTextures = toggle
 	confirm()
 
 
 func _on_upscaledres(toggled_on: bool) -> void:
-	Global.Settings.UpscaledRes = toggled_on
+	Global.settings.UpscaledRes = toggled_on
 	confirm()
 
 
 func _on_controller_vibration(toggled_on: bool) -> void:
-	Global.Settings.ControllerVibration = toggled_on
+	Global.settings.ControllerVibration = toggled_on
 	confirm()
 
 
 func _blur_effect(toggled_on: bool) -> void:
-	Global.Settings.BlurEffect = toggled_on
+	Global.settings.BlurEffect = toggled_on
 	confirm()

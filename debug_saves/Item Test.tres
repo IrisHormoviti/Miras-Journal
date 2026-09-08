@@ -4,12 +4,12 @@
 
 [resource]
 script = ExtResource("1_otxke")
-Name = "Item Test"
-Party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
-RoomPath = "res://rooms/Debug.tscn"
-RoomName = "Debug room"
-Position = Vector2(10, -3)
-Members = Array[Dictionary]([{
+title = "Item Test"
+party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
+room = "res://rooms/Debug.tscn"
+room_name = "Debug room"
+player_position = Vector2(10, -3)
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantAttack": false,
@@ -115,11 +115,11 @@ Members = Array[Dictionary]([{
 "WeaponPower": 15,
 "codename": &"Mira"
 }])
-StartTime = 1775821000.966906
-SavedTime = 1776078719.549128
-PlayTime = 10974.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "SmallPotion:Con", "SmallPotion:Con", "SmallPotion:Con", "RustySword:Bti", "RustySword:Bti", "RustySword:Bti"])
-Flags = Dictionary[StringName, int]({
+start_time = 1775821000.966906
+saved_time = 1776078719.549128
+play_time = 10974.0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "SmallPotion:Con", "SmallPotion:Con", "SmallPotion:Con", "RustySword:Bti", "RustySword:Bti", "RustySword:Bti"])
+flags = Dictionary[StringName, int]({
 &"AlcineFollow": 2,
 &"BreakableVines0": 1,
 &"DebugBattle": 1,
@@ -136,4 +136,4 @@ Flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 5
 })
-version = 7
+version = 0

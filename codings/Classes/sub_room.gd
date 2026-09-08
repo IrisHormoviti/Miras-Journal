@@ -22,23 +22,23 @@ func _ready() -> void:
 
 
 func transition(time := 0.3) -> void:
-	Global.Area.current_subroom = self
+	Global.room.current_subroom = self
 	show()
 	if is_instance_valid(t): t.kill()
 	t = create_tween()
 	t.set_parallel()
 	t.tween_property(self, "modulate", Color.WHITE, time)
-	Global.Area.fade()
-	Global.Player.z_index = z_index
+	Global.room.fade()
+	Global.player.z_index = z_index
 	Event.teleport_followers()
-	if cant_dash_inside: Global.Player.can_dash = false
+	if cant_dash_inside: Global.player.can_dash = false
 	if lock_cam:
-		Global.Player.camera_follow(false)
-		Global.Camera.position = cam_pos
+		Global.player.camera_follow(false)
+		Global.camera.position = cam_pos
 
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)
-	t.tween_property(Global.Camera, "zoom", Vector2(cam_zoom, cam_zoom), time)
+	t.tween_property(Global.camera, "zoom", Vector2(cam_zoom, cam_zoom), time)
 	for i in get_children(): if i is TileMapLayer: i.collision_enabled = true
 	await t.finished
 	for i in Layers:
@@ -47,18 +47,18 @@ func transition(time := 0.3) -> void:
 
 
 func detransition() -> void:
-	Global.Area.current_subroom = null
-	Global.Area.unfade()
-	Global.Area.setup_zoom(true)
-	if cant_dash_inside: Global.Player.can_dash = true
-	Global.Player.camera_follow(true)
+	Global.room.current_subroom = null
+	Global.room.unfade()
+	Global.room.setup_zoom(true)
+	if cant_dash_inside: Global.player.can_dash = true
+	Global.player.camera_follow(true)
 	await fade_out()
 	hide()
 	for i in get_children(): if i is TileMapLayer: i.collision_enabled = false
 	Event.teleport_followers()
-	Global.Player.z_index = Global.Area.z_index
+	Global.player.z_index = Global.room.z_index
 
-	if Global.Area.current_subroom == self:
+	if Global.room.current_subroom == self:
 		Event.take_control(true, true)
 		await transition()
 		Event.give_control(false)

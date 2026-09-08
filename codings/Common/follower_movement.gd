@@ -27,11 +27,11 @@ func default() -> void:
 
 	await Event.wait()
 
-	if not Global.Player: return
-	oposite = (Global.Player.facing.vector * Vector2(-1, -1)) * 150
-	set_anim("Idle" + Global.Player.facing.to_string())
+	if not Global.player: return
+	oposite = (Global.player.facing.vector * Vector2(-1, -1)) * 150
+	set_anim("Idle" + Global.player.facing.to_string())
 	velocity = oposite
-	path = Global.Player.path
+	path = Global.player.path
 	follow = PathFollow2D.new()
 	follow.name = name + "Path"
 	path.add_child(follow)
@@ -48,7 +48,7 @@ func default_id() -> String:
 
 
 func control_process() -> void:
-	if not is_instance_valid(Global.Player): return
+	if not is_instance_valid(Global.player): return
 	move_and_slide()
 	if dont_follow:
 		direction = Vector2.ZERO
@@ -57,20 +57,20 @@ func control_process() -> void:
 		state = S.IDLE
 		return
 
-	if Global.Party.check_member(member) and not Loader.in_battle and is_instance_valid(follow):
-		add_collision_exception_with(Global.Player)
-		for i in Global.Area.followers:
+	if Party.has_member_index(member) and not Battle.in_battle and is_instance_valid(follow):
+		add_collision_exception_with(Global.player)
+		for i in Global.room.followers:
 			add_collision_exception_with(i)
 
 		show()
-		z_index = Global.Player.z_index
-		collision_layer = Global.Player.collision_layer
-		collision_mask = Global.Player.collision_mask
+		z_index = Global.player.z_index
+		collision_layer = Global.player.collision_layer
+		collision_mask = Global.player.collision_mask
 		$Glow.color = member_info().MainColor
 		$Glow.energy = member_info().GlowDef / 2
 		var oldposition := global_position
-		var player_dist := to_local(Global.Player.position).length()
-		target = round((follow.global_position + Global.Player.facing.vector.rotated(PI / 2) * offset))
+		var player_dist := to_local(Global.player.position).length()
+		target = round((follow.global_position + Global.player.facing.vector.rotated(PI / 2) * offset))
 		direction = to_local(target).normalized()
 
 		if to_local(target).length() < 6: direction = Vector2.ZERO
@@ -82,7 +82,7 @@ func control_process() -> void:
 			if player_dist > distance + 80:
 				jump_to_player()
 				player_jumped = false
-			elif player_dist < distance and Global.Player.move_frames / 10 > distance:
+			elif player_dist < distance and Global.player.move_frames / 10 > distance:
 				player_jumped = false
 		else:
 			follow.progress = round(lerpf(follow.progress, max(float(path.curve.get_baked_length() - distance), 0), 0.5))
@@ -90,15 +90,15 @@ func control_process() -> void:
 			if player_dist > 180:
 				jump_to_player()
 
-			if player_dist < 12 and Global.Controllable:
+			if player_dist < 12 and Global.controllable:
 				update_anim_prm()
-				oposite = (Global.Player.facing.vector * Vector2(-1, -1))
+				oposite = (Global.player.facing.vector * Vector2(-1, -1))
 				velocity = oposite * 150
 
 			#elif path_dist > distance:
 				#$CollisionShape2D.disabled = true
 
-		speed = max(50, Global.Player.speed * (to_local(target).length() / 40))
+		speed = max(50, Global.player.speed * (to_local(target).length() / 40))
 
 		if floor(player_dist / 5) < floor(distance / 5):
 			speed /= 2
@@ -115,10 +115,10 @@ func control_process() -> void:
 
 
 func jump_to_player(_speed := 2) -> void:
-	if not is_instance_valid(Global.Player): return
-	if Global.Player.dashing: return
+	if not is_instance_valid(Global.player): return
+	if Global.player.dashing: return
 	var _prev_pos := position
-	var new_pos := Global.Player.position
+	var new_pos := Global.player.position
 	#new_pos.x += offset
 	#if member == 3: new_pos.y -= 24
 	#if speed > 0:
@@ -128,19 +128,20 @@ func jump_to_player(_speed := 2) -> void:
 
 
 func _on_timer_timeout() -> void:
-	if Global.Party.check_member(member):
+	if Party.has_member_index(member):
 		update_anim_prm()
 
 
 func member_info() -> Actor:
-	return Global.Party.get_member(member)
+	return Party.current[member]
 
 
 func attacked() -> void:
-	Event.jump_to(self, position - Vector2(Global.Player.facing.vector * 24), 5, 0.5)
+	Event.jump_to(self, position - Vector2(Global.player.facing.vector * 24), 5, 0.5)
 
 
 func update() -> void:
+	if not Party.has_member_index(member): return
 	var mem := member_info()
 
 	if mem != null and sprite.sprite_frames and sprite.sprite_frames.resource_path != member_info().OV:

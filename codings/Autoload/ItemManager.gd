@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 const item_paths: Dictionary[StringName, String] = {
 	&"Key": "res://database/Items/KeyItems",
@@ -33,7 +33,7 @@ func get_animation(icon: Texture2D, named: String, pickup_anim := true) -> void:
 	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_CHAR
 	panel.size.x = 69
 	await Event.wait()
-	var player_pos: Vector2 = Global.Player.get_global_transform_with_canvas().origin - Vector2(48, 0)
+	var player_pos: Vector2 = Global.player.get_global_transform_with_canvas().origin - Vector2(48, 0)
 
 	if is_instance_valid(t): t.kill()
 	t = create_tween()

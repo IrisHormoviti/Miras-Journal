@@ -10,6 +10,7 @@
 [ext_resource type="Script" uid="uid://bo5pjlckoc8sc" path="res://codings/Interactions/horizontal_subdoor.gd" id="8_3nvdu"]
 [ext_resource type="Script" uid="uid://ddh88evqiuxdk" path="res://codings/Interactions/flickering_light.gd" id="8_uh3bf"]
 [ext_resource type="PackedScene" uid="uid://4qj3e07t5fsi" path="res://rooms/components/LeftRightDoor.tscn" id="9_ak30l"]
+[ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="9_nlfpl"]
 [ext_resource type="PackedScene" uid="uid://c8q4jskbbhvnn" path="res://rooms/components/Interactable.tscn" id="9_w0u03"]
 [ext_resource type="Script" uid="uid://5j8ao51a8t4p" path="res://codings/Components/lamp.gd" id="10_4xvqm"]
 [ext_resource type="Script" uid="uid://01da3iwdlren" path="res://codings/Interactions/tod_light.gd" id="12_7noep"]
@@ -67,11 +68,29 @@ fill = 1
 fill_from = Vector2(0.512821, 0.42906)
 fill_to = Vector2(1, 1)
 
+[sub_resource type="Resource" id="Resource_2ig8e"]
+script = ExtResource("9_nlfpl")
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_taf6h"]
 size = Vector2(10, 11)
 
+[sub_resource type="Resource" id="Resource_4ygg4"]
+script = ExtResource("9_nlfpl")
+
+[sub_resource type="Resource" id="Resource_n1bc5"]
+script = ExtResource("9_nlfpl")
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ig8e"]
 size = Vector2(41, 14)
+
+[sub_resource type="Resource" id="Resource_7edst"]
+script = ExtResource("9_nlfpl")
+
+[sub_resource type="Resource" id="Resource_4a3rh"]
+script = ExtResource("9_nlfpl")
+
+[sub_resource type="Resource" id="Resource_sk1io"]
+script = ExtResource("9_nlfpl")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nlfpl"]
 size = Vector2(96, 12)
@@ -97,6 +116,12 @@ fill_to = Vector2(0.0769231, 0.0384615)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6we5s"]
 size = Vector2(2, 19)
+
+[sub_resource type="Resource" id="Resource_c15y1"]
+script = ExtResource("9_nlfpl")
+
+[sub_resource type="Resource" id="Resource_oppqm"]
+script = ExtResource("9_nlfpl")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5udm"]
 
@@ -379,6 +404,11 @@ script = ExtResource("12_7noep")
 [node name="AsteriaOutsideHouse" parent="NPCs" unique_id=1218397049 instance=ExtResource("16_s1pqb")]
 z_index = 0
 position = Vector2(412, 221)
+facing = SubResource("Resource_2ig8e")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="TalkPrompt" parent="NPCs/AsteriaOutsideHouse" unique_id=776850733 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
@@ -407,6 +437,11 @@ offset = Vector2(0, -10)
 
 [node name="AsteriaPlaza" parent="NPCs" unique_id=1605547350 instance=ExtResource("16_s1pqb")]
 position = Vector2(500, 666)
+facing = SubResource("Resource_4ygg4")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="TalkPrompt" parent="NPCs/AsteriaPlaza" unique_id=523109857 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
@@ -437,6 +472,11 @@ offset = Vector2(0, -10)
 [node name="Maple" parent="NPCs" unique_id=1141217796 instance=ExtResource("16_s1pqb")]
 z_index = 4
 position = Vector2(715, 505)
+facing = SubResource("Resource_n1bc5")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="NPCs/Maple" unique_id=1495585592]
 use_parent_material = true
@@ -565,6 +605,11 @@ metadata/_edit_group_ = true
 [node name="AlcineExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1280122638]
 position = Vector2(103, 157)
 script = ExtResource("21_p415d")
+facing = SubResource("Resource_7edst")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 metadata/_custom_type_script = "uid://gfinmw5y4txi"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/AlcineExit" unique_id=43704205]
@@ -574,6 +619,11 @@ animation = &"IdleDown"
 [node name="AsteriaExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1923902325]
 position = Vector2(74, 146)
 script = ExtResource("21_p415d")
+facing = SubResource("Resource_4a3rh")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 metadata/_custom_type_script = "uid://gfinmw5y4txi"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/AsteriaExit" unique_id=1668565077]
@@ -583,6 +633,11 @@ animation = &"IdleDown"
 [node name="DazeExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1204737540]
 position = Vector2(114, 125)
 script = ExtResource("21_p415d")
+facing = SubResource("Resource_sk1io")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 metadata/_custom_type_script = "uid://gfinmw5y4txi"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/DazeExit" unique_id=829220786]
@@ -822,6 +877,11 @@ flag = "LampInMirasRoom"
 
 [node name="RoomMira" parent="HomeBuilding-MyRoom" unique_id=344934070 instance=ExtResource("16_s1pqb")]
 position = Vector2(-98, 368)
+facing = SubResource("Resource_c15y1")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 dont_use_collision = true
 no_shadow = true
 
@@ -923,6 +983,11 @@ tile_set = ExtResource("27_u6p7b")
 [node name="Linde" parent="LindeHouse" unique_id=41972483 instance=ExtResource("16_s1pqb")]
 z_index = 0
 position = Vector2(-175, 555)
+facing = SubResource("Resource_oppqm")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="TalkPrompt" parent="LindeHouse/Linde" unique_id=2045856511 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)

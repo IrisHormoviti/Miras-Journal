@@ -53,11 +53,11 @@ static func get_date_day(day: int) -> String:
 
 
 static func tilemapize(pos: Vector2) -> Vector2:
-	return Global.Area.local_to_map(pos)
+	return Global.room.local_to_map(pos)
 
 
 static func globalize(coords: Vector2i) -> Vector2:
-	return Global.Area.map_to_local(coords)
+	return Global.room.map_to_local(coords)
 
 
 static func get_state(stat: StringName) -> State:
@@ -69,21 +69,13 @@ static func in_360(nm: int) -> int:
 
 
 static func member_exists(Name: StringName) -> bool:
-	for i in Global.Members:
+	for i in Party.members:
 		if i.codename == Name: return true
 
 	return false
 
 
-static func find_member(Name: StringName) -> Actor:
-	for i in Global.Members:
-		if i.codename == Name: return i
-
-	push_warning("No party member with the name " + Name + " was found")
-	return null
-
-
-static func calc_num(ab: Ability = Global.Bt.CurrentAbility, chara: Actor = null) -> int:
+static func calc_num(ab: Ability = Global.bt.CurrentAbility, chara: Actor = null) -> int:
 	var base: int
 	match ab.Damage:
 		Ability.D.NONE: base = 0
@@ -92,7 +84,7 @@ static func calc_num(ab: Ability = Global.Bt.CurrentAbility, chara: Actor = null
 		Ability.D.HEAVY: base = 48
 		Ability.D.SEVERE: base = 96
 		Ability.D.CUSTOM: base = int(ab.Parameter)
-		Ability.D.WEAPON: base = chara.Weapon.power if chara else Global.Bt.CurrentChar.Weapon.power
+		Ability.D.WEAPON: base = chara.Weapon.power if chara else Global.bt.CurrentChar.Weapon.power
 
 	if ab.DmgVarience:
 		base = int(base * randf_range(0.8, 1.2))
@@ -102,7 +94,7 @@ static func calc_num(ab: Ability = Global.Bt.CurrentAbility, chara: Actor = null
 
 static func get_complimentaries() -> Array[Ability]:
 	var rtn: Array[Ability]
-	for i in Global.Complimentaries:
+	for i in Global.complimentaries:
 		var ability := await get_ability(i)
 
 		if ability != null:
@@ -153,45 +145,25 @@ static func make_array_unique(arr: Array) -> void:
 
 
 static func mem(Name: StringName) -> Actor:
-	return Query.find_member(Name)
+	return Party.get_member(Name)
 
 
 static func number_of_party_members() -> int:
 	var num := 0
 
-	if check_member(0):
+	if Party.has_member_index(0):
 		num += 1
 
-	if check_member(1):
+	if Party.has_member_index(1):
 		num += 1
 
-	if check_member(2):
+	if Party.has_member_index(2):
 		num += 1
 
-	if check_member(3):
+	if Party.has_member_index(3):
 		num += 1
 
 	return num
-
-
-static func check_member(n: Variant) -> bool:
-	if n is int:
-		return Global.Party.check_member(n)
-	elif n is String: return Global.Party.has_member(n)
-	else: return false
-
-
-static func get_member_name(n: int) -> String:
-	if Global.Party.check_member(0) and n == 0:
-		return Global.Party.Leader.codename
-	elif Global.Party.check_member(1) and n == 1:
-		return Global.Party.Member1.codename
-	elif Global.Party.check_member(2) and n == 2:
-		return Global.Party.Member2.codename
-	elif Global.Party.check_member(3) and n == 2:
-		return Global.Party.Member3.codename
-	else:
-		return "Null"
 
 
 ## This is a private function.... In a helper library... that's literally never referenced.
@@ -236,7 +208,7 @@ static func find_ability(Char: Actor, type: Ability.TP, ignore_cost := false, ta
 
 
 static func is_everyone_fully_healed() -> bool:
-	for i in Global.Party.array():
+	for i in Party.current:
 		if !is_instance_valid(i): continue
 		if not i.is_fully_healed(): return false
 
@@ -246,19 +218,6 @@ static func is_everyone_fully_healed() -> bool:
 static func is_mem_healed(chara: Actor) -> bool:
 	if !is_instance_valid(chara): return true
 	return chara.is_fully_healed()
-
-
-static func is_in_party(n: String) -> bool:
-	if Global.Party.Leader.codename == n:
-		return true
-	elif Global.Party.check_member(1) and Global.Party.Member1.codename == n:
-		return true
-	elif Global.Party.check_member(2) and Global.Party.Member2.codename == n:
-		return true
-	elif Global.Party.check_member(3) and Global.Party.Member3.codename == n:
-		return true
-	else:
-		return false
 
 
 static func replace_occurence(from: String, what: String, forwhat: String, occurence := 1) -> String:
@@ -339,7 +298,7 @@ static func get_pronoun(form: String = "they", gender: String = "they") -> Strin
 	return form
 
 
-static func world_to_canvas(pos: Vector2, from: CanvasItem = Global.Area) -> Vector2:
+static func world_to_canvas(pos: Vector2, from: CanvasItem = Global.room) -> Vector2:
 	return Global.get_viewport().get_screen_transform() * from.get_global_transform_with_canvas() * pos
 
 

@@ -502,6 +502,7 @@ color = Color(0.694118, 1, 1, 1)
 texture = SubResource("GradientTexture2D_mj0rc")
 
 [node name="PointLight2D2" type="PointLight2D" parent="Lights" unique_id=2013025251]
+texture_filter = 2
 position = Vector2(1785.739, -588.3743)
 scale = Vector2(5.3533707, 7.835435)
 color = Color(0.796078, 0.745098, 0.858824, 0.964706)
@@ -529,7 +530,6 @@ scale = Vector2(1.34652, 2.86791)
 color = Color(0.796078, 0.745098, 0.858824, 0.964706)
 energy = 1.35
 blend_mode = 1
-shadow_enabled = true
 texture = SubResource("GradientTexture2D_wqew6")
 texture_scale = 4.94
 height = 100.0
@@ -1096,7 +1096,6 @@ proper_face = Vector2(1, 0)
 position = Vector2(1365, 223)
 BattleSeq = ExtResource("11_1cjwu")
 facing = SubResource("Resource_2q7ov")
-no_shadow = Vector2(0, 0)
 
 [node name="HomePoints" type="Node2D" parent="EnemyCrawlingSludge1" unique_id=739350443]
 
@@ -1140,7 +1139,6 @@ gizmo_extents = 100.0
 position = Vector2(1189, -338)
 BattleSeq = ExtResource("14_hs8tf")
 facing = SubResource("Resource_va2q4")
-no_shadow = Vector2(0, 0)
 
 [node name="HomePoints" type="Node2D" parent="EnemyCrawlingSludge2" unique_id=421879962]
 
@@ -1184,7 +1182,6 @@ gizmo_extents = 100.0
 position = Vector2(1638, 369)
 BattleSeq = ExtResource("13_812cc")
 facing = SubResource("Resource_u8txd")
-no_shadow = Vector2(0, 0)
 
 [node name="HomePoints" type="Node2D" parent="EnemyCrawlingSludge3" unique_id=2002211728]
 
@@ -1223,7 +1220,6 @@ gizmo_extents = 100.0
 position = Vector2(1258, -491)
 BattleSeq = ExtResource("21_e7y1u")
 facing = SubResource("Resource_f3j3j")
-no_shadow = Vector2(0, 0)
 
 [node name="HomePoints" type="Node2D" parent="EnemyCrawlingSludge4" unique_id=1500271890]
 

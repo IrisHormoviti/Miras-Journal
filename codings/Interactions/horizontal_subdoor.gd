@@ -6,11 +6,11 @@ var busy := false
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body == Global.Player and not busy:
+	if body == Global.player and not busy:
 		busy = true
 		if body.position.x > position.x:
 			await Event.take_control(true, true)
-			Global.Player.collision(false)
+			Global.player.collision(false)
 			if RightSubarea != null: RightSubarea.transition()
 			LeftSubarea.fade_out()
 			#await Global.Player.go_to(Vector2(global_position.x + 4, Global.Player.position.y), false, false, Vector2.RIGHT, 4)
@@ -19,7 +19,7 @@ func _on_body_exited(body: Node2D) -> void:
 			Event.give_control(false)
 		elif body.position.x < position.x:
 			await Event.take_control(true, true)
-			Global.Player.collision(false)
+			Global.player.collision(false)
 			if LeftSubarea != null: LeftSubarea.transition()
 			RightSubarea.fade_out()
 			#await Global.Player.go_to(Vector2(global_position.x - 4, Global.Player.position.y), false, false, Vector2.LEFT, 4)

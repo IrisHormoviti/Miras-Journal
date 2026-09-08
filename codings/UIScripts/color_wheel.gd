@@ -76,13 +76,13 @@ func show_trg_color(clr: Color) -> void:
 	elif tar_aff.hue in affinity.resist_range: relation_ico = $ResistIcon
 	elif tar_aff.hue in affinity.near_range: relation_ico = $NearIcon
 
-	if Global.Bt.ui.stage != "target": await Event.wait(0.3)
+	if Global.bt.ui.stage != "target": await Event.wait(0.3)
 	if relation_ico != null:
 		blink_icon(relation_ico)
 
 
 func blink_icon(icon: TextureRect) -> void:
-	while icon == relation_ico and Global.Bt.get_node("BattleUI").stage == "target":
+	while icon == relation_ico and Global.bt.get_node("BattleUI").stage == "target":
 		t = create_tween()
 		t.set_ease(Tween.EASE_IN_OUT)
 		t.set_trans(Tween.TRANS_SINE)

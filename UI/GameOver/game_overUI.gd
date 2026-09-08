@@ -6,12 +6,12 @@ func _ready() -> void:
 	Engine.time_scale = 1
 	Loader.battle_result = -1
 	Loader.battle_end.emit()
-	Loader.in_battle = false
-	if is_instance_valid(Global.Bt):
-		Global.Bt.queue_free()
-	if is_instance_valid(Global.Area):
-		Global.Area.queue_free()
-	PartyUI.disabled = true
+	Battle.in_battle = false
+	if is_instance_valid(Global.bt):
+		Global.bt.queue_free()
+	if is_instance_valid(Global.room):
+		Global.room.queue_free()
+	Hud.disabled = true
 	get_viewport().gui_focus_changed.connect(focus)
 	$Options/Retry.grab_focus()
 	inactive = false

@@ -90,7 +90,7 @@ func find_box(enemy: Actor) -> Control:
 
 
 func _check_party() -> void:
-	PartyUI._check_party()
+	Hud._check_party()
 	Troop = get_parent().Troop
 
 	if t: t.stop()

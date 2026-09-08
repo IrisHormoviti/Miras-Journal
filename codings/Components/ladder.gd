@@ -24,15 +24,15 @@ func _physics_process(delta: float) -> void:
 			var t := create_tween()
 			t.tween_property(self, "varience", 0, 0.2)
 
-		Global.Player.state = NPC.S.CUSTOM
+		Global.player.state = NPC.S.CUSTOM
 
-		Global.Player.set_anim("Climb")
+		Global.player.set_anim("Climb")
 
 		if Input.is_action_pressed("ui_down"):
 			Controller.rumble(0.2, 0, 0.1)
-			Global.Player.direction = Vector2.DOWN * 1.5
+			Global.player.direction = Vector2.DOWN * 1.5
 		elif Input.is_action_pressed("ui_up"):
-			Global.Player.direction = Vector2.UP * varience * 1.5
+			Global.player.direction = Vector2.UP * varience * 1.5
 
 			if varience == 1:
 				Controller.rumble(0.05, 0, 0.1)
@@ -40,46 +40,46 @@ func _physics_process(delta: float) -> void:
 			if varience == 0:
 				Controller.rumble(0, 0.05, 0.1)
 		else:
-			Global.Player.direction = Vector2.ZERO
-			Global.Player.sprite.pause()
+			Global.player.direction = Vector2.ZERO
+			Global.player.sprite.pause()
 
-		if Global.Player.position.y < $Start1.global_position.y and Global.Player.facing.is_vector(Vector2.UP):
+		if Global.player.position.y < $Start1.global_position.y and Global.player.facing.is_vector(Vector2.UP):
 			if enable_stairs:
-				Global.Area.change_index(up_index)
+				Global.room.change_index(up_index)
 
 			active = false
-			Global.Player.set_anim("IdleUp")
-			Global.Player.shadow(true)
-			await Event.jump_to_global(Global.Player, $End1.global_position, time, height)
+			Global.player.set_anim("IdleUp")
+			Global.player.shadow(true)
+			await Event.jump_to_global(Global.player, $End1.global_position, time, height)
 			Event.give_control()
 			#Event.teleport_followers()
 
-		if Global.Player.position.y > $Start2.global_position.y and Global.Player.facing.is_vector(Vector2.DOWN):
+		if Global.player.position.y > $Start2.global_position.y and Global.player.facing.is_vector(Vector2.DOWN):
 			if enable_stairs:
-				Global.Area.change_index(down_index)
+				Global.room.change_index(down_index)
 
 			active = false
-			Global.Player.set_anim("IdleDown")
-			Global.Player.look_to(Vector2.DOWN)
-			Global.Player.shadow(true)
-			await Event.jump_to_global(Global.Player, $End2.global_position, time, height)
+			Global.player.set_anim("IdleDown")
+			Global.player.look_to(Vector2.DOWN)
+			Global.player.shadow(true)
+			await Event.jump_to_global(Global.player, $End2.global_position, time, height)
 			Event.give_control()
 			#Event.teleport_followers()
 
 
 func climb_down() -> void:
 	#Global.Player.path.curve.clear_points()
-	Global.Player.collision(false)
+	Global.player.collision(false)
 	await Event.take_control(true, true)
-	await Event.jump_to_global(Global.Player, $Start1.global_position, time, height)
-	Global.Player.shadow(false)
+	await Event.jump_to_global(Global.player, $Start1.global_position, time, height)
+	Global.player.shadow(false)
 	active = true
 
 
 func climb_up() -> void:
 	#Global.Player.path.curve.clear_points()
-	Global.Player.collision(false)
+	Global.player.collision(false)
 	await Event.take_control(true, true)
-	await Event.jump_to_global(Global.Player, $Start2.global_position, time, height)
-	Global.Player.shadow(false)
+	await Event.jump_to_global(Global.player, $Start2.global_position, time, height)
+	Global.player.shadow(false)
 	active = true

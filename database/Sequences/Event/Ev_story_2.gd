@@ -3,7 +3,7 @@ extends Node
 
 func nov3_morning() -> void:
 	Item.add_item("LightweightAxe", &"Key", false, false)
-	Query.find_member("Mira").Weapon = load("res://database/Items/KeyItems/LightweightAxe.tres")
+	Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/LightweightAxe.tres")
 	Event.add_flag("LampInMirasRoom", false)
 	await Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(98, 424), 0, "", false)
 	Event.no_player()
@@ -13,9 +13,9 @@ func nov3_morning() -> void:
 	Event.npc("RoomMira").set_anim("Sleep")
 	await Event.wait(2)
 	await Textbox.open(name, "nov3_morning", false)
-	Global.Party.set_to(["Mira", "Alcine"])
-	Event.ToDay = 3
-	Event.ToTime = 2
+	Party.set_to(["Mira", "Alcine"])
+	Event.to_day = 3
+	Event.to_time = 2
 	Event.time_transition()
 	#await Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(102, 440))
 
@@ -30,25 +30,25 @@ func nov3_afternoon() -> void:
 	await Event.wait(2)
 	await Textbox.open(name, "nov3_afternoon", false)
 	await Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(102, 440))
-	Global.Player.look_to(Direction.RIGHT)
+	Global.player.look_to(Direction.RIGHT)
 
 
 func nov3_enterSG() -> void:
 	await Loader.travel_to("ShardGardens", Vector2(26, 84), 0, "", false)
 	Global.heal_party()
-	Global.Party.reset_party()
-	Global.Party.add("Alcine")
-	Global.Party.add("Asteria")
-	Global.Party.add("Daze")
-	Global.Player.camera_follow(false)
+	Party.reset_party()
+	Party.add("Alcine")
+	Party.add("Asteria")
+	Party.add("Daze")
+	Global.player.camera_follow(false)
 	Global.location_name("Shard Gardens")
-	Global.Camera.position = Vector2(663, 241)
+	Global.camera.position = Vector2(663, 241)
 	var t := create_tween().set_ease(Tween.EASE_IN_OUT)
-	t.tween_property(Global.Camera, "position", Vector2(190, 84), 6)
+	t.tween_property(Global.camera, "position", Vector2(190, 84), 6)
 	await Event.wait(4)
-	Global.Player.collision(false)
+	Global.player.collision(false)
 	await Event.take_control(false, true)
-	await Global.Player.move_dir(Vector2(6, 0))
+	await Global.player.move_dir(Vector2(6, 0))
 	await Textbox.open(name, "nov3_sg_enter")
 	Event.give_control(true)
 	Event.add_flag("Nov3_WentToSG")
@@ -61,7 +61,7 @@ func sg_bunker_entrance() -> void:
 		await Event.take_control()
 		await Textbox.open(name, "enter_bunker_2")
 		Event.give_control()
-	elif Global.Party.check_member(3):
+	elif Party.has_member_index(3):
 		await Event.take_control()
 		Textbox.open(name, "lazulite_warning")
 	else:
@@ -70,8 +70,8 @@ func sg_bunker_entrance() -> void:
 
 
 func lazulite_boss() -> void:
-	await Global.Player.bubble("Surprise")
-	await Loader.start_battle("LazuliteHeartBoss")
+	await Global.player.bubble("Surprise")
+	await Battle.start("LazuliteHeartBoss")
 	await Loader.battle_end
 	print("battle done")
 	Loader.ungray.emit()

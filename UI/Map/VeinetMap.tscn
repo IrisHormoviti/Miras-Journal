@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b31w3e1tiwp0y"]
 
-[ext_resource type="Script" uid="uid://b4ww3rphxb7qi" path="res://codings/UIScripts/veinet_map.gd" id="1_8kw10"]
+[ext_resource type="Script" uid="uid://b4ww3rphxb7qi" path="res://codings/UIScripts/veinet_mapUI.gd" id="1_8kw10"]
 [ext_resource type="Texture2D" uid="uid://csspp3j26q3o3" path="res://art/Pictures/AbadMap.png" id="2_8kw10"]
 [ext_resource type="FontFile" uid="uid://sehkl0mea74i" path="res://UI/Fonts/cyrenia-regular.ttf" id="3_3o4ps"]
 [ext_resource type="FontVariation" uid="uid://b26p56yb7cgso" path="res://UI/Fonts/cyrenia-button.tres" id="4_rkbbg"]

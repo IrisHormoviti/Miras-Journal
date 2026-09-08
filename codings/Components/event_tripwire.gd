@@ -72,15 +72,15 @@ func _validate_property(property: Dictionary) -> void:
 
 func kick() -> void:
 	print("kick!")
-	Global.Player.look_to(KickDirection)
-	while Global.Player in get_overlapping_bodies():
-		await Global.Player.move_dir(KickDirection)
+	Global.player.look_to(KickDirection)
+	while Global.player in get_overlapping_bodies():
+		await Global.player.move_dir(KickDirection)
 
 
 func _on_body_entered(body: Node2D) -> void:
 	if Flag.is_empty() and FlagIsName:
 		Flag = name
-	if (Event.f(Flag) == FlagShouldBe or Flag == "") and body == Global.Player and (not FlagIsName or !Event.check_flag(name)):
+	if (Event.f(Flag) == FlagShouldBe or Flag == "") and body == Global.player and (not FlagIsName or !Event.check_flag(name)):
 		print("Tripwire: ", name)
 		if AddFlag:
 			if FlagIsName:
@@ -90,8 +90,8 @@ func _on_body_entered(body: Node2D) -> void:
 		if SlowDown:
 			await Event.take_control()
 			Event.give_control(true)
-			Global.Player.can_dash = false
-			Global.Player.speed = 50
+			Global.player.can_dash = false
+			Global.player.speed = 50
 
 		if not TutorialName.is_empty():
 			Event.pop_tutorial(TutorialName)
@@ -114,9 +114,9 @@ func _on_body_entered(body: Node2D) -> void:
 			else:
 				await Textbox.open(TextFile, TextNode)
 		elif BattleSeq != null:
-			Loader.start_battle(BattleSeq)
+			Battle.start(BattleSeq)
 		if SlowDown:
-			Global.Player.speed = Global.Player.walk_speed
-			Global.Player.can_dash = true
+			Global.player.speed = Global.player.WALK_SPEED
+			Global.player.can_dash = true
 		if ReturnControl:
 			Event.give_control(true)

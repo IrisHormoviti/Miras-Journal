@@ -5,13 +5,13 @@ var t: Tween
 
 
 func _process(_delta: float) -> void:
-	if not Global.Player: return
+	if not Global.player: return
 	
 	if not moving:
 		moving = true
 		direction = Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized()
-		var d: Vector2 = Global.Player.facing.vector * 50
-		if is_instance_valid(Global.Player): global_position = Global.Player.global_position + Vector2(randf_range(-180, 180), randf_range(-150, 150)) + d
+		var d: Vector2 = Global.player.facing.vector * 50
+		if is_instance_valid(Global.player): global_position = Global.player.global_position + Vector2(randf_range(-180, 180), randf_range(-150, 150)) + d
 		t = create_tween()
 		t.set_ease(randi_range(0, 3))
 		t.set_trans(Tween.TRANS_QUART)

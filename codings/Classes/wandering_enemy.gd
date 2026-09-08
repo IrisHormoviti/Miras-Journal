@@ -79,13 +79,11 @@ func default() -> void:
 	if ID in Loader.defeated:
 		queue_free()
 
-	Loader.battle_start.connect(func() -> void: hide()) #this is really ugly but it's typed now.
-	Loader.battle_end.connect(func() -> void: show())
 	if get_node_or_null("HomePoints") != null:
 		for i in $HomePoints.get_children():
 			homepoints.append(i.global_position)
 
-	for i in Global.Area.followers:
+	for i in Global.room.followers:
 		add_collision_exception_with(i)
 
 	patrol()
@@ -112,22 +110,22 @@ func extended_process() -> void:
 			Collision.set_deferred("disabled", false)
 			state = S.CHASE
 
-			if Global.Player in $DirectionMarker/Finder.get_overlapping_bodies():
-				Nav.set_target_position(Global.Player.position)
+			if Global.player in $DirectionMarker/Finder.get_overlapping_bodies():
+				Nav.set_target_position(Global.player.position)
 				if tmr.time_left < 2 and Nav.is_target_reachable():
 					tmr.start(2)
 
 			if Direction.snap_vector(to_local(Nav.get_next_path_position())) != -Direction.snap_vector(direction):
 				direction = to_local(Nav.get_next_path_position()).normalized()
 		else:
-			if not Loader.in_battle:
+			if not Battle.in_battle:
 				Loader.battle_bars(0)
 
 			patrol()
-			if Loader.attacker == self:
-				Loader.attacker = null
+			if Battle.attacker == self:
+				Battle.attacker = null
 	else:
-		if Loader.in_battle:
+		if Battle.in_battle:
 			hide()
 		elif not homepoints.is_empty() and tmr.time_left == 0 and not stopping:
 
@@ -151,23 +149,23 @@ func extended_process() -> void:
 
 
 func begin_battle(advatage := 0) -> void:
-	Loader.attacker = self
-	Global.Player.dramatic_attack_pause()
+	Battle.attacker = self
+	Global.player.dramatic_attack_pause()
 	Controller.rumble(1, 1, 0.2)
-	await Loader.start_battle(BattleSeq, advatage)
+	await Battle.start(BattleSeq, advatage)
 	global_position = default_position
 
 
 func attacked() -> void:
-	if Global.Player.winding_attack:
+	if Global.player.winding_attack:
 		return
 
 	state = S.NONE
 	set_anim("Hit")
 	var to_pos := position + facing.vector * 12
 	Event.jump_to_global(self, to_pos, 25, 1)
-	Global.Player.camera_follow(false)
-	Global.Camera.position = to_pos
+	Global.player.camera_follow(false)
+	Global.camera.position = to_pos
 	Global.intro_effect(self)
 	if PinRange:
 		begin_battle()
@@ -176,24 +174,24 @@ func attacked() -> void:
 
 
 func _on_finder_body_entered(body: Node2D) -> void:
-	if body == Global.Player and not PinRange and not Loader.chased and not Loader.in_battle:
-		Nav.set_target_position(Global.Player.position)
+	if body == Global.player and not PinRange and not Loader.chased and not Battle.in_battle:
+		Nav.set_target_position(Global.player.position)
 		if not Nav.is_target_reachable():
 			return
 
 		stopping = true
 		Loader.chase_mode()
 		Loader.battle_bars(1)
-		set_dir_marker(to_local(Global.Player.global_position))
+		set_dir_marker(to_local(Global.player.global_position))
 		state = S.IDLE
 		direction = Vector2.ZERO
 		$Bubble.play("Surprise")
-		Loader.attacker = self
-		look_to(Direction.snap_vector(to_local(Global.Player.global_position)))
+		Battle.attacker = self
+		look_to(Direction.snap_vector(to_local(Global.player.global_position)))
 		await Event.wait(0.8)
-		look_to(Direction.snap_vector(to_local(Global.Player.global_position)))
+		look_to(Direction.snap_vector(to_local(Global.player.global_position)))
 		speed = chase_speed
-		set_dir_marker(to_local(Global.Player.global_position))
+		set_dir_marker(to_local(Global.player.global_position))
 		await Event.wait()
 		#if not Global.Player in $DirectionMarker/Finder.get_overlapping_bodies() or not Nav.is_target_reachable():
 		#$Bubble.play("Ellipsis")
@@ -204,16 +202,16 @@ func _on_finder_body_entered(body: Node2D) -> void:
 
 
 func _on_catch_area_body_entered(body: Node2D) -> void:
-	if (body == Global.Player and (not lock) and (not Loader.in_battle) and (not Global.Player.attacking or Global.Player.winding_attack)):
+	if (body == Global.player and (not lock) and (not Battle.in_battle) and (not Global.player.attacking or Global.player.winding_attack)):
 		#print(Global.Player.attacking)
 		$EnemyStrike.disappear()
-		Global.Player.winding_attack = false
+		Global.player.winding_attack = false
 		await Event.take_control(false, false, false)
-		Global.Player.dashdir = Direction.snap_vector(Global.Player.to_local(global_position))
-		Global.Player.get_node("Flame").energy = 0
-		Global.Player.bump()
-		facing.vector = to_local(Global.Player.position)
-		Global.intro_effect(Global.Player)
+		Global.player.dashdir = Direction.snap_vector(Global.player.to_local(global_position))
+		Global.player.get_node("Flame").energy = 0
+		Global.player.bump()
+		facing.vector = to_local(Global.player.position)
+		Global.intro_effect(Global.player)
 		begin_battle(2)
 
 

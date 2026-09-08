@@ -61,4 +61,4 @@ func _unhandled_input(event: InputEvent) -> void:
 	if event.is_action("ui_cancel"):
 		_on_no_pressed()
 	get_viewport().set_input_as_handled()
-	if is_instance_valid(Global.Player) and Global.Controllable: _on_no_pressed()
+	if is_instance_valid(Global.player) and Global.controllable: _on_no_pressed()

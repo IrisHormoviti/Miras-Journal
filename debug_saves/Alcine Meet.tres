@@ -1,15 +1,12 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://c55gdnnotjbwe"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_5vsh8"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_5vsh8"]
 
 [resource]
 script = ExtResource("1_5vsh8")
-Name = "Alcine Meet"
-RoomPath = "res://rooms/TempleWoods.tscn"
-RoomName = "Temple Woods"
-Position = Vector2(1244, -597.33386)
-Camera = 1
-Members = Array[Dictionary]([{
+title = "Alcine Meet"
+room_name = "Temple Woods"
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantAttack": false,
@@ -115,11 +112,12 @@ Members = Array[Dictionary]([{
 "WeaponPower": 15,
 "codename": &"Mira"
 }])
-StartTime = 1775821000.966906
-SavedTime = 1775821158.413109
-PlayTime = 10733.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat"])
-Flags = Dictionary[StringName, int]({
+player_position = Vector2(1244, -597.33386)
+camera_index = 1
+start_time = 1775821000.966906
+saved_time = 1775821158.413109
+play_time = 10733.0
+flags = Dictionary[StringName, int]({
 &"BreakableVines0": 1,
 &"DisableMenus": 0,
 &"DisableVeinet": 1,
@@ -135,4 +133,4 @@ Flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 5
 })
-version = 7
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat"])

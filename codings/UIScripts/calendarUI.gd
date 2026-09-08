@@ -18,19 +18,19 @@ func _check_party() -> void:
 	else:
 		$Date/Day.add_theme_font_size_override("font_size", 265)
 		show()
-		$Date/Day.text = Query.get_date_day(Event.Day)
-		$Date/Month.text = Query.get_month_name(Query.get_month(Event.Day))
-	$Container/TimeOfDay.text = Query.to_tod_text(Event.TimeOfDay)
-	$Container/TimeOfDay.icon = await Query.to_tod_icon(Event.TimeOfDay)
+		$Date/Day.text = Query.get_date_day(Event.day)
+		$Date/Month.text = Query.get_month_name(Query.get_month(Event.day))
+	$Container/TimeOfDay.text = Query.to_tod_text(Event.time_of_day)
+	$Container/TimeOfDay.icon = await Query.to_tod_icon(Event.time_of_day)
 
 
 func confirm_time_passage(title: String, description: String, to_time: Event.TOD) -> bool:
 	Global.check.emit()
 	Event.add_flag("DisableMenus", false)
-	Global.Controllable = false
+	Global.controllable = false
 	get_tree().paused = true
-	PartyUI.show_all()
-	PartyUI.darken()
+	Hud.show_all()
+	Hud.darken()
 	var t := create_tween()
 	t.set_parallel()
 	t.set_trans(Tween.TRANS_QUART)
@@ -46,7 +46,7 @@ func confirm_time_passage(title: String, description: String, to_time: Event.TOD
 	$Arrow.show()
 	show()
 	await t.finished
-	Global.Controllable = false
+	Global.controllable = false
 	$Action/Nevermind.grab_focus()
 	return await chosen_time_pass
 
@@ -55,7 +55,7 @@ func hide_prompt() -> void:
 	$Action.hide()
 	$Future.hide()
 	$Arrow.hide()
-	await PartyUI.darken(false)
+	await Hud.darken(false)
 
 
 func _on_nevermind_pressed() -> void:

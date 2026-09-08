@@ -4,12 +4,12 @@
 
 [resource]
 script = ExtResource("1_fa2gv")
-Name = "z"
-RoomPath = "res://rooms/TempleWoods.tscn"
-RoomName = "Temple Woods"
-Position = Vector2(1257, -808.3833)
-Camera = 1
-Members = Array[Dictionary]([{
+title = "z"
+room = "res://rooms/TempleWoods.tscn"
+room_name = "Temple Woods"
+player_position = Vector2(1257, -808.3833)
+camera_index = 1
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantDie": false,
@@ -105,10 +105,10 @@ Members = Array[Dictionary]([{
 "WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-StartTime = 1775821000.966906
-SavedTime = 1788293834.856722
-PlayTime = 10745.0
-Flags = Dictionary[StringName, int]({
+start_time = 1775821000.966906
+saved_time = 1788293834.856722
+play_time = 10745.0
+flags = Dictionary[StringName, int]({
 &"AlcineFollow": 1,
 &"BreakableVines0": 1,
 &"DisableMenus": 0,
@@ -125,5 +125,5 @@ Flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 5
 })
-version = 7
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat"])
+version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat"])

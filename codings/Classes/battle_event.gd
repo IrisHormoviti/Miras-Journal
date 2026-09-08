@@ -34,15 +34,15 @@ var ran_this_turn := false
 
 
 func check() -> bool:
-	var actore := Global.Bt.get_actor(actor)
+	var actore := Global.bt.get_actor(actor)
 
 	if ran_this_turn: return false
-	if not is_instance_valid(Global.Bt): return false
+	if not is_instance_valid(Global.bt): return false
 	if not flag.is_empty() and Event.check_flag(flag) != flag_should_be:
 		return false
 
 	if after_turn != -1:
-		if Global.Bt.Turn < after_turn: return false
+		if Global.bt.Turn < after_turn: return false
 
 	if low_hp != -1 and low_hp >= 0:
 		if actor == &"" or actore == null:
@@ -69,7 +69,7 @@ func run() -> void:
 	if ran_this_turn: return
 	else: ran_this_turn = true
 
-	if !Global.Bt: return
+	if !Global.bt: return
 	print("Running event type ", result)
 	if hold_turn: await run_with_await()
 	else:
@@ -79,7 +79,7 @@ func run() -> void:
 
 			RES.CALL_FUNCTION:
 				print("Call seq: ", parameter1)
-				Global.Bt.get_node("Act").call(parameter1)
+				Global.bt.get_node("Act").call(parameter1)
 
 			RES.REGULAR_DIALOG:
 				Textbox.open(parameter1, parameter2)
@@ -97,25 +97,25 @@ func run() -> void:
 					"Command":
 						action = Actor.BtAction.COMMAND
 
-				var actor_data := Global.Bt.get_actor(actor)
+				var actor_data := Global.bt.get_actor(actor)
 				actor_data.NextAction = action
 				actor_data.NextMove = resource
 				print("Forcing ", resource.name, " on ", actor)
 				if not parameter2.is_empty():
-					actor_data.NextTarget = Global.Bt.get_actor(parameter2)
+					actor_data.NextTarget = Global.bt.get_actor(parameter2)
 
 			RES.VICTORY:
 				print("Event means win")
-				Global.Bt.victory()
+				Global.bt.victory()
 
 			RES.DEFEAT_OTHERS:
 				print("Defeating everyone but ", actor)
-				var actor_data := Global.Bt.get_actor(actor, true)
+				var actor_data := Global.bt.get_actor(actor, true)
 
 				if actor_data != null and actor_data.IsEnemy:
-					for i in Global.Bt.Troop:
+					for i in Global.bt.Troop:
 						if actor_data != i:
-							Global.Bt.death(i)
+							Global.bt.death(i)
 
 	if add_flag and flag != "": Event.add_flag(flag, !flag_should_be)
 
@@ -123,6 +123,6 @@ func run() -> void:
 func run_with_await() -> void:
 	match result:
 		0: await Passive.open(parameter1, parameter2)
-		1: await Global.Bt.get_node("Act").call(parameter1)
+		1: await Global.bt.get_node("Act").call(parameter1)
 		2: await Textbox.open(parameter1, parameter2)
 		_: OS.alert("Battle event error: This action cannot hold the turn")

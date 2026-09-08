@@ -86,7 +86,7 @@ func got_complimentary(ability: Ability, from_name: String) -> void:
 
 	await Event.wait(1, false)
 
-	if Global.Complimentaries.is_empty():
+	if Global.complimentaries.is_empty():
 		await Event.pop_tutorial("complimentary")
 
 	$ChooseUpgrade/Continue.icon = Controller.get_scheme().ConfirmIcon
@@ -185,7 +185,7 @@ func levelup(chara: Actor) -> void:
 func level_cutin(chara: Actor) -> void:
 	$LevelupText.show()
 	$GotComplimentaryText.hide()
-	PartyUI.hide_all()
+	Hud.hide_all()
 	scale.y = 0.1
 
 	for i in $Line1/NameChain.get_children():
@@ -209,7 +209,7 @@ func level_cutin(chara: Actor) -> void:
 func complimentary_cutin(from_name: String, font_color: Color) -> void:
 	$LevelupText.hide()
 	$GotComplimentaryText.show()
-	PartyUI.hide_all()
+	Hud.hide_all()
 	scale.y = 0.1
 	from_name += " "
 

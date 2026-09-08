@@ -5,7 +5,7 @@ It's not the first time I've slept here in Abad, but the first time I really got
 To be honest, I still had hope in the back of my mind it was all a dream.
 But I guess this is my home for the time being...
 (hide)
-Alcine is resting peacfully in the side of the room.
+{{alcine}} is resting peacfully in the side of the room.
 (hide)
 do wait(2)
 *Knock Knock*
@@ -237,7 +237,7 @@ Asteria.Neutral: Don't go near the shiny stuff! Those tiny crystal shards hurt!
 Daze.Neutral: Levenor, don't you think you of all people should be the most careful?
 Mira.Neutral: Huh?
 Asteria.Neutral: You're the only one not wearing shoes, haha.
-Mira.Neutral: {{alcine()}} isn't wearing shoes either!
+Mira.Neutral: {{alcine}} isn't wearing shoes either!
 Alcine.Tired: Wooom...
 => END
 
@@ -301,7 +301,7 @@ else:
 ~ sg_find_bunker
 do Player.camera_follow(false)
 set Camera.position += Vector2(0, -120)
-if Party.check_member(3):
+if Party.has_member_index(3):
 	Asteria.Neutral: This is it.
 	Mira.Neutral: What's the deal with all the crystals?
 	Asteria.Neutral: I think they're all magical constructs. Like those gates we went through.
@@ -333,16 +333,16 @@ Daze.Neutral: A Guardian...
 Asteria.Neutral: Hey! Why are you using Mira's thing!?
 Mira.Neutral: Heck yeah!
 (hide)[next]
-do! Bt.pop_num(Global.Party.Leader, "1")
+do! Bt.pop_num(Party.Leader, "1")
 Mira.Neutral: Ow.
 Mira.Neutral: A little help here?
 => END
 
 ~ lazulite_heart_1
-do Bt.move(Global.Party.Leader, Vector2(-20,-40), 0.3)
-do! Bt.focus_cam(Global.Party.Leader)
-Mira.Neutral: Thanks {{alcine()}}!
-do! Bt.entrance_anim(Global.Party.Leader)
+do Bt.move(Party.Leader, Vector2(-20,-40), 0.3)
+do! Bt.focus_cam(Party.Leader)
+Mira.Neutral: Thanks {{alcine}}!
+do! Bt.entrance_anim(Party.Leader)
 set Bt.no_misses = false
 => END!
 

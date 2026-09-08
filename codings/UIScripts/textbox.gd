@@ -108,7 +108,7 @@ func _ready() -> void:
 
 	if Input.is_action_pressed("Dash"): skip = true
 
-	match Global.Settings.TextSpeed:
+	match Global.settings.TextSpeed:
 		1:
 			dialogue_label.seconds_per_step = 0.01
 			dialogue_label.seconds_per_pause_step = 0.1
@@ -123,11 +123,11 @@ func _ready() -> void:
 
 ## Start some dialogue
 func start(dialogue_resource: DialogueResource, title: String, extra_game_states: Array = []) -> void:
-	Global.Controllable = false
+	Global.controllable = false
 	temporary_game_states = extra_game_states
 	is_waiting_for_input = false
 	resource = dialogue_resource
-	#if not PartyUI.Expanded: PartyUI.UIvisible = false
+	#if not Hud.Expanded: Hud.UIvisible = false
 	#await get_tree().create_timer(0.3).timeout
 	self.dialogue_line = await resource.get_next_dialogue_line(title, temporary_game_states)
 
@@ -174,7 +174,7 @@ func show_dialog_line() -> void:
 
 	if not Query.member_exists(char_name):
 		character_label.text = char_name
-	else: character_label.text = Query.find_member(char_name).FirstName
+	else: character_label.text = Party.get_member(char_name).FirstName
 
 	input_indicator.hide()
 	character_panel.visible = not (character_label.text.is_empty() or no_nametag)
@@ -439,7 +439,7 @@ func _input(event: InputEvent) -> void:
 		var hold_frames := 1
 		t = create_tween().set_trans(Tween.TRANS_QUART)
 		t.tween_property($Hints, "position:x", 1400, 0.5)
-		while Input.is_action_pressed("Dash") and not Global.Controllable:
+		while Input.is_action_pressed("Dash") and not Global.controllable:
 			hold_frames += 1
 			await Event.wait()
 			Engine.time_scale = 4

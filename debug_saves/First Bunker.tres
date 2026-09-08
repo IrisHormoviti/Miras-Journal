@@ -4,13 +4,13 @@
 
 [resource]
 script = ExtResource("1_pwo4x")
-Name = "First Bunker"
-Party = Array[StringName]([&"Mira", &"Alcine", &"Daze", &""])
-RoomPath = "res://rooms/WitheredLeaves.tscn"
-RoomName = "Withered Leaves"
-Position = Vector2(-201, -1039.3335)
+title = "First Bunker"
+party = Array[StringName]([&"Mira", &"Alcine", &"Daze", &""])
+room = "res://rooms/WitheredLeaves.tscn"
+room_name = "Withered Leaves"
+player_position = Vector2(-201, -1039.3335)
 Z = 0
-Members = Array[Dictionary]([{
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantAttack": false,
@@ -116,10 +116,10 @@ Members = Array[Dictionary]([{
 "WeaponPower": 14,
 "codename": &"Mira"
 }])
-StartTime = 1759087800.664549
-SavedTime = 1785267470.327128
-PlayTime = 10478.0
-Flags = Dictionary[StringName, int]({
+start_time = 1759087800.664549
+saved_time = 1785267470.327128
+play_time = 10478.0
+flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -153,5 +153,5 @@ Flags = Dictionary[StringName, int]({
 &"day": 2,
 &"time": 2
 })
-version = 7
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
+version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])

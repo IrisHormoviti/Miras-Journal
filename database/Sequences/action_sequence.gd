@@ -2,11 +2,9 @@ extends Node2D
 
 var TurnOrder: Array[Actor]
 var CurrentChar: Actor
-var Party: PartyData
 var Troop: Array[Actor]
 var Turn: int
 @onready var Bt: Battle = get_parent()
-@onready var Cam: Camera2D = Bt.cam
 @onready var t: Tween
 #var target:Actor
 var miss: bool
@@ -16,9 +14,8 @@ signal additional_done
 
 
 func play(nam: String, tar: Actor) -> void:
-	TurnOrder = get_parent().TurnOrder
-	CurrentChar = get_parent().CurrentChar
-	Party = get_parent().Party
+	TurnOrder = Bt.TurnOrder
+	CurrentChar = Bt.CurrentChar
 	Bt.Action = true
 	CurrentChar.node.z_index = 1
 	Loader.battle_bars(2)
@@ -1106,25 +1103,25 @@ func FlyAway(chara: Actor) -> void:
 
 #region Battle events
 func FirstBattle1() -> void:
-	while not is_instance_valid(Global.Player): await Event.wait()
+	while not is_instance_valid(Global.player): await Event.wait()
 	Bt.no_misses = true
 	Bt.no_crits = true
-	Global.Player.position = Vector2(1470, 400)
+	Global.player.position = Vector2(1470, 400)
 	await Event.wait(2, false)
-	Global.Camera.enabled = false
+	Global.camera.enabled = false
 	Bt.Troop[0].node.position.x = 50
 	Bt.focus_cam(Bt.Troop[0], 0.1, 0)
 	Bt.zoom(6)
 	Bt.Action = true
-	Loader.in_battle = true
+	Battle.in_battle = true
 	Loader.get_node("Can").layer = 3
 	await Textbox.open("story_0", "first_cutscene")
 	Loader.battle_bars(4)
-	Global.Player.hide()
+	Global.player.hide()
 	await Event.wait(0.5, false)
 	Loader.ungray.emit()
 	await Event.wait(0.3, false)
-	#PartyUI.battle_state(true)
+	#Hud.battle_state(true)
 	#$"../EnemyUI"._on_battle_ui_target_foc(Bt.Troop[0])
 	Loader.battle_bars(3)
 	Bt.get_actor("Mira").node.animation = "Entrance"
@@ -1133,7 +1130,7 @@ func FirstBattle1() -> void:
 	await Event.wait(1)
 	Passive.open("story_0", "sstay_back")
 	await Event.wait(1)
-	Loader.in_battle = true
+	Battle.in_battle = true
 	await Bt.move(Bt.Troop[0], Vector2(40, 0), 1, Tween.EASE_OUT)
 	await Bt.move(Bt.Troop[0], Vector2(40, 0), 1, Tween.EASE_OUT)
 	$"../BattleUI".disable_ability = true
@@ -1173,7 +1170,7 @@ func FirstBattle2(target: Actor) -> void:
 
 	await Event.wait(1.8)
 	target.Aura = 6
-	PartyUI._check_party()
+	Hud._check_party()
 	Bt.glow(1.5, 0.5, Bt.Party.Leader)
 	Bt.zoom(7, 1)
 	await Event.wait(4)
@@ -1221,15 +1218,15 @@ func FirstBattle4() -> void:
 
 
 func FirstBattle5() -> void:
-	Bt.focus_cam(Global.Party.Leader)
+	Bt.focus_cam(Party.Leader)
 	Bt.zoom(6)
 	$"../EnemyUI".hide()
 	get_tree().paused = false
-	Loader.in_battle = false
+	Battle.in_battle = false
 	Bt.get_actor("Mira").DontIdle = false
-	Global.Party.Leader.node.get_node("Glow").hide()
+	Party.Leader.node.get_node("Glow").hide()
 	Loader.battle_bars(0)
-	Bt.victory_anim(Global.Party.Leader)
+	Bt.victory_anim(Party.Leader)
 	await Textbox.open("story_0", "what_this")
 	Global.heal_party()
 	Bt.ObtainedItems.clear()
@@ -1249,7 +1246,7 @@ func AlcineWoods2() -> void:
 	for i in Bt.TurnOrder:
 		Bt.anim("Idle", i)
 
-	Global.Bt.get_actor("Alcine").node.global_position = Vector2(1660, -1068)
+	Global.bt.get_actor("Alcine").node.global_position = Vector2(1660, -1068)
 	Bt.focus_cam(Bt.get_actor("Alcine"))
 	Bt.get_actor("Alcine").SpeedBoost = +10
 	Bt.TurnOrder.sort_custom(Bt.speed_sort)
@@ -1258,7 +1255,7 @@ func AlcineWoods2() -> void:
 	Bt.get_actor("Alcine").NextTarget = Bt.get_actor("Mira")
 	Bt.get_actor("Alcine").node.show()
 	await Event.wait(2)
-	PartyUI.battle_state(true)
+	Hud.battle_state(true)
 	Bt.end_turn()
 
 
@@ -1276,7 +1273,7 @@ func StoneGuardianLoop() -> void:
 		if CurrentChar.BattleLog.back().ability.filename == "Gather":
 			Bt.ignore_end_turn = true
 			Bt.CurrentAbility = load("res://database/Abilities/RockThrow.tres")
-			await RockThrow(Global.Party.Member1)
+			await RockThrow(Party.Member1)
 			Bt.ignore_end_turn = false
 		else:
 			Bt.ignore_end_turn = true
@@ -1306,10 +1303,10 @@ func StoneGuardian1() -> void:
 	Bt.zoom(6, 2)
 	Bt.focus_cam(guardian, 2, Vector2(-20, -40))
 	await Passive.open("story_0", "stone_guardian_intro")
-	Bt.entrance_anim(Global.Party.Leader)
-	Bt.entrance_anim(Global.Party.Member1)
+	Bt.entrance_anim(Party.Leader)
+	Bt.entrance_anim(Party.Member1)
 	await Event.wait(0.2)
-	await Bt.focus_cam(Global.Party.Leader)
+	await Bt.focus_cam(Party.Leader)
 	Event.remove_flag("StoneGuardianFinisher")
 	Event.remove_flag("BeatStoneGuardian")
 	Bt.end_turn()
@@ -1319,8 +1316,8 @@ func StoneGuardian2(target: Actor = CurrentChar) -> void:
 	if not CurrentChar.codename == "Alcine": return
 	Bt.ignore_end_turn = true
 	var guardian := Bt.get_actor("Guardian")
-	#var mira := Global.Party.Leader
-	var alcine := Global.Party.Member1
+	#var mira := Party.Leader
+	var alcine := Party.Member1
 	Bt.CurrentChar = guardian
 	CurrentChar = guardian
 	#if mira.Health > 0:
@@ -1355,13 +1352,13 @@ func StoneGuardian2(target: Actor = CurrentChar) -> void:
 
 
 func StoneGuardian3() -> void:
-	if Global.Party.Member1.Health > 0:
+	if Party.Member1.Health > 0:
 		await Bt.death(Bt.get_actor("Alcine"))
 
 	Bt.ignore_end_turn = true
 	Bt.lock_turn = true
 	var guardian := Bt.get_actor("Guardian")
-	var mira := Global.Party.Leader
+	var mira := Party.Leader
 	Bt.CurrentChar = guardian
 	CurrentChar = guardian
 	mira.CantDie = true
@@ -1408,7 +1405,7 @@ func StoneGuardian3() -> void:
 	await Event.wait(1)
 	await Textbox.open("story_0", "placeholder_daze")
 	Loader.get_node("Can").layer = 3
-	Global.Party.set_to(["Mira"])
+	Party.set_to(["Mira"])
 	Bt.victory(true)
 	await Loader.battle_end
 	Event.add_flag("BeatStoneGuardian")
@@ -1487,20 +1484,20 @@ func AsteriaBossFollowup() -> void:
 func nov2_mira_dream() -> void:
 	Loader.gray_out(1)
 	await Event.wait(0.7)
-	Event.ToDay = 2
-	Event.ToTime = 2
+	Event.to_day = 2
+	Event.to_time = 2
 	Loader.ungray.emit()
 	Event.time_transition()
 	Bt.end_battle()
 
 
 func LazuliteHeartBoss1() -> void:
-	var mira := Global.Party.Leader
+	var mira := Party.Leader
 	Bt.initial = mira.node.position
 	CurrentChar = mira
-	Bt.anim("Idle", Global.Party.Member1)
-	Bt.anim("Idle", Global.Party.Member2)
-	Bt.anim("Idle", Global.Party.Member3)
+	Bt.anim("Idle", Party.Member1)
+	Bt.anim("Idle", Party.Member2)
+	Bt.anim("Idle", Party.Member3)
 	Bt.zoom(6)
 	Bt.focus_cam(Bt.get_actor("LHBody"))
 	await Bt.get_actor("LHBody").add_state("UnbreakingAura", -1, mira, false)

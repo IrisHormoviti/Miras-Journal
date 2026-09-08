@@ -156,7 +156,7 @@ Mira.Neutral: Stay behind me, I'll deal with it!
 $> Loader.attacker = Pterogon
 $> Event.wait(0.1)
 $> Event.flag_progress("AlcineFollow", 3)
-$> Loader.start_battle("AlcineFollow1")
+$> Battle.start("AlcineFollow1")
 => END!
 
 ~ not_going_well
@@ -187,10 +187,10 @@ Mira.Neutral: Oh I got it! [br]I'll come up with a name and you tell me if you l
 => END
 
 ~ use_name
-Mira.Neutral: What about "{{alcine()}}"?
+Mira.Neutral: What about "{{alcine}}"?
 Alcine.Neutral: *nod*
 $> npc("P").look_to(Vector2(1, 0))
-Mira.Neutral: Alright then {{alcine()}}, let's go together from here on.
+Mira.Neutral: Alright then {{alcine}}, let's go together from here on.
 => END
 
 ~ a_bridge
@@ -205,7 +205,7 @@ $> npc("MiraCut").look_to(Vector2(0, -1))
 $> npc("MiraCut").bubble("Surprise")
 
 $> npc("AlcineCut").look_to(Vector2(0, -1))
-Mira.Neutral: Look {{alcine()}}!
+Mira.Neutral: Look {{alcine}}!
 (hide)
 $> npc("AlcineCut").chain_moves([Vector2(-1, 0), Vector2(0, -1)])
 Mira.Neutral: That looks like a town, doesn't it?
@@ -236,13 +236,13 @@ $> jump_to(Player, Vector2(107, 345), 15)
 Mira.Neutral: ...
 Mira.Neutral: Let's just rest here for a bit, I'm exhausted.
 Alcine.Tired: Sheeww...
-{{alcine()}} looks tired as well.
+{{alcine}} looks tired as well.
 => END
 
 ~ rest_amberelm
 Doesn't look too comfy, but I can't be picky right now.
 $> Event.progress_by_time(1)
-if PartyUI.confirm_time_passage("Rest", "Fully recover Health."):
+if Hud.confirm_time_passage("Rest", "Fully recover Health."):
 	[hide]
 	$> transition()
 	$> save()
@@ -254,7 +254,7 @@ if PartyUI.confirm_time_passage("Rest", "Fully recover Health."):
 	$> detransition()
 	Placeholder description: This is an unfinished cutscene. Boxes like this will describe what should be on screen.
 	Placeholder description: Mira is writing something on a paper.
-	Mira.Neutral: Hm? Something up {{alcine()}}?
+	Mira.Neutral: Hm? Something up {{alcine}}?
 	$> picture("RestAmberelmMap")
 	Mira.Neutral: I'm just keeping track where we've been so far.
 	Mira.Neutral: We don't want to get even more lost, right?
@@ -263,7 +263,7 @@ if PartyUI.confirm_time_passage("Rest", "Fully recover Health."):
 	Mira.Neutral: Must be nice being a spirit, I'm starving here.
 	Placeholder description: Mira takes a nap.
 	Alcine.Neutral: ...
-	Placeholder description: {{alcine()}} picks up the paper.
+	Placeholder description: {{alcine}} picks up the paper.
 	$> transition(Direction.CENTER)
 	$> wait(1)
 	$> heal_party()
@@ -279,8 +279,8 @@ $> spawn("Mira", "UnderTree", "SitDown", 7)
 $> spawn("Alcine", "UnderTree+(24, -12)", "IdleLeft", 7)
 $> detransition()
 Placeholder description: Mira gets up from sleep.
-Placeholder description: {{alcine()}} who was resting on Mira also gets up.
-Mira.Neutral: Mmm... Good morning {{alcine()}}. Or is it afternoon?
+Placeholder description: {{alcine}} who was resting on Mira also gets up.
+Mira.Neutral: Mmm... Good morning {{alcine}}. Or is it afternoon?
 Alcine.Tired: Meuummm...
 Placeholder description: Mira picks up the paper from yesterday.
 $> npc("Mira").bubble("Surprise")
@@ -291,20 +291,20 @@ Mira.Smile: You drew this? That's so cute!
 I guess there is one way we can communicate.
 $> picture_clear()
 ...
-I wonder where {{alcine()}} came from... 
+I wonder where {{alcine}} came from... 
 They don't seem to be like any of the other hostile spirits around here.
 Where are all these spirits coming from anyways?
 Placeholder description: Mira makes her fire wings apear for a bit
 I guess we should keep moving forward.
-Mira.Neutral: Come on, let's go {{alcine()}}.
+Mira.Neutral: Come on, let's go {{alcine}}.
 Alcine.Neutral: Sha...
 [hide]
-#Maybe I could get important information from {{alcine()}} this way.
+#Maybe I could get important information from {{alcine}} this way.
 #Mira.Neutral: So... I was curious. [p]Before that creature attacked you, how did you end up there?
 #Mira.Neutral: $> you remember anything?
 #Alcine.Neutral: *Thinking noises*
-#Placeholder description: {{alcine()}} starts drawing.
-#Placeholder description: {{alcine()}} gives the drawing to Mira.
+#Placeholder description: {{alcine}} starts drawing.
+#Placeholder description: {{alcine}} gives the drawing to Mira.
 #Let's see...
 #Mira.Neutral: Wha- Im being attacked in this?
 #Alcine.Neutral: *Nod*
@@ -328,7 +328,7 @@ The sky getting darker. I've really been out here all day...
 Placeholder description: Mira looks forward to Alcine goofing around.
 Seeing them pull off Freeze and Liquid spells like that with ease... It kinda makes me jealous.
 Their aura color, and thus affinity for magic, is nearly oposite to mine.
-But... {{alcine()}} has kind of inspired me.
+But... {{alcine}} has kind of inspired me.
 Perhaps I could give liquid magic a try.
 [hide]
 $> add_complimentary("FluidBlast", alcine())
@@ -343,7 +343,7 @@ Alcine.Upset: M- Mmeeaw...
 
 ~ anything_goes_comment
 Mira.OpenMouth: It can shift it's own Aura color?!
-Mira.Worried: Careful {{alcine()}}![br]Your attacks might only be effective when it's on specific colors!
+Mira.Worried: Careful {{alcine}}![br]Your attacks might only be effective when it's on specific colors!
 => END
 
 ~ stone_guardian_still_standing
@@ -421,7 +421,7 @@ What do I ask?
 	Daze.Neutral: No, you had weakened its Aura shield quite a bit. 
 	Daze.Neutral: Monsters like that are pretty fragile once their control over their physical parts is weakened.
 	Daze.Neutral: Anything else?
-- About {{alcine()}}...
+- About {{alcine}}...
 	Mira.Neutral: Did you happen to see something like a water spirit with spirally aura where you found me?
 	Daze.Neutral: I apologize, but no. Was it important?
 	Mira.Neutral: Quite a bit...

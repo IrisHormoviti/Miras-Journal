@@ -1,21 +1,18 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://bek303wsendtg"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_2km2f"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_2km2f"]
 
 [resource]
 script = ExtResource("1_2km2f")
-Name = "Broken Save"
-Party = Array[StringName]([&"Mira", &"Daze", &"", &""])
-RoomPath = "res://rooms/Orange.tscn"
-Position = Vector2(682.6668, -123)
-Members = Array[Dictionary]([{
+title = "Broken Save"
+party = Array[StringName]([&"Mira", &"Daze", &"", &""])
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Alcine",
 "Health": 60,
@@ -28,7 +25,8 @@ Members = Array[Dictionary]([{
 "SkillPoints": 0,
 "Weapon": "Arms?",
 "WeaponPower": 14,
-"codename": &"Alcine"
+"codename": &"Alcine",
+"complimentaries": Dictionary[String, int]({})
 }, {
 "AbilitiesList": Array[String](["PhantomGuard", "Tighten", "RedShift"]),
 "Aura": 47,
@@ -36,7 +34,6 @@ Members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Asteria",
 "Health": 90,
@@ -49,7 +46,8 @@ Members = Array[Dictionary]([{
 "SkillPoints": 16,
 "Weapon": "Possessed Scarf",
 "WeaponPower": 16,
-"codename": &"Asteria"
+"codename": &"Asteria",
+"complimentaries": Dictionary[String, int]({})
 }, {
 "AbilitiesList": Array[String](["Guard", "Attention", "StaticSaber"]),
 "Aura": 14,
@@ -57,7 +55,6 @@ Members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
 "Controllable": false,
 "FirstName": "Daze",
 "Health": 150,
@@ -70,7 +67,8 @@ Members = Array[Dictionary]([{
 "SkillPoints": 21,
 "Weapon": "Gold-trimmed Katana",
 "WeaponPower": 30,
-"codename": &"Daze"
+"codename": &"Daze",
+"complimentaries": Dictionary[String, int]({})
 }, {
 "AbilitiesList": Array[String]([]),
 "Aura": 90,
@@ -78,7 +76,6 @@ Members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
 "Controllable": false,
 "FirstName": "Erinn",
 "Health": 85,
@@ -91,7 +88,8 @@ Members = Array[Dictionary]([{
 "SkillPoints": 0,
 "Weapon": "",
 "WeaponPower": 24,
-"codename": &"Erinn"
+"codename": &"Erinn",
+"complimentaries": Dictionary[String, int]({})
 }, {
 "AbilitiesList": Array[String](["Guard", "FlameSpark"]),
 "Aura": 20,
@@ -99,7 +97,6 @@ Members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"Complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Mira",
 "Health": 100,
@@ -112,14 +109,15 @@ Members = Array[Dictionary]([{
 "SkillPoints": 0,
 "Weapon": "Lightweight Axe",
 "WeaponPower": 14,
-"codename": &"Mira"
+"codename": &"Mira",
+"complimentaries": Dictionary[String, int]({})
 }])
-Defeated = ["CS1"]
-StartTime = 1759087800.664549
-SavedTime = 1762170187.87419
-PlayTime = 9813.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "SharpRock:Bti", "RustySword:Bti", "RustySword:Bti", "RustySword:Bti"])
-Flags = Dictionary[StringName, int]({
+player_position = Vector2(682.6668, -123)
+defeated_enemies = ["CS1"]
+start_time = 1759087800.664549
+saved_time = 1762170187.87419
+play_time = 9813.0
+flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -146,4 +144,4 @@ Flags = Dictionary[StringName, int]({
 &"day": 1,
 &"time": 2
 })
-version = 7
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "SharpRock:Bti", "RustySword:Bti", "RustySword:Bti", "RustySword:Bti"])

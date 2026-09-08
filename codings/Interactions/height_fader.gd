@@ -11,13 +11,13 @@ var camera_index := -1
 
 
 func _ready() -> void:
-	if camera_index != -1 and camera_index != Global.Area.index:
+	if camera_index != -1 and camera_index != Global.room.index:
 		process_mode = Node.PROCESS_MODE_DISABLED
 
 
 func _physics_process(delta: float) -> void:
-	if Global.Player == null: return
-	var pos := Global.Player.position
+	if Global.player == null: return
+	var pos := Global.player.position
 	var to_hide: bool = (
 		(pos.y > y == should_be_greater_than_y or y == 0) and
 		(pos.x > x == should_be_greater_than_x or x == 0)

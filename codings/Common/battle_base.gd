@@ -1,12 +1,23 @@
 extends Node2D
 class_name Battle
 
+## Is the player currently in a battle?
+static var in_battle: bool:
+	get(): return is_instance_valid(current)
+## The current battle instance
+static var current: Battle
+## Battle sequence of the current battle
+static var sequence: BattleSequence
+static var prevent_battles: bool = false
+static var remembered_camera_zoom: Vector2
+static var battle_advantage := 0
+static var attacker: NPC = null
+
+enum Result {UNFINISHED, VICTORY, ESCAPE, DEFEAT}
+static var battle_result: Result = Result.UNFINISHED
+
 ## Used for battle messages
 @export var BattleText: Dictionary[String, String]
-## shortcut to Global.Party, use Party.array() to access it as an array
-var Party: PartyData
-## Battle sequence of this battle
-var Seq: BattleSequence = Loader.battle_sequence
 ## Array of the enemies of this battle.
 ## Enemies can be added or removed throughout
 var Troop: Array[Actor]
@@ -52,11 +63,15 @@ var follow_up_next := false
 ## The turn ends after all targets have returned
 var aoe_returns := 0
 
-@onready var ui: Control = $BattleUI
-@onready var cam: Camera2D = $Cam
+@onready var ui: Control = %ControllerBattleUI
 @onready var canvas: CanvasLayer = $Canvas
 @onready var enemy_ui: CanvasLayer = $EnemyUI
+@onready var act: Node2D = $Act
+@onready var cam: Camera2D = $Act/Cam
+@onready var effects: AnimatedSprite2D = $Act/Effects
 
+signal battle_start
+signal battle_end(result: int)
 signal GetControl
 signal next_turn
 signal check_party
@@ -64,68 +79,129 @@ signal anim_done
 signal take_dmg
 
 
+##Starts the specified battle. Advantage: 0 for Neutual, 1 for Player, 2 for enemy
+static func start(stg: Variant, advantage := 0) -> void:
+	if in_battle:
+		return
+
+	if stg is String:
+		sequence = await Loader.load_res("res://database/BattleSeq/" + stg + ".tres")
+	elif stg is BattleSequence:
+		sequence = stg
+	else:
+		Global.toast("The battle sequence isn't set here, you probably should fix this.")
+		await Event.wait(0.3)
+		Event.give_control()
+		Hud.show_all()
+		return
+
+	if prevent_battles:
+		return
+
+	battle_result = Result.UNFINISHED
+	Hud.ui_visible = false
+	#Engine.time_scale = 0.1
+	Hud.hide_all()
+	Global.controllable = false
+	print_rich("[color=green]Battle start!")
+	Global.get_tree().paused = true
+	remembered_camera_zoom = Global.camera.zoom
+
+	if sequence.Transition:
+		if is_instance_valid(attacker):
+			if sequence.Music:
+				Audio.change_music_from_to(sequence.Music.track, 0, sequence.Music.intro_end)
+
+			Loader.battle_bars(2, 0.8, Tween.EASE_OUT)
+			tween(Global.camera, "zoom", Vector2(6, 6), 1, Tween.EASE_OUT, Tween.TRANS_CUBIC)
+			#if advantage == 1: t.tween_property(Camera, "global_position", Attacker.global_position, 0.4)
+			await Event.wait(0.8, false)
+
+		tween(Global.camera, "zoom", Vector2(8, 8), 0.5, Tween.EASE_IN, Tween.TRANS_CUBIC)
+		await Loader.battle_bars(4, 0.5, Tween.EASE_IN)
+
+	#Engine.time_scale = 1
+	var battle: Node = (await Loader.load_res("uid://chjrhe4gw1iu6")).instantiate()
+
+	if is_instance_valid(Global.player):
+		Global.player.hide()
+		if not sequence.UseBackground:
+			Global.player.position = sequence.ScenePosition
+		elif sequence.ScenePosition == Vector2.ZERO:
+			sequence.ScenePosition = Global.room.battleback_position
+
+		Global.player.get_node("DirectionMarker/Finder/Shape").set_deferred("disabled", true)
+		Global.player.camera_follow(false)
+
+	if not sequence.PartyOverride.is_empty():
+		Party.set_to(sequence.PartyOverride)
+
+	Global.camera.position_smoothing_enabled = false
+	Global.get_tree().root.add_child(battle)
+	if is_instance_valid(attacker):
+		attacker.hide()
+
+	for i in Global.room.followers:
+		if is_instance_valid(i) and is_instance_valid(Global.player):
+			i.hide()
+			i.global_position = Global.player.position
+
+
 func _ready() -> void:
-	Loader.battle_start.emit()
-	Global.Bt = self
+	battle_start.emit()
+	current = self
 	get_tree().paused = false
-	Global.Controllable = false
+	Global.controllable = false
 	cam.make_current()
-	Loader.in_battle = true
 	Action = true
 	TurnInd = -1
 	Turn = 0
 
-	if Global.Party.Leader == null:
+	if Party.Leader == null:
 		end_battle()
 		return
 
-	CurrentChar = Global.Party.Leader
-	CurrentAbility = Global.Party.Leader.StandardAttack
+	CurrentChar = Party.Leader
+	CurrentAbility = Party.Leader.StandardAttack
 
-	if Loader.battle_sequence == null:
-		Seq = load("res://database/BattleSeq/DebugDummy.tres")
-	else:
-		Seq = Loader.battle_sequence.duplicate()
+	if sequence == null:
+		sequence = load("res://database/BattleSeq/DebugDummy.tres")
 
-	Seq.reset_events(true)
-	Party = Global.Party
+	sequence.reset_events(true)
 
-	for i in Seq.Enemies:
+	for i in sequence.Enemies:
 		Troop.append(i.duplicate())
 
-	Party.Leader.node = $Act/Actor0
+	Party.Leader.node = act.get_node("Actor0")
 	TurnOrder.push_front(Party.Leader)
 	TurnOrder.append_array(Troop)
-	$Background.texture = Seq.BattleBack
+	$Background.texture = sequence.BattleBack
 
-	if Seq.BattleBack == null:
-		$Act/Actor0.light_mask = 1
+	if sequence.BattleBack == null:
+		act.get_node("Actor0").light_mask = 1
 
-	if Seq.PositionSameAsPlayer:
-		Seq.ScenePosition = Global.Player.global_position + Vector2(45, 0)
+	if sequence.PositionSameAsPlayer:
+		sequence.ScenePosition = Global.player.global_position + Vector2(45, 0)
 
-	global_position = Seq.ScenePosition
-	global_position = Vector2i(global_position)
-
-	if Global.Camera != null:
-		cam.global_position = Global.Camera.global_position
-		cam.zoom = Global.Camera.zoom
+	if Global.camera != null:
+		cam.global_position = Global.camera.global_position
+		cam.zoom = Global.camera.zoom
 
 	$Canvas/Cutin.hide()
-	$Act/Actor0.sprite_frames = await Party.Leader.get_BT()
-	$Act/Actor0.animation = &"Entrance"
-	$Act/Actor0.frame = 0
-	$Act/Actor0/Shadow.modulate = Color.WHITE
+	act.get_node("Actor0").sprite_frames = await Party.Leader.get_BT()
+	act.get_node("Actor0").animation = &"Entrance"
+	act.get_node("Actor0").frame = 0
+	act.get_node("Actor0/Shadow").modulate = Color.WHITE
 	$Canvas/VictoryText.modulate = Color.TRANSPARENT
 	$Canvas/SPGain.hide()
 	$Canvas/VictoryItems.hide()
-	if Global.Area: Global.Area.show()
+	if Global.room: Global.room.show()
 	for i in range(1, 4):
-		if Query.check_member(i):
-			var member := Party.array()[i]
-			var dub := $Act/Actor0.duplicate()
+		if Party.has_member_index(i):
+			var member := Party.current[i]
+			var dub := act.get_node("Actor0").duplicate()
 			dub.name = "Actor" + str(i)
-			$Act.add_child(dub)
+			act.add_child(dub)
 			member.node = dub
 			dub.sprite_frames = await member.get_BT()
 			TurnOrder.push_front(member)
@@ -134,8 +210,9 @@ func _ready() -> void:
 			if member.SoundSet:
 				dub.add_child(member.SoundSet.instantiate())
 
-	for i in Party.array():
-		match Party.array().find(i):
+	for i in Party.current:
+		if not i: continue
+		match Party.current.find(i):
 			0: i.Speed = 8
 			1: i.Speed = 6
 			2: i.Speed = 4
@@ -144,9 +221,9 @@ func _ready() -> void:
 		i.IsEnemy = false
 
 	for i in Troop.size():
-		var dub := $Act/Actor0.duplicate()
+		var dub := act.get_node("Actor0").duplicate()
 		dub.name = "Enemy" + str(i)
-		$Act.add_child(dub)
+		act.add_child(dub)
 		Troop[i].node = dub
 		dub.sprite_frames = await Troop[i].get_BT()
 		dub.material = dub.material.duplicate()
@@ -156,35 +233,55 @@ func _ready() -> void:
 		Troop[i].Aura = Troop[i].MaxAura
 		dub.add_child(Troop[i].SoundSet.instantiate())
 
-	if Loader.battle_advantage == 1:
+	if battle_advantage == 1:
 		for i in TurnOrder:
 			if not i.IsEnemy: i.SpeedBoost += 5
-	elif Loader.battle_advantage == 2:
+	elif battle_advantage == 2:
 
 		for i in TurnOrder:
 			if i.IsEnemy: i.SpeedBoost += 10
 
-	$Act/Actor0.add_child(Party.Leader.SoundSet.instantiate())
+	act.get_node("Actor0").add_child(Party.Leader.SoundSet.instantiate())
 	for i in TurnOrder:
 		sprite_init(i)
 		i.NextAction = Actor.BtAction.UNSET
 		i.BattleLog = [Actor.log_entry.new()]
 		i.load_complimentaries()
 
-	if Seq.Music:
-		Audio.change_music_from_to(Seq.Music.track, Seq.Music.battle_start)
+	if sequence.Music:
+		Audio.change_music_from_to(sequence.Music.track, sequence.Music.battle_start)
 
 	
 	position_sprites()
-	if is_instance_valid(Loader.attacker): Loader.attacker.hide()
-	if Seq.EntranceSequence != "": await $Act.call(Seq.EntranceSequence)
+	if is_instance_valid(attacker): attacker.hide()
+	if sequence.EntranceSequence != "": await act.call(sequence.EntranceSequence)
 	TurnOrder.sort_custom(speed_sort)
 	turn_ui_init()
 	for i in TurnOrder:
 		print(i.Speed + i.SpeedBoost, " - ", i.FirstName)
 
 	
+	act.reparent(get_node(Loader.area_spawn_path))
+	act.global_position = sequence.ScenePosition
+	act.z_index = Global.room.camera_index.z
+	cam.make_current()
+	
 	await entrance()
+
+
+static func tween(
+	object: Node,
+	property: String,
+	to: Variant,
+	time := 0.3,
+	ease_type := Tween.EASE_OUT,
+	trans := Tween.TRANS_CUBIC
+) -> void:
+	var t := Global.create_tween()
+	t.set_ease(ease_type)
+	t.set_trans(trans)
+	t.tween_property(object, NodePath(property), to, time)
+	await t.finished
 
 
 func sprite_init(i: Actor) -> void:
@@ -240,75 +337,76 @@ func turn_ui_check() -> void:
 
 
 func position_sprites() -> void:
-	$Act/Actor0.show()
+	act.get_node("Actor0").show()
+	
 	match Query.number_of_party_members():
 		1:
-			$Act/Actor0.position = Vector2(-45, 0)
+			Party.Leader.node.position = Vector2(-45, 0)
 
 		2:
-			$Act/Actor0.position = Vector2(-45, -15)
-			$Act/Actor1.show()
-			$Act/Actor1.position = Vector2(-45, 45)
+			Party.Leader.node.position = Vector2(-45, -15)
+			Party.current[1].node.show()
+			Party.current[1].node.position = Vector2(-45, 45)
 
 		3:
-			$Act/Actor0.position = Vector2(-45, -25)
-			$Act/Actor1.show()
-			$Act/Actor1.position = Vector2(-45, 15)
-			$Act/Actor2.show()
-			$Act/Actor2.position = Vector2(-45, 55)
+			Party.Leader.node.position = Vector2(-45, -25)
+			Party.current[1].node.show()
+			Party.current[1].node.position = Vector2(-45, 15)
+			Party.current[2].node.show()
+			Party.current[2].node.position = Vector2(-45, 55)
 
 		4:
-			$Act/Actor0.position = Vector2(-20, -40)
-			$Act/Actor1.show()
-			$Act/Actor1.position = Vector2(-45, -15)
-			$Act/Actor2.show()
-			$Act/Actor2.position = Vector2(-20, 15)
-			$Act/Actor3.show()
-			$Act/Actor3.position = Vector2(-45, 40)
+			Party.Leader.node.position = Vector2(-20, -40)
+			Party.current[1].node.show()
+			Party.current[1].node.position = Vector2(-45, -15)
+			Party.current[2].node.show()
+			Party.current[2].node.position = Vector2(-20, 15)
+			Party.current[3].node.show()
+			Party.current[3].node.position = Vector2(-45, 40)
 
 	match Troop.size():
 		1:
-			$Act/Enemy0.show()
-			$Act/Enemy0.position = Vector2(66, 0)
+			act.get_node("Enemy0").show()
+			act.get_node("Enemy0").position = Vector2(66, 0)
 
 		2:
-			if $Act.has_node("Enemy0"):
-				$Act/Enemy0.show()
-				$Act/Enemy0.position = Vector2(66, -15)
+			if act.has_node("Enemy0"):
+				act.get_node("Enemy0").show()
+				act.get_node("Enemy0").position = Vector2(66, -15)
 
-			if $Act.has_node("Enemy1"):
-				$Act/Enemy1.show()
-				$Act/Enemy1.position = Vector2(46, 30)
+			if act.has_node("Enemy1"):
+				act.get_node("Enemy1").show()
+				act.get_node("Enemy1").position = Vector2(46, 30)
 
 		3:
-			if $Act.has_node("Enemy0"):
-				$Act/Enemy0.show()
-				$Act/Enemy0.position = Vector2(66, -25)
+			if act.has_node("Enemy0"):
+				act.get_node("Enemy0").show()
+				act.get_node("Enemy0").position = Vector2(66, -25)
 
-			if $Act.has_node("Enemy1"):
-				$Act/Enemy1.show()
-				$Act/Enemy1.position = Vector2(36, 15)
+			if act.has_node("Enemy1"):
+				act.get_node("Enemy1").show()
+				act.get_node("Enemy1").position = Vector2(36, 15)
 
-			if $Act.has_node("Enemy2"):
-				$Act/Enemy2.show()
-				$Act/Enemy2.position = Vector2(66, 55)
+			if act.has_node("Enemy2"):
+				act.get_node("Enemy2").show()
+				act.get_node("Enemy2").position = Vector2(66, 55)
 
 		4:
-			if $Act.has_node("Enemy0"):
-				$Act/Enemy0.show()
-				$Act/Enemy0.position = Vector2(66, -35)
+			if act.has_node("Enemy0"):
+				act.get_node("Enemy0").show()
+				act.get_node("Enemy0").position = Vector2(66, -35)
 
-			if $Act.has_node("Enemy1"):
-				$Act/Enemy1.show()
-				$Act/Enemy1.position = Vector2(36, 15)
+			if act.has_node("Enemy1"):
+				act.get_node("Enemy1").show()
+				act.get_node("Enemy1").position = Vector2(36, 15)
 
-			if $Act.has_node("Enemy2"):
-				$Act/Enemy2.show()
-				$Act/Enemy2.position = Vector2(90, 15)
+			if act.has_node("Enemy2"):
+				act.get_node("Enemy2").show()
+				act.get_node("Enemy2").position = Vector2(90, 15)
 
-			if $Act.has_node("Enemy3"):
-				$Act/Enemy3.show()
-				$Act/Enemy3.position = Vector2(66, 65)
+			if act.has_node("Enemy3"):
+				act.get_node("Enemy3").show()
+				act.get_node("Enemy3").position = Vector2(66, 65)
 
 	for i in TurnOrder:
 		if i.CustomPosition != Vector2i.ZERO:
@@ -319,23 +417,23 @@ func position_sprites() -> void:
 
 func entrance() -> void:
 	Action = true
-	Global.Controllable = false
+	Global.controllable = false
 	cam.position_smoothing_enabled = false
 
-	if Seq.Transition:
+	if sequence.Transition:
 		Loader.battle_bars(3)
-		if Seq.EntranceBanter != "":
-			if Seq.EntranceBanterIsPassive:
-				Passive.open("banter_entrance", Seq.EntranceBanter)
+		if sequence.EntranceBanter != "":
+			if sequence.EntranceBanterIsPassive:
+				Passive.open("banter_entrance", sequence.EntranceBanter)
 			else:
-				Textbox.open("banter_entrance", Seq.EntranceBanter)
+				Textbox.open("banter_entrance", sequence.EntranceBanter)
 				cam.position.x = 60
 
 				while Textbox.is_open:
 					if cam.position.x > 0: cam.position.x -= 0.01
 					await Event.wait()
 
-		if Seq.EntranceSequence == "":
+		if sequence.EntranceSequence == "":
 			cam.zoom = Vector2(4, 4)
 			cam.position = Vector2(90, 10)
 			var t := create_tween()
@@ -346,22 +444,23 @@ func entrance() -> void:
 			t.tween_property(cam, "position", Vector2(-50, 0), 0.5).set_delay(0.5)
 			await Event.wait(0.3, false)
 			enemy_ui.all_enemy_ui(true)
-			if Loader.battle_advantage == 1:
+			if battle_advantage == 1:
 				for i in Troop: damage(i, 1, false, 24 / Troop.size())
 
 			await Event.wait(0.5, false)
 
-	if Seq.EntranceSequence == "":
-		for i in Party.array():
+	if sequence.EntranceSequence == "":
+		for i in Party.current:
+			if not i: continue
 			entrance_anim(i)
 
 	Loader.battle_bars(2)
 	await Event.wait(0.5, false)
-	if not Seq.Transition: enemy_ui.all_enemy_ui(true)
-	PartyUI.battle_state(true)
-	PartyUI.save_box_positions()
+	if not sequence.Transition: enemy_ui.all_enemy_ui(true)
+	Hud.battle_state(true)
+	Hud.save_box_positions()
 	await Event.wait(0.7, false)
-	if Seq.EntranceSequence == "": next_turn.emit()
+	if sequence.EntranceSequence == "": next_turn.emit()
 
 
 func entrance_anim(i: Actor) -> void:
@@ -409,7 +508,7 @@ func _on_next_turn() -> void:
 
 	if CurrentChar.IsEnemy: enemy_ui._on_battle_ui_target_foc(CurrentChar)
 	else: enemy_ui.all_enemy_ui()
-	$Act.handle_states()
+	act.handle_states()
 
 
 func check_for_victory() -> bool:
@@ -628,7 +727,7 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 		if CurrentAbility.Callout and CurrentChar.Controllable:
 			callout()
 
-		$Act.play(ab.ActionSequence, CurrentTarget)
+		act.play(ab.ActionSequence, CurrentTarget)
 	else:
 		end_turn()
 		return
@@ -659,13 +758,13 @@ func jump_to(
 	character: Actor, to_position: Vector2, time: float, height: float = 0.5
 ) -> void:
 	var t := create_tween()
-	var start := character.node.position
-	var jump_distance: float = start.distance_to(to_position)
+	var start_pos := character.node.position
+	var jump_distance: float = start_pos.distance_to(to_position)
 	var jump_height: float = jump_distance * height
-	var midpoint := start.lerp(to_position, 0.5) + Vector2.UP * jump_height
+	var midpoint := start_pos.lerp(to_position, 0.5) + Vector2.UP * jump_height
 	var jump_time := jump_distance * (time * 0.001)
 	t.tween_method(
-		Query.quad_bezier.bind(start, midpoint, to_position, character.node),
+		Query.quad_bezier.bind(start_pos, midpoint, to_position, character.node),
 		0.0,
 		1.0,
 		jump_time
@@ -699,11 +798,11 @@ func end_turn(confirm_aoe := false) -> void:
 			if i != CurrentChar:
 				follow_up_next = true
 
-	if Seq.check_events() and not follow_up_next:
+	if sequence.check_events() and not follow_up_next:
 		await Event.wait(0.5)
-		await Seq.call_events()
+		await sequence.call_events()
 
-	Seq.reset_events()
+	sequence.reset_events()
 	TurnOrder.sort_custom(speed_sort)
 	#for i in TurnOrder:
 		#print(i.Speed+i.SpeedBoost, " - ", i.FirstName)
@@ -712,7 +811,7 @@ func end_turn(confirm_aoe := false) -> void:
 		await Event.wait()
 
 	await get_tree().create_timer(0.1).timeout
-	$Act.end_turn_checks()
+	act.end_turn_checks()
 	if is_instance_valid(CurrentChar.node):
 		CurrentChar.node.z_index = 0
 
@@ -750,9 +849,9 @@ func damage(
 	print_rich("[color=cornflower-blue]Attack power: ", x, " * ", el_mod)
 	
 	## Attacker to get offensive stats from (null if stats are ignored)
-	var attacker: Actor = null if ignore_stats else CurrentChar
+	var offender: Actor = null if ignore_stats else CurrentChar
 	## Initial number of damage
-	var dmg: int = target.calc_dmg(x * el_mod, is_magic, attacker)
+	var dmg: int = target.calc_dmg(x * el_mod, is_magic, offender)
 	
 	## State specific modifications
 	for state in target.States:
@@ -822,7 +921,7 @@ func damage(
 	else: pop_num(target, dmg)
 
 	if !target.IsEnemy:
-		PartyUI.hit_partybox(Party.array().find(target), int(dmg / 2), int(dmg * 100 / target.MaxHP * 100) / 300)
+		Hud.hit_partybox(Party.current.find(target), int(dmg / 2), int(dmg * 100 / target.MaxHP * 100) / 300)
 	else:
 		Event.node_shake(enemy_ui.get_node("EnemyFocus"), int(dmg), int(dmg * 100 / target.MaxHP * 100) / 300)
 
@@ -864,10 +963,10 @@ func damage(
 	return dmg
 
 
-func queue_sequence_for_actor(chara: Actor, sequence: String) -> void:
+func queue_sequence_for_actor(chara: Actor, sequence_name: String) -> void:
 	var ab := Ability.nothing().duplicate()
-	ab.name = sequence
-	ab.ActionSequence = sequence
+	ab.name = sequence_name
+	ab.ActionSequence = sequence_name
 	
 	chara.NextMove = ab
 	chara.NextAction = Actor.BtAction.ACT
@@ -916,7 +1015,7 @@ func screen_shake(amount: float = 15, times: float = 7, ShakeDuration: float = 0
 
 
 func play_effect(stri: String, tar: Variant, offset := Vector2.ZERO, flip_on_player_use := false, dont_free := false) -> void:
-	if $Act/Effects.sprite_frames.has_animation(stri):
+	if effects.sprite_frames.has_animation(stri):
 		print_rich("[color=cornflower-blue]Playing effect ", stri)
 
 		if tar is not Vector2:
@@ -925,11 +1024,11 @@ func play_effect(stri: String, tar: Variant, offset := Vector2.ZERO, flip_on_pla
 				push_error("The target of the effect ", stri, " was invalid")
 				return
 
-		var ef: AnimatedSprite2D = $Act/Effects.duplicate()
+		var ef: AnimatedSprite2D = effects.duplicate()
 
 		if flip_on_player_use and !CurrentChar.IsEnemy: ef.flip_h = true
 		ef.name = stri
-		$Act.add_child(ef)
+		act.add_child(ef)
 		ef.position = tar + offset
 		ef.play(stri)
 		await ef.animation_finished
@@ -1024,18 +1123,18 @@ func pop_num(target: Actor, text: Variant, color: Color = Color.WHITE) -> void:
 			number.queue_free()
 
 
-func play_sound(SoundName: String, act: Actor = null, volume: float = 1) -> void:
+func play_sound(SoundName: String, actor: Actor = null, volume: float = 1) -> void:
 	$AudioListener2D.make_current()
 	var player: AudioStreamPlayer2D
-	if act and act.node.get_node("SFX").has_node(SoundName):
-		player = act.node.get_node("SFX").get_node(SoundName)
+	if actor and actor.node.get_node("SFX").has_node(SoundName):
+		player = actor.node.get_node("SFX").get_node(SoundName)
 	else:
 		player = $Audio/Stream0.duplicate()
 		$Audio.add_child(player)
 		if not ResourceLoader.exists("res://sound/SFX/Battle/" + SoundName + ".ogg"): return
 		player.stream = await Loader.load_res("res://sound/SFX/Battle/" + SoundName + ".ogg")
 
-		if act: player.global_position = act.node.global_position
+		if actor: player.global_position = actor.node.global_position
 
 	player.play()
 	player.volume_db = volume
@@ -1043,9 +1142,9 @@ func play_sound(SoundName: String, act: Actor = null, volume: float = 1) -> void
 	if player.get_parent() == $Audio: player.queue_free()
 
 
-func stop_sound(SoundName: String, act: Actor) -> void:
-	if act.node.get_node("SFX").has_node(SoundName):
-		act.node.get_node("SFX").get_node(SoundName).stop()
+func stop_sound(SoundName: String, actor: Actor) -> void:
+	if actor.node.get_node("SFX").has_node(SoundName):
+		actor.node.get_node("SFX").get_node(SoundName).stop()
 
 
 ## Runs when an actor is defeated, usually when HP reaches 0
@@ -1074,7 +1173,7 @@ func death(target: Actor) -> void:
 
 	anim("KnockOut", target)
 
-	if not target.IsEnemy and filter_dead(Party.array()).is_empty():
+	if not target.IsEnemy and filter_dead(Party.current).is_empty():
 		game_over(target)
 
 	# Effects
@@ -1095,7 +1194,7 @@ func death(target: Actor) -> void:
 
 	await Event.wait(1)
 	if not target.DeathSequence.is_empty() and not target.CantDie:
-		await $Act.call(target.DeathSequence, target)
+		await act.call(target.DeathSequence, target)
 
 	lock_turn = false
 
@@ -1131,9 +1230,9 @@ func game_over(target: Actor = null) -> void:
 
 	print_rich("[color=cornflower-blue]Game over")
 
-	if Seq.DefeatSequence == "":
+	if sequence.DefeatSequence == "":
 		Global.game_over()
-	else: $Act.call(Seq.DefeatSequence)
+	else: act.call(sequence.DefeatSequence)
 
 
 func delete_actor(target: Actor) -> void:
@@ -1152,18 +1251,18 @@ func slowmo(timescale := 0.5, time := 1.0) -> void:
 	Engine.time_scale = 1
 
 
-func get_ally_faction(act: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
+func get_ally_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
 	var rtn: Array[Actor]
-	if act.IsEnemy: rtn = Troop
-	else: rtn = Party.array()
+	if actor.IsEnemy: rtn = Troop
+	else: rtn = Party.current
 
 	if filter_out_dead: rtn = filter_dead(rtn)
 	return rtn
 
 
-func get_oposing_faction(act: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
+func get_oposing_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
 	var rtn: Array[Actor]
-	if act.IsEnemy: rtn = Party.array()
+	if actor.IsEnemy: rtn = Party.current
 	else: rtn = Troop
 
 	if filter_out_dead: rtn = filter_dead(rtn)
@@ -1179,7 +1278,7 @@ func get_target_faction(ab := CurrentAbility) -> Array[Actor]:
 
 func get_any_faction(filter_out_dead := true) -> Array[Actor]:
 	var rtn: Array[Actor]
-	rtn.append_array(Party.array())
+	rtn.append_array(Party.current)
 	rtn.append_array(Troop)
 	if filter_out_dead: rtn = filter_dead(rtn)
 	return rtn
@@ -1323,7 +1422,7 @@ func heal(
 	target.add_health(amount)
 	ui.targetFoc.emit(target)
 	check_party.emit()
-	PartyUI._check_party()
+	Hud._check_party()
 	pop_aura(target)
 	pop_num(target, "+" + str(amount))
 
@@ -1347,7 +1446,7 @@ func pop_aura(target: Actor, time: float = 0.5) -> void:
 
 func escape() -> void:
 	print_rich("[color=cornflower-blue]Escaped")
-	Loader.battle_result = 2
+	battle_result = Result.ESCAPE
 	end_battle()
 
 
@@ -1355,11 +1454,93 @@ func end_battle() -> void:
 	AwaitVictory = false
 	reset_all()
 	canvas.get_node("Continue").hide()
-	await PartyUI.preform_levelups()
-	if Global.Area == null: Loader.travel_to("Debug"); queue_free(); return
+	await Hud.preform_levelups()
+	if Global.room == null: Loader.travel_to("Debug"); queue_free(); return
 	Audio.fade_out_music()
-	await Loader.end_battle()
+	
+	Hud.shrink()
+	if sequence.Detransition or battle_result != Result.VICTORY:
+		hide_victory_stuff()
+		Global.bt.zoom(4)
+		Loader.battle_bars(4)
+		await get_tree().create_timer(0.5).timeout
+		if is_instance_valid(Global.bt):
+			Global.bt.queue_free()
+	else:
+		var t := create_tween()
+		t.set_ease(Tween.EASE_OUT)
+		t.set_trans(Tween.TRANS_QUART)
+		t.set_parallel()
+		#Engine.time_scale = 0.1
+		Global.room.setup_zoom(true)
+		for i in Global.bt.TurnOrder:
+			t.tween_property(i.node.get_node("Glow"), "energy", 0, 0.3)
+
+		Global.bt.get_node("Background").material = null
+		t.tween_property(Global.bt.get_node("Background"), "modulate", Color.TRANSPARENT, 0.5)
+		hide_victory_stuff()
+
+	in_battle = false
+	Global.camera.position_smoothing_enabled = true
+
+	if not is_instance_valid(Global.player):
+		return
+
+	for i in Global.room.followers:
+		if i and Party.has_member_index(i.member):
+			i.show()
+
+	Global.player.set_anim("IdleRight")
+	Global.player.dashing = false
+	
+	post_battle()
+	
+	Global.camera.make_current()
+	act.free()
 	queue_free()
+	battle_end.emit()
+
+
+static func post_battle() -> void:
+	if battle_result == Result.ESCAPE:
+		Global.player.position = Query.globalize(sequence.EscPosition)
+
+	if is_instance_valid(attacker):
+		if battle_result != Result.VICTORY:
+			attacker.show()
+
+		if sequence.DeleteAttacker and battle_result == 1:
+			if Global.player.is_on_wall():
+				Global.player.position = attacker.position
+
+			attacker.defeat()
+
+	Global.controllable = false
+	Loader.battle_bars(0)
+	if is_instance_valid(Global.player):
+		Global.player.show()
+		Global.player.get_node("DirectionMarker/Finder/Shape").set_deferred("disabled", false)
+		if Event.f(&"FlameActive"):
+			Global.player.activate_flame()
+
+	if sequence.ReturnControl:
+		Hud.ui_visible = true
+		Event.give_control(true)
+
+	Hud.shrink()
+
+
+func hide_victory_stuff() -> void:
+	var t := create_tween()
+	t.set_ease(Tween.EASE_OUT)
+	t.set_trans(Tween.TRANS_QUART)
+	t.set_parallel()
+	for i in Global.bt.get_node("Canvas").get_children():
+		if i.name != "DottedBack":
+			t.tween_property(i, "position:x", i.position.x + 500, 0.3)
+			t.tween_property(i, "modulate", Color.TRANSPARENT, 0.3)
+
+	t.tween_property(Global.bt.get_node("Canvas/DottedBack"), "modulate", Color(0.188, 0.188, 0.188, 0), 0.5)
 
 
 func reset_all() -> void:
@@ -1370,7 +1551,7 @@ func reset_all() -> void:
 		i.MagicMultiplier = 1
 		i.SpeedBoost = 0
 
-	for i in Global.Members:
+	for i in Party.members:
 		if i.AuraDefault != Color.WHITE:
 			i.MainColor = i.AuraDefault
 			i.AuraDefault = Color.WHITE
@@ -1380,7 +1561,7 @@ func reset_all() -> void:
 
 
 func victory_anim(chara: Actor) -> void:
-	$Act.process_mode = Node.PROCESS_MODE_ALWAYS
+	act.process_mode = Node.PROCESS_MODE_ALWAYS
 	clear_states(chara)
 	await anim("Victory", chara)
 	anim("VictoryLoop", chara)
@@ -1401,10 +1582,10 @@ func victory_count_sp() -> void:
 	t.tween_property($Canvas/SPGain/VBoxContainer/Text,
 		"custom_minimum_size:x", 140, 0.5).from(1)
 
-	for i in Party.array():
+	for i in Party.current:
 		i.add_SP(totalSP)
 
-	PartyUI._check_party()
+	Hud._check_party()
 	await Event.wait(0.5, false)
 	var sp := totalSP
 	t = create_tween()
@@ -1430,26 +1611,31 @@ func victory(ignore_seq := false) -> void:
 	print_rich("[color=cornflower-blue]Victory!")
 	Action = true
 
-	if Seq.VictorySequence != "" and not ignore_seq:
-		$Act.call(Seq.VictorySequence)
+	if sequence.VictorySequence != "" and not ignore_seq:
+		act.call(sequence.VictorySequence)
 		return
 
-	if Seq.VictoryBanter != "":
-		Passive.open("banter_victory", Seq.VictoryBanter)
+	if sequence.VictoryBanter != "":
+		Passive.open("banter_victory", sequence.VictoryBanter)
 
 	$Canvas.layer = 1
-	Loader.battle_result = 1
+	battle_result = Result.VICTORY
+	
+	if sequence.Music.victory_track != null:
+		Audio.change_music(sequence.Music.victory_track)
+	elif sequence.Music.victory > 0:
+		Audio.change_music_from_to(sequence.Music.track, sequence.Music.victory)
+	else:
+		Audio.fade_out_music(3)
 
-	Audio.fade_out_music(3)
-
-	for i in Party.array():
+	for i in Party.current:
 		victory_anim(i)
 
 	check_party.emit()
 	enemy_ui.colapse_root()
 	reset_all()
 	var t := create_tween()
-	$Canvas/VictoryText.text = Seq.VictoryText
+	$Canvas/VictoryText.text = sequence.VictoryText
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUINT)
 	t.set_parallel()
@@ -1458,7 +1644,7 @@ func victory(ignore_seq := false) -> void:
 	$Canvas/VictoryText.add_theme_color_override("font_color", Color.WHITE)
 	$Canvas/VictoryText.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT
 	$Canvas/VictoryText.scale = Vector2(1.5, 1.5)
-	PartyUI._on_expand(2)
+	Hud.expand(2)
 	Loader.battle_bars(0)
 	$Canvas/DottedBack.show()
 	t.tween_property($Canvas/DottedBack, "modulate",
@@ -1469,7 +1655,7 @@ func victory(ignore_seq := false) -> void:
 	Color.WHITE, 2).from(Color.TRANSPARENT)
 	t.tween_property(cam, "position", Vector2(-20, 0), 1)
 	t.tween_property(cam, "zoom", Vector2(5, 5), 1)
-	ObtainedItems.append_array(Seq.AdditionalItems)
+	ObtainedItems.append_array(sequence.AdditionalItems)
 	if totalSP != 0: await victory_count_sp()
 	if not ObtainedItems.is_empty(): victory_show_items()
 	$Canvas/TurnOrder.hide()
@@ -1483,21 +1669,21 @@ func victory(ignore_seq := false) -> void:
 	enemy_ui.colapse_root()
 	AwaitVictory = true
 
-	if is_instance_valid(Global.Player):
-		if Seq.UseBackground:
+	if is_instance_valid(Global.player):
+		if sequence.UseBackground:
 			pass
 		else:
-			Global.Player.global_position = $Act/Actor0.global_position
+			Global.player.global_position = act.get_node("Actor0").global_position
 
 			for i in range(1, 4):
-				if Party.check_member(i):
-					Global.Area.followers[i - 1].global_position = $Act.get_node("Actor" + str(i)).global_position
+				if Party.has_member_index(i):
+					Global.room.followers[i - 1].global_position = act.get_node("Actor" + str(i)).global_position
 
-			Global.Camera.position_smoothing_enabled = false
-			Global.Camera.global_position = cam.global_position
-			Global.Camera.enabled = true
+			Global.camera.position_smoothing_enabled = false
+			Global.camera.global_position = cam.global_position
+			Global.camera.enabled = true
 			cam.enabled = false
-			Global.Camera.zoom = cam.zoom
+			Global.camera.zoom = cam.zoom
 
 
 func victory_show_items() -> void:
@@ -1563,9 +1749,9 @@ func add_to_troop(en: Actor) -> void:
 	en = en.duplicate()
 	lock_turn = true
 	Troop.append(en)
-	var dub: AnimatedSprite2D = $Act/Actor0.duplicate()
+	var dub: AnimatedSprite2D = act.get_node("Actor0").duplicate()
 	dub.name = "Enemy" + str(Troop.size() - 1)
-	$Act.add_child(dub)
+	act.add_child(dub)
 	TurnOrder.push_front(en)
 	en.node = dub
 	dub.sprite_frames = await en.get_BT()
@@ -1595,8 +1781,8 @@ func add_to_troop(en: Actor) -> void:
 ## op: Oposite, more weak
 ## res: Resist
 ## n: Neutral
-func color_relation(attacker: Color, defender: Color) -> String:
-	var affinity := Query.get_affinity(attacker)
+func color_relation(offender: Color, defender: Color) -> String:
+	var affinity := Query.get_affinity(offender)
 	var def := Query.get_affinity(defender)
 
 	if def.hue in affinity.oposing_range: return "op"
@@ -1765,8 +1951,8 @@ func fix_enemy_node_issues() -> void:
 
 	for j in Troop:
 		if j == null: continue
-		if $Act.get_node_or_null("Enemy" + str(i)):
-			j.node = $Act.get_node_or_null("Enemy" + str(i))
+		if act.get_node_or_null("Enemy" + str(i)):
+			j.node = act.get_node_or_null("Enemy" + str(i))
 
 		i += 1
 

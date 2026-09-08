@@ -33,7 +33,7 @@ func root() -> void:
 	$Select.show()
 	if get_tree().root.get_node_or_null("MainMenu") != null:
 		t.tween_property(get_tree().root.get_node("MainMenu"), "offset:x", 0, 0.5)
-		t.tween_property(Global.Camera, "offset:x", 100, 0.5)
+		t.tween_property(Global.camera, "offset:x", 100, 0.5)
 
 
 func diary() -> void:
@@ -51,20 +51,20 @@ func diary() -> void:
 	t.tween_property($List, "position:x", 0, 0.5).from(-300)
 	if get_tree().root.get_node_or_null("MainMenu") != null:
 		t.tween_property(get_tree().root.get_node("MainMenu"), "offset:x", -165, 0.5)
-		t.tween_property(Global.Camera, "offset:x", 150, 0.5)
+		t.tween_property(Global.camera, "offset:x", 150, 0.5)
 	$List/List.get_children()[-1].grab_focus()
 
 
 func add_test_entries() -> void:
-	Event.Diary = {
+	Event.diary = {
 		2: ["boo"],
 		5: ["boo", "bee"]
 	}
 
 
 func diary_load_day_list() -> void:
-	if Event.Diary.is_empty(): add_test_entries()
-	for i in Event.Diary:
+	if Event.diary.is_empty(): add_test_entries()
+	for i in Event.diary:
 		var dub: Button = $List/List/Listing0.duplicate()
 		dub.name = str(i)
 		dub.text = "%s %s" % [Query.get_mmm(Query.get_month(i)), Query.get_date_day(i)]
@@ -75,7 +75,7 @@ func diary_load_day_list() -> void:
 
 func diary_focus(day: int) -> void:
 	var text: String = Query.get_month_name(Query.get_month(day)) + " " + Query.get_date_day(day) + "\n\n"
-	for i in Event.Diary[day]:
+	for i in Event.diary[day]:
 		text += DiaryEntries.get(i)
 		#text += "\n~~~~~~\n"
 
@@ -99,7 +99,7 @@ func handle_page_turning(old_day: int, new_day: int, old_index: int, old_day_pag
 	var R: int = max(new_day, old_day)
 
 	for i in range(L, R):
-		if Event.Diary.has(i):
+		if Event.diary.has(i):
 			prints("day i", i)
 			if i == L and old_day_page_count > 1:
 				for j in range(old_index / 2, old_day_page_count / 2):

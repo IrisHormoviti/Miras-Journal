@@ -4,7 +4,7 @@ Daze.Neutral: [[Eyes on me|Over here|It's me you want|Come at me|I can take it]]
 
 ~ alcine_death
 if Query.find_member("Mira").Health > 0 and Party.has_member("Mira")::
-	Mira.Neutral: [[{{alcine()}}!|Hang in there {{alcine()}}!|No...!|No, wait! {{alcine()}}!!]]!
+	Mira.Neutral: [[{{alcine}}!|Hang in there {{alcine}}!|No...!|No, wait! {{alcine}}!!]]!
 => END
 
 ~ mira_death

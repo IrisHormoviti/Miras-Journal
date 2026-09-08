@@ -4,13 +4,13 @@
 
 [resource]
 script = ExtResource("1_xr6ji")
-Name = "Cockchopper"
-RoomPath = "res://rooms/ShardGardens.tscn"
-RoomName = "Shard gardens"
-Position = Vector2(-123.99999, -211)
-Camera = 1
+title = "Cockchopper"
+room = "res://rooms/ShardGardens.tscn"
+room_name = "Shard gardens"
+player_position = Vector2(-123.99999, -211)
+camera_index = 1
 Z = 0
-Members = Array[Dictionary]([{
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantAttack": false,
@@ -116,12 +116,12 @@ Members = Array[Dictionary]([{
 "WeaponPower": 80000,
 "codename": &"Mira"
 }])
-Defeated = ["EnemySG4", "EnemySG7"]
-StartTime = 1759087800.664549
-SavedTime = 1772986602.674413
-PlayTime = 11457.0
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "CyanFragment:Mat", "OrangeFragment:Mat", "RedFragment:Mat", "StrangeFruit:Con"])
-Flags = Dictionary[StringName, int]({
+defeated_enemies = ["EnemySG4", "EnemySG7"]
+start_time = 1759087800.664549
+saved_time = 1772986602.674413
+play_time = 11457.0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "CyanFragment:Mat", "OrangeFragment:Mat", "RedFragment:Mat", "StrangeFruit:Con"])
+flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -169,4 +169,4 @@ Flags = Dictionary[StringName, int]({
 &"day": 4,
 &"time": 4
 })
-version = 7
+version = 0

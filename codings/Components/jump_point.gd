@@ -69,8 +69,8 @@ func _physics_process(_delta: float) -> void:
 		Global.toast("No jump dirs here, fix this!")
 		return
 
-	var player_face := Global.Player.facing.vector
-	var local_player_pos := to_local(Global.Player.position)
+	var player_face := Global.player.facing.vector
+	var local_player_pos := to_local(Global.player.position)
 	
 	if dir_mode == 1:
 		local_player_pos.y = 0
@@ -86,62 +86,62 @@ func _physics_process(_delta: float) -> void:
 			can_jump = true
 	
 	if can_jump:
-		if not self in Global.Player.jump_points:
-			Global.Player.jump_points.append(self)
+		if not self in Global.player.jump_points:
+			Global.player.jump_points.append(self)
 	else:
-		Global.Player.jump_points.erase(self)
+		Global.player.jump_points.erase(self)
 
-	if can_jump and Global.Player.dashing and Global.Controllable:
+	if can_jump and Global.player.dashing and Global.controllable:
 		jump(player_face)
 
 
 func jump(player_face: Vector2) -> void:
 	busy = true
-	Global.Player.shadow(false, remap(height, 0, 0.5, 1, 0))
+	Global.player.shadow(false, remap(height, 0, 0.5, 1, 0))
 
 	for i in waves:
 		if is_instance_valid(i):
 			wave_go_away(i)
 
-	var prev_z := Global.Player.z_index
-	Global.Player.state = NPC.S.NONE
-	Global.Player.z_index += 10
-	Global.Controllable = false
-	Global.Player.collision(false)
+	var prev_z := Global.player.z_index
+	Global.player.state = NPC.S.NONE
+	Global.player.z_index += 10
+	Global.controllable = false
+	Global.player.collision(false)
 
 	var coord := get_target_coords(player_face)
 	if player_face.y == 0:
 		coord.y -= Y_ADJUSTMENT
 
-	Global.Player.set_anim("Dash" + Direction.vector_to_string(Global.Player.dashdir) + "Loop")
-	Global.Player.sprite.frame = 0
-	await Event.jump_to(Global.Player, coord, time, height)
+	Global.player.set_anim("Dash" + Direction.vector_to_string(Global.player.dashdir) + "Loop")
+	Global.player.sprite.frame = 0
+	await Event.jump_to(Global.player, coord, time, height)
 
-	Global.Player.collision(true)
-	Global.Controllable = true
+	Global.player.collision(true)
+	Global.controllable = true
 	
 	if to_z == -1:
-		Global.Player.z_index = prev_z
+		Global.player.z_index = prev_z
 	else:
-		Global.Player.z_index = to_z
-		Global.Player.collision_layer = to_layers
-		Global.Player.collision_mask = to_layers
-	Global.Player.move_frames = 0
+		Global.player.z_index = to_z
+		Global.player.collision_layer = to_layers
+		Global.player.collision_mask = to_layers
+	Global.player.move_frames = 0
 
-	Global.Player.shadow(true)
+	Global.player.shadow(true)
 	prints("Jump!", name)
 
-	for i in Global.Area.followers:
+	for i in Global.room.followers:
 		i.player_jumped = true
 		
 	busy = false
 	Event.teleport_followers()
 
 
-func get_target_coords(face := Global.Player.facing.vector) -> Vector2:
+func get_target_coords(face := Global.player.facing.vector) -> Vector2:
 	var coord: Vector2
 	if RelativePositions:
-		coord = Global.Player.position + face * TILE
+		coord = Global.player.position + face * TILE
 	else:
 		coord = position - face * TILE
 
@@ -178,21 +178,21 @@ func wave_go_away(wave: TextureRect) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	if body == Global.Player:
+	if body == Global.player:
 		is_player_inside = true
 		if is_instance_valid(timer) and timer.is_stopped():
 			timer.start(0.5)
 
 
 func _on_body_exited(body: Node2D) -> void:
-	if body == Global.Player:
+	if body == Global.player:
 		is_player_inside = false
-		Global.Player.jump_points.erase(self)
+		Global.player.jump_points.erase(self)
 		if is_instance_valid(timer):
 			timer.stop()
 
 
 func _on_timer_timeout() -> void:
-	if self in Global.Player.jump_points and Global.Controllable:
+	if self in Global.player.jump_points and Global.controllable:
 		var pos: Vector2 = to_local(get_target_coords())
 		jump_target_effect(pos)

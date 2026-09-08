@@ -40,8 +40,8 @@ func _ready() -> void:
 	#t.tween_property($TitleScreen/Splash, "scale", Vector2(0.6, 0.6), 0.3).set_delay(0.3)
 	var version_label: Label = $TitleScreen/Label
 	version_label.text += ProjectSettings.get_setting("application/config/version")
-	PartyUI.disabled = false
-	PartyUI.visible = true
+	Hud.disabled = false
+	Hud.visible = true
 	error_hint.text = "Hint: Should have been fine"
 	error_screen.hide()
 	if game_exists:
@@ -98,12 +98,12 @@ func glyph_update() -> void:
 func you_can_now_play_as(chara: String) -> void:
 	var data: SaveFile = load("user://Autosave.tres")
 
-	if chara in data.Party:
-		data.Party[data.Party.find(chara)] = "Mira"
+	if chara in data.party:
+		data.party[data.Party.find(chara)] = "Mira"
 
-	data.Party[0] = chara
+	data.party[0] = chara
 
-	for i in data.Members:
+	for i in data.members:
 		if i.get("codename") == chara: i.set("Controllable", true)
 
 	ResourceSaver.save(data, "user://Autosave.tres")

@@ -4,14 +4,14 @@
 
 [resource]
 script = ExtResource("1")
-Name = "escape"
-Party = Array[StringName]([&"Mira", &"", &"", &""])
-RoomPath = "res://rooms/Amberelm.tscn"
-RoomName = "Amberelm"
-Position = Vector2(1100.6663, 231)
-Camera = 0
+title = "escape"
+party = Array[StringName]([&"Mira", &"", &"", &""])
+room = "res://rooms/Amberelm.tscn"
+room_name = "Amberelm"
+player_position = Vector2(1100.6663, 231)
+camera_index = 0
 Z = 4
-Members = Array[Dictionary]([{
+members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
 "CantDie": false,
@@ -107,13 +107,13 @@ Members = Array[Dictionary]([{
 "WeaponName": "DefaultWeapon",
 "codename": &"Erinn"
 }])
-Complimentaries = Array[String]([])
-Defeated = []
-StartTime = 1788178150.205356
-SavedTime = 1788197193.789725
-PlayTime = 1178.0
-Diary = Dictionary[int, PackedStringArray]({})
-Flags = Dictionary[StringName, int]({
+complimentaries = Array[String]([])
+defeated_enemies = []
+start_time = 1788178150.205356
+saved_time = 1788197193.789725
+play_time = 1178.0
+diary = Dictionary[int, PackedStringArray]({})
+flags = Dictionary[StringName, int]({
 &"DisableMenus": 0,
 &"DisableVeinet": 1,
 &"EnemyStrike": 1,
@@ -126,5 +126,5 @@ Flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 5
 })
-version = 7
-Inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key"])
+version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key"])

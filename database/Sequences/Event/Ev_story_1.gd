@@ -23,14 +23,14 @@ func nov1_daytime() -> void:
 	await Event.spawn("Mira", Vector2(770, -211), "SitLeft")
 	await Event.spawn("Daze", Vector2(670, -211), Direction.RIGHT)
 	await Textbox.open(name, "nov1_daytime")
-	Global.Party.set_to_strarr(["Mira", 'Daze'])
+	Party.set_to(["Mira", 'Daze'])
 	Item.remove_item("LightweightAxe", &"Key")
-	Query.find_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
+	Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
 	await Loader.travel_to("WitheredLeaves", Vector2(775, -211))
 
 
 func daze_enemy_1() -> void:
-	if Event.Day == 1 and Query.check_member("Mira") and Query.check_member("Daze"):
+	if Event.day == 1 and Party.has_member("Mira") and Party.has_member("Daze"):
 		Event.npc("P").look_to(Direction.LEFT)
 		Passive.open(name, "daze_enemy_1")
 		Event.npc("P").bubble("Surprise")
@@ -41,16 +41,16 @@ func daze_enemy_1() -> void:
 		await Event.npc("F1").go_to(Event.npc("EnemyFlowent1").position, false, false, Vector2.LEFT, 10)
 		Global.intro_effect(Event.npc("EnemyFlowent1"))
 		Loader.attacker = Event.npc("EnemyFlowent1")
-		Loader.start_battle("DazeEnemyTutorial", 1)
+		Battle.start("DazeEnemyTutorial", 1)
 		await Loader.battle_end
 		Textbox.open("story_1", "dont_treat_me_like_a_child")
 	else: Event.give_control()
 
 
 func daze_enemy_2() -> void:
-	if Event.Day == 1 and Query.check_member("Mira") and Query.check_member("Daze"):
+	if Event.day == 1 and Party.has_member("Mira") and Party.has_member("Daze"):
 		await Event.npc("P").bubble("Surprise")
-		Loader.start_battle("SkritcherRootDaze", 2)
+		Battle.start("SkritcherRootDaze", 2)
 	else: Event.give_control()
 
 
@@ -58,9 +58,9 @@ func where_is_alcine_1() -> void:
 	await Loader.transition(Direction.LEFT)
 	Event.remove_flag("HasBag")
 	Event.add_flag("AlcineAlone")
-	Global.Party.reset_party()
-	Global.Party.Leader = Query.find_member("Alcine")
-	Global.Party.Leader.Controllable = true
+	Party.reset_party()
+	Party.Leader = Party.get_member("Alcine")
+	Party.Leader.Controllable = true
 	await Loader.travel_to("WitheredLeaves", Vector2(-976, 167), 0, "")
 	Event.give_control()
 	Loader.save()
@@ -68,27 +68,27 @@ func where_is_alcine_1() -> void:
 
 func WL_alcine_slide() -> void:
 	await Event.take_control()
-	Global.Player.collision(false)
-	Global.Player.set_anim("IdleDown")
-	Global.Player.state = NPC.S.NONE
-	await Event.jump_to_global(Global.Player, Vector2(-104, 250), 8, 0)
-	Global.Player.set_anim("IdleUp")
+	Global.player.collision(false)
+	Global.player.set_anim("IdleDown")
+	Global.player.state = NPC.S.NONE
+	await Event.jump_to_global(Global.player, Vector2(-104, 250), 8, 0)
+	Global.player.set_anim("IdleUp")
 	await Event.wait(1)
-	await Event.jump_to_global(Global.Player, Vector2(-110, 198), 5, 0.5)
+	await Event.jump_to_global(Global.player, Vector2(-110, 198), 5, 0.5)
 	Event.give_control()
 
 
 func amberelm_reunion() -> void:
-	Global.Player.camera_follow(false)
+	Global.player.camera_follow(false)
 	await Event.take_control()
 	await Event.wait(0.3)
-	Global.Player.look_to(Direction.LEFT)
-	await Global.Player.bubble("Surprise")
+	Global.player.look_to(Direction.LEFT)
+	await Global.player.bubble("Surprise")
 	await Event.spawn("Mira", Vector2(2224, -157), "SitDown", 7, true)
 	await Event.spawn("Daze", Vector2(2200, -157), "SitDown", 7, true)
-	Global.Camera.position = Vector2(2247, -157)
+	Global.camera.position = Vector2(2247, -157)
 	await Event.wait(0.3)
-	Global.Player.chain_moves([Vector2.LEFT * 2, Vector2.DOWN, Vector2.LEFT * 2])
+	Global.player.chain_moves([Vector2.LEFT * 2, Vector2.DOWN, Vector2.LEFT * 2])
 	await Event.wait(1)
 	await Event.npc("Mira").move_dir(Vector2.DOWN)
 	Event.npc("Mira").look_to(Direction.RIGHT)
@@ -97,9 +97,9 @@ func amberelm_reunion() -> void:
 	await Loader.transition(Direction.RIGHT)
 	Event.add_flag("HasBag")
 	Event.remove_flag("AlcineAlone")
-	Global.Party.set_to_strarr(["Mira"])
-	Event.ToDay = 1
-	Event.ToTime = 5
+	Party.set_to(["Mira"])
+	Event.to_day = 1
+	Event.to_time = 5
 	await Event.time_transition()
 
 
@@ -111,11 +111,11 @@ func nov2_morning() -> void:
 	await Textbox.open(name, "nov2_morning")
 	Event.remove_flag("InCamp")
 	Event.add_flag("WLLeftSideOpen")
-	Event.ToDay = 2
-	Event.ToTime = 2
+	Event.to_day = 2
+	Event.to_time = 2
 	await Event.time_transition()
 	#await Loader.travel_to("WitheredLeaves", Vector2(775, -211), 0, -1, Direction.DOWN, false)
-	#Global.Party.set_to_strarr(["Alcine"])
+	#Party.set_to(["Alcine"])
 	#Event.remove_flag("HasBag")
 	#Event.add_flag("AlcineAlone")
 	#Event.remove_flag("HideDate")
@@ -128,7 +128,7 @@ func nov2_daytime() -> void:
 	await Event.spawn("Mira", "TentInside+(8,0)", "Sleep")
 	Loader.ungray.emit()
 	await Textbox.open(name, "nov2_daytime")
-	Global.Party.set_to_strarr(["Mira", "Alcine", "Daze"])
+	Party.set_to(["Mira", "Alcine", "Daze"])
 	Event.add_flag("HasBag")
 	Event.remove_flag("AlcineAlone")
 	Event.remove_flag("HideDate")
@@ -165,7 +165,7 @@ func asteria_boss() -> void:
 	await Textbox.open(name, "asteria_boss", true)
 	await Event.spawn("Asteria", Vector2(-286, 308), Direction.LEFT)
 	await Event.wait(1)
-	await Loader.start_battle("AsteriaBoss")
+	await Battle.start("AsteriaBoss")
 	Event.npc("Asteria").hide()
 	await Loader.battle_end
 	if Loader.battle_result == 1:
@@ -179,10 +179,10 @@ func asteria_boss() -> void:
 
 func asteria_joins() -> void:
 	Event.add_flag("InCamp")
-	Global.Party.set_to_strarr(["Mira"])
-	if Event.TimeOfDay != Event.TOD.EVENING:
-		Event.ToDay = 2
-		Event.ToTime = Event.TOD.EVENING
+	Party.set_to(["Mira"])
+	if Event.time_of_day != Event.TOD.EVENING:
+		Event.to_day = 2
+		Event.to_time = Event.TOD.EVENING
 		await Event.time_transition()
 
 	await Loader.travel_to("WitheredLeaves", Vector2(774, -202), 0, Direction.RIGHT, false)
@@ -197,8 +197,8 @@ func asteria_joins() -> void:
 func enter_pyrson() -> void:
 	await Loader.travel_to("Pyrson", Vector2(0, 0), 0, Direction.RIGHT, false)
 	Event.remove_flag("InCamp")
-	Global.Player.hide()
-	Global.Player.camera_follow(false)
+	Global.player.hide()
+	Global.player.camera_follow(false)
 	Loader.ungray.emit()
 	Event.camera_move(Vector2(568, 669))
 	Event.camera_move(Vector2(214, 172), 5)
@@ -206,9 +206,9 @@ func enter_pyrson() -> void:
 	await Event.wait(5)
 	Event.spawn("Asteria", Vector2i(214, 182), Direction.RIGHT)
 	await Textbox.open(name, "enter_pyrson")
-	Global.Party.set_to_strarr(["Mira", "Alcine", "Daze"])
+	Party.set_to(["Mira", "Alcine", "Daze"])
 	Global.check.emit()
-	Global.Player.show()
+	Global.player.show()
 	Event.teleport_followers()
 	Event.give_control(true)
 	Event.npc("Asteria").speed = 120

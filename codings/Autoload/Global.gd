@@ -4,43 +4,38 @@ const settings_path := "user://Settings.tres"
 
 ## Determines if the player should have control
 ## Prefer to use Event.give_control() and Event.take_control() instead of this
-var Controllable: bool = true:
+var controllable: bool = true:
 	set(x):
-		Controllable = x
-
-## Data for all party members (Outside of the party too)
-var Members: Array[Actor]
+		controllable = x
 
 ## Current battle scene, null if not in battle
-var Bt: Battle = null
+var bt: Battle = null:
+	get(): return Battle.current
 
 ## Current player node
-var Player: Mira:
+var player: Mira:
 	get():
-		if is_instance_valid(Player):
-			return Player
+		if is_instance_valid(player):
+			return player
 
 		return null
 
-## The current party data
-var Party: PartyData
-
 ## Current room node
-var Area: Room
+var room: Room
 
-## Active camera in the Area (Not battle camera)
-var Camera: Camera2D:
+## Active camera in the room (Not battle camera)
+var camera: Camera2D:
 	get:
-		if not is_instance_valid(Area):
+		if not is_instance_valid(room):
 			return null
 
-		return Global.Area.cam
+		return Global.room.cam
 
 ## The current settings
-var Settings: Setting
+var settings: Setting
 
 ## Complimentary abilities available
-var Complimentaries: Array[String]
+var complimentaries: Array[String]
 
 ## Time info
 var process_frame := 0
@@ -57,6 +52,10 @@ var steam_user_id: int
 ## Account identifier for the player (Shown in the menu)
 var player_name: String = "Local"
 
+## Shortcut to alcine's name
+static var alcine: String:
+	get(): return Party.get_member("Alcine").FirstName
+
 ## For updating info like the party
 signal check
 
@@ -66,7 +65,6 @@ func _ready() -> void:
 	init_user()
 	start_time = Time.get_unix_time_from_system()
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	init_party(Party)
 	init_settings()
 
 	#print(Input.get_joy_name(0))
@@ -83,12 +81,12 @@ func quit(save_first := true) -> void:
 			get_tree().root.get_node("MainMenu").close()
 
 		if (
-			not Loader.in_battle and is_instance_valid(Player) and is_instance_valid(Area) and (
-			Global.Controllable or get_tree().root.has_node("MainMenu") or get_tree().root.has_node("Options"))
+			not Battle.in_battle and is_instance_valid(player) and is_instance_valid(room) and (
+			Global.controllable or get_tree().root.has_node("MainMenu") or get_tree().root.has_node("Options"))
 		):
 			Loader.icon_save()
 			await Loader.save()
-		elif is_instance_valid(Area):
+		elif is_instance_valid(room):
 			if not await Global.warning("The game cannot be saved right now.\nQuit the game anyways?", "QUIT", ["Canel", "Quit Game"]):
 				return
 
@@ -180,10 +178,6 @@ func _physics_process(delta: float) -> void:
 	process_frame += 1
 
 
-static func alcine() -> String:
-	return Query.find_member("Alcine").FirstName
-
-
 func nodes_of_type(node: Node, className: String, result: Array) -> void:
 	if !node: return
 	if node.is_class(className):
@@ -193,7 +187,7 @@ func nodes_of_type(node: Node, className: String, result: Array) -> void:
 		await nodes_of_type(child, className, result)
 #endregion
 
-#region Settings
+#region settings
 
 
 func refresh() -> void:
@@ -202,20 +196,20 @@ func refresh() -> void:
 	print(Input.should_ignore_device(0x28de0, 0x11ff))
 
 
-func fullscreen(tog: bool = !Settings.Fullscreen) -> void:
-	if !Settings: await init_settings()
+func fullscreen(tog: bool = !settings.Fullscreen) -> void:
+	if !settings: await init_settings()
 	if Engine.is_embedded_in_editor():
 		Global.toast("Can't fullscreen while the window is embeded")
-		Settings.Fullscreen = false
+		settings.Fullscreen = false
 		return
 
 	if tog:
-		Settings.Fullscreen = true
+		settings.Fullscreen = true
 		get_window().mode = Window.MODE_FULLSCREEN
 		await get_tree().create_timer(0.1).timeout
 		get_window().grab_focus()
 	else:
-		Settings.Fullscreen = false
+		settings.Fullscreen = false
 		get_window().mode = Window.MODE_WINDOWED
 		#if OS.to_string() == "Linux":
 			#get_window().size = Vector2i(1280,800)
@@ -228,9 +222,9 @@ func fullscreen(tog: bool = !Settings.Fullscreen) -> void:
 
 
 func reset_settings() -> void:
-	Settings = Setting.new()
+	settings = Setting.new()
 	customize_default_settings()
-	var err: Error = ResourceSaver.save(Settings, settings_path)
+	var err: Error = ResourceSaver.save(settings, settings_path)
 
 	if err != OK:
 		printerr(error_string(err))
@@ -242,8 +236,8 @@ func customize_default_settings() -> void:
 		var steam := Engine.get_singleton("Steam")
 
 		if OS.get_environment("STEAMDECK") == "1" or steam.isSteamRunningOnSteamDeck():
-			Settings.ControlSchemeEnum = 7
-			Settings.ControlSchemeOverride = load("res://UI/Input/SteamDeck.tres")
+			settings.ControlSchemeEnum = 7
+			settings.ControlSchemeOverride = load("res://UI/Input/SteamDeck.tres")
 			print_rich("[color=orange]Running on Steam Deck, setting control scheme")
 
 		if steam.isSteamInBigPictureMode():
@@ -251,7 +245,7 @@ func customize_default_settings() -> void:
 			print_rich("[color=orange]Running on Big Picture, enabling fullscreen")
 
 	if OS.to_string() == "macOS":
-		Settings.UpscaledRes = false
+		settings.UpscaledRes = false
 
 
 func init_settings() -> void:
@@ -260,15 +254,15 @@ func init_settings() -> void:
 		reset_settings()
 		await Event.wait()
 
-	Settings = ResourceLoader.load(settings_path)
+	settings = ResourceLoader.load(settings_path)
 
-	if not is_instance_valid(Settings):
-		print_rich("[color=orange]Settings file is invalid, settings will be restored to default")
+	if not is_instance_valid(settings):
+		print_rich("[color=orange]settings file is invalid, settings will be restored to default")
 		reset_settings()
 		await Event.wait()
-		Settings = load(settings_path)
+		settings = load(settings_path)
 
-	if not is_instance_valid(Settings):
+	if not is_instance_valid(settings):
 		OS.alert("Something is wrong with the settings file or user folder")
 
 	apply_settings()
@@ -277,36 +271,35 @@ func init_settings() -> void:
 func apply_settings() -> void:
 	#const base_res := Vector2(1280, 800)
 
-	if Settings.Fullscreen:
+	if settings.Fullscreen:
 		fullscreen(true)
 
-	if Settings.GlowEffect:
+	if settings.GlowEffect:
 		World.environment.glow_enabled = true
 	else: World.environment.glow_enabled = false
 
-	if Settings.UpscaledRes:
+	if settings.UpscaledRes:
 		get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_CANVAS_ITEMS
 	else:
 		get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
 
 	#else:
 		#get_window().content_scale_mode = Window.CONTENT_SCALE_MODE_VIEWPORT
-		#get_window().content_scale_size = base_res * Settings.UpscaleFactor
-		#get_window().content_scale_factor = Settings.UpscaleFactor
-		
+		#get_window().content_scale_size = base_res * settings.UpscaleFactor
+		#get_window().content_scale_factor = settings.UpscaleFactor
 
-	AudioServer.set_bus_volume_db(0, Settings.MasterVolume)
-	AudioServer.set_bus_volume_db(1, Settings.MusicVolume)
-	AudioServer.set_bus_volume_db(2, Settings.SFXVolume)
-	AudioServer.set_bus_volume_db(3, Settings.UIVolume)
-	AudioServer.set_bus_volume_db(4, Settings.VoicesVolume)
-	AudioServer.set_bus_volume_db(5, Settings.FootstepsVolume)
-	
-	if Settings.VSync: DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+	AudioServer.set_bus_volume_db(0, settings.MasterVolume)
+	AudioServer.set_bus_volume_db(1, settings.MusicVolume)
+	AudioServer.set_bus_volume_db(2, settings.SFXVolume)
+	AudioServer.set_bus_volume_db(3, settings.UIVolume)
+	AudioServer.set_bus_volume_db(4, settings.VoicesVolume)
+	AudioServer.set_bus_volume_db(5, settings.FootstepsVolume)
+
+	if settings.VSync: DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
 	else: DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 	if using_steam:
-		Settings.PlayerName = player_name
-	else: player_name = Settings.PlayerName
+		settings.PlayerName = player_name
+	else: player_name = settings.PlayerName
 	Global.save_settings()
 
 
@@ -316,17 +309,17 @@ func get_playtime() -> int:
 
 
 func save_settings() -> void:
-	ResourceSaver.save(Settings, settings_path)
-	print_rich("[color=orange]Settings saved")
+	ResourceSaver.save(settings, settings_path)
+	print_rich("[color=orange]settings saved")
 #endregion
 
 
-#region Party Checks
+#region party Checks
 func heal_party() -> void:
-	for i in Party.array():
+	for i in Party.current:
 		i.full_heal()
 
-	for i in Members:
+	for i in Party.members:
 		i.full_heal()
 
 
@@ -339,31 +332,8 @@ func add_test_state(chara: Actor) -> void:
 		chara.Abilities.append(ab)
 
 
-func reset_all_members() -> void:
-	init_party(Party)
-	for i in range(-1, Members.size() - 1):
-		Members[i] = load("res://database/Party/" + Members[i].codename + ".tres").duplicate(true)
-
-	Party.set_to_party(Party)
-
-##Alias for find_member()
-
-
-func init_party(party: PartyData) -> void:
-	Members.clear()
-	if !is_instance_valid(party): party = PartyData.new()
-	for i in ResourceLoader.list_directory("res://database/Party"):
-		var file: Resource = load("res://database/Party/" + i)
-
-		if file is Actor:
-			Members.append(file.duplicate())
-
-	Party = PartyData.new()
-	Party.set_to_party(party)
-
-
 func unlock_all_abilities() -> void:
-	for mem in Members:
+	for mem in Party.members:
 		for ab in mem.LearnableAbilities:
 			mem.Abilities.append(ab)
 
@@ -374,7 +344,7 @@ func give_every_ability() -> void:
 		Party.Leader.Abilities.append(ab)
 
 
-func add_complimentary(ability: String, from_name: String = "Mira Levenor", popup:= true) -> void:
+func add_complimentary(ability: String, from_name: String = "Mira Levenor", popup := true) -> void:
 	if popup:
 		var scenepack: PackedScene = load("res://UI/LevelUp/Levelup.tscn")
 		var scene: Node = scenepack.instantiate()
@@ -383,14 +353,14 @@ func add_complimentary(ability: String, from_name: String = "Mira Levenor", popu
 		scene.get_node("Levelup").got_complimentary(await Query.get_ability(ability), from_name)
 		await scene.get_node("Levelup").closed
 
-	if ability not in Global.Complimentaries:
-		Global.Complimentaries.append(ability)
+	if ability not in Global.complimentaries:
+		Global.complimentaries.append(ability)
 
 
 func use_ability_overworld(ab: Ability, user: Actor) -> void:
 	get_viewport().gui_release_focus()
 	if Ability.TP.HEALING in ab.Types:
-		await PartyUI.choose_member(ab, user)
+		await Hud.choose_member(ab, user)
 #endregion
 
 
@@ -400,15 +370,14 @@ func game_over() -> void:
 
 func options(submenu := 0) -> void:
 	if get_tree().root.has_node("Options"): return
-	var control := Global.Controllable
+	var control := Global.controllable
 	var opt: OptionsUI = (await Loader.load_res("uid://bh82q5qur5ppl")).instantiate()
-	Global.Controllable = control
+	Global.controllable = control
 
 	match submenu:
 		1:
 			opt.set_no_main()
 			opt.save_managment()
-			
 
 		3:
 			opt.set_no_main()
@@ -418,7 +387,7 @@ func options(submenu := 0) -> void:
 
 
 func title_screen() -> void:
-	if Global.Area != null: Global.Area.queue_free()
+	if Global.room != null: Global.room.queue_free()
 	if not get_tree().root.has_node("Initializer"):
 		var init: Node = (await Loader.load_res("uid://ds1hwdmholrjy")).instantiate()
 		get_tree().root.add_child(init)
@@ -458,7 +427,7 @@ func veinet_map(cur: String) -> void:
 
 func intro_effect(ref: Node) -> void:
 	var node: Node = (await Loader.load_res("uid://jrg5p2oev3io")).instantiate()
-	get_tree().root.add_child(node)
+	Global.room.add_child(node)
 	node.ref = ref
 	node.animate()
 

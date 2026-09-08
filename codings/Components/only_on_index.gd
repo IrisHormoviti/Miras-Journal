@@ -5,5 +5,5 @@ extends CanvasItem
 
 
 func _ready() -> void:
-	if index != Global.Area.index:
+	if index != Global.room.index:
 		get_parent().queue_free()
