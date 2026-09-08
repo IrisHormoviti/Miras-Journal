@@ -47,7 +47,7 @@ func reset_party() -> void:
 
 
 func reset_all_members() -> void:
-	var current_party := Party.current
+	var current_party := get_strarr()
 
 	_init()
 	for i in range(-1, members.size() - 1):

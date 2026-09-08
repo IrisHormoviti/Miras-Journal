@@ -1,7 +1,4 @@
-extends Control
-
-signal expand(i: int)
-signal shrink
+extends CanvasLayer
 
 ## Are the party boxes in the expanded state?
 var expanded: bool = false
@@ -46,16 +43,20 @@ var member_choosing_user: Actor
 
 @onready var Partybox: VBoxContainer = %Partybox
 @onready var t: Tween
-@onready var party_menu_button: Button = $CanvasLayer/PartyMenuButton
-@onready var main_menu_button: Button = $CanvasLayer/MainMenuButton
-@onready var virtual_joystick: VirtualJoystick = $CanvasLayer/VirtualJoystick
+@onready var party_menu_button: Button = %PartyMenuButton
+@onready var main_menu_button: Button = %MainMenuButton
+@onready var virtual_joystick: VirtualJoystick = %VirtualJoystick
 @onready var idle_timer: Timer = $IdleTimer
-@onready var calendar_base: TextureRect = $CanvasLayer/CalendarBase
+@onready var calendar_base: TextureRect = %CalendarBase
+@onready var cursor: TextureRect = %Cursor
+@onready var fader: ColorRect = %Fader
+@onready var fader_blur: ColorRect = %Fader/Blur
+@onready var back_button: Button = %Back
 
 
 func _ready() -> void:
-	$CanvasLayer/Fade.hide()
-	$CanvasLayer/Cursor.hide()
+	fader.hide()
+	cursor.hide()
 	for i in range(1, 4):
 		var page: TextureRect = %Pages/Page0.duplicate()
 		page.name = "Page" + str(i)
@@ -74,7 +75,7 @@ func _ready() -> void:
 	Global.check.emit()
 
 
-func _process(_delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	## Hide the hud when disabled
 	if disabled and ui_visible:
 		ui_visible = false
@@ -83,8 +84,10 @@ func _process(_delta: float) -> void:
 	if expanded and not submenu_opened:
 		handle_ui()
 
-	virtual_joystick.visible = Global.controllable and Global.player
-	main_menu_button.visible = Global.controllable and Global.player
+	##TODO Take this outside _process
+	if virtual_joystick:
+		virtual_joystick.visible = Global.controllable and Global.player
+		main_menu_button.visible = Global.controllable and Global.player
 
 	if not Battle.in_battle:
 		if is_instance_valid(Global.player) and Global.controllable and Global.player.move_frames > 0:
@@ -126,19 +129,19 @@ func show_all(except_date := false, animate := true) -> void:
 		var box: Panel = Partybox.get_child(i)
 		# The Leader gets position 0 since its bigger
 
-		var offset := -70
+		var box_offset := -70
 
 		if i == 0:
-			offset = 0
+			box_offset = 0
 		elif Battle.in_battle:
-			offset = -60
+			box_offset = -60
 
 		if animate:
 			var tl := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
-			tl.tween_property(box, "offset_transform_position:x", offset, 0.2)
+			tl.tween_property(box, "offset_transform_position:x", box_offset, 0.2)
 			await Event.wait(0.03, false)
 		else:
-			box.offset_transform_position.x = offset
+			box.offset_transform_position.x = box_offset
 
 		## Animate or set the X position when in battle
 		if Battle.in_battle and def_pos_partybox[i] != Vector2.ONE:
@@ -171,7 +174,6 @@ func _check_party() -> void:
 	if Event.check_flag("DisableMenus"):
 		disabled = true
 
-	#$CanvasLayer/DebugText.visible = Global.Settings.DebugMode
 	check_member(Party.Leader, Partybox.get_node("Leader"), 0)
 	for i in range(1, 4):
 		if Party.has_member_index(i):
@@ -242,30 +244,30 @@ func _input(event: InputEvent) -> void:
 
 
 func darken(toggle := true) -> void:
-	#print(toggle)
+	if not fader: return
 	t = create_tween().set_parallel()
 
 	if toggle:
-		$CanvasLayer/Fade.show()
-		t.tween_property($CanvasLayer/Fade/Blur.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3, 0.3)
-		t.tween_property($CanvasLayer/Fade, "color", Color(0, 0, 0, 0.5), 0.3)
+		fader.show()
+		t.tween_property(fader.get_node("Blur").material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3, 0.3)
+		t.tween_property(fader, "color", Color(0, 0, 0, 0.5), 0.3)
 		await t.finished
 	else:
-		t.tween_property($CanvasLayer/Fade, "color", Color(0, 0, 0, 0), 0.3)
-		t.tween_property($CanvasLayer/Fade/Blur.material, "shader_parameter/lod", 0, 0.3)
+		t.tween_property(fader, "color", Color(0, 0, 0, 0), 0.3)
+		t.tween_property(fader_blur.material, "shader_parameter/lod", 0, 0.3)
 		await t.finished
-		if $CanvasLayer/Fade.color == Color(0, 0, 0, 0):
-			$CanvasLayer/Fade.hide()
+		if fader.color == Color(0, 0, 0, 0):
+			fader.hide()
 		else:
 			await Event.wait(0.5)
 			darken(false)
 
 
-func _on_expand(open_ui := 0) -> void:
+func expand(open_ui := 0) -> void:
 	#Engine.time_scale = 0.1
 	Global.check.emit()
 	inactive = true
-	await Event.wait()
+
 	if disabled:
 		Audio.buzzer_sound()
 		return
@@ -278,10 +280,10 @@ func _on_expand(open_ui := 0) -> void:
 		return
 
 	if open_ui != 2:
-		$CanvasLayer/Cursor.show()
+		cursor.show()
 
-	$CanvasLayer/Cursor.position = get_cursor_pos(0)
-	$CanvasLayer/PartyMenuButton.hide()
+	cursor.position = get_cursor_pos(0)
+	%PartyMenuButton.hide()
 	#if open_ui == 0: was_paused = false
 	#else:
 	was_paused = get_tree().paused
@@ -300,38 +302,38 @@ func _on_expand(open_ui := 0) -> void:
 	t.set_trans(Tween.TRANS_BACK)
 	t.set_parallel()
 	t.tween_property(Partybox, "scale", Vector2(1.5, 1.5), 0.4)
-	t.tween_property($CanvasLayer/CalendarBase, "position:y", -150, 0.3)
+	t.tween_property(%CalendarBase, "position:y", -150, 0.3)
 	if open_ui == 0:
-		$CanvasLayer/Cursor/ItemPreview.hide()
+		%Cursor/ItemPreview.hide()
 		for i in range(0, 4):
 			if Party.has_member_index(i):
 				get_node("%Pages/Page" + str(i)).show()
 			else:
 				get_node("%Pages/Page" + str(i)).hide()
 
-		$CanvasLayer/Cursor/MemberOptions.show()
-		$CanvasLayer/Cursor/MemberOptions/VBox/Details.icon = Controller.get_scheme().CommandIcon
-		$CanvasLayer/Cursor/MemberOptions/VBox/Abilities.icon = Controller.get_scheme().ItemIcon
-		$CanvasLayer/Cursor/MemberOptions/VBox/Talk.icon = Controller.get_scheme().ConfirmIcon
-		$CanvasLayer/Cursor/MemberOptions/VBox/Talk.hide()
-		$CanvasLayer/Cursor/MemberOptions.size.y = 1
-		$CanvasLayer/Fade.show()
-		$CanvasLayer/Back.show()
-		t.tween_property($CanvasLayer/Back, "position:x", 20, 0.4)
+		%Cursor/MemberOptions.show()
+		%Cursor/MemberOptions/VBox/Details.icon = Controller.get_scheme().CommandIcon
+		%Cursor/MemberOptions/VBox/Abilities.icon = Controller.get_scheme().ItemIcon
+		%Cursor/MemberOptions/VBox/Talk.icon = Controller.get_scheme().ConfirmIcon
+		%Cursor/MemberOptions/VBox/Talk.hide()
+		%Cursor/MemberOptions.size.y = 1
+		fader.show()
+		back_button.show()
+		t.tween_property(back_button, "position:x", 20, 0.4)
 		t.tween_property(
-			$CanvasLayer/Cursor/MemberOptions,
+			%Cursor/MemberOptions,
 			"size:x",
-			$CanvasLayer/Cursor/MemberOptions.size.x,
+			%Cursor/MemberOptions.size.x,
 			0.3,
 		).from(0)
-		$CanvasLayer/Back.icon = Controller.get_scheme().CancelIcon
+		back_button.icon = Controller.get_scheme().CancelIcon
 	else:
-		$CanvasLayer/Cursor/MemberOptions.hide()
+		%Cursor/MemberOptions.hide()
 		%Pages.hide()
 
 	if open_ui < 2:
 		t = create_tween()
-		t.tween_property($CanvasLayer/Cursor, "modulate", Color(1, 1, 1, 1), 0.2)
+		t.tween_property(cursor, "modulate", Color(1, 1, 1, 1), 0.2)
 		darken()
 		expanded = true
 
@@ -392,7 +394,7 @@ func expand_panel(Pan: Panel, mem := 0) -> void:
 	Partybox.queue_sort()
 
 
-func _on_shrink(hurry_up := false) -> void:
+func shrink(hurry_up := false) -> void:
 	inactive = true
 	expanded = false
 	Partybox.show()
@@ -406,18 +408,18 @@ func _on_shrink(hurry_up := false) -> void:
 	t.set_trans(Tween.TRANS_BACK)
 	focus = 0
 	#Pages
-	#$CanvasLayer/Cursor.position=CursorPosition[0]
+	#cursor.position=CursorPosition[0]
 
 	for i in %Pages.get_children():
 		t.tween_property(i, "position", Vector2(1300, 44), 0.3)
 
 	t.tween_property(%Pages/Page0/Render, "position", Vector2(179, 44), 0.6)
-	t.tween_property($CanvasLayer/Back, "position:x", -150, 0.3)
-	t.tween_property($CanvasLayer/Cursor, "modulate", Color(0, 0, 0, 0), 0.4)
+	t.tween_property(back_button, "position:x", -150, 0.3)
+	t.tween_property(cursor, "modulate", Color(0, 0, 0, 0), 0.4)
 	t.tween_property(Partybox, "scale", Vector2(1, 1), 0.4)
 	t.set_trans(Tween.TRANS_CUBIC)
-	t.tween_property($CanvasLayer/CalendarBase, "position:y", 0, 0.3)
-	$CanvasLayer/PartyMenuButton.show()
+	t.tween_property(%CalendarBase, "position:y", 0, 0.3)
+	%PartyMenuButton.show()
 	darken(false)
 	if !ui_visible or disabled:
 		hide_all()
@@ -432,8 +434,8 @@ func _on_shrink(hurry_up := false) -> void:
 
 	await t.finished
 	member_choosing = false
-	$CanvasLayer/Cursor/ItemPreview/AnimationPlayer.stop()
-	$CanvasLayer/Back.hide()
+	%Cursor/ItemPreview/AnimationPlayer.stop()
+	back_button.hide()
 	%Pages.hide()
 	$IdleTimer.start(5)
 	inactive = false
@@ -526,17 +528,17 @@ func focus_now() -> void:
 	t.set_parallel(true)
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_CUBIC)
-	t.tween_property($CanvasLayer/Cursor, "position", get_cursor_pos(focus), 0.1)
+	t.tween_property(cursor, "position", get_cursor_pos(focus), 0.1)
 	#await get_tree().create_timer(0.3).timeout
 	if member_choosing:
 		return
 
 	if focus == 0:
-		$CanvasLayer/Cursor/MemberOptions/VBox/Talk.hide()
+		%Cursor/MemberOptions/VBox/Talk.hide()
 	else:
-		$CanvasLayer/Cursor/MemberOptions/VBox/Talk.show()
+		%Cursor/MemberOptions/VBox/Talk.show()
 
-	$CanvasLayer/Cursor/MemberOptions.size.y = 1
+	%Cursor/MemberOptions.size.y = 1
 
 	for i in range(0, focus):
 		t.tween_property(
@@ -620,7 +622,7 @@ func battle_state(from := false) -> void:
 	if not Battle.in_battle:
 		return
 
-	$CanvasLayer/Cursor.hide()
+	cursor.hide()
 	Partybox.scale = Vector2(1.25, 1.25)
 
 	if from:
@@ -680,8 +682,8 @@ func _on_battle_ui_root() -> void:
 func only_current() -> void:
 	t = create_tween()
 	t.set_parallel(true)
-	for member in Party.current:
-		var i := Party.member_index(member)
+	for member: Actor in Party.current:
+		var i: int = Party.member_index(member)
 
 		if member == Global.bt.CurrentChar:
 			t.tween_property(Partybox.get_child(i), "offset_transform_position:x", 0 if i == 0 else -70, 0.2)
@@ -774,12 +776,12 @@ func choose_member(artifact: Resource, user: Actor = Party.Leader) -> void:
 		if not artifact:
 			return
 
-		$CanvasLayer/Cursor/ItemPreview.text = (artifact.Name+ " x" + str(Item.count(artifact)))
-		$CanvasLayer/Cursor/ItemPreview.icon = artifact.Icon
+		%Cursor/ItemPreview.text = (artifact.Name+ " x" + str(Item.count(artifact)))
+		%Cursor/ItemPreview.icon = artifact.Icon
 		$/root/MainMenu.stage = "choose_member"
 	elif artifact is Ability:
-		$CanvasLayer/Cursor/ItemPreview.text = artifact.name
-		$CanvasLayer/Cursor/ItemPreview.icon = artifact.Icon
+		%Cursor/ItemPreview.text = artifact.name
+		%Cursor/ItemPreview.icon = artifact.Icon
 	else:
 		push_error("Invalid use of choose_member")
 		return
@@ -788,24 +790,24 @@ func choose_member(artifact: Resource, user: Actor = Party.Leader) -> void:
 	member_choosing_user = user
 
 	if not expanded:
-		_on_expand(1)
+		expand(1)
 
 	ui_visible = true
 	t = create_tween()
-	$CanvasLayer/Fade.show()
-	$CanvasLayer/Back.show()
+	fader.show()
+	back_button.show()
 
-	$CanvasLayer/Back.icon = Controller.get_scheme().CancelIcon
-	t.tween_property($CanvasLayer/Back, "position:x", 20, 0.3)
-	t.tween_property($CanvasLayer/Cursor, "modulate", Color(1, 1, 1, 1), 0.4)
-	t.tween_property($CanvasLayer/Fade/Blur.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3, 0.4)
-	t.tween_property($CanvasLayer/Fade, "color", Color(0, 0, 0, 0.5), 0.4)
-	$CanvasLayer/Cursor/ItemPreview/AnimationPlayer.play(&"hover")
-	$CanvasLayer/Cursor/ItemPreview.show()
-	$CanvasLayer/Cursor/MemberOptions.hide()
+	back_button.icon = Controller.get_scheme().CancelIcon
+	t.tween_property(back_button, "position:x", 20, 0.3)
+	t.tween_property(cursor, "modulate", Color(1, 1, 1, 1), 0.4)
+	t.tween_property(fader.get_node("Blur").material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3, 0.4)
+	t.tween_property(fader, "color", Color(0, 0, 0, 0.5), 0.4)
+	%Cursor/ItemPreview/AnimationPlayer.play(&"hover")
+	%Cursor/ItemPreview.show()
+	%Cursor/MemberOptions.hide()
 	await Event.wait(0.3, false)
 	member_choosing = true
-	$CanvasLayer/Cursor/ItemPreview.grab_focus()
+	%Cursor/ItemPreview.grab_focus()
 
 
 func _on_item_preview_pressed() -> void:
@@ -820,7 +822,7 @@ func _on_item_preview_pressed() -> void:
 			Audio.buzzer_sound()
 			Global.toast("No more of this item is left")
 
-		$CanvasLayer/Cursor/ItemPreview.text = (member_choosing_artifact.Name + " x" + str(Item.count(member_choosing_artifact)))
+		%Cursor/ItemPreview.text = (member_choosing_artifact.Name + " x" + str(Item.count(member_choosing_artifact)))
 
 	if member_choosing_artifact is Ability:
 		if Party.current[focus].Health == Party.current[focus].MaxHP:
@@ -833,7 +835,7 @@ func _on_item_preview_pressed() -> void:
 
 
 func confirm_time_passage(title: String, description: String, to_time: Event.TOD = Event.to_time) -> bool:
-	var awnser: bool = await $CanvasLayer/CalendarBase.confirm_time_passage(title, description, to_time)
+	var awnser: bool = await %CalendarBase.confirm_time_passage(title, description, to_time)
 
 	if awnser and is_instance_valid(Global.player):
 		await Loader.save()
@@ -845,13 +847,13 @@ func cmd(cmd_text := "") -> void:
 	Event.add_flag("DisableMenus", false)
 	Hud.disabled = false
 	show_all()
-	if not $CanvasLayer/TextEdit.visible:
+	if not %DebugTextEdit.visible:
 		await Event.take_control(true)
 		print(Event.flags)
-		$CanvasLayer/TextEdit/RichTextLabel.text = str(Event.flags).replace(",", "\n")
-		$CanvasLayer/TextEdit.show()
-		$CanvasLayer/TextEdit.grab_focus()
-		$CanvasLayer/TextEdit.set_deferred("text", "")
+		%DebugTextEdit/RichTextLabel.text = str(Event.flags).replace(",", "\n")
+		%DebugTextEdit.show()
+		%DebugTextEdit.grab_focus()
+		%DebugTextEdit.set_deferred("text", "")
 	else:
 		if cmd_text.begins_with("/"):
 			if cmd_text.begins_with("/clear"):
@@ -880,7 +882,7 @@ func cmd(cmd_text := "") -> void:
 				Global.reset_all_members()
 				var text := cmd_text.replace("/lv ", "")
 
-				for i in Party.current:
+				for i: Actor in Party.current:
 					if i != null:
 						i.level_up_to(int(text))
 
@@ -921,13 +923,13 @@ func cmd(cmd_text := "") -> void:
 					"Flag \"" + text + "\" set to "
 					+ str(Event.flag_int(text)),
 				)
-		$CanvasLayer/TextEdit.hide()
+		%DebugTextEdit.hide()
 		Global.controllable = true
 
 
 func party_menu() -> void:
 	if (
-			Battle.in_battle == false and
+			not Battle.in_battle and
 			is_instance_valid(Global.player) and
 			not Global.player.dashing and
 			not member_choosing and
@@ -939,7 +941,7 @@ func party_menu() -> void:
 			return
 
 		if Global.controllable:
-			expand.emit()
+			expand()
 			Audio.confirm_sound()
 
 
@@ -993,8 +995,8 @@ func details() -> void:
 		submenu_opened = true
 		await Event.wait(0.2, false)
 		%Pages.hide()
-		$CanvasLayer/Cursor.hide()
-		$CanvasLayer/Back.hide()
+		cursor.hide()
+		back_button.hide()
 		Partybox.hide()
 
 
@@ -1004,8 +1006,8 @@ func abilities() -> void:
 		submenu_opened = true
 		await Event.wait(0.2, false)
 		%Pages.hide()
-		$CanvasLayer/Cursor.hide()
-		$CanvasLayer/Back.hide()
+		cursor.hide()
+		back_button.hide()
 		Partybox.hide()
 
 
@@ -1013,9 +1015,9 @@ func back() -> void:
 	if member_choosing and expanded and not (
 		get_tree().root.has_node("MainMenu") and get_tree().root.get_node("MainMenu").stage == "choose_member"
 	):
-		$CanvasLayer/Cursor/ItemPreview.hide()
-		$CanvasLayer/Cursor/ItemPreview/AnimationPlayer.stop()
-		$CanvasLayer/Cursor/MemberOptions.show()
+		%Cursor/ItemPreview.hide()
+		%Cursor/ItemPreview/AnimationPlayer.stop()
+		%Cursor/MemberOptions.show()
 		member_choosing = false
 		Audio.confirm_sound()
 		focus = Party.current.find(member_choosing_user)
@@ -1024,7 +1026,7 @@ func back() -> void:
 		if not submenu_opened:
 			$Audio.stream = await Loader.load_res("res://sound/SFX/shrink.ogg")
 			$Audio.play()
-			shrink.emit()
+			shrink()
 			Audio.cancel_sound()
 			await Event.wait(0.1, false)
 			Global.controllable = was_controllable
@@ -1036,10 +1038,10 @@ func back() -> void:
 
 func close_submenu() -> void:
 	Partybox.show()
-	get_node("CanvasLayer/Pages/Page" + str(focus) + "/Render").show()
-	$CanvasLayer/Back.show()
+	get_node("%Pages/Page" + str(focus) + "/Render").show()
+	back_button.show()
 	%Pages.show()
-	$CanvasLayer/Cursor.show()
+	cursor.show()
 	submenu_opened = false
 
 
@@ -1116,7 +1118,7 @@ func _on_revive_flash_timer_timeout(source: Timer) -> void:
 func _on_virtual_joystick_flicked(input_vector: Vector2) -> void:
 	if input_vector.length() >= 1:
 		Input.action_press("Dash")
-		await $CanvasLayer/VirtualJoystick.released
+		await virtual_joystick.released
 		Input.action_release("Dash")
 
 

@@ -5,7 +5,6 @@ var CurrentChar: Actor
 var Troop: Array[Actor]
 var Turn: int
 @onready var Bt: Battle = get_parent()
-@onready var Cam: Camera2D = Bt.cam
 @onready var t: Tween
 #var target:Actor
 var miss: bool
@@ -15,8 +14,8 @@ signal additional_done
 
 
 func play(nam: String, tar: Actor) -> void:
-	TurnOrder = get_parent().TurnOrder
-	CurrentChar = get_parent().CurrentChar
+	TurnOrder = Bt.TurnOrder
+	CurrentChar = Bt.CurrentChar
 	Bt.Action = true
 	CurrentChar.node.z_index = 1
 	Loader.battle_bars(2)

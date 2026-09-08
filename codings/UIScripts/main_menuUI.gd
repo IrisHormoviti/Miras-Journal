@@ -66,7 +66,7 @@ func _ready() -> void:
 	t.tween_property(Cam, "offset", Vector2(0, (-15 + zoom.y)), 0.5)
 	t.tween_property($Confirm, "position", Vector2(31, 742), 0.3).from(Vector2(31, 850))
 	t.tween_property($Back, "position", Vector2(210, 742), 0.4).from(Vector2(210, 850))
-	t.tween_property($party, "position", Vector2(274, 28), 0.4).from(Vector2(274, -50))
+	t.tween_property($Party, "position", Vector2(274, 28), 0.4).from(Vector2(274, -50))
 	player.get_node("%Shadow").z_index = -1
 	Hud.show_all()
 	z = player.z_index
@@ -185,7 +185,7 @@ func close(give_control := true) -> void:
 	t.tween_property($Rail/QuestFollow/QuestButton, "position:x", -30, 0.3)
 	t.tween_property($Rail/OptionsFollow/OptionsButton, "size:x", 64, 0.3)
 	t.tween_property($Rail/OptionsFollow/OptionsButton, "position:x", -30, 0.3)
-	t.tween_property($party, "position", Vector2(274, -80), 0.2)
+	t.tween_property($Party, "position", Vector2(274, -80), 0.2)
 	t.tween_property(player, "global_position", prevPos, 0.5)
 	t.tween_property($Confirm, "position:y", 850, 0.4)
 	t.tween_property($Back, "position:y", 850, 0.3)
@@ -351,7 +351,7 @@ func _root() -> void:
 	t.tween_property($Ring, "position", Vector2(-162, -388), 0.8)
 	t.tween_property($Ring, "scale", Vector2.ONE, 0.6)
 	t.tween_property($Ring/Glow, "modulate", Color.WHITE, 0.6).from(Color.TRANSPARENT)
-	t.tween_property($party, "position", Vector2(274, 28), 0.4)
+	t.tween_property($Party, "position", Vector2(274, 28), 0.4)
 	$Confirm.show()
 	$Back.show()
 	Hud.darken(false)
@@ -391,7 +391,7 @@ func _journal() -> void:
 	t.tween_property(Cam, "offset:x", 100, 0.6)
 	t.tween_property($Base, "position", Vector2(-500, 0), 0.6).as_relative()
 	t.tween_property($Ring, "position", Vector2(-500, 0), 0.6).as_relative()
-	t.tween_property($party, "position", Vector2(-200, 28), 0.4)
+	t.tween_property($Party, "position", Vector2(-200, 28), 0.4)
 	var journalui: CanvasLayer = (await Loader.load_res("res://UI/Journal/JournalUI.tscn")).instantiate()
 	$Confirm.hide()
 	$Back.hide()
@@ -437,7 +437,7 @@ func _item() -> void:
 	t.tween_property($Rail/ItemFollow, "progress", 587, 0.3)
 	t.tween_property($Rail/QuestFollow, "progress", 587, 0.3)
 	t.tween_property($Rail/OptionsFollow, "progress", 587, 0.3)
-	t.tween_property($party, "position", Vector2(-200, 28), 0.4)
+	t.tween_property($Party, "position", Vector2(-200, 28), 0.4)
 	$Inventory.show()
 	t.tween_property($Inventory, "size", Vector2(547, 549), 0.3).from(Vector2.ZERO)
 	t.tween_property($Inventory, "position", Vector2(241, 123), 0.3).from(Vector2(803, 446))
@@ -483,7 +483,7 @@ func _options() -> void:
 	t.tween_property($Base, "position:x", -300, 0.5).as_relative()
 	t.tween_property($Ring, "scale", Vector2(1.5, 1.5), 3)
 	t.tween_property(Cam, "offset:x", 70, 0.5)
-	t.tween_property($party, "position", Vector2(-200, 28), 0.4)
+	t.tween_property($Party, "position", Vector2(-200, 28), 0.4)
 	$Back.hide()
 	$Confirm.hide()
 	await t.finished
@@ -648,7 +648,7 @@ func focus_item(node: Button) -> void:
 func _on_party_pressed() -> void:
 	if stage == "root":
 		get_viewport().gui_release_focus()
-		Hud.expand.emit()
+		Hud.expand()
 		stage = "party"
 		t = create_tween().set_parallel().set_ease(Tween.EASE_IN)
 		t.tween_property($Confirm, "position:y", 900, 0.3)
@@ -661,10 +661,10 @@ func _on_party_pressed() -> void:
 func _on_party_focus_entered() -> void:
 	Audio.cursor_sound()
 	t = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_BACK)
-	t.tween_property($party, "scale", Vector2(1.8, 1.8), 0.3)
+	t.tween_property($Party, "scale", Vector2(1.8, 1.8), 0.3)
 
 
 func _on_party_focus_exited() -> void:
 	Audio.ui_sound("shrink")
 	t = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	t.tween_property($party, "scale", Vector2(1.4, 1.4), 0.3)
+	t.tween_property($Party, "scale", Vector2(1.4, 1.4), 0.3)

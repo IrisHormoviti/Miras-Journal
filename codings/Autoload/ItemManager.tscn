@@ -2,12 +2,8 @@
 
 [ext_resource type="Script" uid="uid://cps0x3mdxcyvu" path="res://codings/Autoload/ItemManager.gd" id="1_tytpn"]
 [ext_resource type="Material" uid="uid://bk3wcarpqpgmi" path="res://codings/Shaders/Pixelart.tres" id="2_d0a2x"]
-[ext_resource type="Resource" uid="uid://r736fdcx3r12" path="res://database/Items/KeyItems/Wallet.tres" id="2_jpvbu"]
-[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="2_yoeyv"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="3_55ujn"]
-[ext_resource type="Resource" uid="uid://ci6asie02dl6j" path="res://database/Items/KeyItems/FoldedPaper.tres" id="3_p3mct"]
 [ext_resource type="Script" uid="uid://brmbemxh7bncm" path="res://codings/Autoload/ItemEffect.gd" id="4_1qmny"]
-[ext_resource type="Resource" uid="uid://do7q8xug20jva" path="res://database/Items/KeyItems/PenCase.tres" id="4_22d57"]
 [ext_resource type="FontFile" uid="uid://bks6fau84dtru" path="res://UI/Fonts/Faktos.ttf" id="8_b5qlt"]
 [ext_resource type="FontFile" uid="uid://cumufnoi2wx0i" path="res://UI/Fonts/cyrenia-bold.ttf" id="8_vrnpu"]
 
@@ -33,16 +29,9 @@ corner_radius_top_right = 48
 corner_radius_bottom_right = 48
 corner_radius_bottom_left = 48
 
-[node name="ItemManager" type="Control" unique_id=1506861721]
+[node name="ItemManager" type="Node" unique_id=1087635630]
 process_mode = 3
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
 script = ExtResource("1_tytpn")
-KeyInv = Array[ExtResource("2_yoeyv")]([ExtResource("2_jpvbu"), ExtResource("3_p3mct"), ExtResource("4_22d57")])
 
 [node name="Can" type="CanvasLayer" parent="." unique_id=423061814]
 

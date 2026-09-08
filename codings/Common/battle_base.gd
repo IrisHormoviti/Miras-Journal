@@ -64,9 +64,11 @@ var follow_up_next := false
 var aoe_returns := 0
 
 @onready var ui: Control = $BattleUI
-@onready var cam: Camera2D = $Cam
 @onready var canvas: CanvasLayer = $Canvas
 @onready var enemy_ui: CanvasLayer = $EnemyUI
+@onready var act: Node2D = $Act
+@onready var cam: Camera2D = $Act/Cam
+@onready var effects: AnimatedSprite2D = $Act/Effects
 
 signal battle_start
 signal battle_end(result: int)
@@ -135,7 +137,7 @@ static func start(stg: Variant, advantage := 0) -> void:
 		Party.set_to(sequence.PartyOverride)
 
 	Global.camera.position_smoothing_enabled = false
-	Global.get_node(Loader.area_spawn_path).add_child(battle)
+	Global.get_tree().root.add_child(battle)
 	if is_instance_valid(attacker):
 		attacker.hide()
 
@@ -170,29 +172,26 @@ func _ready() -> void:
 	for i in sequence.Enemies:
 		Troop.append(i.duplicate())
 
-	Party.Leader.node = $Act/Actor0
+	Party.Leader.node = act.get_node("Actor0")
 	TurnOrder.push_front(Party.Leader)
 	TurnOrder.append_array(Troop)
 	$Background.texture = sequence.BattleBack
 
 	if sequence.BattleBack == null:
-		$Act/Actor0.light_mask = 1
+		act.get_node("Actor0").light_mask = 1
 
 	if sequence.PositionSameAsPlayer:
 		sequence.ScenePosition = Global.player.global_position + Vector2(45, 0)
-
-	global_position = sequence.ScenePosition
-	global_position = Vector2i(global_position)
 
 	if Global.camera != null:
 		cam.global_position = Global.camera.global_position
 		cam.zoom = Global.camera.zoom
 
 	$Canvas/Cutin.hide()
-	$Act/Actor0.sprite_frames = await Party.Leader.get_BT()
-	$Act/Actor0.animation = &"Entrance"
-	$Act/Actor0.frame = 0
-	$Act/Actor0/Shadow.modulate = Color.WHITE
+	act.get_node("Actor0").sprite_frames = await Party.Leader.get_BT()
+	act.get_node("Actor0").animation = &"Entrance"
+	act.get_node("Actor0").frame = 0
+	act.get_node("Actor0/Shadow").modulate = Color.WHITE
 	$Canvas/VictoryText.modulate = Color.TRANSPARENT
 	$Canvas/SPGain.hide()
 	$Canvas/VictoryItems.hide()
@@ -200,9 +199,9 @@ func _ready() -> void:
 	for i in range(1, 4):
 		if Party.has_member_index(i):
 			var member := Party.current[i]
-			var dub := $Act/Actor0.duplicate()
+			var dub := act.get_node("Actor0").duplicate()
 			dub.name = "Actor" + str(i)
-			$Act.add_child(dub)
+			act.add_child(dub)
 			member.node = dub
 			dub.sprite_frames = await member.get_BT()
 			TurnOrder.push_front(member)
@@ -222,9 +221,9 @@ func _ready() -> void:
 		i.IsEnemy = false
 
 	for i in Troop.size():
-		var dub := $Act/Actor0.duplicate()
+		var dub := act.get_node("Actor0").duplicate()
 		dub.name = "Enemy" + str(i)
-		$Act.add_child(dub)
+		act.add_child(dub)
 		Troop[i].node = dub
 		dub.sprite_frames = await Troop[i].get_BT()
 		dub.material = dub.material.duplicate()
@@ -242,7 +241,7 @@ func _ready() -> void:
 		for i in TurnOrder:
 			if i.IsEnemy: i.SpeedBoost += 10
 
-	$Act/Actor0.add_child(Party.Leader.SoundSet.instantiate())
+	act.get_node("Actor0").add_child(Party.Leader.SoundSet.instantiate())
 	for i in TurnOrder:
 		sprite_init(i)
 		i.NextAction = Actor.BtAction.UNSET
@@ -255,12 +254,16 @@ func _ready() -> void:
 	
 	position_sprites()
 	if is_instance_valid(attacker): attacker.hide()
-	if sequence.EntranceSequence != "": await $Act.call(sequence.EntranceSequence)
+	if sequence.EntranceSequence != "": await act.call(sequence.EntranceSequence)
 	TurnOrder.sort_custom(speed_sort)
 	turn_ui_init()
 	for i in TurnOrder:
 		print(i.Speed + i.SpeedBoost, " - ", i.FirstName)
 
+	
+	act.reparent(get_node(Loader.area_spawn_path))
+	act.global_position = sequence.ScenePosition
+	cam.make_current()
 	
 	await entrance()
 
@@ -333,75 +336,76 @@ func turn_ui_check() -> void:
 
 
 func position_sprites() -> void:
-	$Act/Actor0.show()
+	act.get_node("Actor0").show()
+	
 	match Query.number_of_party_members():
 		1:
-			$Act/Actor0.position = Vector2(-45, 0)
+			Party.Leader.node.position = Vector2(-45, 0)
 
 		2:
-			$Act/Actor0.position = Vector2(-45, -15)
-			$Act/Actor1.show()
-			$Act/Actor1.position = Vector2(-45, 45)
+			Party.Leader.node.position = Vector2(-45, -15)
+			Party.current[1].node.node.show()
+			Party.current[1].node.position = Vector2(-45, 45)
 
 		3:
-			$Act/Actor0.position = Vector2(-45, -25)
-			$Act/Actor1.show()
-			$Act/Actor1.position = Vector2(-45, 15)
-			$Act/Actor2.show()
-			$Act/Actor2.position = Vector2(-45, 55)
+			Party.Leader.node.position = Vector2(-45, -25)
+			Party.current[1].node.show()
+			Party.current[1].node.position = Vector2(-45, 15)
+			Party.current[2].node.show()
+			Party.current[2].node.position = Vector2(-45, 55)
 
 		4:
-			$Act/Actor0.position = Vector2(-20, -40)
-			$Act/Actor1.show()
-			$Act/Actor1.position = Vector2(-45, -15)
-			$Act/Actor2.show()
-			$Act/Actor2.position = Vector2(-20, 15)
-			$Act/Actor3.show()
-			$Act/Actor3.position = Vector2(-45, 40)
+			Party.Leader.node.position = Vector2(-20, -40)
+			Party.current[1].node.show()
+			Party.current[1].node.position = Vector2(-45, -15)
+			Party.current[2].node.show()
+			Party.current[2].node.position = Vector2(-20, 15)
+			Party.current[3].node.show()
+			Party.current[3].node.position = Vector2(-45, 40)
 
 	match Troop.size():
 		1:
-			$Act/Enemy0.show()
-			$Act/Enemy0.position = Vector2(66, 0)
+			act.get_node("Enemy0").show()
+			act.get_node("Enemy0").position = Vector2(66, 0)
 
 		2:
-			if $Act.has_node("Enemy0"):
-				$Act/Enemy0.show()
-				$Act/Enemy0.position = Vector2(66, -15)
+			if act.has_node("Enemy0"):
+				act.get_node("Enemy0").show()
+				act.get_node("Enemy0").position = Vector2(66, -15)
 
-			if $Act.has_node("Enemy1"):
-				$Act/Enemy1.show()
-				$Act/Enemy1.position = Vector2(46, 30)
+			if act.has_node("Enemy1"):
+				act.get_node("Enemy1").show()
+				act.get_node("Enemy1").position = Vector2(46, 30)
 
 		3:
-			if $Act.has_node("Enemy0"):
-				$Act/Enemy0.show()
-				$Act/Enemy0.position = Vector2(66, -25)
+			if act.has_node("Enemy0"):
+				act.get_node("Enemy0").show()
+				act.get_node("Enemy0").position = Vector2(66, -25)
 
-			if $Act.has_node("Enemy1"):
-				$Act/Enemy1.show()
-				$Act/Enemy1.position = Vector2(36, 15)
+			if act.has_node("Enemy1"):
+				act.get_node("Enemy1").show()
+				act.get_node("Enemy1").position = Vector2(36, 15)
 
-			if $Act.has_node("Enemy2"):
-				$Act/Enemy2.show()
-				$Act/Enemy2.position = Vector2(66, 55)
+			if act.has_node("Enemy2"):
+				act.get_node("Enemy2").show()
+				act.get_node("Enemy2").position = Vector2(66, 55)
 
 		4:
-			if $Act.has_node("Enemy0"):
-				$Act/Enemy0.show()
-				$Act/Enemy0.position = Vector2(66, -35)
+			if act.has_node("Enemy0"):
+				act.get_node("Enemy0").show()
+				act.get_node("Enemy0").position = Vector2(66, -35)
 
-			if $Act.has_node("Enemy1"):
-				$Act/Enemy1.show()
-				$Act/Enemy1.position = Vector2(36, 15)
+			if act.has_node("Enemy1"):
+				act.get_node("Enemy1").show()
+				act.get_node("Enemy1").position = Vector2(36, 15)
 
-			if $Act.has_node("Enemy2"):
-				$Act/Enemy2.show()
-				$Act/Enemy2.position = Vector2(90, 15)
+			if act.has_node("Enemy2"):
+				act.get_node("Enemy2").show()
+				act.get_node("Enemy2").position = Vector2(90, 15)
 
-			if $Act.has_node("Enemy3"):
-				$Act/Enemy3.show()
-				$Act/Enemy3.position = Vector2(66, 65)
+			if act.has_node("Enemy3"):
+				act.get_node("Enemy3").show()
+				act.get_node("Enemy3").position = Vector2(66, 65)
 
 	for i in TurnOrder:
 		if i.CustomPosition != Vector2i.ZERO:
@@ -503,7 +507,7 @@ func _on_next_turn() -> void:
 
 	if CurrentChar.IsEnemy: enemy_ui._on_battle_ui_target_foc(CurrentChar)
 	else: enemy_ui.all_enemy_ui()
-	$Act.handle_states()
+	act.handle_states()
 
 
 func check_for_victory() -> bool:
@@ -722,7 +726,7 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 		if CurrentAbility.Callout and CurrentChar.Controllable:
 			callout()
 
-		$Act.play(ab.ActionSequence, CurrentTarget)
+		act.play(ab.ActionSequence, CurrentTarget)
 	else:
 		end_turn()
 		return
@@ -806,7 +810,7 @@ func end_turn(confirm_aoe := false) -> void:
 		await Event.wait()
 
 	await get_tree().create_timer(0.1).timeout
-	$Act.end_turn_checks()
+	act.end_turn_checks()
 	if is_instance_valid(CurrentChar.node):
 		CurrentChar.node.z_index = 0
 
@@ -1010,7 +1014,7 @@ func screen_shake(amount: float = 15, times: float = 7, ShakeDuration: float = 0
 
 
 func play_effect(stri: String, tar: Variant, offset := Vector2.ZERO, flip_on_player_use := false, dont_free := false) -> void:
-	if $Act/Effects.sprite_frames.has_animation(stri):
+	if effects.sprite_frames.has_animation(stri):
 		print_rich("[color=cornflower-blue]Playing effect ", stri)
 
 		if tar is not Vector2:
@@ -1019,11 +1023,11 @@ func play_effect(stri: String, tar: Variant, offset := Vector2.ZERO, flip_on_pla
 				push_error("The target of the effect ", stri, " was invalid")
 				return
 
-		var ef: AnimatedSprite2D = $Act/Effects.duplicate()
+		var ef: AnimatedSprite2D = effects.duplicate()
 
 		if flip_on_player_use and !CurrentChar.IsEnemy: ef.flip_h = true
 		ef.name = stri
-		$Act.add_child(ef)
+		act.add_child(ef)
 		ef.position = tar + offset
 		ef.play(stri)
 		await ef.animation_finished
@@ -1118,18 +1122,18 @@ func pop_num(target: Actor, text: Variant, color: Color = Color.WHITE) -> void:
 			number.queue_free()
 
 
-func play_sound(SoundName: String, act: Actor = null, volume: float = 1) -> void:
+func play_sound(SoundName: String, actor: Actor = null, volume: float = 1) -> void:
 	$AudioListener2D.make_current()
 	var player: AudioStreamPlayer2D
-	if act and act.node.get_node("SFX").has_node(SoundName):
-		player = act.node.get_node("SFX").get_node(SoundName)
+	if actor and actor.node.get_node("SFX").has_node(SoundName):
+		player = actor.node.get_node("SFX").get_node(SoundName)
 	else:
 		player = $Audio/Stream0.duplicate()
 		$Audio.add_child(player)
 		if not ResourceLoader.exists("res://sound/SFX/Battle/" + SoundName + ".ogg"): return
 		player.stream = await Loader.load_res("res://sound/SFX/Battle/" + SoundName + ".ogg")
 
-		if act: player.global_position = act.node.global_position
+		if actor: player.global_position = actor.node.global_position
 
 	player.play()
 	player.volume_db = volume
@@ -1137,9 +1141,9 @@ func play_sound(SoundName: String, act: Actor = null, volume: float = 1) -> void
 	if player.get_parent() == $Audio: player.queue_free()
 
 
-func stop_sound(SoundName: String, act: Actor) -> void:
-	if act.node.get_node("SFX").has_node(SoundName):
-		act.node.get_node("SFX").get_node(SoundName).stop()
+func stop_sound(SoundName: String, actor: Actor) -> void:
+	if actor.node.get_node("SFX").has_node(SoundName):
+		actor.node.get_node("SFX").get_node(SoundName).stop()
 
 
 ## Runs when an actor is defeated, usually when HP reaches 0
@@ -1189,7 +1193,7 @@ func death(target: Actor) -> void:
 
 	await Event.wait(1)
 	if not target.DeathSequence.is_empty() and not target.CantDie:
-		await $Act.call(target.DeathSequence, target)
+		await act.call(target.DeathSequence, target)
 
 	lock_turn = false
 
@@ -1227,7 +1231,7 @@ func game_over(target: Actor = null) -> void:
 
 	if sequence.DefeatSequence == "":
 		Global.game_over()
-	else: $Act.call(sequence.DefeatSequence)
+	else: act.call(sequence.DefeatSequence)
 
 
 func delete_actor(target: Actor) -> void:
@@ -1246,18 +1250,18 @@ func slowmo(timescale := 0.5, time := 1.0) -> void:
 	Engine.time_scale = 1
 
 
-func get_ally_faction(act: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
+func get_ally_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
 	var rtn: Array[Actor]
-	if act.IsEnemy: rtn = Troop
+	if actor.IsEnemy: rtn = Troop
 	else: rtn = Party.current
 
 	if filter_out_dead: rtn = filter_dead(rtn)
 	return rtn
 
 
-func get_oposing_faction(act: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
+func get_oposing_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
 	var rtn: Array[Actor]
-	if act.IsEnemy: rtn = Party.current
+	if actor.IsEnemy: rtn = Party.current
 	else: rtn = Troop
 
 	if filter_out_dead: rtn = filter_dead(rtn)
@@ -1453,7 +1457,7 @@ func end_battle() -> void:
 	if Global.room == null: Loader.travel_to("Debug"); queue_free(); return
 	Audio.fade_out_music()
 	
-	Hud._on_shrink()
+	Hud.shrink()
 	if sequence.Detransition or battle_result != Result.VICTORY:
 		hide_victory_stuff()
 		Global.bt.zoom(4)
@@ -1477,7 +1481,6 @@ func end_battle() -> void:
 
 	in_battle = false
 	Global.camera.position_smoothing_enabled = true
-	battle_end.emit()
 
 	if not is_instance_valid(Global.player):
 		return
@@ -1488,10 +1491,16 @@ func end_battle() -> void:
 
 	Global.player.set_anim("IdleRight")
 	Global.player.dashing = false
+	
+	post_battle()
+	
+	Global.camera.make_current()
+	act.free()
+	queue_free()
+	battle_end.emit()
 
-	if is_instance_valid(Global.bt):
-		Global.bt.get_node("Act").hide()
 
+static func post_battle() -> void:
 	if battle_result == Result.ESCAPE:
 		Global.player.position = Query.globalize(sequence.EscPosition)
 
@@ -1511,13 +1520,13 @@ func end_battle() -> void:
 		Global.player.show()
 		Global.player.get_node("DirectionMarker/Finder/Shape").set_deferred("disabled", false)
 		if Event.f(&"FlameActive"):
-			await Global.player.activate_flame()
+			Global.player.activate_flame()
 
 	if sequence.ReturnControl:
 		Hud.ui_visible = true
 		Event.give_control(true)
 
-	Hud._on_shrink()
+	Hud.shrink()
 
 
 func hide_victory_stuff() -> void:
@@ -1551,7 +1560,7 @@ func reset_all() -> void:
 
 
 func victory_anim(chara: Actor) -> void:
-	$Act.process_mode = Node.PROCESS_MODE_ALWAYS
+	act.process_mode = Node.PROCESS_MODE_ALWAYS
 	clear_states(chara)
 	await anim("Victory", chara)
 	anim("VictoryLoop", chara)
@@ -1602,7 +1611,7 @@ func victory(ignore_seq := false) -> void:
 	Action = true
 
 	if sequence.VictorySequence != "" and not ignore_seq:
-		$Act.call(sequence.VictorySequence)
+		act.call(sequence.VictorySequence)
 		return
 
 	if sequence.VictoryBanter != "":
@@ -1634,7 +1643,7 @@ func victory(ignore_seq := false) -> void:
 	$Canvas/VictoryText.add_theme_color_override("font_color", Color.WHITE)
 	$Canvas/VictoryText.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_RIGHT
 	$Canvas/VictoryText.scale = Vector2(1.5, 1.5)
-	Hud._on_expand(2)
+	Hud.expand(2)
 	Loader.battle_bars(0)
 	$Canvas/DottedBack.show()
 	t.tween_property($Canvas/DottedBack, "modulate",
@@ -1663,11 +1672,11 @@ func victory(ignore_seq := false) -> void:
 		if sequence.UseBackground:
 			pass
 		else:
-			Global.player.global_position = $Act/Actor0.global_position
+			Global.player.global_position = act.get_node("Actor0").global_position
 
 			for i in range(1, 4):
 				if Party.has_member_index(i):
-					Global.room.followers[i - 1].global_position = $Act.get_node("Actor" + str(i)).global_position
+					Global.room.followers[i - 1].global_position = act.get_node("Actor" + str(i)).global_position
 
 			Global.camera.position_smoothing_enabled = false
 			Global.camera.global_position = cam.global_position
@@ -1739,9 +1748,9 @@ func add_to_troop(en: Actor) -> void:
 	en = en.duplicate()
 	lock_turn = true
 	Troop.append(en)
-	var dub: AnimatedSprite2D = $Act/Actor0.duplicate()
+	var dub: AnimatedSprite2D = act.get_node("Actor0").duplicate()
 	dub.name = "Enemy" + str(Troop.size() - 1)
-	$Act.add_child(dub)
+	act.add_child(dub)
 	TurnOrder.push_front(en)
 	en.node = dub
 	dub.sprite_frames = await en.get_BT()
@@ -1941,8 +1950,8 @@ func fix_enemy_node_issues() -> void:
 
 	for j in Troop:
 		if j == null: continue
-		if $Act.get_node_or_null("Enemy" + str(i)):
-			j.node = $Act.get_node_or_null("Enemy" + str(i))
+		if act.get_node_or_null("Enemy" + str(i)):
+			j.node = act.get_node_or_null("Enemy" + str(i))
 
 		i += 1
 

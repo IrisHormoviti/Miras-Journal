@@ -27,8 +27,8 @@ func new_game() -> void:
 	Loader.defeated.clear()
 	# Reset party
 	Party.reset_party()
-	Global.reset_all_members()
-	Party.init()
+	Party.reset_all_members()
+	Party._init()
 	Global.check.emit()
 
 	# Now start the transition

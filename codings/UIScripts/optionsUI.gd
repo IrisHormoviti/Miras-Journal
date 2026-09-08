@@ -657,7 +657,7 @@ func draw_file(file: SaveFile, node: Control) -> void:
 
 	for i in range(0, 4):
 		if file.party[i] != &"":
-			var member := Party.get_member(file.party[i])
+			var member: Actor = Party.get_member(file.party[i])
 			panel.get_node("Party/Icon" + str(i)).texture = member.PartyIcon if member else load("uid://cdys3kc6ljylm")
 		else: panel.get_node("Party/Icon" + str(i)).texture = null
 	var playtime: Dictionary = Time.get_datetime_dict_from_unix_time(int(file.play_time))

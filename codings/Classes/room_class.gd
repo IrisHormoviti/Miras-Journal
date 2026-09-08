@@ -5,6 +5,7 @@ class_name Room
 @export var battleback_position: Vector2
 @export var is_dungeon := true
 
+var is_ready: bool = false
 var index: int = 0
 var camera_index: CameraIndex
 var cam := Camera2D.new()
@@ -114,6 +115,8 @@ func _ready() -> void:
 	initialized.emit.call_deferred()
 
 	await Event.wait(0.4, false)
+	is_ready = true
+
 	if Global.camera: Global.camera.position_smoothing_enabled = true
 
 var t_zoom: Tween

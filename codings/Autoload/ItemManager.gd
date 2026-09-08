@@ -1,4 +1,4 @@
-extends Control
+extends Node
 
 const item_paths: Dictionary[StringName, String] = {
 	&"Key": "res://database/Items/KeyItems",

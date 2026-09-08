@@ -202,11 +202,10 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	if $/root.get_node_or_null("Options"):
 		$/root.get_node("Options").queue_free()
 
-	Hud.shrink.emit()
+	Hud.shrink()
 
 	if transition_after_done:
 		await detransition(Direction.CENTER)
-		Event.give_control()
 	else:
 		await Event.take_control()
 		dismiss_load_icon()
@@ -310,6 +309,8 @@ func travel_to(
 
 
 func travel_done(controllable := false, index: int = 0) -> void:
+	Global.controllable = false
+	get_tree().paused = true
 	chased = false
 
 	var look_dir: Direction = remembered_direction
@@ -338,7 +339,6 @@ func travel_done(controllable := false, index: int = 0) -> void:
 
 	Global.camera.position_smoothing_enabled = false
 	Global.camera.position = traveled_pos
-	get_tree().paused = false
 
 	if remembered_scene.size() > 1:
 		var new_pos: Vector2 = await Global.room.go_to_subroom(remembered_scene[1], true)
@@ -365,10 +365,12 @@ func travel_done(controllable := false, index: int = 0) -> void:
 	if controllable:
 		await Event.wait(0.3, false)
 		await Hud.show_all(false, false)
-		Hud._on_shrink(true)
+		Hud.shrink(true)
 		Event.give_control(false)
 	else:
 		Global.controllable = false
+
+	get_tree().paused = false
 
 
 func transition(dir: Direction = Global.player.facing if Global.player else remembered_direction) -> void:

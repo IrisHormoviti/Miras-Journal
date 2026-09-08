@@ -102,6 +102,8 @@ func _input(event: InputEvent) -> void:
 	if Global.settings and is_fullscreen != Global.settings.Fullscreen:
 		Global.fullscreen(is_fullscreen)
 
+	check_menu_buttons(event)
+
 
 func handle_remaps() -> void:
 	var scheme := get_scheme()
@@ -137,7 +139,7 @@ func rumble(strong: float, weak: float, duration: float, delay: float = 0) -> vo
 		Input.start_joy_vibration(0, strong, weak, duration)
 
 
-func _unhandled_input(event: InputEvent) -> void:
+func check_menu_buttons(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Fullscreen"):
 		Global.fullscreen()
 
@@ -147,15 +149,10 @@ func _unhandled_input(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Refresh"):
 		Global.refresh()
 
-	var text_edit_visible := false
-
-	if Hud.has_node("CanvasLayer/TextEdit"):
-		text_edit_visible = Hud.get_node("CanvasLayer/TextEdit").visible
-
-	if Global.controllable and not Hud.expanded and not text_edit_visible:
+	if Global.controllable and not Hud.expanded:
 		var can_open_menu := false
 
-		if is_instance_valid(Global.player) and Global.player.sprite:
+		if is_instance_valid(Global.player) and Global.player.sprite and Global.room.is_ready:
 			can_open_menu = "Idle" in Global.player.sprite.animation
 
 		if can_open_menu:
@@ -169,6 +166,8 @@ func _unhandled_input(event: InputEvent) -> void:
 				Hud.main_menu()
 
 	if Global.settings and Global.settings.DebugMode:
+		var text_edit_visible: bool = Hud.get_node("%DebugTextEdit").visible
+
 		if Input.is_action_just_pressed("DebugFlag"):
 			Hud.cmd()
 		elif not text_edit_visible:

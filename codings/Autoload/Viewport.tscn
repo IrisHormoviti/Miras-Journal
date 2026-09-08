@@ -10,6 +10,7 @@ offset_right = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 stretch = true
+mouse_target = true
 
 [node name="SubViewport" type="SubViewport" parent="." unique_id=908074913]
 disable_3d = true

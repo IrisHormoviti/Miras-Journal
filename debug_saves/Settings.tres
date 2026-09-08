@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("1")
-AutoHideHUD = 1
 DebugMode = true

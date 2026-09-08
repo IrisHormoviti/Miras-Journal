@@ -6,9 +6,10 @@
 [ext_resource type="Resource" uid="uid://bdfytl8ohvtj6" path="res://database/Enemies/DarkSpawn.tres" id="2_rfvsl"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="3_y4cbm"]
 [ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="5_q870w"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_fujfa"]
 
 [resource]
 script = ExtResource("3_y4cbm")
 Enemies = Array[ExtResource("2_fujfa")]([ExtResource("1_hxhgp"), ExtResource("2_rfvsl")])
-EscPosition = Vector2i(58, -17)
 ScenePosition = Vector2(1200, -338)
+EscPosition = Vector2i(58, -17)

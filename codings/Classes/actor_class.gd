@@ -268,7 +268,7 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar
 	States.append(state)
 	if node:
 		Global.bt.on_state_add(state, self, effect)
-		if Global.bt.get_node("Act/Effects").sprite_frames.has_animation(state.name):
+		if Global.bt.effects.sprite_frames.has_animation(state.name):
 			Global.bt.play_effect(state.name, self)
 
 	return state

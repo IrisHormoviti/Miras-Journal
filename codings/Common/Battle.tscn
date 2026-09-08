@@ -4268,9 +4268,6 @@ bg_color = Color(1, 1, 1, 1)
 [node name="Battle" type="Node2D" unique_id=189468572]
 process_mode = 3
 physics_interpolation_mode = 2
-z_index = 3
-z_as_relative = false
-y_sort_enabled = true
 texture_filter = 2
 script = ExtResource("1_mokeb")
 BattleText = Dictionary[String, String]({
@@ -4314,6 +4311,8 @@ expand_mode = 1
 [node name="Act" type="Node2D" parent="." unique_id=1447045837]
 process_mode = 1
 visibility_layer = 16
+z_index = 3
+z_as_relative = false
 y_sort_enabled = true
 texture_filter = 1
 use_parent_material = true
@@ -4408,7 +4407,7 @@ animation = &"Slice"
 frame = 8
 frame_progress = 1.0
 
-[node name="Cam" type="Camera2D" parent="." unique_id=71352168]
+[node name="Cam" type="Camera2D" parent="Act" unique_id=71352168]
 physics_interpolation_mode = 2
 zoom = Vector2(4, 4)
 limit_smoothed = true
