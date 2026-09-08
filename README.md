@@ -7,8 +7,7 @@ Comb a deteriorating land, fight enemies in Color-based battles, and reveal what
 ```
 
 # [Wishlist on steam](https://store.steampowered.com/app/4059970?snr=5000_5100__)
-<img src="https://codeberg.org/RaiDev/Miras-Journal/raw/branch/main/art/Branding/Library%20Horizontal.png">
-<img src="https://github.com/RaiHormo/Miras-Journal/blob/main/art/Branding/Library Horizontal.png">
+<img src="https://shared.steamstatic.com/store_item_assets/steam/apps/4059970/73c76ae37846e426f22e13bc0ca36ea33460dac4/capsule_616x353_2x.jpg?t=1786201572">
 
 ## Trying the game
 You may try one of the available releases on the right of the github interface. These are meant for playtesting and don't fully represent the full game. They also might be really outdated depending on when you're visiting.
