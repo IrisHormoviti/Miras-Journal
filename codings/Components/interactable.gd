@@ -90,8 +90,13 @@ var action_options: Array[String] = [
 
 @onready var button: Button
 @onready var arrow: TextureRect
+@onready var dots: TextureRect
 @onready var pack := $Pack
-var CanInteract := false
+
+var can_interact: bool:
+	get():
+		can_interact = player_is_near() and Global.controllable and check_flag() and not Battle.in_battle
+		return can_interact
 var t: Tween
 var animating := false
 
@@ -174,11 +179,16 @@ func _ready() -> void:
 
 	button = pack.get_node("Cnt/Button")
 	arrow = pack.get_node("Arrow")
+	dots = pack.get_node("Dots")
+	pack.hide()
+	button.hide()
 
 	Global.check.connect(check)
 	do_position()
 	disappear()
 	if ActionType == "veinet": vein_check()
+
+	check()
 
 
 func _exit_tree() -> void:
@@ -216,12 +226,10 @@ func check() -> void:
 		destroy()
 
 	#print(Global.Controllable, CanInteract)
-	if not Global.controllable and CanInteract:
+	if not can_interact:
 		disappear()
-		CanInteract = false
 	elif player_is_near():
 		appear()
-		CanInteract = true
 
 
 func check_flag() -> bool:
@@ -253,7 +261,7 @@ func destroy() -> void:
 
 
 func appear() -> void:
-	if not CanInteract and not animating:
+	if can_interact and not animating:
 		animating = true
 		do_position()
 		button.text = LabelText
@@ -263,6 +271,7 @@ func appear() -> void:
 		if is_instance_valid(t): t.kill()
 		t = create_tween()
 		pack.self_modulate = Color.TRANSPARENT
+		dots.hide()
 		pack.show()
 		button.show()
 		arrow.show()
@@ -270,7 +279,7 @@ func appear() -> void:
 		t.set_ease(Tween.EASE_OUT)
 		t.set_trans(Tween.TRANS_BACK)
 		t.tween_property(pack, "scale", Vector2(0.4, 0.4), 0.1)
-		t.tween_property(button.get_node("Dots"), "self_modulate", Color(1, 1, 1, 0), 0.1)
+		t.tween_property(dots, "self_modulate", Color(1, 1, 1, 0), 0.1)
 		t.tween_property(pack, "self_modulate", Color.WHITE, 0.1).from(Color.TRANSPARENT)
 		t.tween_property(button, "custom_minimum_size:x", Length, 0.15).from(48)
 		await get_tree().create_timer(0.1).timeout
@@ -278,7 +287,6 @@ func appear() -> void:
 
 		if not is_instance_valid(Global.player) or not Global.player.get_node_or_null("DirectionMarker/Finder") in get_overlapping_areas():
 			disappear()
-			CanInteract = false
 
 
 func disappear(also_hide_bubble := false) -> void:
@@ -296,6 +304,8 @@ func disappear(also_hide_bubble := false) -> void:
 			t.tween_property(button, "custom_minimum_size:x", 48, 0.1)
 			await get_tree().create_timer(0.1).timeout
 			pack.hide()
+			dots.hide()
+			button.hide()
 
 		z_index = 0
 		animating = false
@@ -303,22 +313,27 @@ func disappear(also_hide_bubble := false) -> void:
 
 func bubble() -> void:
 	pack.show()
+	button.hide()
+	dots.show()
 	if is_instance_valid(t): t.kill()
 	t = create_tween().set_parallel()
 	t.set_ease(Tween.EASE_IN)
 	t.set_trans(Tween.TRANS_LINEAR)
 	t.tween_property(pack, "scale", Vector2(0.3, 0.3), 0.1)
-	t.tween_property(button, "custom_minimum_size:x", 48, 0.1)
+	t.tween_property(dots, "custom_minimum_size:x", 48, 0.1)
 	t.tween_property(pack, "self_modulate", Color(1, 1, 1, 0.2), 0.1)
-	t.tween_property(button.get_node("Dots"), "self_modulate", Color.WHITE, 0.1)
+	t.tween_property(pack.get_node("Dots"), "self_modulate", Color.WHITE, 0.1)
 	await get_tree().create_timer(0.2).timeout
 
 
-func _input(event: InputEvent) -> void:
-	if Global.controllable and player_is_near():
-		if Input.is_action_just_pressed("ui_accept") and CanInteract:
-			_on_button_pressed()
-		else: appear()
+#func _input(event: InputEvent) -> void:
+	##if Input.is_action_just_pressed("ui_accept"):
+		##check()
+		##if CanInteract:
+			##_on_button_pressed()
+#
+	#if player_is_near() and not CanInteract:
+		#appear()
 
 
 func do_position() -> void:
@@ -365,8 +380,8 @@ func do_position() -> void:
 
 
 func _on_button_pressed() -> void:
-	if not check_flag(): return
-	if not Global.controllable: return
+	if not can_interact: return
+
 	Global.controllable = false
 	Global.player.direction = Vector2.ZERO
 	t = create_tween().set_parallel(true).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_LINEAR)
@@ -433,7 +448,6 @@ func _on_button_pressed() -> void:
 				vein_check()
 				disappear()
 				await Event.wait(0.3)
-				CanInteract = false
 				appear()
 				Loader.save()
 
@@ -501,18 +515,15 @@ func _on_button_pressed() -> void:
 
 
 func _on_area_entered(area: Area2D) -> void:
-	if Battle.in_battle or not Global.controllable or not is_instance_valid(Global.player):
+	if not can_interact:
 		pack.hide()
 		return
 
 	if area == Global.player.get_node_or_null("DirectionMarker/Finder"):
-		if not CanInteract:
-			await appear()
-			CanInteract = true
+		appear()
 
 
 func _on_area_exited(area: Area2D) -> void:
 	if not is_instance_valid(Global.player): return
 	if area == Global.player.get_node_or_null("DirectionMarker/Finder"):
-		await disappear()
-		CanInteract = false
+		disappear()
