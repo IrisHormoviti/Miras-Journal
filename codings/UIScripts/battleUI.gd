@@ -1,7 +1,7 @@
 extends Control
 
-@onready var Bt: Battle = $".."
-@onready var canvas: CanvasLayer = $"../Canvas"
+@export var Bt: Battle
+@export var canvas: CanvasLayer
 @onready var t: Tween
 @onready var trw: Tween
 @onready var animation: AnimationPlayer = $"AnimationPlayer"
@@ -49,7 +49,6 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
-
 	if is_instance_valid(CurrentChar) and CurrentChar.has_state("Confused"):
 		$BaseRing.pivot_offset = Vector2(200 + randf_range(-1, 1), 200 + randf_range(-1, 1))
 

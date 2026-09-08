@@ -23,6 +23,7 @@
 [ext_resource type="Shader" uid="uid://bpx7sdi81bvy6" path="res://codings/Shaders/Unshaded.gdshader" id="25_7jovc"]
 [ext_resource type="Script" uid="uid://b3yotcu3olkxe" path="res://codings/UIScripts/battleUI.gd" id="26_2prty"]
 [ext_resource type="FontVariation" uid="uid://b26p56yb7cgso" path="res://UI/Fonts/cyrenia-button.tres" id="27_l4up5"]
+[ext_resource type="Script" uid="uid://cq0reht7ocgl1" path="res://codings/Common/battle_ui_container.gd" id="27_q1as1"]
 [ext_resource type="Texture2D" uid="uid://bpv6vrrg6tboq" path="res://UI/Input/A.png" id="28_8sw5x"]
 [ext_resource type="Texture2D" uid="uid://bv0rq7hr5ekhr" path="res://UI/Input/Y.png" id="29_0ae34"]
 [ext_resource type="Texture2D" uid="uid://dsmyxdlom85ws" path="res://UI/Input/ZL.png" id="30_mjfmt"]
@@ -788,6 +789,211 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.867521, 0.948718)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86gc4"]
+bg_color = Color(0.160784, 0.160784, 0.160784, 1)
+border_color = Color(0.803922, 0.784314, 0.894118, 1)
+corner_radius_top_right = 16
+corner_radius_bottom_right = 16
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyuo7"]
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+corner_detail = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0g5cc"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(0.160784, 0.160784, 0.160784, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+corner_detail = 4
+
+[sub_resource type="Theme" id="Theme_bvcno"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_qyuo7")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_0g5cc")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wq83d"]
+bg_color = Color(0.101961, 0.101961, 0.101961, 1)
+border_color = Color(0.160784, 0.160784, 0.160784, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_detail = 10
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nkyqb"]
+bg_color = Color(1, 1, 1, 1)
+border_width_left = 1
+border_width_right = 1
+border_color = Color(0.160784, 0.160784, 0.160784, 1)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_detail = 4
+
+[sub_resource type="Theme" id="Theme_imlp7"]
+ProgressBar/styles/background = SubResource("StyleBoxFlat_wq83d")
+ProgressBar/styles/fill = SubResource("StyleBoxFlat_nkyqb")
+
+[sub_resource type="Theme" id="Theme_2lgx1"]
+default_font = ExtResource("36_bvqsk")
+Label/colors/font_color = Color(0.101961, 0.101961, 0.101961, 1)
+Label/colors/font_outline_color = Color(1, 1, 1, 1)
+Label/constants/outline_size = 7
+Label/font_sizes/font_size = 14
+
+[sub_resource type="LabelSettings" id="LabelSettings_cas1x"]
+font = ExtResource("36_bvqsk")
+outline_size = 2
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lsc7l"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.894118, 0.894118, 0.894118, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="Theme" id="Theme_jepgw"]
+Panel/styles/panel = SubResource("StyleBoxFlat_lsc7l")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_lsc7l")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w18cv"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.894118, 0.894118, 0.894118, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2i6qu"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.584314, 0.584314, 0.584314, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmd8s"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 8
+border_width_top = 8
+border_width_right = 8
+border_width_bottom = 8
+border_color = Color(0.584314, 0.584314, 0.584314, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+expand_margin_left = 4.0
+expand_margin_top = 4.0
+expand_margin_right = 4.0
+expand_margin_bottom = 4.0
+
+[sub_resource type="Theme" id="Theme_t73mt"]
+Panel/styles/panel = SubResource("StyleBoxFlat_2i6qu")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_nmd8s")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ed0cv"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 11
+border_width_top = 8
+border_width_right = 16
+border_width_bottom = 8
+border_color = Color(0.305882, 0.305882, 0.305882, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="Theme" id="Theme_wxbdf"]
+Panel/styles/panel = SubResource("StyleBoxFlat_ed0cv")
+PanelContainer/styles/panel = null
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cv0u6"]
+content_margin_left = 12.0
+content_margin_top = 12.0
+content_margin_right = 12.0
+content_margin_bottom = 12.0
+bg_color = Color(0.862745, 0.862745, 0.862745, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="Theme" id="Theme_xkd1q"]
+TooltipLabel/colors/font_color = Color(0, 0, 0, 1)
+TooltipLabel/font_sizes/font_size = 24
+TooltipLabel/fonts/font = ExtResource("36_bvqsk")
+TooltipPanel/styles/panel = SubResource("StyleBoxFlat_cv0u6")
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mtoyd"]
+atlas = ExtResource("39_k80j2")
+region = Rect2(162, 18, 18, 18)
+filter_clip = true
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wxkm0"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 11
+border_width_top = 8
+border_width_right = 16
+border_width_bottom = 8
+border_color = Color(0.305882, 0.305882, 0.305882, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g77ug"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+draw_center = false
+border_width_left = 11
+border_width_top = 8
+border_width_right = 16
+border_width_bottom = 8
+border_color = Color(0.305882, 0.305882, 0.305882, 1)
+corner_radius_top_left = 24
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+expand_margin_left = 10.0
+expand_margin_top = 8.0
+expand_margin_right = 10.0
+expand_margin_bottom = 8.0
+
+[sub_resource type="Theme" id="Theme_fkhdn"]
+Panel/styles/panel = SubResource("StyleBoxFlat_wxkm0")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_g77ug")
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwtm7"]
+bg_color = Color(0.129559, 0.129558, 0.129558, 1)
+border_color = Color(0.803922, 0.784314, 0.894118, 1)
+corner_radius_top_right = 24
+corner_radius_bottom_right = 24
+corner_radius_bottom_left = 24
+expand_margin_top = 18.0
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nmg3k"]
 shader = ExtResource("25_7jovc")
 
@@ -797,151 +1003,151 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../BattleUI:scale")
+tracks/0/path = NodePath("UIContainer/ControllerBattleUI:rotation")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(0.25, 0.25)]
+"values": [0.0]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../BattleUI:rotation")
+tracks/1/path = NodePath("UIContainer/ControllerBattleUI/Ability:size")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [0.0]
+"values": [Vector2(165, 48)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../BattleUI/Ability:size")
+tracks/2/path = NodePath("UIContainer/ControllerBattleUI/Ability:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(165, 48)]
+"values": [Vector2(85, -20)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../BattleUI/Ability:position")
+tracks/3/path = NodePath("UIContainer/ControllerBattleUI/Attack:size")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(85, -20)]
+"values": [Vector2(165, 48)]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../BattleUI/Attack:size")
+tracks/4/path = NodePath("UIContainer/ControllerBattleUI/Attack:position")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(165, 48)]
+"values": [Vector2(-84, 120)]
 }
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../BattleUI/Attack:position")
+tracks/5/path = NodePath("UIContainer/ControllerBattleUI/Item:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(-84, 120)]
+"values": [Vector2(-225, -20)]
 }
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../BattleUI/Item:position")
+tracks/6/path = NodePath("UIContainer/ControllerBattleUI/Command:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(-225, -20)]
+"values": [Vector2(-90, -164)]
 }
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../BattleUI/Command:position")
+tracks/7/path = NodePath("UIContainer/ControllerBattleUI/Item:size")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(-90, -164)]
+"values": [Vector2(140, 48)]
 }
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../BattleUI/Item:size")
+tracks/8/path = NodePath("UIContainer/ControllerBattleUI/Command:size")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(140, 48)]
+"values": [Vector2(180, 48)]
 }
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../BattleUI/Command:size")
+tracks/9/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(180, 48)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("../BattleUI/AbilityUI:modulate")
+tracks/10/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:visible")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Color(1, 1, 1, 0)]
+"values": [false]
 }
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("../BattleUI/AbilityUI:visible")
+tracks/11/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:scale")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [false]
+"values": [Vector2(1, 1)]
 }
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("../BattleUI/BaseRing/Ring2:scale")
+tracks/12/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:scale")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
@@ -953,115 +1159,115 @@ tracks/12/keys = {
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("../BattleUI/BaseRing:scale")
+tracks/13/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:position")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(1, 1)]
+"values": [Vector2(70, -140)]
 }
 tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("../BattleUI/AbilityUI:position")
+tracks/14/path = NodePath("UIContainer/ControllerBattleUI/Attack:modulate")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(70, -140)]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("../BattleUI/Attack:modulate")
+tracks/15/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:visible")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Color(1, 1, 1, 1)]
+"values": [false]
 }
 tracks/16/type = "value"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("../BattleUI/DescPaper:visible")
+tracks/16/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:position")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [false]
+"values": [Vector2(102, -264)]
 }
 tracks/17/type = "value"
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/path = NodePath("../BattleUI/DescPaper:position")
+tracks/17/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:rotation")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(102, -264)]
+"values": [-0.3490658503988659]
 }
 tracks/18/type = "value"
 tracks/18/imported = false
 tracks/18/enabled = true
-tracks/18/path = NodePath("../BattleUI/DescPaper:rotation")
+tracks/18/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:scale")
 tracks/18/interp = 1
 tracks/18/loop_wrap = true
 tracks/18/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [-0.3490658503988659]
+"values": [Vector2(0.5, 0.5)]
 }
 tracks/19/type = "value"
 tracks/19/imported = false
 tracks/19/enabled = true
-tracks/19/path = NodePath("../BattleUI/DescPaper:scale")
+tracks/19/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:modulate")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(0.5, 0.5)]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/20/type = "value"
 tracks/20/imported = false
 tracks/20/enabled = true
-tracks/20/path = NodePath("../BattleUI/DescPaper:modulate")
+tracks/20/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:position")
 tracks/20/interp = 1
 tracks/20/loop_wrap = true
 tracks/20/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Color(1, 1, 1, 0)]
+"values": [Vector2(-200, -200)]
 }
 tracks/21/type = "value"
 tracks/21/imported = false
 tracks/21/enabled = true
-tracks/21/path = NodePath("../BattleUI/BaseRing:position")
+tracks/21/path = NodePath("UIContainer/ControllerBattleUI/Ability:visible")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/keys = {
-"times": PackedFloat32Array(0.3),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 2,
-"values": [Vector2(-200, -200)]
+"update": 1,
+"values": [true]
 }
 tracks/22/type = "value"
 tracks/22/imported = false
 tracks/22/enabled = true
-tracks/22/path = NodePath("../BattleUI/Ability:visible")
+tracks/22/path = NodePath("UIContainer/ControllerBattleUI/Item:visible")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/keys = {
@@ -1073,7 +1279,7 @@ tracks/22/keys = {
 tracks/23/type = "value"
 tracks/23/imported = false
 tracks/23/enabled = true
-tracks/23/path = NodePath("../BattleUI/Item:visible")
+tracks/23/path = NodePath("UIContainer/ControllerBattleUI/Command:visible")
 tracks/23/interp = 1
 tracks/23/loop_wrap = true
 tracks/23/keys = {
@@ -1085,19 +1291,19 @@ tracks/23/keys = {
 tracks/24/type = "value"
 tracks/24/imported = false
 tracks/24/enabled = true
-tracks/24/path = NodePath("../BattleUI/Command:visible")
+tracks/24/path = NodePath("UIContainer/ControllerBattleUI/Ability:modulate")
 tracks/24/interp = 1
 tracks/24/loop_wrap = true
 tracks/24/keys = {
-"times": PackedFloat32Array(0),
+"times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/25/type = "value"
 tracks/25/imported = false
 tracks/25/enabled = true
-tracks/25/path = NodePath("../BattleUI/Ability:modulate")
+tracks/25/path = NodePath("UIContainer/ControllerBattleUI/Command:modulate")
 tracks/25/interp = 1
 tracks/25/loop_wrap = true
 tracks/25/keys = {
@@ -1109,175 +1315,175 @@ tracks/25/keys = {
 tracks/26/type = "value"
 tracks/26/imported = false
 tracks/26/enabled = true
-tracks/26/path = NodePath("../BattleUI/Command:modulate")
+tracks/26/path = NodePath("UIContainer/ControllerBattleUI/Item:modulate")
 tracks/26/interp = 1
 tracks/26/loop_wrap = true
 tracks/26/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
-"update": 0,
+"update": 2,
 "values": [Color(1, 1, 1, 1)]
 }
 tracks/27/type = "value"
 tracks/27/imported = false
 tracks/27/enabled = true
-tracks/27/path = NodePath("../BattleUI/Item:modulate")
+tracks/27/path = NodePath("UIContainer/ControllerBattleUI/Inventory:modulate")
 tracks/27/interp = 1
 tracks/27/loop_wrap = true
 tracks/27/keys = {
-"times": PackedFloat32Array(0.3),
+"times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 2,
+"update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
 tracks/28/type = "value"
 tracks/28/imported = false
 tracks/28/enabled = true
-tracks/28/path = NodePath("../BattleUI/Inventory:modulate")
+tracks/28/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:rotation")
 tracks/28/interp = 1
 tracks/28/loop_wrap = true
 tracks/28/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Color(1, 1, 1, 1)]
+"values": [0.0]
 }
 tracks/29/type = "value"
 tracks/29/imported = false
 tracks/29/enabled = true
-tracks/29/path = NodePath("../BattleUI/BaseRing:rotation")
+tracks/29/path = NodePath("UIContainer/ControllerBattleUI:modulate")
 tracks/29/interp = 1
 tracks/29/loop_wrap = true
 tracks/29/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [0.0]
+"values": [Color(1, 1, 1, 1)]
 }
 tracks/30/type = "value"
 tracks/30/imported = false
 tracks/30/enabled = true
-tracks/30/path = NodePath("../BattleUI:modulate")
+tracks/30/path = NodePath("UIContainer/ControllerBattleUI:visible")
 tracks/30/interp = 1
 tracks/30/loop_wrap = true
 tracks/30/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Color(1, 1, 1, 1)]
+"update": 1,
+"values": [true]
 }
 tracks/31/type = "value"
 tracks/31/imported = false
 tracks/31/enabled = true
-tracks/31/path = NodePath("../BattleUI:visible")
+tracks/31/path = NodePath("UIContainer/ControllerBattleUI/Inventory:visible")
 tracks/31/interp = 1
 tracks/31/loop_wrap = true
 tracks/31/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
-"values": [true]
+"values": [false]
 }
 tracks/32/type = "value"
 tracks/32/imported = false
 tracks/32/enabled = true
-tracks/32/path = NodePath("../BattleUI/Inventory:visible")
+tracks/32/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:position")
 tracks/32/interp = 1
 tracks/32/loop_wrap = true
 tracks/32/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/33/type = "value"
-tracks/33/imported = false
-tracks/33/enabled = true
-tracks/33/path = NodePath("../BattleUI/BaseRing/Ring2:position")
-tracks/33/interp = 1
-tracks/33/loop_wrap = true
-tracks/33/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 0)]
 }
-tracks/34/type = "value"
-tracks/34/imported = false
-tracks/34/enabled = true
-tracks/34/path = NodePath("../BattleUI/Inventory:scale")
-tracks/34/interp = 1
-tracks/34/loop_wrap = true
-tracks/34/keys = {
+tracks/33/type = "value"
+tracks/33/imported = false
+tracks/33/enabled = true
+tracks/33/path = NodePath("UIContainer/ControllerBattleUI/Inventory:scale")
+tracks/33/interp = 1
+tracks/33/loop_wrap = true
+tracks/33/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(1, 1)]
 }
+tracks/34/type = "value"
+tracks/34/imported = false
+tracks/34/enabled = true
+tracks/34/path = NodePath("TurnOrder:position")
+tracks/34/interp = 2
+tracks/34/loop_wrap = true
+tracks/34/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [Vector2(15, 740)]
+}
 tracks/35/type = "value"
 tracks/35/imported = false
 tracks/35/enabled = true
-tracks/35/path = NodePath("TurnOrder:position")
+tracks/35/path = NodePath("TurnOrder/Options:position")
 tracks/35/interp = 2
 tracks/35/loop_wrap = true
 tracks/35/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(15, 740)]
+"values": [Vector2(0, -60)]
 }
 tracks/36/type = "value"
 tracks/36/imported = false
 tracks/36/enabled = true
-tracks/36/path = NodePath("TurnOrder/Options:position")
+tracks/36/path = NodePath("Confirm:position")
 tracks/36/interp = 2
 tracks/36/loop_wrap = true
 tracks/36/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(0, -60)]
+"values": [Vector2(10, 810)]
 }
 tracks/37/type = "value"
 tracks/37/imported = false
 tracks/37/enabled = true
-tracks/37/path = NodePath("Confirm:position")
+tracks/37/path = NodePath("Back:position")
 tracks/37/interp = 2
 tracks/37/loop_wrap = true
 tracks/37/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(10, 810)]
+"values": [Vector2(170, 810)]
 }
 tracks/38/type = "value"
 tracks/38/imported = false
 tracks/38/enabled = true
-tracks/38/path = NodePath("Back:position")
+tracks/38/path = NodePath("Give:position")
 tracks/38/interp = 2
 tracks/38/loop_wrap = true
 tracks/38/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(170, 810)]
+"values": [Vector2(332, 810)]
 }
 tracks/39/type = "value"
 tracks/39/imported = false
 tracks/39/enabled = true
-tracks/39/path = NodePath("Give:position")
-tracks/39/interp = 2
+tracks/39/path = NodePath("Back:position:y")
+tracks/39/interp = 1
 tracks/39/loop_wrap = true
 tracks/39/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(332, 810)]
+"values": [810.0]
 }
 tracks/40/type = "value"
 tracks/40/imported = false
 tracks/40/enabled = true
-tracks/40/path = NodePath("Back:position:y")
+tracks/40/path = NodePath("Confirm:position:y")
 tracks/40/interp = 1
 tracks/40/loop_wrap = true
 tracks/40/keys = {
@@ -1289,7 +1495,7 @@ tracks/40/keys = {
 tracks/41/type = "value"
 tracks/41/imported = false
 tracks/41/enabled = true
-tracks/41/path = NodePath("Confirm:position:y")
+tracks/41/path = NodePath("Give:position:y")
 tracks/41/interp = 1
 tracks/41/loop_wrap = true
 tracks/41/keys = {
@@ -1301,43 +1507,43 @@ tracks/41/keys = {
 tracks/42/type = "value"
 tracks/42/imported = false
 tracks/42/enabled = true
-tracks/42/path = NodePath("Give:position:y")
+tracks/42/path = NodePath("AttackTitle:position")
 tracks/42/interp = 1
 tracks/42/loop_wrap = true
 tracks/42/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [810.0]
+"values": [Vector2(1350, 536)]
 }
 tracks/43/type = "value"
 tracks/43/imported = false
 tracks/43/enabled = true
-tracks/43/path = NodePath("AttackTitle:position")
+tracks/43/path = NodePath("TurnOrder:visible")
 tracks/43/interp = 1
 tracks/43/loop_wrap = true
 tracks/43/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"update": 2,
-"values": [Vector2(1350, 536)]
-}
-tracks/44/type = "value"
-tracks/44/imported = false
-tracks/44/enabled = true
-tracks/44/path = NodePath("TurnOrder:visible")
-tracks/44/interp = 1
-tracks/44/loop_wrap = true
-tracks/44/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
 }
+tracks/44/type = "value"
+tracks/44/imported = false
+tracks/44/enabled = true
+tracks/44/path = NodePath("Back:visible")
+tracks/44/interp = 1
+tracks/44/loop_wrap = true
+tracks/44/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [true]
+}
 tracks/45/type = "value"
 tracks/45/imported = false
 tracks/45/enabled = true
-tracks/45/path = NodePath("Back:visible")
+tracks/45/path = NodePath("Confirm:visible")
 tracks/45/interp = 1
 tracks/45/loop_wrap = true
 tracks/45/keys = {
@@ -1349,7 +1555,7 @@ tracks/45/keys = {
 tracks/46/type = "value"
 tracks/46/imported = false
 tracks/46/enabled = true
-tracks/46/path = NodePath("Confirm:visible")
+tracks/46/path = NodePath("Give:visible")
 tracks/46/interp = 1
 tracks/46/loop_wrap = true
 tracks/46/keys = {
@@ -1361,34 +1567,22 @@ tracks/46/keys = {
 tracks/47/type = "value"
 tracks/47/imported = false
 tracks/47/enabled = true
-tracks/47/path = NodePath("Give:visible")
+tracks/47/path = NodePath("AttackTitle:visible")
 tracks/47/interp = 1
 tracks/47/loop_wrap = true
 tracks/47/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"update": 2,
-"values": [true]
-}
-tracks/48/type = "value"
-tracks/48/imported = false
-tracks/48/enabled = true
-tracks/48/path = NodePath("AttackTitle:visible")
-tracks/48/interp = 1
-tracks/48/loop_wrap = true
-tracks/48/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 1,
 "values": [true]
 }
-tracks/49/type = "method"
-tracks/49/imported = false
-tracks/49/enabled = true
-tracks/49/path = NodePath("../BattleUI/BaseRing/Ring2")
-tracks/49/interp = 1
-tracks/49/loop_wrap = true
-tracks/49/keys = {
+tracks/48/type = "method"
+tracks/48/imported = false
+tracks/48/enabled = true
+tracks/48/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2")
+tracks/48/interp = 1
+tracks/48/loop_wrap = true
+tracks/48/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "values": [{
@@ -1396,89 +1590,101 @@ tracks/49/keys = {
 "method": &"set_instance_shader_parameter"
 }]
 }
+tracks/49/type = "value"
+tracks/49/imported = false
+tracks/49/enabled = true
+tracks/49/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu:visible")
+tracks/49/interp = 1
+tracks/49/loop_wrap = true
+tracks/49/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [false]
+}
 tracks/50/type = "value"
 tracks/50/imported = false
 tracks/50/enabled = true
-tracks/50/path = NodePath("../BattleUI/CommandMenu:visible")
+tracks/50/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu:modulate")
 tracks/50/interp = 1
 tracks/50/loop_wrap = true
 tracks/50/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [false]
+"values": [Color(1, 1, 1, 0)]
 }
 tracks/51/type = "value"
 tracks/51/imported = false
 tracks/51/enabled = true
-tracks/51/path = NodePath("../BattleUI/CommandMenu:modulate")
+tracks/51/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu/Escape:rotation")
 tracks/51/interp = 1
 tracks/51/loop_wrap = true
 tracks/51/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Color(1, 1, 1, 0)]
+"values": [-2.0943951023931953]
 }
 tracks/52/type = "value"
 tracks/52/imported = false
 tracks/52/enabled = true
-tracks/52/path = NodePath("../BattleUI/CommandMenu/Escape:rotation")
+tracks/52/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu/CmdBack:rotation")
 tracks/52/interp = 1
 tracks/52/loop_wrap = true
 tracks/52/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [-2.0943951023931953]
+"values": [0.20944]
 }
 tracks/53/type = "value"
 tracks/53/imported = false
 tracks/53/enabled = true
-tracks/53/path = NodePath("../BattleUI/CommandMenu/CmdBack:rotation")
+tracks/53/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu/CmdBack:position")
 tracks/53/interp = 1
 tracks/53/loop_wrap = true
 tracks/53/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [0.20944]
+"values": [Vector2(-83.8007, 105.927)]
 }
 tracks/54/type = "value"
 tracks/54/imported = false
 tracks/54/enabled = true
-tracks/54/path = NodePath("../BattleUI/CommandMenu/CmdBack:position")
+tracks/54/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:scale")
 tracks/54/interp = 1
 tracks/54/loop_wrap = true
 tracks/54/keys = {
 "times": PackedFloat32Array(0.3),
 "transitions": PackedFloat32Array(1),
 "update": 2,
-"values": [Vector2(-83.8007, 105.927)]
+"values": [Vector2(0.3, 0.3)]
 }
 tracks/55/type = "value"
 tracks/55/imported = false
 tracks/55/enabled = true
-tracks/55/path = NodePath("../BattleUI/AbilityUI:scale")
+tracks/55/path = NodePath("UIContainer/ControllerBattleUI/Inventory/DottedBack:modulate")
 tracks/55/interp = 1
 tracks/55/loop_wrap = true
 tracks/55/keys = {
-"times": PackedFloat32Array(0.3),
-"transitions": PackedFloat32Array(1),
-"update": 2,
-"values": [Vector2(0.3, 0.3)]
-}
-tracks/56/type = "value"
-tracks/56/imported = false
-tracks/56/enabled = true
-tracks/56/path = NodePath("../BattleUI/Inventory/DottedBack:modulate")
-tracks/56/interp = 1
-tracks/56/loop_wrap = true
-tracks/56/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(0.380392, 0.380392, 0.380392, 1)]
+}
+tracks/56/type = "value"
+tracks/56/imported = false
+tracks/56/enabled = true
+tracks/56/path = NodePath("UIContainer/ControllerBattleUI:scale")
+tracks/56/interp = 1
+tracks/56/loop_wrap = true
+tracks/56/keys = {
+"times": PackedFloat32Array(0.3),
+"transitions": PackedFloat32Array(1),
+"update": 2,
+"values": [Vector2(0.25, 0.25)]
 }
 
 [sub_resource type="Animation" id="Animation_y0u2e"]
@@ -1488,7 +1694,7 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../BattleUI/AbilityUI:modulate")
+tracks/0/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:modulate")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -1500,7 +1706,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../BattleUI/AbilityUI:visible")
+tracks/1/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:visible")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -1512,7 +1718,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../BattleUI/BaseRing/Ring2:scale")
+tracks/2/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:scale")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -1524,7 +1730,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../BattleUI/BaseRing:scale")
+tracks/3/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:scale")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -1536,7 +1742,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../BattleUI/Ability:position")
+tracks/4/path = NodePath("UIContainer/ControllerBattleUI/Ability:position")
 tracks/4/interp = 2
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -1548,7 +1754,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../BattleUI/AbilityUI:position")
+tracks/5/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:position")
 tracks/5/interp = 2
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -1560,7 +1766,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../BattleUI/Attack:position")
+tracks/6/path = NodePath("UIContainer/ControllerBattleUI/Attack:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -1572,7 +1778,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../BattleUI/Attack:modulate")
+tracks/7/path = NodePath("UIContainer/ControllerBattleUI/Attack:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -1584,7 +1790,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../BattleUI/DescPaper:visible")
+tracks/8/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:visible")
 tracks/8/interp = 2
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -1596,7 +1802,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../BattleUI/DescPaper:position")
+tracks/9/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:position")
 tracks/9/interp = 2
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -1608,7 +1814,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("../BattleUI/DescPaper:rotation")
+tracks/10/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:rotation")
 tracks/10/interp = 2
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -1620,7 +1826,7 @@ tracks/10/keys = {
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("../BattleUI/DescPaper:scale")
+tracks/11/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:scale")
 tracks/11/interp = 2
 tracks/11/loop_wrap = true
 tracks/11/keys = {
@@ -1632,7 +1838,7 @@ tracks/11/keys = {
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("../BattleUI/DescPaper:modulate")
+tracks/12/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:modulate")
 tracks/12/interp = 2
 tracks/12/loop_wrap = true
 tracks/12/keys = {
@@ -1644,7 +1850,7 @@ tracks/12/keys = {
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("../BattleUI/BaseRing:position")
+tracks/13/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:position")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
@@ -1656,7 +1862,7 @@ tracks/13/keys = {
 tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("../BattleUI/Item:position")
+tracks/14/path = NodePath("UIContainer/ControllerBattleUI/Item:position")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
@@ -1668,7 +1874,7 @@ tracks/14/keys = {
 tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("../BattleUI/Item:modulate")
+tracks/15/path = NodePath("UIContainer/ControllerBattleUI/Item:modulate")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
@@ -1680,7 +1886,7 @@ tracks/15/keys = {
 tracks/16/type = "value"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("../BattleUI/Command:position")
+tracks/16/path = NodePath("UIContainer/ControllerBattleUI/Command:position")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
@@ -1692,7 +1898,7 @@ tracks/16/keys = {
 tracks/17/type = "value"
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/path = NodePath("../BattleUI/Command:modulate")
+tracks/17/path = NodePath("UIContainer/ControllerBattleUI/Command:modulate")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
@@ -1704,7 +1910,7 @@ tracks/17/keys = {
 tracks/18/type = "value"
 tracks/18/imported = false
 tracks/18/enabled = true
-tracks/18/path = NodePath("../BattleUI/Ability:modulate")
+tracks/18/path = NodePath("UIContainer/ControllerBattleUI/Ability:modulate")
 tracks/18/interp = 1
 tracks/18/loop_wrap = true
 tracks/18/keys = {
@@ -1716,7 +1922,7 @@ tracks/18/keys = {
 tracks/19/type = "value"
 tracks/19/imported = false
 tracks/19/enabled = true
-tracks/19/path = NodePath("../BattleUI/Ability:size")
+tracks/19/path = NodePath("UIContainer/ControllerBattleUI/Ability:size")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
@@ -1788,7 +1994,7 @@ tracks/24/keys = {
 tracks/25/type = "value"
 tracks/25/imported = false
 tracks/25/enabled = true
-tracks/25/path = NodePath("../BattleUI/AbilityUI:scale")
+tracks/25/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:scale")
 tracks/25/interp = 2
 tracks/25/loop_wrap = true
 tracks/25/keys = {
@@ -1800,7 +2006,7 @@ tracks/25/keys = {
 tracks/26/type = "value"
 tracks/26/imported = false
 tracks/26/enabled = true
-tracks/26/path = NodePath("../BattleUI:scale")
+tracks/26/path = NodePath("UIContainer/ControllerBattleUI:scale")
 tracks/26/interp = 1
 tracks/26/loop_wrap = true
 tracks/26/keys = {
@@ -1812,7 +2018,7 @@ tracks/26/keys = {
 tracks/27/type = "value"
 tracks/27/imported = false
 tracks/27/enabled = true
-tracks/27/path = NodePath("../BattleUI:rotation")
+tracks/27/path = NodePath("UIContainer/ControllerBattleUI:rotation")
 tracks/27/interp = 1
 tracks/27/loop_wrap = true
 tracks/27/keys = {
@@ -1829,7 +2035,7 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../BattleUI:scale")
+tracks/0/path = NodePath("UIContainer/ControllerBattleUI:scale")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -1841,7 +2047,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../BattleUI:modulate")
+tracks/1/path = NodePath("UIContainer/ControllerBattleUI:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -1853,7 +2059,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../BattleUI/BaseRing:rotation")
+tracks/2/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -1937,7 +2143,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../BattleUI:visible")
+tracks/9/path = NodePath("UIContainer/ControllerBattleUI:visible")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -1954,7 +2160,7 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../BattleUI/Item:position")
+tracks/0/path = NodePath("UIContainer/ControllerBattleUI/Item:position")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -1966,7 +2172,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../BattleUI/Item:modulate")
+tracks/1/path = NodePath("UIContainer/ControllerBattleUI/Item:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -1978,7 +2184,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../BattleUI/Command:modulate")
+tracks/2/path = NodePath("UIContainer/ControllerBattleUI/Command:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -1990,7 +2196,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../BattleUI/Attack:modulate")
+tracks/3/path = NodePath("UIContainer/ControllerBattleUI/Attack:modulate")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -2002,7 +2208,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../BattleUI/Ability:modulate")
+tracks/4/path = NodePath("UIContainer/ControllerBattleUI/Ability:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -2014,7 +2220,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../BattleUI/Attack:position")
+tracks/5/path = NodePath("UIContainer/ControllerBattleUI/Attack:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2026,7 +2232,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../BattleUI/Ability:position")
+tracks/6/path = NodePath("UIContainer/ControllerBattleUI/Ability:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -2038,7 +2244,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../BattleUI/Command:position")
+tracks/7/path = NodePath("UIContainer/ControllerBattleUI/Command:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -2050,7 +2256,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../BattleUI/BaseRing:scale")
+tracks/8/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:scale")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -2062,7 +2268,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../BattleUI/BaseRing:position")
+tracks/9/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -2074,7 +2280,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("../BattleUI/BaseRing/Ring2:position")
+tracks/10/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:position")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -2134,7 +2340,7 @@ tracks/14/keys = {
 tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("../BattleUI/CommandMenu:visible")
+tracks/15/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu:visible")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
@@ -2146,7 +2352,7 @@ tracks/15/keys = {
 tracks/16/type = "value"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("../BattleUI/CommandMenu:modulate")
+tracks/16/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu:modulate")
 tracks/16/interp = 2
 tracks/16/loop_wrap = true
 tracks/16/keys = {
@@ -2158,7 +2364,7 @@ tracks/16/keys = {
 tracks/17/type = "value"
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/path = NodePath("../BattleUI/CommandMenu/Escape:rotation")
+tracks/17/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu/Escape:rotation")
 tracks/17/interp = 2
 tracks/17/loop_wrap = true
 tracks/17/keys = {
@@ -2170,7 +2376,7 @@ tracks/17/keys = {
 tracks/18/type = "value"
 tracks/18/imported = false
 tracks/18/enabled = true
-tracks/18/path = NodePath("../BattleUI/CommandMenu/CmdBack:rotation")
+tracks/18/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu/CmdBack:rotation")
 tracks/18/interp = 2
 tracks/18/loop_wrap = true
 tracks/18/keys = {
@@ -2182,7 +2388,7 @@ tracks/18/keys = {
 tracks/19/type = "value"
 tracks/19/imported = false
 tracks/19/enabled = true
-tracks/19/path = NodePath("../BattleUI/CommandMenu/CmdBack:position")
+tracks/19/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu/CmdBack:position")
 tracks/19/interp = 2
 tracks/19/loop_wrap = true
 tracks/19/keys = {
@@ -2198,7 +2404,7 @@ length = 0.7
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../BattleUI:scale")
+tracks/0/path = NodePath("UIContainer/ControllerBattleUI:scale")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -2210,7 +2416,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../BattleUI:rotation")
+tracks/1/path = NodePath("UIContainer/ControllerBattleUI:rotation")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -2222,7 +2428,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../BattleUI/Ability:size")
+tracks/2/path = NodePath("UIContainer/ControllerBattleUI/Ability:size")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -2234,7 +2440,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../BattleUI/Ability:position")
+tracks/3/path = NodePath("UIContainer/ControllerBattleUI/Ability:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -2246,7 +2452,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../BattleUI/Attack:size")
+tracks/4/path = NodePath("UIContainer/ControllerBattleUI/Attack:size")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -2258,7 +2464,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../BattleUI/Attack:position")
+tracks/5/path = NodePath("UIContainer/ControllerBattleUI/Attack:position")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2270,7 +2476,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../BattleUI/Item:size")
+tracks/6/path = NodePath("UIContainer/ControllerBattleUI/Item:size")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -2282,7 +2488,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../BattleUI/Command:size")
+tracks/7/path = NodePath("UIContainer/ControllerBattleUI/Command:size")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -2294,7 +2500,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../BattleUI/Item:position")
+tracks/8/path = NodePath("UIContainer/ControllerBattleUI/Item:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -2306,7 +2512,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../BattleUI/Command:position")
+tracks/9/path = NodePath("UIContainer/ControllerBattleUI/Command:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -2318,7 +2524,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("../BattleUI/Ability:theme_override_constants/icon_max_width")
+tracks/10/path = NodePath("UIContainer/ControllerBattleUI/Ability:theme_override_constants/icon_max_width")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -2330,7 +2536,7 @@ tracks/10/keys = {
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("../BattleUI/BaseRing:scale")
+tracks/11/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:scale")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
@@ -2342,7 +2548,7 @@ tracks/11/keys = {
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("../BattleUI:modulate")
+tracks/12/path = NodePath("UIContainer/ControllerBattleUI:modulate")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
@@ -2354,7 +2560,7 @@ tracks/12/keys = {
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("../BattleUI:visible")
+tracks/13/path = NodePath("UIContainer/ControllerBattleUI:visible")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
@@ -2366,7 +2572,7 @@ tracks/13/keys = {
 tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("../BattleUI/AbilityUI:visible")
+tracks/14/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:visible")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
@@ -2378,7 +2584,7 @@ tracks/14/keys = {
 tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("../BattleUI/Inventory:visible")
+tracks/15/path = NodePath("UIContainer/ControllerBattleUI/Inventory:visible")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
@@ -2390,7 +2596,7 @@ tracks/15/keys = {
 tracks/16/type = "value"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("../BattleUI/BaseRing:position")
+tracks/16/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:position")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
@@ -2402,7 +2608,7 @@ tracks/16/keys = {
 tracks/17/type = "value"
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/path = NodePath("../BattleUI/Attack:modulate")
+tracks/17/path = NodePath("UIContainer/ControllerBattleUI/Attack:modulate")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
@@ -2414,7 +2620,7 @@ tracks/17/keys = {
 tracks/18/type = "value"
 tracks/18/imported = false
 tracks/18/enabled = true
-tracks/18/path = NodePath("../BattleUI/Ability:modulate")
+tracks/18/path = NodePath("UIContainer/ControllerBattleUI/Ability:modulate")
 tracks/18/interp = 1
 tracks/18/loop_wrap = true
 tracks/18/keys = {
@@ -2426,7 +2632,7 @@ tracks/18/keys = {
 tracks/19/type = "value"
 tracks/19/imported = false
 tracks/19/enabled = true
-tracks/19/path = NodePath("../BattleUI/Command:modulate")
+tracks/19/path = NodePath("UIContainer/ControllerBattleUI/Command:modulate")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
@@ -2438,7 +2644,7 @@ tracks/19/keys = {
 tracks/20/type = "value"
 tracks/20/imported = false
 tracks/20/enabled = true
-tracks/20/path = NodePath("../BattleUI/Item:modulate")
+tracks/20/path = NodePath("UIContainer/ControllerBattleUI/Item:modulate")
 tracks/20/interp = 1
 tracks/20/loop_wrap = true
 tracks/20/keys = {
@@ -2450,7 +2656,7 @@ tracks/20/keys = {
 tracks/21/type = "value"
 tracks/21/imported = false
 tracks/21/enabled = true
-tracks/21/path = NodePath("../BattleUI/DescPaper:visible")
+tracks/21/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:visible")
 tracks/21/interp = 1
 tracks/21/loop_wrap = true
 tracks/21/keys = {
@@ -2462,7 +2668,7 @@ tracks/21/keys = {
 tracks/22/type = "value"
 tracks/22/imported = false
 tracks/22/enabled = true
-tracks/22/path = NodePath("../BattleUI/BaseRing/Ring2:scale")
+tracks/22/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:scale")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/keys = {
@@ -2474,7 +2680,7 @@ tracks/22/keys = {
 tracks/23/type = "value"
 tracks/23/imported = false
 tracks/23/enabled = true
-tracks/23/path = NodePath("../BattleUI/BaseRing/Ring2:position")
+tracks/23/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:position")
 tracks/23/interp = 1
 tracks/23/loop_wrap = true
 tracks/23/keys = {
@@ -2527,7 +2733,7 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../BattleUI/Inventory:visible")
+tracks/0/path = NodePath("UIContainer/ControllerBattleUI/Inventory:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -2539,7 +2745,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../BattleUI/Inventory:scale")
+tracks/1/path = NodePath("UIContainer/ControllerBattleUI/Inventory:scale")
 tracks/1/interp = 2
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -2551,7 +2757,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../BattleUI/Inventory:modulate")
+tracks/2/path = NodePath("UIContainer/ControllerBattleUI/Inventory:modulate")
 tracks/2/interp = 2
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -2563,7 +2769,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../BattleUI/Item:position")
+tracks/3/path = NodePath("UIContainer/ControllerBattleUI/Item:position")
 tracks/3/interp = 2
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -2575,7 +2781,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../BattleUI/Item:modulate")
+tracks/4/path = NodePath("UIContainer/ControllerBattleUI/Item:modulate")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -2587,7 +2793,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../BattleUI/Command:modulate")
+tracks/5/path = NodePath("UIContainer/ControllerBattleUI/Command:modulate")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2599,7 +2805,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../BattleUI/Attack:modulate")
+tracks/6/path = NodePath("UIContainer/ControllerBattleUI/Attack:modulate")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -2611,7 +2817,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../BattleUI/Ability:modulate")
+tracks/7/path = NodePath("UIContainer/ControllerBattleUI/Ability:modulate")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -2623,7 +2829,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../BattleUI/Attack:position")
+tracks/8/path = NodePath("UIContainer/ControllerBattleUI/Attack:position")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -2635,7 +2841,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../BattleUI/Ability:position")
+tracks/9/path = NodePath("UIContainer/ControllerBattleUI/Ability:position")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -2647,7 +2853,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("../BattleUI/Command:position")
+tracks/10/path = NodePath("UIContainer/ControllerBattleUI/Command:position")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -2659,7 +2865,7 @@ tracks/10/keys = {
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("../BattleUI/BaseRing:scale")
+tracks/11/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:scale")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
@@ -2671,7 +2877,7 @@ tracks/11/keys = {
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("../BattleUI/BaseRing:position")
+tracks/12/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:position")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
@@ -2683,7 +2889,7 @@ tracks/12/keys = {
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("../BattleUI/BaseRing/Ring2:position")
+tracks/13/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:position")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
@@ -2695,7 +2901,7 @@ tracks/13/keys = {
 tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("../BattleUI/Item:size")
+tracks/14/path = NodePath("UIContainer/ControllerBattleUI/Item:size")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
@@ -2767,7 +2973,7 @@ tracks/19/keys = {
 tracks/20/type = "value"
 tracks/20/imported = false
 tracks/20/enabled = true
-tracks/20/path = NodePath("../BattleUI/Inventory/DottedBack:modulate")
+tracks/20/path = NodePath("UIContainer/ControllerBattleUI/Inventory/DottedBack:modulate")
 tracks/20/interp = 2
 tracks/20/loop_wrap = true
 tracks/20/keys = {
@@ -2784,7 +2990,7 @@ capture_included = true
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../BattleUI/Ability:size")
+tracks/0/path = NodePath("UIContainer/ControllerBattleUI/Ability:size")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -2796,7 +3002,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("../BattleUI/Ability:position")
+tracks/1/path = NodePath("UIContainer/ControllerBattleUI/Ability:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -2808,7 +3014,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("../BattleUI/Attack:size")
+tracks/2/path = NodePath("UIContainer/ControllerBattleUI/Attack:size")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -2820,7 +3026,7 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("../BattleUI/Attack:position")
+tracks/3/path = NodePath("UIContainer/ControllerBattleUI/Attack:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -2832,7 +3038,7 @@ tracks/3/keys = {
 tracks/4/type = "value"
 tracks/4/imported = false
 tracks/4/enabled = true
-tracks/4/path = NodePath("../BattleUI/Item:size")
+tracks/4/path = NodePath("UIContainer/ControllerBattleUI/Item:size")
 tracks/4/interp = 1
 tracks/4/loop_wrap = true
 tracks/4/keys = {
@@ -2844,7 +3050,7 @@ tracks/4/keys = {
 tracks/5/type = "value"
 tracks/5/imported = false
 tracks/5/enabled = true
-tracks/5/path = NodePath("../BattleUI/Command:size")
+tracks/5/path = NodePath("UIContainer/ControllerBattleUI/Command:size")
 tracks/5/interp = 1
 tracks/5/loop_wrap = true
 tracks/5/keys = {
@@ -2856,7 +3062,7 @@ tracks/5/keys = {
 tracks/6/type = "value"
 tracks/6/imported = false
 tracks/6/enabled = true
-tracks/6/path = NodePath("../BattleUI/Item:position")
+tracks/6/path = NodePath("UIContainer/ControllerBattleUI/Item:position")
 tracks/6/interp = 1
 tracks/6/loop_wrap = true
 tracks/6/keys = {
@@ -2868,7 +3074,7 @@ tracks/6/keys = {
 tracks/7/type = "value"
 tracks/7/imported = false
 tracks/7/enabled = true
-tracks/7/path = NodePath("../BattleUI/Command:position")
+tracks/7/path = NodePath("UIContainer/ControllerBattleUI/Command:position")
 tracks/7/interp = 1
 tracks/7/loop_wrap = true
 tracks/7/keys = {
@@ -2880,7 +3086,7 @@ tracks/7/keys = {
 tracks/8/type = "value"
 tracks/8/imported = false
 tracks/8/enabled = true
-tracks/8/path = NodePath("../BattleUI/Ability:modulate")
+tracks/8/path = NodePath("UIContainer/ControllerBattleUI/Ability:modulate")
 tracks/8/interp = 1
 tracks/8/loop_wrap = true
 tracks/8/keys = {
@@ -2892,7 +3098,7 @@ tracks/8/keys = {
 tracks/9/type = "value"
 tracks/9/imported = false
 tracks/9/enabled = true
-tracks/9/path = NodePath("../BattleUI/Attack:modulate")
+tracks/9/path = NodePath("UIContainer/ControllerBattleUI/Attack:modulate")
 tracks/9/interp = 1
 tracks/9/loop_wrap = true
 tracks/9/keys = {
@@ -2904,7 +3110,7 @@ tracks/9/keys = {
 tracks/10/type = "value"
 tracks/10/imported = false
 tracks/10/enabled = true
-tracks/10/path = NodePath("../BattleUI/Command:modulate")
+tracks/10/path = NodePath("UIContainer/ControllerBattleUI/Command:modulate")
 tracks/10/interp = 1
 tracks/10/loop_wrap = true
 tracks/10/keys = {
@@ -2916,7 +3122,7 @@ tracks/10/keys = {
 tracks/11/type = "value"
 tracks/11/imported = false
 tracks/11/enabled = true
-tracks/11/path = NodePath("../BattleUI/Item:modulate")
+tracks/11/path = NodePath("UIContainer/ControllerBattleUI/Item:modulate")
 tracks/11/interp = 1
 tracks/11/loop_wrap = true
 tracks/11/keys = {
@@ -2928,7 +3134,7 @@ tracks/11/keys = {
 tracks/12/type = "value"
 tracks/12/imported = false
 tracks/12/enabled = true
-tracks/12/path = NodePath("../BattleUI/BaseRing:scale")
+tracks/12/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:scale")
 tracks/12/interp = 1
 tracks/12/loop_wrap = true
 tracks/12/keys = {
@@ -2940,7 +3146,7 @@ tracks/12/keys = {
 tracks/13/type = "value"
 tracks/13/imported = false
 tracks/13/enabled = true
-tracks/13/path = NodePath("../BattleUI/BaseRing/Ring2:scale")
+tracks/13/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:scale")
 tracks/13/interp = 1
 tracks/13/loop_wrap = true
 tracks/13/keys = {
@@ -2952,7 +3158,7 @@ tracks/13/keys = {
 tracks/14/type = "value"
 tracks/14/imported = false
 tracks/14/enabled = true
-tracks/14/path = NodePath("../BattleUI/AbilityUI:modulate")
+tracks/14/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:modulate")
 tracks/14/interp = 1
 tracks/14/loop_wrap = true
 tracks/14/keys = {
@@ -2964,7 +3170,7 @@ tracks/14/keys = {
 tracks/15/type = "value"
 tracks/15/imported = false
 tracks/15/enabled = true
-tracks/15/path = NodePath("../BattleUI/Inventory:modulate")
+tracks/15/path = NodePath("UIContainer/ControllerBattleUI/Inventory:modulate")
 tracks/15/interp = 1
 tracks/15/loop_wrap = true
 tracks/15/keys = {
@@ -2976,7 +3182,7 @@ tracks/15/keys = {
 tracks/16/type = "value"
 tracks/16/imported = false
 tracks/16/enabled = true
-tracks/16/path = NodePath("../BattleUI/DescPaper:rotation")
+tracks/16/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:rotation")
 tracks/16/interp = 1
 tracks/16/loop_wrap = true
 tracks/16/keys = {
@@ -2988,7 +3194,7 @@ tracks/16/keys = {
 tracks/17/type = "value"
 tracks/17/imported = false
 tracks/17/enabled = true
-tracks/17/path = NodePath("../BattleUI/BaseRing:position")
+tracks/17/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:position")
 tracks/17/interp = 1
 tracks/17/loop_wrap = true
 tracks/17/keys = {
@@ -3000,7 +3206,7 @@ tracks/17/keys = {
 tracks/18/type = "value"
 tracks/18/imported = false
 tracks/18/enabled = true
-tracks/18/path = NodePath("../BattleUI/BaseRing:rotation")
+tracks/18/path = NodePath("UIContainer/ControllerBattleUI/BaseRing:rotation")
 tracks/18/interp = 2
 tracks/18/loop_wrap = true
 tracks/18/keys = {
@@ -3012,7 +3218,7 @@ tracks/18/keys = {
 tracks/19/type = "value"
 tracks/19/imported = false
 tracks/19/enabled = true
-tracks/19/path = NodePath("../BattleUI/DescPaper:scale")
+tracks/19/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:scale")
 tracks/19/interp = 1
 tracks/19/loop_wrap = true
 tracks/19/keys = {
@@ -3024,7 +3230,7 @@ tracks/19/keys = {
 tracks/20/type = "value"
 tracks/20/imported = false
 tracks/20/enabled = true
-tracks/20/path = NodePath("../BattleUI/AbilityUI:position")
+tracks/20/path = NodePath("UIContainer/ControllerBattleUI/AbilityUI:position")
 tracks/20/interp = 1
 tracks/20/loop_wrap = true
 tracks/20/keys = {
@@ -3036,7 +3242,7 @@ tracks/20/keys = {
 tracks/21/type = "value"
 tracks/21/imported = false
 tracks/21/enabled = true
-tracks/21/path = NodePath("../BattleUI/DescPaper:modulate")
+tracks/21/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:modulate")
 tracks/21/interp = 1
 tracks/21/loop_wrap = false
 tracks/21/keys = {
@@ -3048,7 +3254,7 @@ tracks/21/keys = {
 tracks/22/type = "value"
 tracks/22/imported = false
 tracks/22/enabled = true
-tracks/22/path = NodePath("../BattleUI/DescPaper:position")
+tracks/22/path = NodePath("UIContainer/ControllerBattleUI/DescPaper:position")
 tracks/22/interp = 1
 tracks/22/loop_wrap = true
 tracks/22/keys = {
@@ -3060,7 +3266,7 @@ tracks/22/keys = {
 tracks/23/type = "value"
 tracks/23/imported = false
 tracks/23/enabled = true
-tracks/23/path = NodePath("../BattleUI/BaseRing/Ring2:position")
+tracks/23/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:position")
 tracks/23/interp = 1
 tracks/23/loop_wrap = true
 tracks/23/keys = {
@@ -3132,7 +3338,7 @@ tracks/28/keys = {
 tracks/29/type = "method"
 tracks/29/imported = false
 tracks/29/enabled = true
-tracks/29/path = NodePath("../BattleUI/BaseRing/Ring2")
+tracks/29/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2")
 tracks/29/interp = 1
 tracks/29/loop_wrap = true
 tracks/29/keys = {
@@ -3146,7 +3352,7 @@ tracks/29/keys = {
 tracks/30/type = "value"
 tracks/30/imported = false
 tracks/30/enabled = true
-tracks/30/path = NodePath("../BattleUI/CommandMenu:modulate")
+tracks/30/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu:modulate")
 tracks/30/interp = 1
 tracks/30/loop_wrap = true
 tracks/30/keys = {
@@ -3158,7 +3364,7 @@ tracks/30/keys = {
 tracks/31/type = "value"
 tracks/31/imported = false
 tracks/31/enabled = true
-tracks/31/path = NodePath("../BattleUI/CommandMenu:visible")
+tracks/31/path = NodePath("UIContainer/ControllerBattleUI/CommandMenu:visible")
 tracks/31/interp = 1
 tracks/31/loop_wrap = true
 tracks/31/keys = {
@@ -3186,7 +3392,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("../BattleUI/BaseRing/Ring2:scale")
+tracks/0/path = NodePath("UIContainer/ControllerBattleUI/BaseRing/Ring2:scale")
 tracks/0/interp = 2
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -3897,211 +4103,6 @@ expand_margin_top = 8.0
 expand_margin_right = 10.0
 expand_margin_bottom = 8.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_86gc4"]
-bg_color = Color(0.160784, 0.160784, 0.160784, 1)
-border_color = Color(0.803922, 0.784314, 0.894118, 1)
-corner_radius_top_right = 16
-corner_radius_bottom_right = 16
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_qyuo7"]
-bg_color = Color(0.101961, 0.101961, 0.101961, 1)
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-corner_radius_bottom_right = 9
-corner_radius_bottom_left = 9
-corner_detail = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0g5cc"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(0.160784, 0.160784, 0.160784, 1)
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-corner_radius_bottom_right = 9
-corner_radius_bottom_left = 9
-corner_detail = 4
-
-[sub_resource type="Theme" id="Theme_bvcno"]
-ProgressBar/styles/background = SubResource("StyleBoxFlat_qyuo7")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_0g5cc")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wq83d"]
-bg_color = Color(0.101961, 0.101961, 0.101961, 1)
-border_color = Color(0.160784, 0.160784, 0.160784, 1)
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-corner_detail = 10
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nkyqb"]
-bg_color = Color(1, 1, 1, 1)
-border_width_left = 1
-border_width_right = 1
-border_color = Color(0.160784, 0.160784, 0.160784, 1)
-corner_radius_top_left = 9
-corner_radius_top_right = 9
-corner_detail = 4
-
-[sub_resource type="Theme" id="Theme_imlp7"]
-ProgressBar/styles/background = SubResource("StyleBoxFlat_wq83d")
-ProgressBar/styles/fill = SubResource("StyleBoxFlat_nkyqb")
-
-[sub_resource type="Theme" id="Theme_2lgx1"]
-default_font = ExtResource("36_bvqsk")
-Label/colors/font_color = Color(0.101961, 0.101961, 0.101961, 1)
-Label/colors/font_outline_color = Color(1, 1, 1, 1)
-Label/constants/outline_size = 7
-Label/font_sizes/font_size = 14
-
-[sub_resource type="LabelSettings" id="LabelSettings_cas1x"]
-font = ExtResource("36_bvqsk")
-outline_size = 2
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_lsc7l"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-draw_center = false
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.894118, 0.894118, 0.894118, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-
-[sub_resource type="Theme" id="Theme_jepgw"]
-Panel/styles/panel = SubResource("StyleBoxFlat_lsc7l")
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_lsc7l")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_w18cv"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-draw_center = false
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.894118, 0.894118, 0.894118, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2i6qu"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-draw_center = false
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.584314, 0.584314, 0.584314, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nmd8s"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-draw_center = false
-border_width_left = 8
-border_width_top = 8
-border_width_right = 8
-border_width_bottom = 8
-border_color = Color(0.584314, 0.584314, 0.584314, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-expand_margin_left = 4.0
-expand_margin_top = 4.0
-expand_margin_right = 4.0
-expand_margin_bottom = 4.0
-
-[sub_resource type="Theme" id="Theme_t73mt"]
-Panel/styles/panel = SubResource("StyleBoxFlat_2i6qu")
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_nmd8s")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ed0cv"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-draw_center = false
-border_width_left = 11
-border_width_top = 8
-border_width_right = 16
-border_width_bottom = 8
-border_color = Color(0.305882, 0.305882, 0.305882, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-
-[sub_resource type="Theme" id="Theme_wxbdf"]
-Panel/styles/panel = SubResource("StyleBoxFlat_ed0cv")
-PanelContainer/styles/panel = null
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cv0u6"]
-content_margin_left = 12.0
-content_margin_top = 12.0
-content_margin_right = 12.0
-content_margin_bottom = 12.0
-bg_color = Color(0.862745, 0.862745, 0.862745, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-
-[sub_resource type="Theme" id="Theme_xkd1q"]
-TooltipLabel/colors/font_color = Color(0, 0, 0, 1)
-TooltipLabel/font_sizes/font_size = 24
-TooltipLabel/fonts/font = ExtResource("36_bvqsk")
-TooltipPanel/styles/panel = SubResource("StyleBoxFlat_cv0u6")
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_mtoyd"]
-atlas = ExtResource("39_k80j2")
-region = Rect2(162, 18, 18, 18)
-filter_clip = true
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wxkm0"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-draw_center = false
-border_width_left = 11
-border_width_top = 8
-border_width_right = 16
-border_width_bottom = 8
-border_color = Color(0.305882, 0.305882, 0.305882, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_g77ug"]
-bg_color = Color(0.6, 0.6, 0.6, 0)
-draw_center = false
-border_width_left = 11
-border_width_top = 8
-border_width_right = 16
-border_width_bottom = 8
-border_color = Color(0.305882, 0.305882, 0.305882, 1)
-corner_radius_top_left = 24
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-expand_margin_left = 10.0
-expand_margin_top = 8.0
-expand_margin_right = 10.0
-expand_margin_bottom = 8.0
-
-[sub_resource type="Theme" id="Theme_fkhdn"]
-Panel/styles/panel = SubResource("StyleBoxFlat_wxkm0")
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_g77ug")
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bwtm7"]
-bg_color = Color(0.129559, 0.129558, 0.129558, 1)
-border_color = Color(0.803922, 0.784314, 0.894118, 1)
-corner_radius_top_right = 24
-corner_radius_bottom_right = 24
-corner_radius_bottom_left = 24
-expand_margin_top = 18.0
-
 [sub_resource type="FontVariation" id="FontVariation_g3phn"]
 base_font = ExtResource("36_bvqsk")
 
@@ -4413,982 +4414,6 @@ zoom = Vector2(4, 4)
 limit_smoothed = true
 position_smoothing_speed = 20.0
 
-[node name="BattleUI" type="Control" parent="." unique_id=185173348]
-z_index = 10
-z_as_relative = false
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = -60.0
-offset_top = -38.0
-offset_right = -60.0
-offset_bottom = -38.0
-grow_horizontal = 2
-grow_vertical = 2
-scale = Vector2(0.25, 0.25)
-script = ExtResource("26_2prty")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="BattleUI" unique_id=577349075]
-root_node = NodePath("../../Canvas")
-libraries/ = SubResource("AnimationLibrary_4wnfp")
-autoplay = &"RESET"
-playback_auto_capture_transition_type = 7
-next/get_control = &"RESET"
-next/target = &"target_idle"
-blend_times = [&"ability", &"ability", 0.3]
-
-[node name="CommandMenu" type="Control" parent="BattleUI" unique_id=1627208994]
-visible = false
-modulate = Color(1, 1, 1, 0)
-light_mask = 0
-anchors_preset = 0
-offset_left = 36.0
-offset_right = 36.0
-scale = Vector2(3, 3)
-pivot_offset = Vector2(-33, 0)
-
-[node name="CmdBack" type="Polygon2D" parent="BattleUI/CommandMenu" unique_id=1660236563]
-light_mask = 0
-position = Vector2(-83.8007, 105.927)
-rotation = 0.20944
-scale = Vector2(0.155, 0.155)
-color = Color(0.113725, 0.113725, 0.113725, 1)
-offset = Vector2(78.0864, -107.356)
-polygon = PackedVector2Array(811.811, -766.054, 811.127, 286.293, 768.113, 396.206, 710.82, 491.257, 662.912, 554.43, 612.265, 608.802, 558.88, 654.374, 502.756, 691.146, 545.186, 610.373, 570.016, 535.077, 592.691, 421.842, 609.305, 320.145, 611.057, 232.727, 604.008, 148.047, 585.421, 57.3053, 560.772, -21.8971, 527.323, -98.3607, 476.273, -169.347, 402.145, -252.456, 313.156, -321.287, 209.305, -375.841, 81.7913, -413.378, 0.43412, -426.669, -86.9846, -428.42, -162.864, -424.111, -250.867, -396.723, -344.931, -357.797, -442.318, -298.53, -495.704, -252.958, -561.212, -184.308, -623.982, -106.858, -657.028, -57.9627, -681.274, -11.8066, -674.891, -766.697)
-
-[node name="Analyze" type="Button" parent="BattleUI/CommandMenu" unique_id=1884730250]
-visibility_layer = 1024
-z_index = 12
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = -110.0
-offset_top = 46.667
-offset_right = 5.0
-offset_bottom = 79.667
-rotation = 0.106465
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(19.2536, 14.8241)
-size_flags_stretch_ratio = 0.0
-layout_direction = 1
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-theme_override_font_sizes/font_size = 15
-text = "Analyze"
-icon = ExtResource("28_8sw5x")
-expand_icon = true
-
-[node name="Swap" type="Button" parent="BattleUI/CommandMenu" unique_id=2068333761]
-visible = false
-visibility_layer = 1024
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = -165.0
-offset_top = 289.0
-offset_right = -66.0
-offset_bottom = 322.0
-rotation = 0.0910519
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(19.2536, 14.8241)
-size_flags_stretch_ratio = 0.0
-layout_direction = 1
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-theme_override_font_sizes/font_size = 15
-text = "Swap"
-icon = ExtResource("29_0ae34")
-text_overrun_behavior = 1
-expand_icon = true
-
-[node name="Strategize" type="Button" parent="BattleUI/CommandMenu" unique_id=1127233509]
-visibility_layer = 1024
-z_index = 12
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = -130.0
-offset_top = 13.0
-offset_right = 6.0
-offset_bottom = 45.999992
-rotation = 0.106465
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(20, 15)
-size_flags_stretch_ratio = 0.0
-layout_direction = 1
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-theme_override_font_sizes/font_size = 15
-disabled = true
-text = "Strategize
-"
-icon = ExtResource("29_0ae34")
-expand_icon = true
-
-[node name="Escape" type="Button" parent="BattleUI/CommandMenu" unique_id=1717281525]
-visibility_layer = 1024
-z_index = 12
-z_as_relative = false
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = -190.0
-offset_top = -130.0
-offset_right = -75.0
-offset_bottom = -96.999985
-rotation = -2.0943952
-scale = Vector2(0.5, 0.5)
-pivot_offset = Vector2(90, 190)
-size_flags_stretch_ratio = 0.0
-layout_direction = 1
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxFlat_8b0ek")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_8b0ek")
-theme_override_styles/hover = SubResource("StyleBoxFlat_8b0ek")
-icon = ExtResource("30_mjfmt")
-text_overrun_behavior = 1
-expand_icon = true
-metadata/_edit_use_anchors_ = true
-
-[node name="TextureRect" type="TextureRect" parent="BattleUI/CommandMenu/Escape" unique_id=2009458172]
-show_behind_parent = true
-light_mask = 0
-layout_mode = 0
-offset_left = 1.50745
-offset_top = -43.4662
-offset_right = 416.507
-offset_bottom = 219.534
-rotation = 0.27361
-scale = Vector2(0.3, 0.3)
-texture = ExtResource("31_ph8jg")
-
-[node name="Label" type="Label" parent="BattleUI/CommandMenu/Escape" unique_id=1346337101]
-light_mask = 0
-layout_mode = 0
-offset_left = 34.483
-offset_top = -1.52012
-offset_right = 98.483
-offset_bottom = 16.4799
-rotation = -0.24525
-scale = Vector2(0.988627, 1.08387)
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_fonts/font = ExtResource("27_l4up5")
-theme_override_font_sizes/font_size = 14
-text = "Escape"
-
-[node name="BaseRing" type="TextureRect" parent="BattleUI" unique_id=42149275]
-light_mask = 0
-material = SubResource("ShaderMaterial_ryg6s")
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -200.0
-offset_top = -200.0
-offset_right = 200.0
-offset_bottom = 200.0
-grow_horizontal = 2
-grow_vertical = 2
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = ExtResource("33_r7cdc")
-
-[node name="Ring1" type="TextureRect" parent="BattleUI/BaseRing" unique_id=614700733]
-light_mask = 0
-material = SubResource("ShaderMaterial_65pvt")
-layout_mode = 0
-offset_right = 400.0
-offset_bottom = 400.0
-pivot_offset = Vector2(200, 200)
-texture = SubResource("GradientTexture1D_b4gte")
-script = ExtResource("34_dhkk1")
-
-[node name="Ring2" type="TextureRect" parent="BattleUI/BaseRing" unique_id=1431885871]
-light_mask = 0
-material = SubResource("ShaderMaterial_3xpp0")
-layout_mode = 0
-offset_right = 400.00012
-offset_bottom = 400.0
-pivot_offset_ratio = Vector2(0.5, 0.5)
-texture = SubResource("GradientTexture1D_litkr")
-
-[node name="DescPaper" type="TextureRect" parent="BattleUI" unique_id=2095232882]
-visible = false
-modulate = Color(1, 1, 1, 0)
-use_parent_material = true
-layout_mode = 0
-offset_left = 102.0
-offset_top = -264.0
-offset_right = 771.00073
-offset_bottom = 248.0
-rotation = -0.34906584
-scale = Vector2(0.5, 0.5)
-pivot_offset_ratio = Vector2(0, 0.7)
-texture = ExtResource("35_xabbi")
-
-[node name="Title" type="Label" parent="BattleUI/DescPaper" unique_id=1278579315]
-use_parent_material = true
-layout_mode = 0
-offset_left = 132.0
-offset_top = 52.0
-offset_right = 527.0
-offset_bottom = 141.0
-rotation = 0.0630125
-theme = SubResource("Theme_e6n8g")
-theme_override_font_sizes/font_size = 53
-text = "Ability Name"
-horizontal_alignment = 2
-
-[node name="Desc" type="RichTextLabel" parent="BattleUI/DescPaper" unique_id=739209301]
-use_parent_material = true
-layout_mode = 0
-offset_left = 120.0
-offset_top = 124.0
-offset_right = 538.0
-offset_bottom = 425.0
-rotation = 0.0664639
-theme = SubResource("Theme_bug03")
-bbcode_enabled = true
-text = "This is a very long and intesting description of this ability. Using this spell the entire world will blow up.
-"
-
-[node name="Cost" type="Label" parent="BattleUI/DescPaper" unique_id=2090244203]
-use_parent_material = true
-layout_mode = 0
-offset_left = 302.0
-offset_top = 397.0
-offset_right = 500.0
-offset_bottom = 475.0
-rotation = 0.069544
-theme = SubResource("Theme_4tyuc")
-text = "Cost 5"
-horizontal_alignment = 2
-
-[node name="ShowWheel" type="Button" parent="BattleUI/DescPaper" unique_id=1416435802]
-visibility_layer = 1024
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = 123.0
-offset_top = -44.0
-offset_right = 204.0
-offset_bottom = -10.0
-scale = Vector2(1.8, 1.8)
-pivot_offset = Vector2(19.2536, 14.8241)
-size_flags_stretch_ratio = 0.0
-layout_direction = 1
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-theme_override_constants/icon_max_width = 24
-theme_override_font_sizes/font_size = 15
-action_mode = 0
-shortcut = SubResource("Shortcut_loao7")
-text = "Show wheel"
-icon = ExtResource("37_0bkog")
-
-[node name="Wheel" parent="BattleUI/DescPaper/ShowWheel" unique_id=1346881085 instance=ExtResource("38_hjhmh")]
-visible = false
-layout_mode = 0
-offset_left = -602.354
-offset_top = -586.778
-offset_right = 397.646
-offset_bottom = 413.222
-scale = Vector2(0.234695, 0.234695)
-color = Color(1, 0, 0.356863, 1)
-
-[node name="AbilityUI" type="PanelContainer" parent="BattleUI" unique_id=1811911615]
-visible = false
-modulate = Color(1, 1, 1, 0)
-use_parent_material = true
-layout_mode = 0
-offset_left = 70.0
-offset_top = -140.0
-offset_right = 370.0
-offset_bottom = 304.0
-scale = Vector2(0.3, 0.3)
-pivot_offset = Vector2(22.75, 158)
-theme_override_styles/panel = SubResource("StyleBoxFlat_misl1")
-
-[node name="Border2" type="PanelContainer" parent="BattleUI/AbilityUI" unique_id=735885324]
-use_parent_material = true
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_wyes3")
-
-[node name="Border1" type="Panel" parent="BattleUI/AbilityUI/Border2" unique_id=2018296510]
-use_parent_material = true
-layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_s5sl2")
-
-[node name="Margin" type="MarginContainer" parent="BattleUI/AbilityUI" unique_id=64150214]
-light_mask = 0
-use_parent_material = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/margin_left = 2
-theme_override_constants/margin_top = 14
-theme_override_constants/margin_right = -8
-theme_override_constants/margin_bottom = 14
-
-[node name="Scroller" type="ScrollContainer" parent="BattleUI/AbilityUI/Margin" unique_id=638357214]
-light_mask = 0
-use_parent_material = true
-clip_contents = false
-layout_mode = 2
-theme = SubResource("Theme_1ctu6")
-theme_override_styles/panel = SubResource("StyleBoxEmpty_5y8r5")
-horizontal_scroll_mode = 0
-script = ExtResource("43_q1as1")
-metadata/_custom_type_script = "uid://biopjphf2psbr"
-
-[node name="AbilityList" type="VBoxContainer" parent="BattleUI/AbilityUI/Margin/Scroller" unique_id=992760361]
-unique_name_in_owner = true
-use_parent_material = true
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_constants/separation = 12
-
-[node name="Ab0" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList" unique_id=716470933 instance=ExtResource("37_q1as1")]
-texture_filter = 2
-use_parent_material = true
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-focus_mode = 1
-mouse_filter = 1
-theme = SubResource("Theme_t7ro7")
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 21
-theme_override_styles/normal = SubResource("StyleBoxFlat_b6nlv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_2oa10")
-theme_override_styles/hover = SubResource("StyleBoxFlat_2oa10")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_b6nlv")
-theme_override_styles/focus = SubResource("StyleBoxFlat_2oa10")
-alignment = 0
-autowrap_mode = 2
-expand_icon = true
-font_focused_color = false
-
-[node name="Label" type="Label" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0" unique_id=608693546]
-use_parent_material = true
-layout_mode = 0
-offset_left = 211.0
-offset_top = 4.0
-offset_right = 255.0
-offset_bottom = 49.0
-mouse_filter = 1
-theme = SubResource("Theme_g1u0r")
-text = "5"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Icon" type="TextureRect" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0" unique_id=1470106902]
-light_mask = 0
-texture_filter = 1
-layout_mode = 0
-offset_left = 10.75
-offset_top = 4.0
-offset_right = 52.75
-offset_bottom = 46.0
-texture = SubResource("AtlasTexture_lhc1k")
-
-[node name="RankSwap" type="Control" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0" unique_id=223776131]
-visible = false
-light_mask = 0
-anchors_preset = 0
-offset_right = 272.0
-offset_bottom = 44.0
-pivot_offset = Vector2(1, 1)
-mouse_filter = 2
-
-[node name="Left" type="TextureButton" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap" unique_id=1850075260]
-visible = false
-light_mask = 0
-layout_mode = 0
-offset_left = -45.0
-offset_top = 3.0
-offset_right = -25.0
-offset_bottom = 47.0
-focus_mode = 0
-texture_normal = ExtResource("40_xhs3h")
-ignore_texture_size = true
-stretch_mode = 4
-
-[node name="Bg" type="Panel" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap/Left" unique_id=1540836794]
-show_behind_parent = true
-light_mask = 0
-layout_mode = 0
-offset_left = -20.0
-offset_top = -12.0
-offset_right = 44.0
-offset_bottom = 52.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_65vtl")
-
-[node name="Right" type="TextureButton" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap" unique_id=233584199]
-visible = false
-light_mask = 0
-layout_mode = 0
-offset_left = 300.0
-offset_top = 4.0
-offset_right = 319.99997
-offset_bottom = 48.0
-focus_mode = 0
-texture_normal = ExtResource("40_xhs3h")
-ignore_texture_size = true
-stretch_mode = 4
-flip_h = true
-
-[node name="Bg" type="Panel" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap/Right" unique_id=1560234342]
-show_behind_parent = true
-light_mask = 0
-layout_mode = 0
-offset_left = -24.0
-offset_top = -12.0
-offset_right = 40.0
-offset_bottom = 52.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_65vtl")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="BattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap" unique_id=449098572]
-libraries/ = SubResource("AnimationLibrary_j7n1p")
-autoplay = &"RESET"
-
-[node name="Ab0" parent="BattleUI/AbilityUI/Margin/Scroller" unique_id=131621532 instance=ExtResource("37_q1as1")]
-unique_name_in_owner = true
-visible = false
-texture_filter = 2
-use_parent_material = true
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-focus_mode = 1
-mouse_filter = 1
-theme = SubResource("Theme_t7ro7")
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_font_sizes/font_size = 21
-theme_override_styles/normal = SubResource("StyleBoxFlat_b6nlv")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_2oa10")
-theme_override_styles/hover = SubResource("StyleBoxFlat_2oa10")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_b6nlv")
-theme_override_styles/focus = SubResource("StyleBoxFlat_2oa10")
-alignment = 0
-autowrap_mode = 2
-expand_icon = true
-font_focused_color = false
-
-[node name="Label" type="Label" parent="BattleUI/AbilityUI/Margin/Scroller/Ab0" unique_id=195546793]
-use_parent_material = true
-layout_mode = 0
-offset_left = 211.0
-offset_top = 4.0
-offset_right = 255.0
-offset_bottom = 49.0
-mouse_filter = 1
-theme = SubResource("Theme_g1u0r")
-text = "5"
-horizontal_alignment = 2
-vertical_alignment = 1
-
-[node name="Icon" type="TextureRect" parent="BattleUI/AbilityUI/Margin/Scroller/Ab0" unique_id=715199528]
-light_mask = 0
-texture_filter = 1
-layout_mode = 0
-offset_left = 10.75
-offset_top = 4.0
-offset_right = 52.75
-offset_bottom = 46.0
-texture = SubResource("AtlasTexture_lhc1k")
-
-[node name="RankSwap" type="Control" parent="BattleUI/AbilityUI/Margin/Scroller/Ab0" unique_id=1748216015]
-light_mask = 0
-anchors_preset = 0
-offset_top = 4.0
-offset_right = 272.0
-offset_bottom = 48.0
-mouse_filter = 2
-
-[node name="Left" type="TextureButton" parent="BattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap" unique_id=1247663381]
-light_mask = 0
-layout_mode = 0
-offset_left = -45.0
-offset_top = 3.0
-offset_right = -25.0
-offset_bottom = 47.0
-focus_mode = 0
-texture_normal = ExtResource("40_xhs3h")
-ignore_texture_size = true
-stretch_mode = 4
-
-[node name="Bg" type="Panel" parent="BattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap/Left" unique_id=1707823320]
-show_behind_parent = true
-light_mask = 0
-layout_mode = 0
-offset_left = -20.0
-offset_top = -12.0
-offset_right = 44.0
-offset_bottom = 52.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_65vtl")
-
-[node name="Right" type="TextureButton" parent="BattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap" unique_id=978391957]
-light_mask = 0
-layout_mode = 0
-offset_left = 300.0
-offset_top = 4.0
-offset_right = 319.99997
-offset_bottom = 48.0
-focus_mode = 0
-texture_normal = ExtResource("40_xhs3h")
-ignore_texture_size = true
-stretch_mode = 4
-flip_h = true
-
-[node name="Bg" type="Panel" parent="BattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap/Right" unique_id=94152328]
-show_behind_parent = true
-light_mask = 0
-layout_mode = 0
-offset_left = -24.0
-offset_top = -12.0
-offset_right = 40.0
-offset_bottom = 52.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_65vtl")
-
-[node name="AnimationPlayer" type="AnimationPlayer" parent="BattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap" unique_id=647606391]
-libraries/ = SubResource("AnimationLibrary_j7n1p")
-autoplay = &"arrows"
-
-[node name="Inventory" type="Panel" parent="BattleUI" unique_id=40897737]
-visible = false
-light_mask = 0
-use_parent_material = true
-layout_mode = 0
-offset_left = -520.0
-offset_top = -250.0
-offset_right = -70.0
-offset_bottom = 250.0
-pivot_offset_ratio = Vector2(1, 0.5)
-theme_override_styles/panel = SubResource("StyleBoxFlat_inmoa")
-
-[node name="Item" type="Button" parent="BattleUI/Inventory" unique_id=1580591017]
-unique_name_in_owner = true
-visible = false
-light_mask = 0
-texture_filter = 1
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 0
-offset_left = 11.0
-offset_top = 8.0
-offset_right = 351.0
-offset_bottom = 541.0
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 14
-theme_override_fonts/font = SubResource("FontVariation_kjo3a")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_tnxnm")
-theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
-text = "3"
-icon = ExtResource("42_gfcom")
-alignment = 2
-icon_alignment = 1
-expand_icon = true
-
-[node name="ScrollContainer" type="ScrollContainer" parent="BattleUI/Inventory" unique_id=773951449]
-light_mask = 0
-layout_mode = 0
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 444.0
-offset_bottom = 523.0
-theme = SubResource("Theme_dgr6n")
-theme_override_styles/panel = SubResource("StyleBoxFlat_qr46u")
-script = ExtResource("43_q1as1")
-metadata/_custom_type_script = "uid://biopjphf2psbr"
-
-[node name="Items" type="VBoxContainer" parent="BattleUI/Inventory/ScrollContainer" unique_id=1420145610]
-light_mask = 0
-use_parent_material = true
-layout_mode = 2
-theme_override_constants/separation = 8
-
-[node name="BtiLabel" type="Label" parent="BattleUI/Inventory/ScrollContainer/Items" unique_id=1444057317]
-unique_name_in_owner = true
-light_mask = 0
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.47058824)
-theme_override_fonts/font = ExtResource("36_bvqsk")
-theme_override_font_sizes/font_size = 24
-text = "Battle items"
-
-[node name="BattleItems" type="GridContainer" parent="BattleUI/Inventory/ScrollContainer/Items" unique_id=154631886]
-unique_name_in_owner = true
-light_mask = 0
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 14
-theme_override_constants/v_separation = 14
-columns = 4
-
-[node name="Item2" type="Button" parent="BattleUI/Inventory/ScrollContainer/Items/BattleItems" unique_id=616432876]
-light_mask = 0
-texture_filter = 1
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 14
-theme_override_fonts/font = SubResource("FontVariation_kjo3a")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_54u86")
-theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
-text = "3"
-icon = ExtResource("42_gfcom")
-alignment = 2
-icon_alignment = 1
-expand_icon = true
-
-[node name="Item3" type="Button" parent="BattleUI/Inventory/ScrollContainer/Items/BattleItems" unique_id=378795564]
-light_mask = 0
-texture_filter = 1
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 14
-theme_override_fonts/font = SubResource("FontVariation_kjo3a")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
-theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
-text = "3"
-icon = ExtResource("42_gfcom")
-alignment = 2
-icon_alignment = 1
-expand_icon = true
-
-[node name="ConLabel" type="Label" parent="BattleUI/Inventory/ScrollContainer/Items" unique_id=1052589997]
-unique_name_in_owner = true
-light_mask = 0
-layout_mode = 2
-theme_override_colors/font_color = Color(1, 1, 1, 0.47058824)
-theme_override_fonts/font = ExtResource("36_bvqsk")
-theme_override_font_sizes/font_size = 24
-text = "Consumables"
-
-[node name="Consumables" type="GridContainer" parent="BattleUI/Inventory/ScrollContainer/Items" unique_id=235337847]
-unique_name_in_owner = true
-light_mask = 0
-custom_minimum_size = Vector2(80, 80)
-layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/h_separation = 14
-theme_override_constants/v_separation = 14
-columns = 4
-
-[node name="Item4" type="Button" parent="BattleUI/Inventory/ScrollContainer/Items/Consumables" unique_id=1925929881]
-light_mask = 0
-texture_filter = 1
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 14
-theme_override_fonts/font = SubResource("FontVariation_kjo3a")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
-theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
-text = "3"
-icon = ExtResource("42_gfcom")
-alignment = 2
-icon_alignment = 1
-expand_icon = true
-
-[node name="Item5" type="Button" parent="BattleUI/Inventory/ScrollContainer/Items/Consumables" unique_id=834980850]
-light_mask = 0
-texture_filter = 1
-custom_minimum_size = Vector2(90, 90)
-layout_mode = 2
-theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
-theme_override_constants/outline_size = 14
-theme_override_fonts/font = SubResource("FontVariation_kjo3a")
-theme_override_font_sizes/font_size = 32
-theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
-theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
-theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
-text = "3"
-icon = ExtResource("42_gfcom")
-alignment = 2
-icon_alignment = 1
-expand_icon = true
-
-[node name="BIbutton" type="Button" parent="BattleUI/Inventory" unique_id=1521159781]
-unique_name_in_owner = true
-light_mask = 0
-layout_mode = 0
-offset_left = 31.5498
-offset_top = 26.6755
-offset_right = 214.55
-offset_bottom = 52.6755
-focus_mode = 1
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0.111197, 0.111197, 0.111197, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.154876, 0.154876, 0.154876, 1)
-theme_override_fonts/font = ExtResource("41_ctn83")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_wrwr7")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_x10m0")
-theme_override_styles/hover = SubResource("StyleBoxFlat_tcjvu")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_wrwr7")
-theme_override_styles/focus = SubResource("StyleBoxFlat_x10m0")
-toggle_mode = true
-action_mode = 0
-shortcut = SubResource("Shortcut_5o8yt")
-text = "Battle items"
-icon = ExtResource("43_15et0")
-expand_icon = true
-
-[node name="Cbutton" type="Button" parent="BattleUI/Inventory" unique_id=1541943967]
-unique_name_in_owner = true
-light_mask = 0
-layout_mode = 0
-offset_left = 227.55
-offset_top = 26.6755
-offset_right = 411.55
-offset_bottom = 52.6755
-focus_mode = 1
-theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
-theme_override_colors/font_hover_color = Color(0.109804, 0.109804, 0.109804, 1)
-theme_override_colors/font_hover_pressed_color = Color(0.109804, 0.109804, 0.109804, 1)
-theme_override_fonts/font = ExtResource("41_ctn83")
-theme_override_font_sizes/font_size = 24
-theme_override_styles/normal = SubResource("StyleBoxFlat_1s3iy")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_mk32q")
-theme_override_styles/hover = SubResource("StyleBoxFlat_jp3jx")
-theme_override_styles/disabled = SubResource("StyleBoxFlat_1s3iy")
-theme_override_styles/focus = SubResource("StyleBoxFlat_mk32q")
-toggle_mode = true
-button_pressed = true
-action_mode = 0
-shortcut = SubResource("Shortcut_66som")
-text = "Consumables"
-icon = ExtResource("44_hti1b")
-icon_alignment = 2
-expand_icon = true
-
-[node name="DottedBack" type="Sprite2D" parent="BattleUI/Inventory" unique_id=796066175]
-modulate = Color(0.380392, 0.380392, 0.380392, 1)
-show_behind_parent = true
-light_mask = 0
-position = Vector2(3.3333645, 258.8889)
-scale = Vector2(1.3654515, 1.3654515)
-texture = ExtResource("45_sxqe5")
-flip_h = true
-
-[node name="DescPaper" type="TextureRect" parent="BattleUI/Inventory" unique_id=44987799]
-show_behind_parent = true
-light_mask = 0
-use_parent_material = true
-layout_mode = 0
-offset_left = -330.0
-offset_top = 100.0
-offset_right = 340.0
-offset_bottom = 612.0
-rotation = 0.0518777
-scale = Vector2(0.5, 0.5)
-pivot_offset_ratio = Vector2(0, 0.6)
-texture = ExtResource("35_xabbi")
-flip_h = true
-
-[node name="Title" type="Label" parent="BattleUI/Inventory/DescPaper" unique_id=2113033823]
-light_mask = 0
-use_parent_material = true
-layout_mode = 0
-offset_left = 142.104
-offset_top = 79.0331
-offset_right = 534.104
-offset_bottom = 179.033
-rotation = -0.0710807
-theme = SubResource("Theme_e2gdg")
-theme_override_font_sizes/font_size = 53
-text = "Item Name"
-horizontal_alignment = 2
-
-[node name="Desc" type="RichTextLabel" parent="BattleUI/Inventory/DescPaper" unique_id=1113279538]
-light_mask = 0
-use_parent_material = true
-layout_mode = 0
-offset_left = 119.341
-offset_top = 147.512
-offset_right = 523.341
-offset_bottom = 446.512
-rotation = -0.0763998
-layout_direction = 3
-theme = SubResource("Theme_gsplh")
-bbcode_enabled = true
-text = "This item is very cool, almost too cool for you."
-
-[node name="Amount" type="Label" parent="BattleUI/Inventory/DescPaper" unique_id=264683631]
-light_mask = 0
-use_parent_material = true
-layout_mode = 0
-offset_left = 113.341
-offset_top = 406.68
-offset_right = 379.341
-offset_bottom = 487.68
-rotation = -0.0941842
-theme = SubResource("Theme_noiys")
-theme_override_font_sizes/font_size = 46
-text = "52 in bag"
-horizontal_alignment = 2
-
-[node name="ShowWheel" type="Button" parent="BattleUI/Inventory/DescPaper" unique_id=1467676690]
-visible = false
-light_mask = 0
-visibility_layer = 1024
-material = SubResource("ShaderMaterial_ojm6j")
-use_parent_material = true
-layout_mode = 0
-offset_left = 150.0
-offset_top = -59.0
-offset_right = 304.0
-offset_bottom = -26.0
-scale = Vector2(2, 2)
-pivot_offset = Vector2(19.2536, 14.8241)
-size_flags_stretch_ratio = 0.0
-layout_direction = 1
-focus_mode = 1
-theme = SubResource("Theme_qsibl")
-theme_override_colors/font_color = Color(0, 0, 0, 1)
-theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
-theme_override_font_sizes/font_size = 15
-theme_override_styles/normal = SubResource("StyleBoxFlat_7vvpc")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_7vvpc")
-theme_override_styles/hover = SubResource("StyleBoxFlat_lhbro")
-theme_override_styles/focus = SubResource("StyleBoxFlat_lhbro")
-text = "Show Wheel"
-icon = ExtResource("37_0bkog")
-text_overrun_behavior = 1
-expand_icon = true
-
-[node name="Art" type="TextureRect" parent="BattleUI/Inventory/DescPaper" unique_id=1003237727]
-light_mask = 0
-layout_mode = 0
-offset_left = -12.4795
-offset_top = -419.409
-offset_right = 1387.52
-offset_bottom = 980.591
-rotation = -0.0531199
-scale = Vector2(0.381942, 0.381942)
-texture = ExtResource("46_oks1v")
-
-[node name="Border1" type="PanelContainer" parent="BattleUI/Inventory" unique_id=1901926094]
-light_mask = 0
-layout_mode = 0
-offset_left = -10.0
-offset_top = -9.0
-offset_right = 458.0
-offset_bottom = 512.658
-mouse_filter = 2
-theme = SubResource("Theme_8i68l")
-theme_override_styles/panel = SubResource("StyleBoxFlat_kisea")
-
-[node name="Border2" type="PanelContainer" parent="BattleUI/Inventory/Border1" unique_id=1851199117]
-show_behind_parent = true
-light_mask = 0
-layout_mode = 2
-mouse_filter = 2
-theme = SubResource("Theme_gjtdb")
-theme_override_styles/panel = SubResource("StyleBoxFlat_lg5jp")
-
-[node name="Border3" type="PanelContainer" parent="BattleUI/Inventory/Border1/Border2" unique_id=173244662]
-show_behind_parent = true
-light_mask = 0
-layout_mode = 2
-mouse_filter = 2
-theme = SubResource("Theme_pg44w")
-theme_override_styles/panel = SubResource("StyleBoxFlat_kvanb")
-
-[node name="Ability" type="Button" parent="BattleUI" unique_id=1132732390]
-visibility_layer = 1024
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = 85.0
-offset_top = -20.0
-offset_right = 250.0
-offset_bottom = 28.0
-pivot_offset = Vector2(24, 0)
-pivot_offset_ratio = Vector2(0, 0.5)
-size_flags_stretch_ratio = 0.0
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-text = "Ability"
-icon = ExtResource("48_y0u2e")
-text_overrun_behavior = 1
-expand_icon = true
-
-[node name="Attack" type="Button" parent="BattleUI" unique_id=2047138243]
-visibility_layer = 1024
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = -84.0
-offset_top = 120.0
-offset_right = 81.0
-offset_bottom = 168.0
-pivot_offset = Vector2(24, 0)
-pivot_offset_ratio = Vector2(0, 0.5)
-size_flags_stretch_ratio = 0.0
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-text = "Attack
-"
-icon = ExtResource("47_mpk6a")
-text_overrun_behavior = 1
-expand_icon = true
-
-[node name="Item" type="Button" parent="BattleUI" unique_id=1310127929]
-visibility_layer = 1024
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = -225.0
-offset_top = -20.0
-offset_right = -85.0
-offset_bottom = 28.0
-pivot_offset = Vector2(24, 0)
-pivot_offset_ratio = Vector2(0, 0.5)
-size_flags_stretch_ratio = 0.0
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-shortcut_in_tooltip = false
-text = "Item"
-icon = ExtResource("50_xmfje")
-text_overrun_behavior = 1
-expand_icon = true
-
-[node name="Command" type="Button" parent="BattleUI" unique_id=285599713]
-visibility_layer = 1024
-material = SubResource("ShaderMaterial_nmg3k")
-layout_mode = 0
-offset_left = -90.0
-offset_top = -164.0
-offset_right = 90.0
-offset_bottom = -116.0
-pivot_offset = Vector2(24, 0)
-pivot_offset_ratio = Vector2(0, 0.5)
-size_flags_stretch_ratio = 0.0
-layout_direction = 1
-focus_mode = 0
-theme = SubResource("Theme_4kcni")
-shortcut_in_tooltip = false
-text = "Command"
-icon = ExtResource("37_0bkog")
-text_overrun_behavior = 1
-expand_icon = true
-
 [node name="AI" type="Node" parent="." unique_id=1881764654]
 script = ExtResource("24_vu4cw")
 
@@ -5624,7 +4649,996 @@ horizontal_alignment = 1
 [node name="Stream0" type="AudioStreamPlayer2D" parent="Audio" unique_id=1685678398]
 
 [node name="Canvas" type="CanvasLayer" parent="." unique_id=405987260]
-layer = 3
+
+[node name="UIContainer" type="Control" parent="Canvas" unique_id=1964463276 node_paths=PackedStringArray("bt")]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("27_q1as1")
+bt = NodePath("../..")
+
+[node name="ControllerBattleUI" type="Control" parent="Canvas/UIContainer" unique_id=185173348 node_paths=PackedStringArray("Bt", "canvas")]
+unique_name_in_owner = true
+z_index = 10
+z_as_relative = false
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.25, 0.25)
+offset_transform_enabled = true
+script = ExtResource("26_2prty")
+Bt = NodePath("../../..")
+canvas = NodePath("../..")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=577349075]
+root_node = NodePath("../../..")
+libraries/ = SubResource("AnimationLibrary_4wnfp")
+autoplay = &"RESET"
+playback_auto_capture_transition_type = 7
+next/get_control = &"RESET"
+next/target = &"target_idle"
+blend_times = [&"ability", &"ability", 0.3]
+
+[node name="CommandMenu" type="Control" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=1627208994]
+visible = false
+modulate = Color(1, 1, 1, 0)
+light_mask = 0
+anchors_preset = 0
+offset_left = 36.0
+offset_right = 36.0
+scale = Vector2(3, 3)
+pivot_offset = Vector2(-33, 0)
+
+[node name="CmdBack" type="Polygon2D" parent="Canvas/UIContainer/ControllerBattleUI/CommandMenu" unique_id=1660236563]
+light_mask = 0
+position = Vector2(-83.8007, 105.927)
+rotation = 0.20944
+scale = Vector2(0.155, 0.155)
+color = Color(0.113725, 0.113725, 0.113725, 1)
+offset = Vector2(78.0864, -107.356)
+polygon = PackedVector2Array(811.811, -766.054, 811.127, 286.293, 768.113, 396.206, 710.82, 491.257, 662.912, 554.43, 612.265, 608.802, 558.88, 654.374, 502.756, 691.146, 545.186, 610.373, 570.016, 535.077, 592.691, 421.842, 609.305, 320.145, 611.057, 232.727, 604.008, 148.047, 585.421, 57.3053, 560.772, -21.8971, 527.323, -98.3607, 476.273, -169.347, 402.145, -252.456, 313.156, -321.287, 209.305, -375.841, 81.7913, -413.378, 0.43412, -426.669, -86.9846, -428.42, -162.864, -424.111, -250.867, -396.723, -344.931, -357.797, -442.318, -298.53, -495.704, -252.958, -561.212, -184.308, -623.982, -106.858, -657.028, -57.9627, -681.274, -11.8066, -674.891, -766.697)
+
+[node name="Analyze" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/CommandMenu" unique_id=1884730250]
+visibility_layer = 1024
+z_index = 12
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = -110.0
+offset_top = 46.667
+offset_right = 5.0
+offset_bottom = 79.667
+rotation = 0.106465
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(19.2536, 14.8241)
+size_flags_stretch_ratio = 0.0
+layout_direction = 1
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+theme_override_font_sizes/font_size = 15
+text = "Analyze"
+icon = ExtResource("28_8sw5x")
+expand_icon = true
+
+[node name="Swap" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/CommandMenu" unique_id=2068333761]
+visible = false
+visibility_layer = 1024
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = -165.0
+offset_top = 289.0
+offset_right = -66.0
+offset_bottom = 322.0
+rotation = 0.0910519
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(19.2536, 14.8241)
+size_flags_stretch_ratio = 0.0
+layout_direction = 1
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+theme_override_font_sizes/font_size = 15
+text = "Swap"
+icon = ExtResource("29_0ae34")
+text_overrun_behavior = 1
+expand_icon = true
+
+[node name="Strategize" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/CommandMenu" unique_id=1127233509]
+visibility_layer = 1024
+z_index = 12
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = -130.0
+offset_top = 13.0
+offset_right = 6.0
+offset_bottom = 45.999992
+rotation = 0.106465
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(20, 15)
+size_flags_stretch_ratio = 0.0
+layout_direction = 1
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+theme_override_font_sizes/font_size = 15
+disabled = true
+text = "Strategize
+"
+icon = ExtResource("29_0ae34")
+expand_icon = true
+
+[node name="Escape" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/CommandMenu" unique_id=1717281525]
+visibility_layer = 1024
+z_index = 12
+z_as_relative = false
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = -190.0
+offset_top = -130.0
+offset_right = -75.0
+offset_bottom = -96.999985
+rotation = -2.0943952
+scale = Vector2(0.5, 0.5)
+pivot_offset = Vector2(90, 190)
+size_flags_stretch_ratio = 0.0
+layout_direction = 1
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_8b0ek")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_8b0ek")
+theme_override_styles/hover = SubResource("StyleBoxFlat_8b0ek")
+icon = ExtResource("30_mjfmt")
+text_overrun_behavior = 1
+expand_icon = true
+metadata/_edit_use_anchors_ = true
+
+[node name="TextureRect" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI/CommandMenu/Escape" unique_id=2009458172]
+show_behind_parent = true
+light_mask = 0
+layout_mode = 0
+offset_left = 1.50745
+offset_top = -43.4662
+offset_right = 416.507
+offset_bottom = 219.534
+rotation = 0.27361
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("31_ph8jg")
+
+[node name="Label" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/CommandMenu/Escape" unique_id=1346337101]
+light_mask = 0
+layout_mode = 0
+offset_left = 34.483
+offset_top = -1.52012
+offset_right = 98.483
+offset_bottom = 16.4799
+rotation = -0.24525
+scale = Vector2(0.988627, 1.08387)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_fonts/font = ExtResource("27_l4up5")
+theme_override_font_sizes/font_size = 14
+text = "Escape"
+
+[node name="BaseRing" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=42149275]
+light_mask = 0
+material = SubResource("ShaderMaterial_ryg6s")
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -200.0
+offset_top = -200.0
+offset_right = 200.0
+offset_bottom = 200.0
+grow_horizontal = 2
+grow_vertical = 2
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = ExtResource("33_r7cdc")
+
+[node name="Ring1" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI/BaseRing" unique_id=614700733]
+light_mask = 0
+material = SubResource("ShaderMaterial_65pvt")
+layout_mode = 0
+offset_right = 400.0
+offset_bottom = 400.0
+pivot_offset = Vector2(200, 200)
+texture = SubResource("GradientTexture1D_b4gte")
+script = ExtResource("34_dhkk1")
+
+[node name="Ring2" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI/BaseRing" unique_id=1431885871]
+light_mask = 0
+material = SubResource("ShaderMaterial_3xpp0")
+layout_mode = 0
+offset_right = 400.00012
+offset_bottom = 400.0
+pivot_offset_ratio = Vector2(0.5, 0.5)
+texture = SubResource("GradientTexture1D_litkr")
+
+[node name="DescPaper" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=2095232882]
+visible = false
+modulate = Color(1, 1, 1, 0)
+use_parent_material = true
+layout_mode = 0
+offset_left = 102.0
+offset_top = -264.0
+offset_right = 771.00073
+offset_bottom = 248.0
+rotation = -0.34906584
+scale = Vector2(0.5, 0.5)
+pivot_offset_ratio = Vector2(0, 0.7)
+texture = ExtResource("35_xabbi")
+
+[node name="Title" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/DescPaper" unique_id=1278579315]
+use_parent_material = true
+layout_mode = 0
+offset_left = 132.0
+offset_top = 52.0
+offset_right = 527.0
+offset_bottom = 141.0
+rotation = 0.0630125
+theme = SubResource("Theme_e6n8g")
+theme_override_font_sizes/font_size = 53
+text = "Ability Name"
+horizontal_alignment = 2
+
+[node name="Desc" type="RichTextLabel" parent="Canvas/UIContainer/ControllerBattleUI/DescPaper" unique_id=739209301]
+use_parent_material = true
+layout_mode = 0
+offset_left = 120.0
+offset_top = 124.0
+offset_right = 538.0
+offset_bottom = 425.0
+rotation = 0.0664639
+theme = SubResource("Theme_bug03")
+bbcode_enabled = true
+text = "This is a very long and intesting description of this ability. Using this spell the entire world will blow up.
+"
+
+[node name="Cost" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/DescPaper" unique_id=2090244203]
+use_parent_material = true
+layout_mode = 0
+offset_left = 302.0
+offset_top = 397.0
+offset_right = 500.0
+offset_bottom = 475.0
+rotation = 0.069544
+theme = SubResource("Theme_4tyuc")
+text = "Cost 5"
+horizontal_alignment = 2
+
+[node name="ShowWheel" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/DescPaper" unique_id=1416435802]
+visibility_layer = 1024
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = 123.0
+offset_top = -44.0
+offset_right = 204.0
+offset_bottom = -10.0
+scale = Vector2(1.8, 1.8)
+pivot_offset = Vector2(19.2536, 14.8241)
+size_flags_stretch_ratio = 0.0
+layout_direction = 1
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+theme_override_constants/icon_max_width = 24
+theme_override_font_sizes/font_size = 15
+action_mode = 0
+shortcut = SubResource("Shortcut_loao7")
+text = "Show wheel"
+icon = ExtResource("37_0bkog")
+
+[node name="Wheel" parent="Canvas/UIContainer/ControllerBattleUI/DescPaper/ShowWheel" unique_id=1346881085 instance=ExtResource("38_hjhmh")]
+visible = false
+layout_mode = 0
+offset_left = -602.354
+offset_top = -586.778
+offset_right = 397.646
+offset_bottom = 413.222
+scale = Vector2(0.234695, 0.234695)
+color = Color(1, 0, 0.356863, 1)
+
+[node name="AbilityUI" type="PanelContainer" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=1811911615]
+visible = false
+modulate = Color(1, 1, 1, 0)
+use_parent_material = true
+layout_mode = 0
+offset_left = 70.0
+offset_top = -140.0
+offset_right = 370.0
+offset_bottom = 304.0
+scale = Vector2(0.3, 0.3)
+pivot_offset = Vector2(22.75, 158)
+theme_override_styles/panel = SubResource("StyleBoxFlat_misl1")
+
+[node name="Border2" type="PanelContainer" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI" unique_id=735885324]
+use_parent_material = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_wyes3")
+
+[node name="Border1" type="Panel" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Border2" unique_id=2018296510]
+use_parent_material = true
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_s5sl2")
+
+[node name="Margin" type="MarginContainer" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI" unique_id=64150214]
+light_mask = 0
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 2
+theme_override_constants/margin_top = 14
+theme_override_constants/margin_right = -8
+theme_override_constants/margin_bottom = 14
+
+[node name="Scroller" type="ScrollContainer" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin" unique_id=638357214]
+light_mask = 0
+use_parent_material = true
+clip_contents = false
+layout_mode = 2
+theme = SubResource("Theme_1ctu6")
+theme_override_styles/panel = SubResource("StyleBoxEmpty_5y8r5")
+horizontal_scroll_mode = 0
+script = ExtResource("43_q1as1")
+metadata/_custom_type_script = "uid://biopjphf2psbr"
+
+[node name="AbilityList" type="VBoxContainer" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller" unique_id=992760361]
+unique_name_in_owner = true
+use_parent_material = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="Ab0" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList" unique_id=716470933 instance=ExtResource("37_q1as1")]
+texture_filter = 2
+use_parent_material = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+focus_mode = 1
+mouse_filter = 1
+theme = SubResource("Theme_t7ro7")
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_b6nlv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_2oa10")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2oa10")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_b6nlv")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2oa10")
+alignment = 0
+autowrap_mode = 2
+expand_icon = true
+font_focused_color = false
+
+[node name="Label" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0" unique_id=608693546]
+use_parent_material = true
+layout_mode = 0
+offset_left = 211.0
+offset_top = 4.0
+offset_right = 255.0
+offset_bottom = 49.0
+mouse_filter = 1
+theme = SubResource("Theme_g1u0r")
+text = "5"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0" unique_id=1470106902]
+light_mask = 0
+texture_filter = 1
+layout_mode = 0
+offset_left = 10.75
+offset_top = 4.0
+offset_right = 52.75
+offset_bottom = 46.0
+texture = SubResource("AtlasTexture_lhc1k")
+
+[node name="RankSwap" type="Control" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0" unique_id=223776131]
+visible = false
+light_mask = 0
+anchors_preset = 0
+offset_right = 272.0
+offset_bottom = 44.0
+pivot_offset = Vector2(1, 1)
+mouse_filter = 2
+
+[node name="Left" type="TextureButton" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap" unique_id=1850075260]
+visible = false
+light_mask = 0
+layout_mode = 0
+offset_left = -45.0
+offset_top = 3.0
+offset_right = -25.0
+offset_bottom = 47.0
+focus_mode = 0
+texture_normal = ExtResource("40_xhs3h")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="Bg" type="Panel" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap/Left" unique_id=1540836794]
+show_behind_parent = true
+light_mask = 0
+layout_mode = 0
+offset_left = -20.0
+offset_top = -12.0
+offset_right = 44.0
+offset_bottom = 52.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_65vtl")
+
+[node name="Right" type="TextureButton" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap" unique_id=233584199]
+visible = false
+light_mask = 0
+layout_mode = 0
+offset_left = 300.0
+offset_top = 4.0
+offset_right = 319.99997
+offset_bottom = 48.0
+focus_mode = 0
+texture_normal = ExtResource("40_xhs3h")
+ignore_texture_size = true
+stretch_mode = 4
+flip_h = true
+
+[node name="Bg" type="Panel" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap/Right" unique_id=1560234342]
+show_behind_parent = true
+light_mask = 0
+layout_mode = 0
+offset_left = -24.0
+offset_top = -12.0
+offset_right = 40.0
+offset_bottom = 52.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_65vtl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/AbilityList/Ab0/RankSwap" unique_id=449098572]
+libraries/ = SubResource("AnimationLibrary_j7n1p")
+autoplay = &"RESET"
+
+[node name="Ab0" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller" unique_id=131621532 instance=ExtResource("37_q1as1")]
+unique_name_in_owner = true
+visible = false
+texture_filter = 2
+use_parent_material = true
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+focus_mode = 1
+mouse_filter = 1
+theme = SubResource("Theme_t7ro7")
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 21
+theme_override_styles/normal = SubResource("StyleBoxFlat_b6nlv")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_2oa10")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2oa10")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_b6nlv")
+theme_override_styles/focus = SubResource("StyleBoxFlat_2oa10")
+alignment = 0
+autowrap_mode = 2
+expand_icon = true
+font_focused_color = false
+
+[node name="Label" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0" unique_id=195546793]
+use_parent_material = true
+layout_mode = 0
+offset_left = 211.0
+offset_top = 4.0
+offset_right = 255.0
+offset_bottom = 49.0
+mouse_filter = 1
+theme = SubResource("Theme_g1u0r")
+text = "5"
+horizontal_alignment = 2
+vertical_alignment = 1
+
+[node name="Icon" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0" unique_id=715199528]
+light_mask = 0
+texture_filter = 1
+layout_mode = 0
+offset_left = 10.75
+offset_top = 4.0
+offset_right = 52.75
+offset_bottom = 46.0
+texture = SubResource("AtlasTexture_lhc1k")
+
+[node name="RankSwap" type="Control" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0" unique_id=1748216015]
+light_mask = 0
+anchors_preset = 0
+offset_top = 4.0
+offset_right = 272.0
+offset_bottom = 48.0
+mouse_filter = 2
+
+[node name="Left" type="TextureButton" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap" unique_id=1247663381]
+light_mask = 0
+layout_mode = 0
+offset_left = -45.0
+offset_top = 3.0
+offset_right = -25.0
+offset_bottom = 47.0
+focus_mode = 0
+texture_normal = ExtResource("40_xhs3h")
+ignore_texture_size = true
+stretch_mode = 4
+
+[node name="Bg" type="Panel" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap/Left" unique_id=1707823320]
+show_behind_parent = true
+light_mask = 0
+layout_mode = 0
+offset_left = -20.0
+offset_top = -12.0
+offset_right = 44.0
+offset_bottom = 52.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_65vtl")
+
+[node name="Right" type="TextureButton" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap" unique_id=978391957]
+light_mask = 0
+layout_mode = 0
+offset_left = 300.0
+offset_top = 4.0
+offset_right = 319.99997
+offset_bottom = 48.0
+focus_mode = 0
+texture_normal = ExtResource("40_xhs3h")
+ignore_texture_size = true
+stretch_mode = 4
+flip_h = true
+
+[node name="Bg" type="Panel" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap/Right" unique_id=94152328]
+show_behind_parent = true
+light_mask = 0
+layout_mode = 0
+offset_left = -24.0
+offset_top = -12.0
+offset_right = 40.0
+offset_bottom = 52.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_65vtl")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0/RankSwap" unique_id=647606391]
+libraries/ = SubResource("AnimationLibrary_j7n1p")
+autoplay = &"arrows"
+
+[node name="Inventory" type="Panel" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=40897737]
+visible = false
+light_mask = 0
+use_parent_material = true
+layout_mode = 0
+offset_left = -520.0
+offset_top = -250.0
+offset_right = -70.0
+offset_bottom = 250.0
+pivot_offset_ratio = Vector2(1, 0.5)
+theme_override_styles/panel = SubResource("StyleBoxFlat_inmoa")
+
+[node name="Item" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/Inventory" unique_id=1580591017]
+unique_name_in_owner = true
+visible = false
+light_mask = 0
+texture_filter = 1
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 0
+offset_left = 11.0
+offset_top = 8.0
+offset_right = 351.0
+offset_bottom = 541.0
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = SubResource("FontVariation_kjo3a")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_tnxnm")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
+text = "3"
+icon = ExtResource("42_gfcom")
+alignment = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Canvas/UIContainer/ControllerBattleUI/Inventory" unique_id=773951449]
+light_mask = 0
+layout_mode = 0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 444.0
+offset_bottom = 523.0
+theme = SubResource("Theme_dgr6n")
+theme_override_styles/panel = SubResource("StyleBoxFlat_qr46u")
+script = ExtResource("43_q1as1")
+metadata/_custom_type_script = "uid://biopjphf2psbr"
+
+[node name="Items" type="VBoxContainer" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer" unique_id=1420145610]
+light_mask = 0
+use_parent_material = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="BtiLabel" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer/Items" unique_id=1444057317]
+unique_name_in_owner = true
+light_mask = 0
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.47058824)
+theme_override_fonts/font = ExtResource("36_bvqsk")
+theme_override_font_sizes/font_size = 24
+text = "Battle items"
+
+[node name="BattleItems" type="GridContainer" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer/Items" unique_id=154631886]
+unique_name_in_owner = true
+light_mask = 0
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+columns = 4
+
+[node name="Item2" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer/Items/BattleItems" unique_id=616432876]
+light_mask = 0
+texture_filter = 1
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = SubResource("FontVariation_kjo3a")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_54u86")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
+text = "3"
+icon = ExtResource("42_gfcom")
+alignment = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="Item3" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer/Items/BattleItems" unique_id=378795564]
+light_mask = 0
+texture_filter = 1
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = SubResource("FontVariation_kjo3a")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
+text = "3"
+icon = ExtResource("42_gfcom")
+alignment = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="ConLabel" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer/Items" unique_id=1052589997]
+unique_name_in_owner = true
+light_mask = 0
+layout_mode = 2
+theme_override_colors/font_color = Color(1, 1, 1, 0.47058824)
+theme_override_fonts/font = ExtResource("36_bvqsk")
+theme_override_font_sizes/font_size = 24
+text = "Consumables"
+
+[node name="Consumables" type="GridContainer" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer/Items" unique_id=235337847]
+unique_name_in_owner = true
+light_mask = 0
+custom_minimum_size = Vector2(80, 80)
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/h_separation = 14
+theme_override_constants/v_separation = 14
+columns = 4
+
+[node name="Item4" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer/Items/Consumables" unique_id=1925929881]
+light_mask = 0
+texture_filter = 1
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = SubResource("FontVariation_kjo3a")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
+text = "3"
+icon = ExtResource("42_gfcom")
+alignment = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="Item5" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/ScrollContainer/Items/Consumables" unique_id=834980850]
+light_mask = 0
+texture_filter = 1
+custom_minimum_size = Vector2(90, 90)
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 14
+theme_override_fonts/font = SubResource("FontVariation_kjo3a")
+theme_override_font_sizes/font_size = 32
+theme_override_styles/normal = SubResource("StyleBoxFlat_3vbgo")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_6og6b")
+theme_override_styles/hover = SubResource("StyleBoxFlat_m5tir")
+theme_override_styles/focus = SubResource("StyleBoxFlat_6og6b")
+text = "3"
+icon = ExtResource("42_gfcom")
+alignment = 2
+icon_alignment = 1
+expand_icon = true
+
+[node name="BIbutton" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/Inventory" unique_id=1521159781]
+unique_name_in_owner = true
+light_mask = 0
+layout_mode = 0
+offset_left = 31.5498
+offset_top = 26.6755
+offset_right = 214.55
+offset_bottom = 52.6755
+focus_mode = 1
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.111197, 0.111197, 0.111197, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.154876, 0.154876, 0.154876, 1)
+theme_override_fonts/font = ExtResource("41_ctn83")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_wrwr7")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_x10m0")
+theme_override_styles/hover = SubResource("StyleBoxFlat_tcjvu")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_wrwr7")
+theme_override_styles/focus = SubResource("StyleBoxFlat_x10m0")
+toggle_mode = true
+action_mode = 0
+shortcut = SubResource("Shortcut_5o8yt")
+text = "Battle items"
+icon = ExtResource("43_15et0")
+expand_icon = true
+
+[node name="Cbutton" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/Inventory" unique_id=1541943967]
+unique_name_in_owner = true
+light_mask = 0
+layout_mode = 0
+offset_left = 227.55
+offset_top = 26.6755
+offset_right = 411.55
+offset_bottom = 52.6755
+focus_mode = 1
+theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
+theme_override_colors/font_hover_color = Color(0.109804, 0.109804, 0.109804, 1)
+theme_override_colors/font_hover_pressed_color = Color(0.109804, 0.109804, 0.109804, 1)
+theme_override_fonts/font = ExtResource("41_ctn83")
+theme_override_font_sizes/font_size = 24
+theme_override_styles/normal = SubResource("StyleBoxFlat_1s3iy")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_mk32q")
+theme_override_styles/hover = SubResource("StyleBoxFlat_jp3jx")
+theme_override_styles/disabled = SubResource("StyleBoxFlat_1s3iy")
+theme_override_styles/focus = SubResource("StyleBoxFlat_mk32q")
+toggle_mode = true
+button_pressed = true
+action_mode = 0
+shortcut = SubResource("Shortcut_66som")
+text = "Consumables"
+icon = ExtResource("44_hti1b")
+icon_alignment = 2
+expand_icon = true
+
+[node name="DottedBack" type="Sprite2D" parent="Canvas/UIContainer/ControllerBattleUI/Inventory" unique_id=796066175]
+modulate = Color(0.380392, 0.380392, 0.380392, 1)
+show_behind_parent = true
+light_mask = 0
+position = Vector2(3.3333645, 258.8889)
+scale = Vector2(1.3654515, 1.3654515)
+texture = ExtResource("45_sxqe5")
+flip_h = true
+
+[node name="DescPaper" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI/Inventory" unique_id=44987799]
+show_behind_parent = true
+light_mask = 0
+use_parent_material = true
+layout_mode = 0
+offset_left = -330.0
+offset_top = 100.0
+offset_right = 340.0
+offset_bottom = 612.0
+rotation = 0.0518777
+scale = Vector2(0.5, 0.5)
+pivot_offset_ratio = Vector2(0, 0.6)
+texture = ExtResource("35_xabbi")
+flip_h = true
+
+[node name="Title" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/DescPaper" unique_id=2113033823]
+light_mask = 0
+use_parent_material = true
+layout_mode = 0
+offset_left = 142.104
+offset_top = 79.0331
+offset_right = 534.104
+offset_bottom = 179.033
+rotation = -0.0710807
+theme = SubResource("Theme_e2gdg")
+theme_override_font_sizes/font_size = 53
+text = "Item Name"
+horizontal_alignment = 2
+
+[node name="Desc" type="RichTextLabel" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/DescPaper" unique_id=1113279538]
+light_mask = 0
+use_parent_material = true
+layout_mode = 0
+offset_left = 119.341
+offset_top = 147.512
+offset_right = 523.341
+offset_bottom = 446.512
+rotation = -0.0763998
+layout_direction = 3
+theme = SubResource("Theme_gsplh")
+bbcode_enabled = true
+text = "This item is very cool, almost too cool for you."
+
+[node name="Amount" type="Label" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/DescPaper" unique_id=264683631]
+light_mask = 0
+use_parent_material = true
+layout_mode = 0
+offset_left = 113.341
+offset_top = 406.68
+offset_right = 379.341
+offset_bottom = 487.68
+rotation = -0.0941842
+theme = SubResource("Theme_noiys")
+theme_override_font_sizes/font_size = 46
+text = "52 in bag"
+horizontal_alignment = 2
+
+[node name="ShowWheel" type="Button" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/DescPaper" unique_id=1467676690]
+visible = false
+light_mask = 0
+visibility_layer = 1024
+material = SubResource("ShaderMaterial_ojm6j")
+use_parent_material = true
+layout_mode = 0
+offset_left = 150.0
+offset_top = -59.0
+offset_right = 304.0
+offset_bottom = -26.0
+scale = Vector2(2, 2)
+pivot_offset = Vector2(19.2536, 14.8241)
+size_flags_stretch_ratio = 0.0
+layout_direction = 1
+focus_mode = 1
+theme = SubResource("Theme_qsibl")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 15
+theme_override_styles/normal = SubResource("StyleBoxFlat_7vvpc")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_7vvpc")
+theme_override_styles/hover = SubResource("StyleBoxFlat_lhbro")
+theme_override_styles/focus = SubResource("StyleBoxFlat_lhbro")
+text = "Show Wheel"
+icon = ExtResource("37_0bkog")
+text_overrun_behavior = 1
+expand_icon = true
+
+[node name="Art" type="TextureRect" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/DescPaper" unique_id=1003237727]
+light_mask = 0
+layout_mode = 0
+offset_left = -12.4795
+offset_top = -419.409
+offset_right = 1387.52
+offset_bottom = 980.591
+rotation = -0.0531199
+scale = Vector2(0.381942, 0.381942)
+texture = ExtResource("46_oks1v")
+
+[node name="Border1" type="PanelContainer" parent="Canvas/UIContainer/ControllerBattleUI/Inventory" unique_id=1901926094]
+light_mask = 0
+layout_mode = 0
+offset_left = -10.0
+offset_top = -9.0
+offset_right = 458.0
+offset_bottom = 512.658
+mouse_filter = 2
+theme = SubResource("Theme_8i68l")
+theme_override_styles/panel = SubResource("StyleBoxFlat_kisea")
+
+[node name="Border2" type="PanelContainer" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/Border1" unique_id=1851199117]
+show_behind_parent = true
+light_mask = 0
+layout_mode = 2
+mouse_filter = 2
+theme = SubResource("Theme_gjtdb")
+theme_override_styles/panel = SubResource("StyleBoxFlat_lg5jp")
+
+[node name="Border3" type="PanelContainer" parent="Canvas/UIContainer/ControllerBattleUI/Inventory/Border1/Border2" unique_id=173244662]
+show_behind_parent = true
+light_mask = 0
+layout_mode = 2
+mouse_filter = 2
+theme = SubResource("Theme_pg44w")
+theme_override_styles/panel = SubResource("StyleBoxFlat_kvanb")
+
+[node name="Ability" type="Button" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=1132732390]
+visibility_layer = 1024
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = 85.0
+offset_top = -20.0
+offset_right = 250.0
+offset_bottom = 28.0
+pivot_offset = Vector2(24, 0)
+pivot_offset_ratio = Vector2(0, 0.5)
+size_flags_stretch_ratio = 0.0
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+text = "Ability"
+icon = ExtResource("48_y0u2e")
+text_overrun_behavior = 1
+expand_icon = true
+
+[node name="Attack" type="Button" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=2047138243]
+visibility_layer = 1024
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = -84.0
+offset_top = 120.0
+offset_right = 81.0
+offset_bottom = 168.0
+pivot_offset = Vector2(24, 0)
+pivot_offset_ratio = Vector2(0, 0.5)
+size_flags_stretch_ratio = 0.0
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+text = "Attack
+"
+icon = ExtResource("47_mpk6a")
+text_overrun_behavior = 1
+expand_icon = true
+
+[node name="Item" type="Button" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=1310127929]
+visibility_layer = 1024
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = -225.0
+offset_top = -20.0
+offset_right = -85.0
+offset_bottom = 28.0
+pivot_offset = Vector2(24, 0)
+pivot_offset_ratio = Vector2(0, 0.5)
+size_flags_stretch_ratio = 0.0
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+shortcut_in_tooltip = false
+text = "Item"
+icon = ExtResource("50_xmfje")
+text_overrun_behavior = 1
+expand_icon = true
+
+[node name="Command" type="Button" parent="Canvas/UIContainer/ControllerBattleUI" unique_id=285599713]
+visibility_layer = 1024
+material = SubResource("ShaderMaterial_nmg3k")
+layout_mode = 0
+offset_left = -90.0
+offset_top = -164.0
+offset_right = 90.0
+offset_bottom = -116.0
+pivot_offset = Vector2(24, 0)
+pivot_offset_ratio = Vector2(0, 0.5)
+size_flags_stretch_ratio = 0.0
+layout_direction = 1
+focus_mode = 0
+theme = SubResource("Theme_4kcni")
+shortcut_in_tooltip = false
+text = "Command"
+icon = ExtResource("37_0bkog")
+text_overrun_behavior = 1
+expand_icon = true
 
 [node name="DottedBack" type="TextureRect" parent="Canvas" unique_id=1606603155]
 visible = false
@@ -6064,38 +6078,38 @@ offset_right = 1399.6666
 offset_bottom = 379.0
 texture = ExtResource("54_qjfeq")
 
-[connection signal="GetControl" from="." to="BattleUI" method="_on_battle_get_control"]
+[connection signal="GetControl" from="." to="Canvas/UIContainer/ControllerBattleUI" method="_on_battle_get_control"]
 [connection signal="check_party" from="." to="EnemyUI" method="_check_party"]
 [connection signal="next_turn" from="." to="." method="_on_next_turn"]
-[connection signal="next_turn" from="." to="BattleUI" method="_on_battle_next_turn"]
+[connection signal="next_turn" from="." to="Canvas/UIContainer/ControllerBattleUI" method="_on_battle_next_turn"]
 [connection signal="states_handled" from="Act" to="." method="make_move"]
-[connection signal="ability" from="BattleUI" to="." method="_on_battle_ui_ability"]
-[connection signal="ability" from="BattleUI" to="BattleUI" method="_on_ability"]
-[connection signal="ability" from="BattleUI" to="EnemyUI" method="_on_battle_ui_ability"]
-[connection signal="ability_returned" from="BattleUI" to="." method="_on_battle_ui_ability_returned"]
-[connection signal="ability_returned" from="BattleUI" to="BattleUI" method="_on_ability_returned"]
-[connection signal="analyze" from="BattleUI" to="BattleUI" method="_analyze"]
-[connection signal="attack" from="BattleUI" to="BattleUI" method="_on_attack"]
-[connection signal="command" from="BattleUI" to="." method="_on_battle_ui_command"]
-[connection signal="command" from="BattleUI" to="BattleUI" method="_on_command"]
-[connection signal="item" from="BattleUI" to="." method="_on_battle_ui_item"]
-[connection signal="item" from="BattleUI" to="BattleUI" method="_on_item"]
-[connection signal="root" from="BattleUI" to="." method="_on_battle_ui_root"]
-[connection signal="root" from="BattleUI" to="BattleUI" method="_on_root"]
-[connection signal="targetFoc" from="BattleUI" to="EnemyUI" method="_on_battle_ui_target_foc"]
-[connection signal="targeted" from="BattleUI" to="BattleUI" method="_on_targeted"]
-[connection signal="pressed" from="BattleUI/DescPaper/ShowWheel" to="BattleUI" method="_on_show_wheel_pressed"]
-[connection signal="pressed" from="BattleUI/AbilityUI/Margin/Scroller/Ab0" to="BattleUI" method="_on_ability_entry"]
-[connection signal="toggled" from="BattleUI/Inventory/BIbutton" to="BattleUI" method="_on_b_ibutton_pressed"]
-[connection signal="toggled" from="BattleUI/Inventory/Cbutton" to="BattleUI" method="_on_cbutton_pressed"]
-[connection signal="pressed" from="BattleUI/Ability" to="BattleUI" method="_on_ability_pressed"]
-[connection signal="pressed" from="BattleUI/Attack" to="BattleUI" method="_on_attack_pressed"]
-[connection signal="pressed" from="BattleUI/Item" to="BattleUI" method="_on_item_pressed"]
-[connection signal="pressed" from="BattleUI/Command" to="BattleUI" method="_on_command_pressed"]
 [connection signal="ai_chosen" from="AI" to="." method="_on_ai_chosen"]
-[connection signal="pressed" from="Canvas/Confirm" to="BattleUI" method="_on_confirm_pressed"]
-[connection signal="pressed" from="Canvas/Back" to="BattleUI" method="_on_back_pressed"]
-[connection signal="pressed" from="Canvas/Give" to="BattleUI" method="_on_give_pressed"]
-[connection signal="pressed" from="Canvas/TurnOrder" to="BattleUI" method="turn_order"]
-[connection signal="pressed" from="Canvas/TurnOrder/Options" to="BattleUI" method="_on_options_pressed"]
+[connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_ability"]
+[connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_ability"]
+[connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="EnemyUI" method="_on_battle_ui_ability"]
+[connection signal="ability_returned" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_ability_returned"]
+[connection signal="ability_returned" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_ability_returned"]
+[connection signal="analyze" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_analyze"]
+[connection signal="attack" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_attack"]
+[connection signal="command" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_command"]
+[connection signal="command" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_command"]
+[connection signal="item" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_item"]
+[connection signal="item" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_item"]
+[connection signal="root" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_root"]
+[connection signal="root" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_root"]
+[connection signal="targetFoc" from="Canvas/UIContainer/ControllerBattleUI" to="EnemyUI" method="_on_battle_ui_target_foc"]
+[connection signal="targeted" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_targeted"]
+[connection signal="pressed" from="Canvas/UIContainer/ControllerBattleUI/DescPaper/ShowWheel" to="Canvas/UIContainer/ControllerBattleUI" method="_on_show_wheel_pressed"]
+[connection signal="pressed" from="Canvas/UIContainer/ControllerBattleUI/AbilityUI/Margin/Scroller/Ab0" to="Canvas/UIContainer/ControllerBattleUI" method="_on_ability_entry"]
+[connection signal="toggled" from="Canvas/UIContainer/ControllerBattleUI/Inventory/BIbutton" to="Canvas/UIContainer/ControllerBattleUI" method="_on_b_ibutton_pressed"]
+[connection signal="toggled" from="Canvas/UIContainer/ControllerBattleUI/Inventory/Cbutton" to="Canvas/UIContainer/ControllerBattleUI" method="_on_cbutton_pressed"]
+[connection signal="pressed" from="Canvas/UIContainer/ControllerBattleUI/Ability" to="Canvas/UIContainer/ControllerBattleUI" method="_on_ability_pressed"]
+[connection signal="pressed" from="Canvas/UIContainer/ControllerBattleUI/Attack" to="Canvas/UIContainer/ControllerBattleUI" method="_on_attack_pressed"]
+[connection signal="pressed" from="Canvas/UIContainer/ControllerBattleUI/Item" to="Canvas/UIContainer/ControllerBattleUI" method="_on_item_pressed"]
+[connection signal="pressed" from="Canvas/UIContainer/ControllerBattleUI/Command" to="Canvas/UIContainer/ControllerBattleUI" method="_on_command_pressed"]
+[connection signal="pressed" from="Canvas/Confirm" to="Canvas/UIContainer/ControllerBattleUI" method="_on_confirm_pressed"]
+[connection signal="pressed" from="Canvas/Back" to="Canvas/UIContainer/ControllerBattleUI" method="_on_back_pressed"]
+[connection signal="pressed" from="Canvas/Give" to="Canvas/UIContainer/ControllerBattleUI" method="_on_give_pressed"]
+[connection signal="pressed" from="Canvas/TurnOrder" to="Canvas/UIContainer/ControllerBattleUI" method="turn_order"]
+[connection signal="pressed" from="Canvas/TurnOrder/Options" to="Canvas/UIContainer/ControllerBattleUI" method="_on_options_pressed"]
 [connection signal="pressed" from="Canvas/Continue" to="." method="end_battle"]

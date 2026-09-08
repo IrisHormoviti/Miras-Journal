@@ -11,5 +11,5 @@
 [resource]
 script = ExtResource("1_njn2m")
 Enemies = Array[ExtResource("2_5a76a")]([ExtResource("1_b6742"), ExtResource("2_g31pj")])
-ScenePosition = Vector2(1416, 223)
+ScenePosition = Vector2(1420, 223)
 EscPosition = Vector2i(54, 18)

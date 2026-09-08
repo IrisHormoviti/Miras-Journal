@@ -63,7 +63,7 @@ var follow_up_next := false
 ## The turn ends after all targets have returned
 var aoe_returns := 0
 
-@onready var ui: Control = $BattleUI
+@onready var ui: Control = %ControllerBattleUI
 @onready var canvas: CanvasLayer = $Canvas
 @onready var enemy_ui: CanvasLayer = $EnemyUI
 @onready var act: Node2D = $Act
@@ -263,6 +263,7 @@ func _ready() -> void:
 	
 	act.reparent(get_node(Loader.area_spawn_path))
 	act.global_position = sequence.ScenePosition
+	act.z_index = Global.room.camera_index.z
 	cam.make_current()
 	
 	await entrance()
@@ -344,7 +345,7 @@ func position_sprites() -> void:
 
 		2:
 			Party.Leader.node.position = Vector2(-45, -15)
-			Party.current[1].node.node.show()
+			Party.current[1].node.show()
 			Party.current[1].node.position = Vector2(-45, 45)
 
 		3:
