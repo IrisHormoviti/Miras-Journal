@@ -72,6 +72,10 @@ func set_positions() -> void:
 
 func default() -> void:
 	Nav = $Nav
+	Global.battle_end.connect(func() -> void:
+		process_mode = Node.PROCESS_MODE_INHERIT
+		show()
+	)
 
 	if ID == "":
 		ID = name
@@ -126,8 +130,9 @@ func extended_process() -> void:
 				Battle.attacker = null
 	else:
 		if Battle.in_battle:
-			hide()
+			modulate.a = 0
 		elif not homepoints.is_empty() and tmr.time_left == 0 and not stopping:
+			modulate.a = 1
 
 			if is_on_wall():
 				Event.jump_to_global(self, CurHomepoint)

@@ -523,7 +523,7 @@ func _on_back_button_down() -> void:
 		"choose_member":
 			if not Hud.expanded: return
 			get_inventory()
-			await Hud._on_shrink()
+			await Hud.shrink()
 			await Event.wait()
 			stage = "item"
 			#print(Item.item.Name)

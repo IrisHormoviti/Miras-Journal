@@ -51,26 +51,26 @@ Mira.Neutral: That's it! I can use [outline_size=12][outline_color=#6c3e18][colo
 
 ~ what_this
 Phew, that was scary...
-$> Player.position = Party.Leader.node.global_position
-$> Player.look_to(Direction.RIGHT)
+$> player.position = Party.Leader.node.global_position
+$> player.look_to(Direction.RIGHT)
 $> Party.Leader.node.hide()
-$> Player.show()
+$> player.show()
 Hm, what's that?
 [hide]
-$> Player.move_dir(Vector2(3, 0))
+$> player.move_dir(Vector2(3, 0))
 $> Item.add_item("WhiteSlime", "Mat")
 $> Event.wait(1)
 These slime remnants seems to contain some of that monster's essence.
-$> Player.look_to(Direction.RIGHT)
-$> Party.Leader.node.global_position = Global.Player.position
+$> player.look_to(Direction.RIGHT)
+$> Party.Leader.node.global_position = Global.player.position
 I feel like it might prove useful.
 => END
 
 ~ getting_dark
 $> npc("P").set_anim("IdleRight")
 ...It's getting a little dark.
-(hide)
-$> Player.activate_flame()
+[hide]
+$> player.activate_flame()
 $> Event.wait(0.5)
 This should help.
 $>>  save()
@@ -82,18 +82,18 @@ Mira.OpenMouth: Hey wait![next=2]
 
 ~ approach
 $> Party.Leader.ClutchDmg = true
-$> Player.collision(false)
-$> Player.look_to(Direction.RIGHT)
+$> player.collision(false)
+$> player.look_to(Direction.RIGHT)
 $> Alcine.set_anim("Scared")
 $> camera_unlock()
 $> camera_move(get_marker_pos("HugSpot"))
 It seems scared...
 Maybe I should try approaching it.
 [hide]
-$> Player.go_to("HugSpot")
-$> Player.set_anim("ReachOut")
-$> Player.get_node("Flame").flicker = false
-$>> tween(Player.get_node("Flame"), "energy", 0, 2)
+$> player.go_to("HugSpot")
+$> player.set_anim("ReachOut")
+$> player.get_node("Flame").flicker = false
+$>> tween(player.get_node("Flame"), "energy", 0, 2)
 $>> tween(Alcine.get_node("Glow"), "energy", 0.6, 2)
 $> tween(Alcine.get_node("Glow"), "texture_scale", 3, 2)
 $> remove_flag("FlameActive")
@@ -106,11 +106,11 @@ Mira.Smile: Don't worry, I'm not here to harm you.
 Mira.Smile: You just seem scared, and...
 [hide]
 $> Alcine.set_anim("ScaredTurn2", true)
-$> Alcine.go_to(Player.position + Vector2(12, 0))
+$> Alcine.go_to(player.position + Vector2(12, 0))
 $> Alcine.set_anim("Hug")
-$> tween(Alcine, "position", Player.position + Vector2(2, 4), 0.1)
+$> tween(Alcine, "position", player.position + Vector2(2, 4), 0.1)
 $> Party.Leader.add_health(15)
-$> Player.bubble("Surprise")
+$> player.bubble("Surprise")
 $> wait(1)
 $> no_nametag()
 Alcine.Upset: Shewww
@@ -123,7 +123,7 @@ $> Alcine.look_to(Direction.LEFT)
 Mira.Smile: It'll be okay..!
 $> no_nametag()
 Alcine.Happy: Whimm!
-$> Player.get_node("%Flame").play("ReachOut2")
+$> player.get_node("%Flame").play("ReachOut2")
 Mira.Smile: Wait, I have an idea.
 I take a green fabric from my bag, and tie it around their neck.
 [hide]
@@ -131,8 +131,8 @@ $> Alcine.hop()
 $> Alcine.change_sprite("Alcine")
 $> wait(1)
 $> remove_flag(&"FlameActive")
-$> Player.check_flame(true)
-$> Player.set_anim("IdleRight")
+$> player.check_flame(true)
+$> player.set_anim("IdleRight")
 Mira.Smile: Hehe, looks good on you!
 [hide]
 $> Alcine.look_to(Direction.RIGHT)
@@ -140,9 +140,9 @@ $> Alcine.bubble("Surprise")
 $> Pterogon.show()
 $> Pterogon.play("Fly")
 $> Pterogon.position = Vector2(1805, -1183)
-$>> Player.bubble("Surprise")
-$>> Player.reset_sprite()
-$>> Player.set_anim("EntrancePrep")
+$>> player.bubble("Surprise")
+$>> player.reset_sprite()
+$>> player.set_anim("EntrancePrep")
 $>> Camera.position += Vector2(50, 0)
 $>> tween(Pterogon, "position", Vector2(1731, -1080), 2)
 $>> Alcine.z_index = -1

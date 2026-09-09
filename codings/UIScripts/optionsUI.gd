@@ -86,6 +86,7 @@ func _ready() -> void:
 
 	t.tween_property($Background, "position", Vector2(560, 0), 0.5).from(Vector2(900, -2384))
 	t.tween_property($Timer, "position", Vector2(27, 27), 0.5).from(Vector2(-300, 27))
+	t.tween_property($MusicTrack, "modulate:a", 1, 0.5).from(0)
 	fetch_platform_info()
 	siilhouette()
 	Audio.confirm_sound()
@@ -215,6 +216,7 @@ func close(force := false) -> void:
 	t.tween_property($GalleryPanel, "position", Vector2(1335, -62), 0.5)
 	t.tween_property($SidePanel/Tooltip, "scale", Vector2.ZERO, 0.5)
 	t.tween_property($SidePanel/Tooltip, "modulate:a", 0, 0.5)
+	t.tween_property($MusicTrack, "modulate:a", 0, 0.5)
 	if Battle.in_battle:
 		Battle.current.ui.active = true
 		Battle.current.ui.stage = "root"
@@ -247,6 +249,8 @@ func main() -> void:
 	t.tween_property($Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3.0, 1)
 	t.tween_property($Fader, "modulate", Color(0, 0, 0, 0.4), 1)
 	t.tween_property($Timer, "position", Vector2(27, 27), 0.5)
+	t.tween_property($MusicTrack , "modulate:a", 1, 1)
+	t.tween_property($MusicTrack, "position:x", 75, 0.5)
 	t.tween_property($Silhouette, "position", Vector2(0, -39), 0.5)
 	t.tween_property($SidePanel, "position", Vector2(1335, -62), 0.5)
 	t.tween_property($SavePanel, "position", Vector2(1335, -62), 0.5)
@@ -336,6 +340,7 @@ func save_managment() -> void:
 	$MainButtons/SaveManagment.z_index = 1
 	t.tween_property($MainButtons/SaveManagment, "position", Vector2(50, 52), 0.5)
 	t.tween_property($Timer, "position:x", -300, 0.5)
+	t.tween_property($MusicTrack, "position:x", -300, 0.5)
 	t.tween_property($SavePanel, "position", Vector2(684, -62), 0.5)
 	t.tween_property($Silhouette, "position", Vector2(-50, -39), 0.5)
 	t.tween_property($Background, "position", Vector2(350, 0), 0.5)
@@ -384,7 +389,8 @@ func manual() -> void:
 	$ManualPanel/ScrollContainer/VBoxContainer.get_child(0).grab_focus()
 	_manual_entry_pressed()
 	t.tween_property($Silhouette, "position", Vector2(-700, -39), 0.5)
-	t.tween_property($Timer, "position", Vector2(-700, -39), 0.5)
+	t.tween_property($Timer, "position:x", -300, 0.5)
+	t.tween_property($MusicTrack, "position:x", -300, 0.5)
 	Audio.confirm_sound()
 	$ManualPanel.show()
 	await t.finished
@@ -440,6 +446,7 @@ func _on_quit() -> void:
 				Global.room.queue_free()
 				if not cant_save: await Loader.save()
 
+			Audio.stop_music()
 			if get_tree().root.has_node("MainMenu"):
 				get_tree().root.get_node("MainMenu").queue_free()
 
@@ -1003,6 +1010,7 @@ func _on_credits(source: Button) -> void:
 	t.tween_property($GalleryPanel, "position:x", 150, 0.3)
 	t.tween_property($MainButtons/Gallery, "position:x", 12, 0.3)
 	t.tween_property($Timer, "position:x", -300, 0.3)
+	t.tween_property($MusicTrack, "position:x", -300, 0.5)
 
 ## Setttings Buttons
 

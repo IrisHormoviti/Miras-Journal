@@ -225,7 +225,7 @@ func AlcineFollow4() -> void:
 	Event.add_flag("FlameActive")
 	Global.room.followers[0].dont_follow = false
 	Loader.detransition()
-	Hud._on_shrink()
+	Hud.shrink()
 	Event.give_control(true)
 	Event.pop_tutorial("party")
 	Alcine.default()

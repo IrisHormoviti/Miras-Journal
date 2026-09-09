@@ -28,6 +28,6 @@ func use(item_data: ItemData, battle_target: Actor = null) -> void:
 func _on_item_manager_return_member(mem: Actor) -> void:
 	if item.Use == ItemData.U.HEALING:
 		mem.add_health(int(item.Parameter))
-	#Hud._on_shrink()
+	#Hud.shrink()
 	Hud._check_party()
 	Item.remove_item(item, "Con")

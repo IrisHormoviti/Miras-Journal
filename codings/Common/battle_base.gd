@@ -71,7 +71,6 @@ var aoe_returns := 0
 @onready var effects: AnimatedSprite2D = $Act/Effects
 
 signal battle_start
-signal battle_end(result: int)
 signal GetControl
 signal next_turn
 signal check_party
@@ -99,11 +98,12 @@ static func start(stg: Variant, advantage := 0) -> void:
 		return
 
 	battle_result = Result.UNFINISHED
+	battle_advantage = advantage
 	Hud.ui_visible = false
 	#Engine.time_scale = 0.1
 	Hud.hide_all()
 	Global.controllable = false
-	print_rich("[color=green]Battle start!")
+	print_rich("[color=green]Battle start!\nAdvantage: %d"%[advantage])
 	Global.get_tree().paused = true
 	remembered_camera_zoom = Global.camera.zoom
 
@@ -251,6 +251,11 @@ func _ready() -> void:
 	if sequence.Music:
 		Audio.change_music_from_to(sequence.Music.track, sequence.Music.battle_start)
 
+	# Re-parent Act node
+	act.reparent(get_node(Loader.area_spawn_path))
+	act.global_position = sequence.ScenePosition
+	act.z_index = Global.room.camera_index.z
+	cam.make_current()
 	
 	position_sprites()
 	if is_instance_valid(attacker): attacker.hide()
@@ -260,11 +265,6 @@ func _ready() -> void:
 	for i in TurnOrder:
 		print(i.Speed + i.SpeedBoost, " - ", i.FirstName)
 
-	
-	act.reparent(get_node(Loader.area_spawn_path))
-	act.global_position = sequence.ScenePosition
-	act.z_index = Global.room.camera_index.z
-	cam.make_current()
 	
 	await entrance()
 
@@ -1498,7 +1498,7 @@ func end_battle() -> void:
 	Global.camera.make_current()
 	act.free()
 	queue_free()
-	battle_end.emit()
+	Global.battle_end.emit()
 
 
 static func post_battle() -> void:

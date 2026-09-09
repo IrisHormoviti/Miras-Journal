@@ -3,11 +3,11 @@
 [ext_resource type="Texture2D" uid="uid://deqeff2tjgq00" path="res://art/Icons/Enemies/Slime.png" id="1_l4uns"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_llot4"]
 [ext_resource type="Resource" uid="uid://b1h2pffoho6bu" path="res://database/Abilities/ToxicSplash.tres" id="1_od3rd"]
-[ext_resource type="PackedScene" uid="uid://co34lfhkwbp56" path="res://sound/Sets/DefaultSoundSet.tscn" id="1_pprw7"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_o0ova"]
 [ext_resource type="Resource" uid="uid://dmhsvhd1lkkue" path="res://database/Abilities/Summon.tres" id="2_wrolb"]
 [ext_resource type="Resource" uid="uid://dmm26g6xg665u" path="res://database/Abilities/Attacks/WarpAttack.tres" id="4_cony1"]
 [ext_resource type="Resource" uid="uid://bdfytl8ohvtj6" path="res://database/Enemies/DarkSpawn.tres" id="7_dv84l"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="9_1rume"]
 [ext_resource type="Resource" uid="uid://of5cf81xb3dd" path="res://database/Enemies/WhiteSpawn.tres" id="9_28irp"]
 
 [resource]
@@ -16,12 +16,10 @@ FirstName = "Dark Sludge"
 MainColor = Color(0.596078, 0.478431, 0.85098, 1)
 PartyIcon = ExtResource("1_l4uns")
 ActorClass = "Mage"
-WeaponPower = 12
-RecivedSP = 5
 SummonedAllies = Array[ExtResource("2_o0ova")]([ExtResource("7_dv84l"), ExtResource("9_28irp")])
 MaxHP = 45
 Attack = 0.6
-Defence = 0.4
+Defence = 0.7
 Speed = 2.0
 SkillLevel = 0
 Abilities = Array[ExtResource("1_llot4")]([ExtResource("1_od3rd"), ExtResource("2_wrolb")])

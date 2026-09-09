@@ -82,7 +82,7 @@ func show_trg_color(clr: Color) -> void:
 
 
 func blink_icon(icon: TextureRect) -> void:
-	while icon == relation_ico and Global.bt.get_node("BattleUI").stage == "target":
+	while icon == relation_ico and Global.bt.ui.stage == "target":
 		t = create_tween()
 		t.set_ease(Tween.EASE_IN_OUT)
 		t.set_trans(Tween.TRANS_SINE)

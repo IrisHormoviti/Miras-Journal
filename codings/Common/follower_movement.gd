@@ -8,7 +8,11 @@ var target: Vector2
 var dir: Vector2
 var player_jumped := false
 
-@export var member: int
+@export var member: int:
+	set(x):
+		member = x
+		actor = member_info()
+@export var actor: Actor
 @export var distance: int = 30
 @export var dont_follow := false:
 	set(x):
@@ -66,8 +70,8 @@ func control_process() -> void:
 		z_index = Global.player.z_index
 		collision_layer = Global.player.collision_layer
 		collision_mask = Global.player.collision_mask
-		$Glow.color = member_info().MainColor
-		$Glow.energy = member_info().GlowDef / 2
+		$Glow.color = actor.MainColor
+		$Glow.energy = actor.GlowDef / 2
 		var oldposition := global_position
 		var player_dist := to_local(Global.player.position).length()
 		target = round((follow.global_position + Global.player.facing.vector.rotated(PI / 2) * offset))
@@ -133,7 +137,7 @@ func _on_timer_timeout() -> void:
 
 
 func member_info() -> Actor:
-	return Party.current[member]
+	return Party.get_member_index(member)
 
 
 func attacked() -> void:
@@ -142,12 +146,11 @@ func attacked() -> void:
 
 func update() -> void:
 	if not Party.has_member_index(member): return
-	var mem := member_info()
 
-	if mem != null and sprite.sprite_frames and sprite.sprite_frames.resource_path != member_info().OV:
-		sprite.sprite_frames = await member_info().get_OV()
+	if actor != null and sprite.sprite_frames and sprite.sprite_frames.resource_path != actor.OV:
+		sprite.sprite_frames = await actor.get_OV()
 
-		if shadow_sprite:
-			if member_info().Shadow:
+		if actor and shadow_sprite:
+			if actor.Shadow:
 				shadow(true)
 			else: shadow(false)

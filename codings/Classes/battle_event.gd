@@ -79,7 +79,7 @@ func run() -> void:
 
 			RES.CALL_FUNCTION:
 				print("Call seq: ", parameter1)
-				Global.bt.get_node("Act").call(parameter1)
+				Global.bt.act.call(parameter1)
 
 			RES.REGULAR_DIALOG:
 				Textbox.open(parameter1, parameter2)
@@ -123,6 +123,6 @@ func run() -> void:
 func run_with_await() -> void:
 	match result:
 		0: await Passive.open(parameter1, parameter2)
-		1: await Global.bt.get_node("Act").call(parameter1)
+		1: await Global.bt.act.call(parameter1)
 		2: await Textbox.open(parameter1, parameter2)
 		_: OS.alert("Battle event error: This action cannot hold the turn")

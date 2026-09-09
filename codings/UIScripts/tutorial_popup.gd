@@ -86,7 +86,7 @@ func weapon_attack() -> void:
 	$Border2.position = Vector2(50, 201)
 	$Border2/Control/Next.hide()
 	$Border2/Text.text = "Press [img width=48]" + (Controller.get_scheme().AttackIcon).resource_path + "[/img] to use a Weapon Attack."
-	await Global.bt.get_node("BattleUI").attack
+	await Global.bt.ui.attack
 	queue_free()
 
 
@@ -98,7 +98,7 @@ func ability() -> void:
 	$Border2.position = Vector2(50, 201)
 	$Border2/Control/Next.hide()
 	$Border2/Text.text = "Press [img width=48]" + (Controller.get_scheme().AbilityIcon).resource_path + "[/img] to use a Magic Ability."
-	await Global.bt.get_node("BattleUI").ability
+	await Global.bt.ui.ability
 	queue_free()
 
 

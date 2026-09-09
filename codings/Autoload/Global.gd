@@ -58,6 +58,7 @@ static var alcine: String:
 
 ## For updating info like the party
 signal check
+signal battle_end(result: int)
 
 
 #region System

@@ -361,16 +361,15 @@ func travel_done(controllable := false, index: int = 0) -> void:
 		detransition()
 
 	Global.camera.position_smoothing_enabled = true
+	get_tree().paused = false
 
 	if controllable:
-		await Event.wait(0.3, false)
+		await Event.wait(0.1, false)
 		await Hud.show_all(false, false)
 		Hud.shrink(true)
 		Event.give_control(false)
 	else:
 		Global.controllable = false
-
-	get_tree().paused = false
 
 
 func transition(dir: Direction = Global.player.facing if Global.player else remembered_direction) -> void:

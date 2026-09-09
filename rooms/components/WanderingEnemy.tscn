@@ -89,7 +89,9 @@ simplify_path = true
 simplify_epsilon = 12.0
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=1419015985]
+process_mode = 3
 rect = Rect2(-200, -200, 400, 400)
+show_rect = false
 
 [node name="Timer" type="Timer" parent="." unique_id=1476335829]
 wait_time = 3.0

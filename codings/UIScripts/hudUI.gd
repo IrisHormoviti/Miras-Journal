@@ -439,6 +439,7 @@ func shrink(hurry_up := false) -> void:
 	%Pages.hide()
 	$IdleTimer.start(5)
 	inactive = false
+	was_paused = false
 	Global.check.emit()
 
 
@@ -813,7 +814,7 @@ func choose_member(artifact: Resource, user: Actor = Party.Leader) -> void:
 func _on_item_preview_pressed() -> void:
 	if member_choosing_artifact is ItemData:
 		if Item.count(member_choosing_artifact) != 0:
-			if Party.current[focus].Health != Party.current[focus].MaxHP:
+			if Party.current[focus].Health >= Party.current[focus].MaxHP:
 				Global.toast("HP is already maxed out")
 				Audio.buzzer_sound()
 
@@ -825,7 +826,7 @@ func _on_item_preview_pressed() -> void:
 		%Cursor/ItemPreview.text = (member_choosing_artifact.Name + " x" + str(Item.count(member_choosing_artifact)))
 
 	if member_choosing_artifact is Ability:
-		if Party.current[focus].Health == Party.current[focus].MaxHP:
+		if Party.current[focus].Health >= Party.current[focus].MaxHP:
 			Global.toast("HP is already maxed out")
 			Audio.buzzer_sound()
 		else:

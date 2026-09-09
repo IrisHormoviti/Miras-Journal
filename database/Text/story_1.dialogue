@@ -216,8 +216,8 @@ Mira.Neutral: (Why am I feeling deja vu all of a sudden...)[wait=2]
 => END
 
 ~ metalic_gate
-do Player.look_to("U")
-do Player.camera_follow(false)
+do player.look_to("U")
+do player.camera_follow(false)
 set Camera.position = Vector2(-205, -1080)
 do wait(1)
 Mira.Neutral: This is new...

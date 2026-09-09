@@ -1133,9 +1133,9 @@ func FirstBattle1() -> void:
 	Battle.in_battle = true
 	await Bt.move(Bt.Troop[0], Vector2(40, 0), 1, Tween.EASE_OUT)
 	await Bt.move(Bt.Troop[0], Vector2(40, 0), 1, Tween.EASE_OUT)
-	$"../BattleUI".disable_ability = true
-	$"../BattleUI".disable_command = true
-	$"../BattleUI".disable_item = true
+	Bt.ui.disable_ability = true
+	Bt.ui.disable_command = true
+	Bt.ui.disable_item = true
 	#$"../EnemyUI".all_enemy_ui()
 	#$"../EnemyUI/AllEnemies".show()
 	Event.flag_progress("FirstBattle", 3)
@@ -1148,7 +1148,7 @@ func FirstBattle2(target: Actor) -> void:
 	await Bt.move(Bt.Troop[0], Vector2(20, 0), 1, Tween.EASE_OUT)
 	await Event.wait(0.5)
 	CurrentChar = Bt.Troop[0]
-	target = Bt.Party.Leader
+	target = Party.Leader
 	Bt.CurrentChar = Bt.Troop[0]
 	Bt.focus_cam(target, 0.5, 0)
 	Bt.zoom(6, 3)
@@ -1157,7 +1157,7 @@ func FirstBattle2(target: Actor) -> void:
 	Bt.jump_to_target(CurrentChar, target, Vector2(30, 0), 4)
 	await Bt.anim_done
 	Bt.screen_shake(10)
-	Bt.anim("FirstBattle", Bt.Party.Leader)
+	Bt.anim("FirstBattle", Party.Leader)
 	CurrentChar.node.hide()
 	Bt.play_sound("Attack2", CurrentChar)
 	Bt.damage(target, false, false, 12, false)
@@ -1171,10 +1171,10 @@ func FirstBattle2(target: Actor) -> void:
 	await Event.wait(1.8)
 	target.Aura = 6
 	Hud._check_party()
-	Bt.glow(1.5, 0.5, Bt.Party.Leader)
+	Bt.glow(1.5, 0.5, Party.Leader)
 	Bt.zoom(7, 1)
 	await Event.wait(4)
-	Bt.glow(1, 2, Bt.Party.Leader)
+	Bt.glow(1, 2, Party.Leader)
 	Passive.open("story_0", "my_aura")
 	await Event.wait(6)
 	Bt.zoom(5, 3)
@@ -1187,8 +1187,8 @@ func FirstBattle2(target: Actor) -> void:
 	target.Abilities[0].disabled = true
 	target.DontIdle = false
 	Bt.anim("", target)
-	$"../BattleUI".disable_ability = false
-	$"../BattleUI".disable_attack = true
+	Bt.ui.disable_ability = false
+	Bt.ui.disable_attack = true
 	CurrentChar.IgnoreStates = true
 	await Event.wait(2)
 	Event.pop_tutorial("ability")
@@ -1211,7 +1211,7 @@ func FirstBattle3() -> void:
 
 
 func FirstBattle4() -> void:
-	$"../BattleUI".disable_attack = false
+	Bt.ui.disable_attack = false
 	Bt.get_actor("Mira").Aura = max(7, Bt.get_actor("Mira").Aura)
 	Bt.lock_turn = true
 	Event.pop_tutorial("aura3")
@@ -1220,7 +1220,7 @@ func FirstBattle4() -> void:
 func FirstBattle5() -> void:
 	Bt.focus_cam(Party.Leader)
 	Bt.zoom(6)
-	$"../EnemyUI".hide()
+	Bt.enemy_ui.hide()
 	get_tree().paused = false
 	Battle.in_battle = false
 	Bt.get_actor("Mira").DontIdle = false
@@ -1291,8 +1291,8 @@ func StoneGuardianLoop() -> void:
 
 
 func StoneGuardian1() -> void:
-	Bt.Party.Leader.ClutchDmg = false
-	Bt.Party.Member1.ClutchDmg = false
+	Party.Leader.ClutchDmg = false
+	Party.Member1.ClutchDmg = false
 	var guardian := Bt.get_actor("Guardian")
 	Bt.zoom(7, 0)
 	guardian.MaterialOverride.set_shader_parameter("new_color", Color(0.235, 0.588, 0.498))

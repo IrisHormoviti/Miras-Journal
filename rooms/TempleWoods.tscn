@@ -176,14 +176,13 @@ fill_to = Vector2(0.636752, 0)
 
 [sub_resource type="Gradient" id="Gradient_pqoya"]
 interpolation_mode = 2
-offsets = PackedFloat32Array(0.432836, 1)
-colors = PackedColorArray(0.68286, 0.76, 0.5396, 0.227451, 0.99, 0.88902, 0.4851, 1)
+colors = PackedColorArray(0.68235296, 0.7607843, 0.5411765, 0.64705884, 0.99, 0.88902, 0.4851, 1)
 
 [sub_resource type="GradientTexture2D" id="GradientTexture2D_52yds"]
 gradient = SubResource("Gradient_pqoya")
 fill = 1
-fill_from = Vector2(0.423077, 0.777778)
-fill_to = Vector2(0.58547, 0.431624)
+fill_from = Vector2(0.32545406, 1)
+fill_to = Vector2(0.48761353, 0.6123464)
 
 [sub_resource type="Gradient" id="Gradient_758mh"]
 interpolation_mode = 2
@@ -454,6 +453,7 @@ icon = ExtResource("5_e7y1u")
 expand_icon = true
 
 [node name="EditorLight" type="DirectionalLight2D" parent="." unique_id=1697322324]
+visible = false
 editor_only = true
 color = Color(1, 1, 1, 0.466667)
 
@@ -501,12 +501,12 @@ scale = Vector2(1.71041, 1.63823)
 color = Color(0.694118, 1, 1, 1)
 texture = SubResource("GradientTexture2D_mj0rc")
 
-[node name="PointLight2D2" type="PointLight2D" parent="Lights" unique_id=2013025251]
+[node name="Darken2" type="PointLight2D" parent="Lights" unique_id=2013025251]
 texture_filter = 2
 position = Vector2(1785.739, -588.3743)
 scale = Vector2(5.3533707, 7.835435)
 color = Color(0.796078, 0.745098, 0.858824, 0.964706)
-energy = 1.1
+energy = 1.2
 blend_mode = 1
 texture = SubResource("GradientTexture2D_52yds")
 texture_scale = 4.94

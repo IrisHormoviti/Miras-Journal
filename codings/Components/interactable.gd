@@ -188,8 +188,6 @@ func _ready() -> void:
 	disappear()
 	if ActionType == "veinet": vein_check()
 
-	check()
-
 
 func _exit_tree() -> void:
 	pack.queue_free()
