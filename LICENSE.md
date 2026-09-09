@@ -9,6 +9,9 @@ These terms that apply:
   
 - All writing under `database/Text/` is also copyrighted. All rights reserved by Iris.
 
-- The GPL license (found in `gpl_license.txt` inside the repository) only applies to code and assets OUTSIDE the `art/` folder.
+- The rights to the music under `sound/Music` belong to the corresponding creators in the credits.
+
+- The GPL license (found in `gpl_license.txt` inside the repository) only applies to code and assets in the following directories: `codings`, `UI`, `rooms`, `database` (with the exception of `database/Text`)
+
 
 Copyright © 2023-2026 Iris Hormoviti
