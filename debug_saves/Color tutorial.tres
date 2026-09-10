@@ -1,14 +1,13 @@
 [gd_resource type="Resource" script_class="SaveFile" format=3]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_fa2gv"]
+[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_qvht1"]
 
 [resource]
-script = ExtResource("1_fa2gv")
-title = "z"
-room = "res://rooms/TempleWoods.tscn"
-room_name = "Temple Woods"
-player_position = Vector2(1257, -808.3833)
-camera_index = 1
+script = ExtResource("1_qvht1")
+title = "Color tutorial"
+room = "Amberelm"
+room_name = "Amberelm"
+party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
@@ -17,7 +16,7 @@ members = Array[Dictionary]([{
 "ClutchDmg": false,
 "ComplimentaryList": Dictionary[String, int]({}),
 "Controllable": false,
-"FirstName": "Alcine",
+"FirstName": "Pluey",
 "Health": 60,
 "IgnoreStates": false,
 "LastName": "",
@@ -25,7 +24,7 @@ members = Array[Dictionary]([{
 "MaxHP": 60,
 "OV": "",
 "SkillLevel": 1,
-"SkillPoints": 0,
+"SkillPoints": 31,
 "WeaponName": "ArmWhip",
 "codename": &"Alcine"
 }, {
@@ -60,9 +59,9 @@ members = Array[Dictionary]([{
 "IgnoreStates": false,
 "LastName": "",
 "MaxAura": 24,
-"MaxHP": 130,
+"MaxHP": 150,
 "OV": "",
-"SkillLevel": 14,
+"SkillLevel": 18,
 "SkillPoints": 21,
 "WeaponName": "GoldPlatedKatana",
 "codename": &"Daze"
@@ -86,12 +85,14 @@ members = Array[Dictionary]([{
 "WeaponName": "DefaultWeapon",
 "codename": &"Erinn"
 }, {
-"AbilitiesList": Array[String](["Guard", "FlameSpark"]),
+"AbilitiesList": Array[String](["Guard", "FlameSpark", "HeatWave"]),
 "Aura": 20,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": true,
-"ComplimentaryList": Dictionary[String, int]({}),
+"ComplimentaryList": Dictionary[String, int]({
+"FluidBlast": 1
+}),
 "Controllable": true,
 "FirstName": "Mira",
 "Health": 100,
@@ -100,30 +101,57 @@ members = Array[Dictionary]([{
 "MaxAura": 20,
 "MaxHP": 100,
 "OV": "Bag",
-"SkillLevel": 1,
-"SkillPoints": 5,
+"SkillLevel": 2,
+"SkillPoints": 33,
 "WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-start_time = 1775821000.966906
-saved_time = 1788293834.856722
-play_time = 10745.0
+player_position = Vector2(961.9049, 442.8335)
+defeated_enemies = ["EnemyIronHook1", "EnemyIronHook2", "EnemyIronHook3"]
+start_time = 1773014079.152903
+saved_time = 1789049621.911748
+play_time = 1407.0
+diary = Dictionary[int, PackedStringArray]({
+2: PackedStringArray("boo"),
+5: PackedStringArray("boo", "bee")
+})
 flags = Dictionary[StringName, int]({
-&"AlcineFollow": 1,
+&"AlcineFollow": 4,
+&"AlcineFollow4": 4,
+&"BreakablePurpleOre0": 1,
+&"BreakablePurpleOre1": 1,
+&"BreakableTWCyan0": 1,
 &"BreakableVines0": 1,
-&"DisableMenus": 0,
+&"BreakableVines1": 1,
+&"CrateAmb1": 1,
+&"CrateAmb2": 1,
+&"CrateAmb3": 1,
+&"DashTutorial0": 1,
 &"DisableVeinet": 1,
+&"EnteredAmberelm3": 1,
+&"EvAmbWoodsBridge": 1,
 &"EvFirstBattle": 1,
-&"EvFlameActive": 1,
+&"EvRestAmberelm": 1,
 &"FirstBattle": 3,
-&"FlameActive": 1,
 &"HasBag": 1,
 &"HideDate": 1,
+&"ItemLifeLave1": 1,
+&"ItemLifeLave2": 1,
+&"ItemRustySword1": 1,
+&"ItemSharpRock1": 1,
+&"ItemSharpRock2": 1,
+&"ItemStrangeFruit1": 1,
+&"ItemStrangeFruit4": 1,
+&"ItemStrangeFruit7": 1,
+&"LookedAtSkeleton": 1,
+&"LookedAtStatue": 1,
+&"LookedAtTempleSymbol": 3,
 &"PickedUpAxe": 1,
 &"Started": 1,
+&"TWflame": 1,
 &"TutorialBag": 1,
 &"day": 0,
-&"time": 5
+&"time": 3
 })
-version = 0
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat"])
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])
+version = 8

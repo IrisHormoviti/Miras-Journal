@@ -1513,6 +1513,11 @@ func end_battle() -> void:
 static func post_battle() -> void:
 	if battle_result == Result.ESCAPE:
 		Global.player.position = Query.globalize(sequence.EscPosition)
+		(func() -> void:
+			Battle.prevent_battles = true
+			await Event.wait(1)
+			Battle.prevent_battles = false
+		).call_deferred()
 
 	if is_instance_valid(attacker):
 		if battle_result != Result.VICTORY:
@@ -1632,7 +1637,7 @@ func victory(ignore_seq := false) -> void:
 	battle_result = Result.VICTORY
 	
 	if sequence.Music.victory_track != null:
-		Audio.change_music(sequence.Music.victory_track)
+		Audio.crossfade_music(sequence.Music.victory_track)
 	elif sequence.Music.victory > 0:
 		Audio.change_music_from_to(sequence.Music.track, sequence.Music.victory)
 	else:

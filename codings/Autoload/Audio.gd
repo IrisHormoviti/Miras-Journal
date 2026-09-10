@@ -52,7 +52,7 @@ func change_music(track: AudioStream) -> void:
 	bgm_player.play()
 
 
-func change_music_from_to(track: AudioStream, from: float = 0, to: float = 0) -> void:
+func change_music_from_to(track: AudioStream, from: float = 0.0, to: float = 0.0) -> void:
 	bgm_player.stream = track
 	bgm_player.play(from)
 	var request_id := randi()
@@ -64,6 +64,23 @@ func change_music_from_to(track: AudioStream, from: float = 0, to: float = 0) ->
 
 		if music_request_id == request_id:
 			stop_music()
+
+
+func crossfade_music(track: AudioStream, time := 1.0, from := 0.0) -> void:
+	var request_id := randi()
+	music_request_id = request_id
+
+	var old_player := bgm_player
+	var new_player := bgm_player.duplicate()
+	new_player.stream = track
+	add_child(new_player)
+	bgm_player = new_player
+	new_player.play(from)
+
+	var t := create_tween()
+	t.tween_property(old_player, "volume_linear", 0, time)
+	await t.finished
+	old_player.queue_free()
 
 
 func queue_music(track: AudioStream) -> void:
