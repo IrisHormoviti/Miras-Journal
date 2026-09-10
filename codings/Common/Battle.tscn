@@ -4296,19 +4296,6 @@ BattleText = Dictionary[String, String]({
 "use_on_turn": "[tar] will use the [insert] on [tar_their] turn."
 })
 
-[node name="Background" type="TextureRect" parent="." unique_id=1543652970]
-light_mask = 16
-z_index = -1
-material = ExtResource("7_ef2go")
-offset_left = -211.0
-offset_top = -150.0
-offset_right = 209.0
-offset_bottom = 150.0
-size_flags_horizontal = 4
-size_flags_vertical = 4
-texture = ExtResource("8_4wnfp")
-expand_mode = 1
-
 [node name="Act" type="Node2D" parent="." unique_id=1447045837]
 process_mode = 1
 visibility_layer = 16
@@ -4413,6 +4400,12 @@ physics_interpolation_mode = 2
 zoom = Vector2(4, 4)
 limit_smoothed = true
 position_smoothing_speed = 20.0
+
+[node name="Background" type="Sprite2D" parent="Act" unique_id=351078465]
+light_mask = 16
+z_index = -1
+material = ExtResource("7_ef2go")
+texture = ExtResource("8_4wnfp")
 
 [node name="AI" type="Node" parent="." unique_id=1881764654]
 script = ExtResource("24_vu4cw")
@@ -6085,8 +6078,8 @@ texture = ExtResource("54_qjfeq")
 [connection signal="states_handled" from="Act" to="." method="make_move"]
 [connection signal="ai_chosen" from="AI" to="." method="_on_ai_chosen"]
 [connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_ability"]
-[connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_ability"]
 [connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="EnemyUI" method="_on_battle_ui_ability"]
+[connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_ability"]
 [connection signal="ability_returned" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_ability_returned"]
 [connection signal="ability_returned" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_ability_returned"]
 [connection signal="analyze" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_analyze"]

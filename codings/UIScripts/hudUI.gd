@@ -880,7 +880,7 @@ func cmd(cmd_text := "") -> void:
 				Event.to_time = Event.time_of_day
 				Event.time_transition()
 			elif cmd_text.begins_with("/lv"):
-				Global.reset_all_members()
+				Party.reset_all_members()
 				var text := cmd_text.replace("/lv ", "")
 
 				for i: Actor in Party.current:

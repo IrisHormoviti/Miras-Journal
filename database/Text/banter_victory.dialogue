@@ -7,3 +7,9 @@ Mira.Neutral: Oh finally!
 Mira.Neutral: That thing was annoying!
 Daze.Neutral: Let's be on the lookout for plant monsters like this from now on.
 => END
+
+~ color_tutorial_end
+Alcine.Happy: Weiiiaa!
+Mira.Smile: Knowing these things will be very important going forward-
+Mira.Smile: -so I hope you learned something!
+=> END

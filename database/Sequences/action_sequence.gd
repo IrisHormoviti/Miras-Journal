@@ -717,6 +717,24 @@ func ToxicSplash(target: Actor) -> void:
 	Bt.end_turn()
 
 
+func IcyNail(target: Actor) -> void:
+	Bt.focus_cam(target)
+	Bt.anim("Cast")
+	await Event.wait(1)
+
+	if not miss:
+		Bt.play_effect("Iceicle", target, Vector2(randi_range(-10, 10), randi_range(-10, 0)))
+		await Event.wait(randf_range(0, 0.5))
+		Bt.screen_shake(5)
+		await Bt.damage(target, true, true, Query.calc_num())
+		if crit:
+			await target.add_state("Frozen")
+	else: await Bt.miss()
+	await Event.wait(0.2)
+	Bt.anim()
+	Bt.end_turn()
+
+
 func IcyDrizzle(target: Actor) -> void:
 	if target == CurrentChar:
 		Bt.focus_cam(CurrentChar)
@@ -1409,6 +1427,13 @@ func StoneGuardian3() -> void:
 	Bt.victory(true)
 	await Loader.battle_end
 	Event.add_flag("BeatStoneGuardian")
+
+
+func ColorTutorialEnter() -> void:
+	Bt.anim("Command", Party.Leader)
+	Bt.anim("Hit", Party.Member1)
+	Bt.zoom(6)
+	Bt.focus_cam(Party.Leader)
 
 
 func AsteriaBoss2() -> void:

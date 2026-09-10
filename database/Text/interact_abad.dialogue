@@ -4,9 +4,18 @@ import "res://database/Text/reserved_date.dialogue" as reserved_date
 if Party.has_member("Daze"):
 	Mira.Neutral: Any idea what these are?
 	Daze.Neutral: I'm not quite sure... [p]They seem to be around everywhere.
+elif check_flag("VeinPointIDK", 1):
+	It keeps grabbing my attenion...
+	I still don't know what it is.
+	$> add_flag("VeinPointIDK", 2)
+elif check_flag("VeinPointIDK", 2):
+	Must be like...[wait=1][br]Super important.
+	Too bad I don't know the importance of it yet.
+	$> add_flag("VeinPointIDK", 3)
 else:
 	Particles seem to be coming out of this crack in the ground.
 	I'm not sure what this is.
+	$> add_flag("VeinPointIDK", 1)
 => END
 
 ~ skeleton
@@ -58,7 +67,7 @@ if check_flag("AmberelmSignStorage"):
 	"Storage Area"
 else:
 	There's cyrenian writing on this sign.
-	It says...[wait=0.5] "Saving"...[wait=0.5] "point"?
+	It says...[wait=0.5] "Saving"...[wait=0.5] "spot"?
 	Oh![wait=0.5][p]It's "Storage Area".
 	do add_flag("AmberelmSignStorage")
 => END

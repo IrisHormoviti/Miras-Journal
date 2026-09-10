@@ -61,7 +61,7 @@ func control_process() -> void:
 		state = S.IDLE
 		return
 
-	if Party.has_member_index(member) and not Battle.in_battle and is_instance_valid(follow):
+	if actor and not Battle.in_battle and is_instance_valid(follow):
 		add_collision_exception_with(Global.player)
 		for i in Global.room.followers:
 			add_collision_exception_with(i)

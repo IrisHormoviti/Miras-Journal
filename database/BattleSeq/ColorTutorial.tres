@@ -1,0 +1,30 @@
+[gd_resource type="Resource" script_class="BattleSequence" format=3 uid="uid://bfqcqmo11n18e"]
+
+[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="1_duvvd"]
+[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_6qebm"]
+[ext_resource type="Resource" uid="uid://cocfbi0gh3j36" path="res://database/Enemies/MagicWallRed.tres" id="3_80eai"]
+[ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="4_p1b4p"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="5_6r3l7"]
+[ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="6_jcce0"]
+
+[sub_resource type="Resource" id="Resource_70ffl"]
+script = ExtResource("4_p1b4p")
+actor = &"MagicWall"
+low_ap = 1
+result = 2
+parameter1 = "story_0"
+parameter2 = "color_tutorial_aurabreak"
+hold_turn = true
+metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[resource]
+script = ExtResource("6_jcce0")
+Enemies = Array[ExtResource("2_6qebm")]([ExtResource("3_80eai")])
+ScenePosition = Vector2(1036, 432)
+Transition = false
+CanEscape = false
+EntranceSequence = "ColorTutorialEnter"
+VictoryBanter = "color_tutorial_end"
+PartyOverride = ["Mira", "Alcine"]
+Events = Array[ExtResource("4_p1b4p")]([SubResource("Resource_70ffl")])
+metadata/_custom_type_script = "uid://blx6fs34ughqo"

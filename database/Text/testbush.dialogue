@@ -110,10 +110,7 @@ What to do?
 		set Party.Leader = null
 		=> add
 	- Make everyone controllable
-		set Query.find_member("Mira").Controllable = true
-		set Query.find_member("Alcine").Controllable = true
-		set Query.find_member("Asteria").Controllable = true
-		set Query.find_member("Daze").Controllable = true
+		$> Party.make_everyone_controllable()
 - Abilities
 	go on
 	- Unlock all abilities
@@ -127,7 +124,7 @@ What to do?
 - Give Mira lots of HP
 	do Party.Leader.Health = 9999
 - Reset all members
-	do reset_all_members()
+	do Party.reset_all_members()
 do give_control()
 
 => END

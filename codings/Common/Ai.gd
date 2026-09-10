@@ -105,11 +105,11 @@ func evaluate_action(ab: Ability, tar: Actor) -> float:
 					var hp_pct := tar.health_ratio()
 					# Scales up as HP gets lower
 					if hp_pct <= 0.9:
-						score += (1 - hp_pct)
+						score += (1.1 - hp_pct)
 
 			Ability.TP.SUMMON:
 				if Bt.get_ally_faction(Char).size() < 3:
-					score += 0.3
+					score += 0.2
 
 				if Bt.get_ally_faction(Char).size() == 1:
 					score += 0.3
@@ -139,7 +139,9 @@ func evaluate_action(ab: Ability, tar: Actor) -> float:
 
 			Ability.TP.CURSE:
 				if is_enemy(tar):
-					if not tar.has_state(ab.InflictsState): score += 0.55
+					var crit_mult: float = ab.CritChance if ab.CritChance > 0 else 1.0
+
+					if not tar.has_state(ab.InflictsState): score += 0.75 * crit_mult
 
 			Ability.TP.ATK_BUFF:
 				if is_ally(tar):
@@ -176,6 +178,9 @@ func evaluate_action(ab: Ability, tar: Actor) -> float:
 
 				if Char.Aura < Char.MaxAura * 0.6:
 					score += 0.4
+
+				if Char.Aura < Char.MaxAura * 0.2:
+					score += 0.5
 
 			_:
 				# Just keep a high enough chance on unkown type things

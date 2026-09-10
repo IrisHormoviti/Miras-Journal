@@ -50,12 +50,8 @@ func add_char(b: NPC) -> void:
 	if not is_instance_valid(b) or not b.is_inside_tree(): return
 
 	npc_list.set(b.ID, b)
-	DialogueManager.unregister_state_context(b.ID)
 
-	var context := DialogueStateContext.new()
-	context.target = b
-	context.alias = b.ID
-	b.add_child(context)
+	DialogueManager.register_state_context(b.ID, b)
 
 
 ##Get the [NPC] node from a [String] ID
@@ -596,7 +592,6 @@ func spawn(id: String, pos: Variant, animation: Variant = Direction.DOWN, z: int
 
 	var chara: NPC = (await Loader.load_res("res://rooms/components/NPC.tscn")).instantiate()
 	var sprite_node := AnimatedSprite2D.new()
-	chara.only_on_index = -1
 	chara.add_child(sprite_node)
 	sprite_node.name = "Sprite"
 	sprite_node.use_parent_material = true

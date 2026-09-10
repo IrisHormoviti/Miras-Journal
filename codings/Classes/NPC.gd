@@ -313,7 +313,7 @@ func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector
 ##If autostop is true, it will stop when hitting a wall.
 ##look_dir is the direction the NPC will face after reaching the destination.
 ##accuracy detarmines how close to the destination the NPC should get.
-func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Variant = Vector2.ZERO, accuracy: int = 6) -> void:
+func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Variant = Vector2.ZERO, accuracy: int = 8) -> void:
 	if pos is String:
 		pos = Event.get_marker_pos(pos)
 

@@ -1,0 +1,14 @@
+[remap]
+
+importer="aseprite_wizard.plugin.noop"
+type="PackedDataContainer"
+uid="uid://sxkn1dhwbei2"
+path="res://.godot/imported/MagicWallPurple.aseprite-7c186750705e16e81dd8d44b3a0e8149.res"
+
+[deps]
+
+source_file="res://art/BT/Object/MagicWallPurple.aseprite"
+dest_files=["res://.godot/imported/MagicWallPurple.aseprite-7c186750705e16e81dd8d44b3a0e8149.res"]
+
+[params]
+

@@ -143,7 +143,7 @@ $> Pterogon.position = Vector2(1805, -1183)
 $>> player.bubble("Surprise")
 $>> player.reset_sprite()
 $>> player.set_anim("EntrancePrep")
-$>> Camera.position += Vector2(50, 0)
+$>> camera_move_relative(Vector2(50, 0))
 $>> tween(Pterogon, "position", Vector2(1731, -1080), 2)
 $>> Alcine.z_index = -1
 $> Alcine.go_to("HugSpot+(-24,-24)")
@@ -153,7 +153,7 @@ $> Event.wait(1)
 Mira.Neutral: It's a Pterogon..![wait=0.5] Was it chasing you?
 Mira.Neutral: Stay behind me, I'll deal with it!
 [hide]
-$> Loader.attacker = Pterogon
+$> Battle.attacker = Pterogon
 $> Event.wait(0.1)
 $> Event.flag_progress("AlcineFollow", 3)
 $> Battle.start("AlcineFollow1")
@@ -191,6 +191,7 @@ Mira.Neutral: What about "{{alcine}}"?
 Alcine.Neutral: *nod*
 $> npc("P").look_to(Vector2(1, 0))
 Mira.Neutral: Alright then {{alcine}}, let's go together from here on.
+$> Party.set_to(["Mira", "Alcine"])
 => END
 
 ~ a_bridge
@@ -217,22 +218,22 @@ Mira.Neutral: Come on let's go! The people there might be able to help us!
 ~ what_happened_here
 Mira.Neutral: What... happened here?
 [hide]
-$> npc("P").go_to(Vector2(6, 15), true)
+$> player.go_to(Vector2(6, 15), true)
 $> wait(0.3)
-$> npc("P").look_to(Vector2(1, 0))
+$> player.look_to(Vector2(1, 0))
 $> wait(0.3)
-$> npc("P").look_to(Vector2(-1, 0))
+$> player.look_to(Vector2(-1, 0))
 $> wait(0.3)
-$> npc("P").look_to(Vector2(0, -1))
+$> player.look_to(Vector2(0, -1))
 Mira.Neutral: It's all... in ruins...
 $> take_control()
 [hide]
-$> npc("P").chain_moves([Vector2(-1, 0), Vector2(0, -1)])
+$> player.chain_moves([Vector2(-1, 0), Vector2(0, -1)])
 $> wait(0.3)
-$> npc("P").camera_follow(false)
-$> npc("P").set_anim("SitRight", false, true)
-$> npc("P").collision(false)
-$> jump_to(Player, Vector2(107, 345), 15)
+$> player.camera_follow(false)
+$> player.set_anim("SitRight", false, true)
+$> player.collision(false)
+$> jump_to(player, Vector2(107, 345), 15)
 Mira.Neutral: ...
 Mira.Neutral: Let's just rest here for a bit, I'm exhausted.
 Alcine.Tired: Sheeww...
@@ -317,8 +318,113 @@ Alcine.Neutral: Sha...
 #Mira.Neutral: Figures.
 #Mira.Neutral: Well we should probably explore this place a little more before it's too dark.
 #Mira.Smile: Let's keep on the lookout for any castles around, okay?
-$> Loader.travel_to("Amberelm", Vector2(120, 360), 0, 7)
+$> Loader.travel_to("Amberelm", Vector2(120, 360), 0, Direction.DOWN)
 $> save()
+=> END
+
+~ color_tutorial
+$> F1.dont_follow = true
+$> player.go_to(MagicWall.position)
+$> player.set_anim("AttackRightWindup", true)
+$>> player.set_anim("AttackRightHit", true)
+$> ui_sound("AxeBlock")
+$> wait(0.1)
+$> MagicWall.get_node("Sprite").play("Hit")
+$> player.look_to(Direction.RIGHT)
+$> wait(1)
+Dammit, [br]this wall is magically enchanced.
+It's a simple red physical aura...
+If only I had my spellbook with me I could-
+[hide]
+$>> F1.go_to(player.position - Vector2(24, 0))
+$> F1.bubble("Question")
+$> player.look_to(Direction.LEFT)
+Mira.Worried: Oh, sorry {{alcine}}, I was just-
+[hide]
+$> player.bubble("Surprise")
+{{alcine}}! That's it![br]They can naturally use the freeze spells that I can't!
+[hide]
+$>> player.move_dir(Vector2(-3, -1))
+$> wait(1)
+$> F1.move_dir(Vector2(-2, 1))
+$> F1.look_to(Direction.UP)
+Mira.Smile: Hey...
+[hide]
+$> add_flag("ColorTutorial", 1)
+$> Battle.attacker = MagicWall
+$> Battle.start("ColorTutorial")
+Mira.Smile: Maybe this is an opportunity to learn something!
+[hide]
+$> bt.focus_cam(bt.Troop[0])
+$>> bt.anim("", Party.Leader)
+$>> bt.anim("", Party.Member1)
+Mira.Neutral: You may have noticed that every monster we've fought emmits some kind of "color".
+Mira.Neutral: That is their [b]Aura[/b].
+Mira.Smile: "A veil to protect one's self from the dangers of the world".[br][wait=0.5]Or something like that.
+#Mira.Neutral: The aura is what allows living being to cast magic, and defend themselves from outside magic.
+#Mira.Neutral: Magical constructs like this wall here also have an aura.
+$>> bt.focus_cam(Party.Leader)
+$>> bt.anim("Ability", Party.Leader)
+$>> bt.anim("Ability", Party.Member1)
+Mira.Neutral: Of cource, you and me have an aura too![br]Even if it may look diffrent.
+$>> bt.anim("", Party.Leader)
+$>> bt.anim("", Party.Member1)
+Mira.Neutral: And the most important diffrence between the auras...[wait=1][br]is the [b]color[/b]!
+Mira.Neutral: It's what we call an aura's "Affinity". It determines your strengths and weaknesses!
+[hide]
+#Mira.Neutral: My orange affinity is better at Heat magic, your cyan affinity is better at Spiritual... or perhaps Freeze magic...
+#Mira.Neutral: ...And if this red wall was made with Physical magic!
+$> bt.focus_cam(bt.Troop[0])
+$> picture("ColorTutorial1")
+Mira.Neutral: Here, this is a little graph that helps me remember these.
+Mira.Neutral: I saw it in a spellbook once and it's stuck with me.
+Alcine.Neutral: Shoo?
+Mira.Neutral: You don't understand it?
+Mira.Smile: Look it's simple!
+Mira.Smile: That lonley [b]X[/b] mark corresponds to my "Flame Spark" attack.
+$> picture("ColorTutorial2")
+Mira.Neutral: And the enemy's color is right around here.
+Mira.Neutral: Because it's so close to my own attack's color, inside the X mark, it won't be very effective.
+$> picture_clear()
+Mira.Neutral: Let's give it a try!
+[hide]
+$> Party.Leader.NextAction = Actor.BtAction.MAGIC
+$> Party.Leader.NextMove = Query.get_ability("FlameSpark")
+$> bt.confirm_next()
+$> bt.lock_turn = true
+$> wait(3)
+Mira.Neutral: And you can see, my attack was resisted.
+$>> bt.focus_cam(Party.Member1)
+$> picture("ColorTutorial3")
+Mira.Neutral: Now for you on the other hand...[wait=0.5] your freeze attacks have a cyan color!
+$> picture("ColorTutorial4")
+Mira.Smile: We simply rotate the symbols, so the lonley X mark is on your color!
+Mira.Smile: You can see what happens now, right?
+Mira.Smile: The enemy's color is on the [b]O[/b] mark![br][small](The double O mark means more effective by the way!)
+$> picture_clear()
+Mira.Smile: So try out one of your attacks!
+[hide]
+$> Party.Member1.NextAction = Actor.BtAction.MAGIC
+$> Party.Member1.NextMove = Query.get_ability("IcyNail")
+$> Party.Leader.NextAction = Actor.BtAction.ACT
+$> Party.Leader.NextMove = Ability.nothing()
+$> bt.lock_turn = false
+$> bt.confirm_next()
+$> wait(1)
+$> bt.lock_turn = true
+$> wait(4)
+Mira.Smile: See? That was a direct hit to its weakness!
+Mira.Smile: Just keep it up!
+$> Party.Member1.NextAction = Actor.BtAction.MAGIC
+$> Party.Member1.NextMove = Query.get_ability("IcyNail")
+$> bt.lock_turn = false
+=> END
+
+~ color_tutorial_aurabreak
+Mira.Smile: Look at that! By hitting its weakness enough, you completely broke its aura!
+Alcine.Happy: Whiii!
+Mira.Neutral: When in this state, even an attack like mine that's normally resisted will deal a lot of damage!
+Mira.Neutral: But remember, this can happen to us too, so be careful!
 => END
 
 ~ oct31_afternoon

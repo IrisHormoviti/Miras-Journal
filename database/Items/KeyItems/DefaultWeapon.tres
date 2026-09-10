@@ -1,10 +1,8 @@
 [gd_resource type="Resource" script_class="WeaponItem" format=3 uid="uid://cmt1sh6p1ibl1"]
 
-[ext_resource type="Resource" uid="uid://17bbb0h04khb" path="res://database/Abilities/Attacks/CloseupAttack.tres" id="2_g6pmb"]
 [ext_resource type="Script" uid="uid://5klh1xmhdeg6" path="res://codings/Classes/weapon_class.gd" id="3_7wih8"]
 
 [resource]
 script = ExtResource("3_7wih8")
-attack = ExtResource("2_g6pmb")
 power = 10
 ItemType = "Key"

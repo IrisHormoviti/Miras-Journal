@@ -42,7 +42,7 @@ func daze_enemy_1() -> void:
 		Global.intro_effect(Event.npc("EnemyFlowent1"))
 		Loader.attacker = Event.npc("EnemyFlowent1")
 		Battle.start("DazeEnemyTutorial", 1)
-		await Loader.battle_end
+		await Global.battle_end
 		Textbox.open("story_1", "dont_treat_me_like_a_child")
 	else: Event.give_control()
 
@@ -167,7 +167,7 @@ func asteria_boss() -> void:
 	await Event.wait(1)
 	await Battle.start("AsteriaBoss")
 	Event.npc("Asteria").hide()
-	await Loader.battle_end
+	await Global.battle_end
 	if Loader.battle_result == 1:
 		Event.npc("Asteria").show()
 		Event.add_flag("AsteriaBoss", 5)

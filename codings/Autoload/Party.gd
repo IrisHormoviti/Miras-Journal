@@ -131,3 +131,8 @@ func size() -> int:
 		if i != null: count += 1
 
 	return count
+
+
+func make_everyone_controllable() -> void:
+	for i in current:
+		if i: i.Controllable = true

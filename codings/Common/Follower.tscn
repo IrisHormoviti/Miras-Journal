@@ -1,9 +1,14 @@
 [gd_scene format=3 uid="uid://da22xhcxygcjl"]
 
 [ext_resource type="Script" uid="uid://plp0a8d856yh" path="res://codings/Common/follower_movement.gd" id="1_kihhu"]
+[ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="2_2wak2"]
 [ext_resource type="Material" uid="uid://bk3wcarpqpgmi" path="res://codings/Shaders/Pixelart.tres" id="2_ppxuy"]
 [ext_resource type="SpriteFrames" uid="uid://djjv4h63ww5or" path="res://art/OV/Asteria/AsteriaOV.tres" id="3_vmt3u"]
 [ext_resource type="Texture2D" uid="uid://c1pk3d7vu8n26" path="res://art/OV/Objects/Shadow1.png" id="4_qao14"]
+[ext_resource type="SpriteFrames" uid="uid://cgnsvgqdju2dh" path="res://art/Effects/Bubble.tres" id="6_ld52q"]
+
+[sub_resource type="Resource" id="Resource_4ie6q"]
+script = ExtResource("2_2wak2")
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_xvt3h"]
 radius = 4.0070543
@@ -27,13 +32,12 @@ collision_mask = 3
 motion_mode = 1
 wall_min_slide_angle = 1.5707964
 script = ExtResource("1_kihhu")
+facing = SubResource("Resource_4ie6q")
 shadow_sprite = NodePath("Shadow")
-
-[node name="Shadow" type="Sprite2D" parent="." unique_id=1941196585]
-unique_name_in_owner = true
-show_behind_parent = true
-use_parent_material = true
-texture = ExtResource("4_qao14")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Timer" type="Timer" parent="." unique_id=807342352]
 wait_time = 0.1
@@ -60,5 +64,21 @@ color = Color(0.498039, 0.768627, 0.768627, 1)
 energy = 0.1
 texture = SubResource("GradientTexture2D_2e8bj")
 texture_scale = 1.5
+
+[node name="Shadow" type="Sprite2D" parent="." unique_id=1941196585]
+unique_name_in_owner = true
+show_behind_parent = true
+use_parent_material = true
+texture = ExtResource("4_qao14")
+
+[node name="Bubble" type="AnimatedSprite2D" parent="." unique_id=75532617]
+light_mask = 0
+z_index = 3
+material = ExtResource("2_ppxuy")
+position = Vector2(0, -36)
+sprite_frames = ExtResource("6_ld52q")
+animation = &"Surprise"
+frame = 15
+frame_progress = 1.0
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

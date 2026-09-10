@@ -1,0 +1,24 @@
+[gd_resource type="Resource" script_class="Ability" format=3 uid="uid://ckpvp3a14lvi"]
+
+[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_4266k"]
+[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_3xd7l"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hd34j"]
+atlas = ExtResource("1_4266k")
+region = Rect2(90, 0, 18, 18)
+filter_clip = true
+
+[resource]
+script = ExtResource("2_3xd7l")
+name = "Icy Nail"
+description = "Slight Cold damage to an enemy. Chance of Freeze."
+Icon = SubResource("AtlasTexture_hd34j")
+ActionSequence = &"IcyNail"
+Types = Array[int]([1, 4])
+Group = "cold"
+InflictsState = "Frozen"
+AuraCost = 2
+Damage = 1
+Target = 1
+WheelColor = Color(0.0745098, 0.909804, 1, 1)
+CritChance = 0.1

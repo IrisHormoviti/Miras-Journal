@@ -180,7 +180,7 @@ func AlcineFollowHelp() -> void:
 	Loader.white_fadeout(2, 3, 0.5)
 	await Alcine.jump_to(Vector2(1660, -1068), 7, 0.5)
 	Global.bt.end_battle()
-	await Loader.battle_end
+	await Global.battle_end
 	Party.add("Alcine")
 	Party.Member1.FirstName = "Spirit"
 	Alcine.hide()
@@ -188,7 +188,7 @@ func AlcineFollowHelp() -> void:
 	await Battle.start("AlcineFollow2")
 	await Event.wait(1)
 	Global.bt.get_actor("Pterogon", true).Health = hp
-	await Loader.battle_end
+	await Global.battle_end
 	AlcineFollow4()
 
 
@@ -286,7 +286,7 @@ func enter_amberelm_2() -> void:
 
 func amberelm_guardian() -> void:
 	Battle.start("StoneGuardianBoss")
-	await Loader.battle_end
+	await Global.battle_end
 	if Loader.battle_result == 1:
 		Party.set_to(["Mira"])
 		Loader.ungray.emit()

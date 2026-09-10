@@ -1,0 +1,26 @@
+[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://cocfbi0gh3j36"]
+
+[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_0j6v1"]
+[ext_resource type="Texture2D" uid="uid://budghnw4lgtg4" path="res://art/Icons/Enemies/Object.png" id="2_gnglx"]
+[ext_resource type="Resource" uid="uid://xsqx8xd4ctjb" path="res://database/Abilities/Nothing.tres" id="3_hjcr8"]
+[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="4_sbxyk"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="5_aw5h3"]
+
+[resource]
+script = ExtResource("4_sbxyk")
+FirstName = "Magic Wall"
+MainColor = Color(0.86307806, 0.23938107, 0.15813053, 1)
+PartyIcon = ExtResource("2_gnglx")
+ActorClass = "Tank"
+codename = &"MagicWall"
+HealthBar = true
+RecivedSP = 10
+MaxHP = 100
+MaxAura = 25
+Attack = 0.0
+Speed = 0.0
+StandardAttack = ExtResource("3_hjcr8")
+BT = "Object/MagicWallRed"
+Offset = Vector2(10, 10)
+CantDodge = true
+metadata/_custom_type_script = "uid://msf7qb28ublo"

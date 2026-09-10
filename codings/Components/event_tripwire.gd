@@ -7,6 +7,7 @@ extends Area2D
 	set(x):
 		TriggerSize = x
 		var coll: CollisionShape2D = get_node_or_null("CollisionShape2D")
+
 		if coll != null:
 			coll.shape = coll.shape.duplicate()
 			coll.shape.size = x
@@ -67,6 +68,7 @@ func _validate_property(property: Dictionary) -> void:
 			for i in files:
 				if not i.ends_with(".import"):
 					files_filtered.append(i.replace(".dialogue", ""))
+
 			property.hint_string = ",".join(files_filtered)
 
 
@@ -80,6 +82,7 @@ func kick() -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if Flag.is_empty() and FlagIsName:
 		Flag = name
+
 	if (Event.f(Flag) == FlagShouldBe or Flag == "") and body == Global.player and (not FlagIsName or !Event.check_flag(name)):
 		print("Tripwire: ", name)
 		if AddFlag:
@@ -87,6 +90,7 @@ func _on_body_entered(body: Node2D) -> void:
 				Event.add_flag(name)
 			else:
 				Event.add_flag(Flag)
+
 		if SlowDown:
 			await Event.take_control()
 			Event.give_control(true)
@@ -108,15 +112,18 @@ func _on_body_entered(body: Node2D) -> void:
 			else:
 				Event.sequence(EventName)
 
-		elif TextFile != "":
+		if TextFile != "":
 			if UsePassive:
 				await Passive.open(TextFile, TextNode)
 			else:
 				await Textbox.open(TextFile, TextNode)
-		elif BattleSeq != null:
+
+		if BattleSeq != null:
 			Battle.start(BattleSeq)
+
 		if SlowDown:
 			Global.player.speed = Global.player.WALK_SPEED
 			Global.player.can_dash = true
+
 		if ReturnControl:
 			Event.give_control(true)

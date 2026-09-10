@@ -6,6 +6,7 @@
 [ext_resource type="Resource" uid="uid://jbe4kiixyygg" path="res://database/Abilities/SoothingSpray.tres" id="2_2vyew"]
 [ext_resource type="Resource" uid="uid://bfoi0xxeujmlq" path="res://database/Abilities/Attacks/AttackAlcine.tres" id="2_3o6lq"]
 [ext_resource type="Resource" uid="uid://dadlaa3lk8441" path="res://database/Abilities/Guard.tres" id="2_kbab6"]
+[ext_resource type="Resource" uid="uid://ckpvp3a14lvi" path="res://database/Abilities/IcyNail.tres" id="4_72ylq"]
 [ext_resource type="Resource" uid="uid://dxr8psmfxx8ve" path="res://database/Text/Profiles/AlcineBox.tres" id="4_roarn"]
 [ext_resource type="Resource" uid="uid://cy60md5f5cblk" path="res://database/Abilities/IcyDrizzle.tres" id="5_fp5sq"]
 [ext_resource type="Resource" uid="uid://glraxorvlv4r" path="res://database/Abilities/SoothingRain.tres" id="6_82uy0"]
@@ -40,7 +41,7 @@ Magic = 1.6
 Defence = 0.9
 Speed = 6.0
 SkillCurve = SubResource("Curve_wpfc1")
-Abilities = Array[ExtResource("1_l356q")]([ExtResource("2_kbab6"), ExtResource("2_2vyew")])
+Abilities = Array[ExtResource("1_l356q")]([ExtResource("2_kbab6"), ExtResource("2_2vyew"), ExtResource("4_72ylq")])
 StandardAttack = ExtResource("2_3o6lq")
 LearnableAbilities = Array[ExtResource("1_l356q")]([ExtResource("5_fp5sq"), ExtResource("6_82uy0")])
 OVShadowOffset = 4

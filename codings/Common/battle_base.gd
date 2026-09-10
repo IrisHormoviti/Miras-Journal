@@ -11,7 +11,7 @@ static var sequence: BattleSequence
 static var prevent_battles: bool = false
 static var remembered_camera_zoom: Vector2
 static var battle_advantage := 0
-static var attacker: NPC = null
+static var attacker: Node2D = null
 
 enum Result {UNFINISHED, VICTORY, ESCAPE, DEFEAT}
 static var battle_result: Result = Result.UNFINISHED
@@ -69,6 +69,7 @@ var aoe_returns := 0
 @onready var act: Node2D = $Act
 @onready var cam: Camera2D = $Act/Cam
 @onready var effects: AnimatedSprite2D = $Act/Effects
+@onready var background: Sprite2D = $Act/Background
 
 signal battle_start
 signal GetControl
@@ -147,7 +148,18 @@ static func start(stg: Variant, advantage := 0) -> void:
 			i.global_position = Global.player.position
 
 
+func _exit_tree() -> void:
+	if is_instance_valid(act):
+		act.free()
+
+
 func _ready() -> void:
+	# Re-parent Act node
+	act.reparent(get_node(Loader.area_spawn_path))
+	act.global_position = sequence.ScenePosition
+	act.z_index = Global.room.camera_index.z if Global.room.camera_index else 3
+	cam.make_current()
+	
 	battle_start.emit()
 	current = self
 	get_tree().paused = false
@@ -175,7 +187,7 @@ func _ready() -> void:
 	Party.Leader.node = act.get_node("Actor0")
 	TurnOrder.push_front(Party.Leader)
 	TurnOrder.append_array(Troop)
-	$Background.texture = sequence.BattleBack
+	background.texture = sequence.BattleBack
 
 	if sequence.BattleBack == null:
 		act.get_node("Actor0").light_mask = 1
@@ -251,11 +263,6 @@ func _ready() -> void:
 	if sequence.Music:
 		Audio.change_music_from_to(sequence.Music.track, sequence.Music.battle_start)
 
-	# Re-parent Act node
-	act.reparent(get_node(Loader.area_spawn_path))
-	act.global_position = sequence.ScenePosition
-	act.z_index = Global.room.camera_index.z
-	cam.make_current()
 	
 	position_sprites()
 	if is_instance_valid(attacker): attacker.hide()
@@ -448,6 +455,8 @@ func entrance() -> void:
 				for i in Troop: damage(i, 1, false, 24 / Troop.size())
 
 			await Event.wait(0.5, false)
+	else:
+		screen_shake(15, 4)
 
 	if sequence.EntranceSequence == "":
 		for i in Party.current:
@@ -1476,8 +1485,8 @@ func end_battle() -> void:
 		for i in Global.bt.TurnOrder:
 			t.tween_property(i.node.get_node("Glow"), "energy", 0, 0.3)
 
-		Global.bt.get_node("Background").material = null
-		t.tween_property(Global.bt.get_node("Background"), "modulate", Color.TRANSPARENT, 0.5)
+		background.material = null
+		t.tween_property(background, "modulate", Color.TRANSPARENT, 0.5)
 		hide_victory_stuff()
 
 	in_battle = false
@@ -1513,7 +1522,8 @@ static func post_battle() -> void:
 			if Global.player.is_on_wall():
 				Global.player.position = attacker.position
 
-			attacker.defeat()
+			
+			if attacker is NPC: attacker.defeat()
 
 	Global.controllable = false
 	Loader.battle_bars(0)
