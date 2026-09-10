@@ -19,16 +19,21 @@ enum Ways {
 @export var way: Ways = Ways.CENTER:
 	set(x):
 		way = x
-		vector = way_to_vector(x)
+		var new_vector: Vector2 = way_to_vector(x)
+
+		if vector != new_vector:
+			vector = new_vector
 
 var vector: Vector2 = Vector2.ZERO:
 	set(x):
-		vector = snap_vector(x)
+		var snapped_vec: Vector2 = snap_vector(x)
+		vector = snapped_vec
+		var new_way: Ways = vector_to_way(snapped_vec)
+
+		if way != new_way:
+			way = new_way
 
 	get():
-		if vector == Vector2.ZERO:
-			vector = way_to_vector(way)
-
 		return vector
 
 

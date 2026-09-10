@@ -70,6 +70,11 @@ var coords: Vector2 = Vector2.ZERO
 
 
 func _ready() -> void:
+	if facing:
+		facing = facing.duplicate()
+	else:
+		facing = Direction.DOWN
+
 	setup_shadow()
 	
 	if Engine.is_editor_hint(): return
@@ -82,7 +87,6 @@ func _ready() -> void:
 		queue_free()
 		return
 
-	
 	Event.add_char(self)
 	motion_mode = CharacterBody2D.MOTION_MODE_FLOATING
 

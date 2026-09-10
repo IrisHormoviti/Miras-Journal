@@ -2,11 +2,11 @@
 extends NPC
 class_name Follower
 
-var oposite: Vector2
-var moving: bool
-var target: Vector2
-var dir: Vector2
-var player_jumped := false
+var oposite: Vector2 = Vector2.ZERO
+var moving: bool = false
+var target: Vector2 = Vector2.ZERO
+var path: Path2D
+var follow: PathFollow2D
 
 @export var member: int:
 	set(x):
@@ -14,15 +14,15 @@ var player_jumped := false
 		actor = member_info()
 @export var actor: Actor
 @export var distance: int = 30
-@export var dont_follow := false:
+@export var dont_follow: bool = false:
 	set(x):
 		dont_follow = x
 
-		if dont_follow and state == S.CONTROLLED: state = S.IDLE
-		elif not dont_follow: state = S.CONTROLLED
-@export var offset := 0
-var path: Path2D
-var follow: PathFollow2D
+		if dont_follow and state == S.CONTROLLED:
+			state = S.IDLE
+		elif not dont_follow:
+			state = S.CONTROLLED
+@export var offset: int = 0
 
 
 func default() -> void:
@@ -31,8 +31,10 @@ func default() -> void:
 
 	await Event.wait()
 
-	if not Global.player: return
-	oposite = (Global.player.facing.vector * Vector2(-1, -1)) * 150
+	if not is_instance_valid(Global.player):
+		return
+
+	oposite = (Global.player.facing.vector * Vector2(-1, -1)) * 150.0
 	set_anim("Idle" + Global.player.facing.to_string())
 	velocity = oposite
 	path = Global.player.path
@@ -52,83 +54,80 @@ func default_id() -> String:
 
 
 func control_process() -> void:
-	if not is_instance_valid(Global.player): return
-	move_and_slide()
+	if not is_instance_valid(Global.player):
+		return
+
 	if dont_follow:
 		direction = Vector2.ZERO
 		moving = false
-		#animate()
 		state = S.IDLE
+		move_and_slide()
 		return
 
-	if actor and not Battle.in_battle and is_instance_valid(follow):
-		add_collision_exception_with(Global.player)
-		for i in Global.room.followers:
-			add_collision_exception_with(i)
-
-		show()
-		z_index = Global.player.z_index
-		collision_layer = Global.player.collision_layer
-		collision_mask = Global.player.collision_mask
-		$Glow.color = actor.MainColor
-		$Glow.energy = actor.GlowDef / 2
-		var oldposition := global_position
-		var player_dist := to_local(Global.player.position).length()
-		target = round((follow.global_position + Global.player.facing.vector.rotated(PI / 2) * offset))
-		direction = to_local(target).normalized()
-
-		if to_local(target).length() < 6: direction = Vector2.ZERO
-		#var path_dist = floor(path.curve.get_baked_length() - follow.progress)
-		#if Loader.chased:
-			#$CollisionShape2D.disabled = true
-
-		if false:
-			if player_dist > distance + 80:
-				jump_to_player()
-				player_jumped = false
-			elif player_dist < distance and Global.player.move_frames / 10 > distance:
-				player_jumped = false
-		else:
-			follow.progress = round(lerpf(follow.progress, max(float(path.curve.get_baked_length() - distance), 0), 0.5))
-
-			if player_dist > 180:
-				jump_to_player()
-
-			if player_dist < 12 and Global.controllable:
-				update_anim_prm()
-				oposite = (Global.player.facing.vector * Vector2(-1, -1))
-				velocity = oposite * 150
-
-			#elif path_dist > distance:
-				#$CollisionShape2D.disabled = true
-
-		speed = max(50, Global.player.speed * (to_local(target).length() / 40))
-
-		if floor(player_dist / 5) < floor(distance / 5):
-			speed /= 2
-
-		velocity = speed * direction
-
-		if (global_position - oldposition).length() > 0.1:
-			moving = true
-			RealVelocity = global_position - oldposition
-		else:
-			moving = false
-	else:
+	if not actor or Battle.in_battle or not is_instance_valid(follow):
 		hide()
+		return
+
+	add_collision_exception_with(Global.player)
+	for follower: Variant in Global.room.followers:
+		add_collision_exception_with(follower)
+
+	show()
+	z_index = Global.player.z_index
+	collision_layer = Global.player.collision_layer
+	collision_mask = Global.player.collision_mask
+	$Glow.color = actor.MainColor
+	$Glow.energy = actor.GlowDef / 2.0
+
+	var old_position: Vector2 = global_position
+	var player_dist: float = to_local(Global.player.position).length()
+
+	follow.progress = lerpf(follow.progress, maxf(path.curve.get_baked_length() - distance, 0.0), 0.35)
+
+	target = follow.global_position + follow.transform.y * float(offset)
+	var target_vec: Vector2 = to_local(target)
+	var target_dist: float = target_vec.length()
+
+	if target_dist < 3.0:
+		direction = Vector2.ZERO
+		speed = 0
+	else:
+		direction = target_vec.normalized()
+		var max_allowed_speed: float = Global.player.speed * 1.5
+		speed = int(clampf(Global.player.speed * (target_dist / 20.0), 30.0, max_allowed_speed))
+
+	if floor(player_dist / 5.0) < floor(distance / 5.0):
+		speed /= 2
+
+	if player_dist > 180.0:
+		jump_to_player()
+
+	if player_dist < 12.0 and Global.controllable:
+		update_anim_prm()
+		oposite = Global.player.facing.vector * Vector2(-1, -1)
+		velocity = oposite * 150.0
+
+	velocity = speed * direction
+	move_and_slide()
+
+	var delta: float = get_physics_process_delta_time()
+
+	if (global_position - old_position).length() > 0.1 and delta > 0.0:
+		moving = true
+		RealVelocity = (global_position - old_position) / delta
+	else:
+		moving = false
+		RealVelocity = Vector2.ZERO
 
 
-func jump_to_player(_speed := 2) -> void:
-	if not is_instance_valid(Global.player): return
-	if Global.player.dashing: return
-	var _prev_pos := position
-	var new_pos := Global.player.position
-	#new_pos.x += offset
-	#if member == 3: new_pos.y -= 24
-	#if speed > 0:
-		#await Event.jump_to_global(self, new_pos, speed, 0.3)
+func jump_to_player(jump_speed: int = 2) -> void:
+	if not is_instance_valid(Global.player):
+		return
 
-	position = new_pos
+	if Global.player.dashing:
+		return
+
+	position = Global.player.position
 
 
 func _on_timer_timeout() -> void:
@@ -141,17 +140,17 @@ func member_info() -> Actor:
 
 
 func attacked() -> void:
-	Event.jump_to(self, position - Vector2(Global.player.facing.vector * 24), 5, 0.5)
+	Event.jump_to(self, position - Vector2(Global.player.facing.vector * 24.0), 5.0, 0.5)
 
 
 func update() -> void:
-	if not Party.has_member_index(member): return
+	if not Party.has_member_index(member):
+		return
+
 	actor = Party.get_member_index(member)
 
 	if actor != null and sprite.sprite_frames and sprite.sprite_frames.resource_path != actor.OV:
 		sprite.sprite_frames = await actor.get_OV()
 
 		if actor and shadow_sprite:
-			if actor.Shadow:
-				shadow(true)
-			else: shadow(false)
+			shadow(actor.Shadow)

@@ -80,7 +80,9 @@ func extended_process() -> void:
 			path.curve.clear_points()
 
 		if path.curve.point_count <= 2:
-			path.curve.add_point(position + Vector2(0, -48))
+			var point: Vector2 = facing.vector.max(Vector2.DOWN) * (Vector2(0, -24))
+
+			path.curve.add_point(position + point)
 			path.curve.add_point(position)
 		else:
 			path.curve.set_point_position(path.curve.point_count - 1, position)

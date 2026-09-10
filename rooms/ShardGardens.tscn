@@ -28,6 +28,7 @@
 [ext_resource type="Texture2D" uid="uid://jnhnt5kow0bq" path="res://art/OV/Objects/BreakableWallHSG.png" id="21_63qd7"]
 [ext_resource type="Script" uid="uid://b05nwmod2wbs2" path="res://codings/Components/hide_on_flag.gd" id="21_mwckp"]
 [ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="22_a7h8m"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="22_wvntm"]
 [ext_resource type="Texture2D" uid="uid://ct33ao2bh7eoj" path="res://art/OV/Objects/SGGate.png" id="23_8huol"]
 [ext_resource type="Texture2D" uid="uid://ubrl1l3wlpgo" path="res://art/OV/Objects/CastSwitch.png" id="24_cd4rc"]
 [ext_resource type="Texture2D" uid="uid://d2moorxu5wbpx" path="res://art/OV/Objects/CastLines1.png" id="25_70av8"]
@@ -528,7 +529,7 @@ script = ExtResource("22_a7h8m")
 [sub_resource type="Resource" id="Resource_ggbak"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("20_ohs4u"), ExtResource("17_lmpvr"), ExtResource("20_ohs4u")])
-ScenePosition = Vector2(251, 765)
+ScenePosition = Vector2(166, 608)
 EscPosition = Vector2i(23, 37)
 metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
@@ -913,6 +914,7 @@ texture = SubResource("GradientTexture2D_h3wgk")
 height = 100.0
 
 [node name="EditorLight" type="DirectionalLight2D" parent="." unique_id=1427076366]
+visible = false
 editor_only = true
 metadata/_edit_group_ = true
 
@@ -1208,7 +1210,6 @@ BattleSeq = SubResource("Resource_yoqct")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_lj216")
-only_on_index = 1
 
 [node name="HomePoints" type="Node2D" parent="EnemySG10" unique_id=2003674837]
 
@@ -1299,7 +1300,7 @@ offset = Vector2(0.0496826, -5.866)
 position = Vector2(295, 135)
 
 [node name="ScenePosition" type="Marker2D" parent="EnemySG3" unique_id=195677483]
-position = Vector2(-20, 6)
+position = Vector2(-105, -151)
 gizmo_extents = 100.0
 
 [node name="EnemySG4" parent="." unique_id=1879324709 instance=ExtResource("4_ujeyr")]
@@ -1339,7 +1340,6 @@ BattleSeq = SubResource("Resource_qvrxi")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_d3jwk")
-only_on_index = 2
 
 [node name="HomePoints" type="Node2D" parent="EnemySG5" unique_id=1292102762]
 
@@ -1373,7 +1373,6 @@ BattleSeq = SubResource("Resource_wvntm")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_xjok2")
-only_on_index = 1
 
 [node name="HomePoints" type="Node2D" parent="EnemySG6" unique_id=258531717]
 
@@ -1407,7 +1406,6 @@ BattleSeq = SubResource("Resource_n6psl")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_k1go5")
-only_on_index = 1
 
 [node name="HomePoints" type="Node2D" parent="EnemySG7" unique_id=1253908807]
 
@@ -1440,7 +1438,6 @@ BattleSeq = SubResource("Resource_41yyw")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_e642t")
-only_on_index = 1
 
 [node name="HomePoints" type="Node2D" parent="EnemySG8" unique_id=1417479069]
 
@@ -1638,7 +1635,7 @@ height = 0.8
 position = Vector2(780, 672)
 
 [node name="Ladder1" parent="." unique_id=619055194 instance=ExtResource("8_hjqnr")]
-position = Vector2(565, 763)
+position = Vector2(565, 777)
 metadata/_edit_group_ = true
 
 [node name="Ladder2" parent="." unique_id=67855793 instance=ExtResource("8_hjqnr")]

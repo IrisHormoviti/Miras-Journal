@@ -9,6 +9,9 @@ daze portraits
 implement alcine goofing cutscene art
 daze introduction cutscene
 polish bunker
+add animation for Humidity
+add animation for Thunderstorm
+Cutscene for endering shard gardens underground
 
-fix follower bug
 fix escape bug
+fix followers in battle

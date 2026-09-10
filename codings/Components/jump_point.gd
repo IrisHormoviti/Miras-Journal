@@ -9,7 +9,7 @@ const Y_ADJUSTMENT := 8
 @export var trigger_size := Vector2i(1, 1):
 	set(x):
 		trigger_size = x
-		
+
 		for coll in get_children():
 			if coll is CollisionShape2D:
 				coll.shape = coll.shape.duplicate()
@@ -48,12 +48,13 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 	if not timer.timeout.is_connected(_on_timer_timeout):
 		timer.timeout.connect(_on_timer_timeout)
-	
+
 	if target != null:
 		target.hide()
 
 	for i in jump_directions:
 		var vector := Direction.way_to_vector(i)
+
 		if dir_mode == -1:
 			dir_mode = 2 if vector.x == 0 else 1
 		else:
@@ -64,14 +65,14 @@ func _ready() -> void:
 func _physics_process(_delta: float) -> void:
 	if busy or not is_player_inside:
 		return
-		
+
 	if jump_directions.is_empty():
 		Global.toast("No jump dirs here, fix this!")
 		return
 
 	var player_face := Global.player.facing.vector
 	var local_player_pos := to_local(Global.player.position)
-	
+
 	if dir_mode == 1:
 		local_player_pos.y = 0
 	elif dir_mode == 2:
@@ -79,12 +80,13 @@ func _physics_process(_delta: float) -> void:
 
 	var player_side := Direction.snap_vector(local_player_pos)
 	var can_jump := false
-	
+
 	for i in jump_directions:
 		var dir := Direction.way_to_vector(i)
+
 		if player_face == dir and dir == player_side * -1:
 			can_jump = true
-	
+
 	if can_jump:
 		if not self in Global.player.jump_points:
 			Global.player.jump_points.append(self)
@@ -110,6 +112,7 @@ func jump(player_face: Vector2) -> void:
 	Global.player.collision(false)
 
 	var coord := get_target_coords(player_face)
+
 	if player_face.y == 0:
 		coord.y -= Y_ADJUSTMENT
 
@@ -119,21 +122,19 @@ func jump(player_face: Vector2) -> void:
 
 	Global.player.collision(true)
 	Global.controllable = true
-	
+
 	if to_z == -1:
 		Global.player.z_index = prev_z
 	else:
 		Global.player.z_index = to_z
 		Global.player.collision_layer = to_layers
 		Global.player.collision_mask = to_layers
+
 	Global.player.move_frames = 0
 
 	Global.player.shadow(true)
 	prints("Jump!", name)
 
-	for i in Global.room.followers:
-		i.player_jumped = true
-		
 	busy = false
 	Event.teleport_followers()
 
@@ -156,7 +157,7 @@ func jump_target_effect(pos: Vector2) -> void:
 	dub.show()
 	add_child(dub)
 	waves.append(dub)
-	
+
 	var splash_time := 1.4
 	var t := create_tween().set_parallel().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	t.tween_property(dub, "scale", Vector2(0.4, 0.4) / scale, splash_time).from(Vector2(1, 1) / scale)
@@ -170,6 +171,7 @@ func jump_target_effect(pos: Vector2) -> void:
 func wave_go_away(wave: TextureRect) -> void:
 	if not is_instance_valid(wave):
 		return
+
 	var t := create_tween()
 	t.tween_property(wave, "modulate:a", 0, 0.2)
 	await t.finished
@@ -180,6 +182,7 @@ func wave_go_away(wave: TextureRect) -> void:
 func _on_body_entered(body: Node2D) -> void:
 	if body == Global.player:
 		is_player_inside = true
+
 		if is_instance_valid(timer) and timer.is_stopped():
 			timer.start(0.5)
 
