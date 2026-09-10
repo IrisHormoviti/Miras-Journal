@@ -146,6 +146,7 @@ func attacked() -> void:
 
 func update() -> void:
 	if not Party.has_member_index(member): return
+	actor = Party.get_member_index(member)
 
 	if actor != null and sprite.sprite_frames and sprite.sprite_frames.resource_path != actor.OV:
 		sprite.sprite_frames = await actor.get_OV()

@@ -1513,11 +1513,6 @@ func end_battle() -> void:
 static func post_battle() -> void:
 	if battle_result == Result.ESCAPE:
 		Global.player.position = Query.globalize(sequence.EscPosition)
-		(func() -> void:
-			Battle.prevent_battles = true
-			await Event.wait(1)
-			Battle.prevent_battles = false
-		).call_deferred()
 
 	if is_instance_valid(attacker):
 		if battle_result != Result.VICTORY:

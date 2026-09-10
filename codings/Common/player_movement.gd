@@ -79,15 +79,15 @@ func extended_process() -> void:
 		if RealVelocity.length() > 350:
 			path.curve.clear_points()
 
-		if path.curve.point_count < 2:
-			path.curve.add_point(position - facing.vector * 24)
-			path.curve.add_point(position - facing.vector)
-
-		path.curve.set_point_position(path.curve.point_count - 1, position)
-		if (path.curve.get_point_position(path.curve.point_count - 1) 
-			- path.curve.get_point_position(path.curve.point_count - 2)).length() > 24:
-			path.curve.add_point(position.round()
-		)
+		if path.curve.point_count <= 2:
+			path.curve.add_point(position + Vector2(0, -48))
+			path.curve.add_point(position)
+		else:
+			path.curve.set_point_position(path.curve.point_count - 1, position)
+			if (path.curve.get_point_position(path.curve.point_count - 1)
+				- path.curve.get_point_position(path.curve.point_count - 2)).length() > 24:
+				path.curve.add_point(position.round()
+			)
 
 	if controllable():
 		state = S.CONTROLLED
@@ -144,6 +144,7 @@ func control_process() -> void:
 					await set_anim("Deny" + facing.to_string(), true)
 					set_anim()
 					return
+
 				dashdir = Direction.snap_vector(direction)
 				dashing = true
 				local_controllable = false

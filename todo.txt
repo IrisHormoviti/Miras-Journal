@@ -9,3 +9,6 @@ daze portraits
 implement alcine goofing cutscene art
 daze introduction cutscene
 polish bunker
+
+fix follower bug
+fix escape bug

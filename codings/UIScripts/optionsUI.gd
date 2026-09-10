@@ -249,7 +249,7 @@ func main() -> void:
 	t.tween_property($Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3.0, 1)
 	t.tween_property($Fader, "modulate", Color(0, 0, 0, 0.4), 1)
 	t.tween_property($Timer, "position", Vector2(27, 27), 0.5)
-	t.tween_property($MusicTrack , "modulate:a", 1, 1)
+	t.tween_property($MusicTrack , "modulate:a", 1, 0.5)
 	t.tween_property($MusicTrack, "position:x", 75, 0.5)
 	t.tween_property($Silhouette, "position", Vector2(0, -39), 0.5)
 	t.tween_property($SidePanel, "position", Vector2(1335, -62), 0.5)
@@ -301,6 +301,7 @@ func game_settings() -> void:
 	t.tween_property($Background, "position", Vector2(0, 0), 0.5)
 	t.tween_property($SidePanel/Tooltip, "scale", Vector2.ONE, 0.5).from(Vector2.ZERO)
 	t.tween_property($SidePanel/Tooltip, "modulate:a", 1, 0.5).from(0)
+	t.tween_property($MusicTrack, "modulate:a", 0, 0.5)
 	$SidePanel/Tooltip/Bubble.size.y = 0
 	$SidePanel/Tooltip/Point.rotation = 0
 	Audio.confirm_sound()
@@ -341,6 +342,7 @@ func save_managment() -> void:
 	t.tween_property($MainButtons/SaveManagment, "position", Vector2(50, 52), 0.5)
 	t.tween_property($Timer, "position:x", -300, 0.5)
 	t.tween_property($MusicTrack, "position:x", -300, 0.5)
+	t.tween_property($MusicTrack, "modulate:a", 0, 0.5)
 	t.tween_property($SavePanel, "position", Vector2(684, -62), 0.5)
 	t.tween_property($Silhouette, "position", Vector2(-50, -39), 0.5)
 	t.tween_property($Background, "position", Vector2(350, 0), 0.5)
@@ -391,6 +393,7 @@ func manual() -> void:
 	t.tween_property($Silhouette, "position", Vector2(-700, -39), 0.5)
 	t.tween_property($Timer, "position:x", -300, 0.5)
 	t.tween_property($MusicTrack, "position:x", -300, 0.5)
+	t.tween_property($MusicTrack, "modulate:a", 0, 0.5)
 	Audio.confirm_sound()
 	$ManualPanel.show()
 	await t.finished
@@ -1011,6 +1014,7 @@ func _on_credits(source: Button) -> void:
 	t.tween_property($MainButtons/Gallery, "position:x", 12, 0.3)
 	t.tween_property($Timer, "position:x", -300, 0.3)
 	t.tween_property($MusicTrack, "position:x", -300, 0.5)
+	t.tween_property($MusicTrack, "modulate:a", 0, 0.5)
 
 ## Setttings Buttons
 
