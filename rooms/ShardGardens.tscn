@@ -977,7 +977,7 @@ shape = SubResource("RectangleShape2D_qw3gk")
 debug_color = Color(0.691822, 0.439815, 0.617756, 0.42)
 
 [node name="CollisionShape2D3" type="CollisionShape2D" parent="Cover1" unique_id=1214816771]
-position = Vector2(-109, 466.75)
+position = Vector2(-109, 467)
 shape = SubResource("RectangleShape2D_8ubql")
 
 [node name="CollisionShape2D4" type="CollisionShape2D" parent="Cover1" unique_id=551253431]
@@ -992,34 +992,160 @@ shape = SubResource("RectangleShape2D_ybpd3")
 debug_color = Color(0.661949, 0.495265, 0.3822, 0.42)
 
 [node name="CollisionShape2D6" type="CollisionShape2D" parent="Cover1" unique_id=812274451]
-position = Vector2(-438.125, -245)
+position = Vector2(-438, -245)
 shape = SubResource("RectangleShape2D_nk1vc")
 debug_color = Color(0.661949, 0.495265, 0.3822, 0.42)
 
-[node name="BreakableSGOre0" parent="." unique_id=201224244 instance=ExtResource("39_ggbak")]
+[node name="Items" type="Node2D" parent="." unique_id=1587437509]
+
+[node name="ItemDefault1" parent="Items" unique_id=1039922182 instance=ExtResource("7_kvb7h")]
+position = Vector2(-261, -51)
+item_name = "SmallPotion"
+
+[node name="ItemDefault2" parent="Items" unique_id=1568631333 instance=ExtResource("7_kvb7h")]
+position = Vector2(829, 658)
+item_name = "SmallPotion"
+
+[node name="ItemDefault3" parent="Items" unique_id=1998743597 instance=ExtResource("7_kvb7h")]
+position = Vector2(456, 894)
+item_name = "LifeLave"
+
+[node name="ItemSG1" parent="Items" unique_id=196992718 instance=ExtResource("7_kvb7h")]
+position = Vector2(-517, 616)
+item_name = "StrangeFruit"
+
+[node name="ItemSG2" parent="Items" unique_id=1300974869 instance=ExtResource("7_kvb7h")]
+position = Vector2(-419, -257)
+item_name = "SmallPotion"
+
+[node name="ItemSG3" parent="Items" unique_id=1610980021 instance=ExtResource("7_kvb7h")]
+position = Vector2(-187, 489)
+item_name = "SmallPotion"
+
+[node name="ItemSG4" parent="Items" unique_id=914204863 instance=ExtResource("7_kvb7h")]
+position = Vector2(-282, 441)
+item_name = "StrangeFruit"
+
+[node name="ItemSG6" parent="Items" unique_id=994295426 instance=ExtResource("7_kvb7h")]
+position = Vector2(-91, 512)
+item_name = "SmallPotion"
+
+[node name="JumpPoints" type="Node2D" parent="." unique_id=1676495053]
+
+[node name="JumpPoint" parent="JumpPoints" unique_id=1339488981 instance=ExtResource("33_iqaea")]
+position = Vector2(-551, -902)
+scale = Vector2(1.2823389, 1)
+
+[node name="JumpPoint10" parent="JumpPoints" unique_id=1083924144 instance=ExtResource("33_iqaea")]
+position = Vector2(-45, -995)
+scale = Vector2(1.6220312, 1)
+
+[node name="JumpPoint11" parent="JumpPoints" unique_id=1044978229 instance=ExtResource("34_avv3b")]
+position = Vector2(-588, -954)
+
+[node name="JumpPoint12" parent="JumpPoints" unique_id=1139711343 instance=ExtResource("34_avv3b")]
+position = Vector2(-659, -958)
+
+[node name="JumpPoint13" parent="JumpPoints" unique_id=897708696 instance=ExtResource("34_avv3b")]
+position = Vector2(-730, -947)
+
+[node name="JumpPoint14" parent="JumpPoints" unique_id=1798393785 instance=ExtResource("34_avv3b")]
+position = Vector2(-803, -942)
+
+[node name="JumpPoint15" parent="JumpPoints" unique_id=232804024 instance=ExtResource("34_avv3b")]
+position = Vector2(-513, -948)
+
+[node name="JumpPoint16" parent="JumpPoints" unique_id=363175318 instance=ExtResource("33_iqaea")]
+position = Vector2(-22, -911)
+scale = Vector2(1.397188, 1)
+
+[node name="JumpPoint17" parent="JumpPoints" unique_id=1086772376 instance=ExtResource("33_iqaea")]
+position = Vector2(340, -897)
+
+[node name="JumpPoint18" parent="JumpPoints" unique_id=1205315268 instance=ExtResource("33_iqaea")]
+position = Vector2(240, -994)
+scale = Vector2(1.2503126, 1)
+
+[node name="JumpPoint19" parent="JumpPoints" unique_id=1166859554 instance=ExtResource("34_avv3b")]
+position = Vector2(190, -947)
+scale = Vector2(1.88, 1)
+
+[node name="JumpPoint2" parent="JumpPoints" unique_id=1949786305 instance=ExtResource("33_iqaea")]
+position = Vector2(-94, 380)
+scale = Vector2(1.6275, 1.6275)
+jump_am = 3
+
+[node name="JumpPoint20" parent="JumpPoints" unique_id=45058381 instance=ExtResource("33_iqaea")]
+position = Vector2(102, -900)
+scale = Vector2(1.2503126, 1)
+
+[node name="JumpPoint21" parent="JumpPoints" unique_id=502651178 instance=ExtResource("34_avv3b")]
+position = Vector2(-262, 191)
+scale = Vector2(1.5432818, 1.3376563)
+jump_am = 3
+
+[node name="JumpPoint22" parent="JumpPoints" unique_id=422097778 instance=ExtResource("34_avv3b")]
+position = Vector2(290, -925)
+scale = Vector2(1.88, 1)
+
+[node name="JumpPoint3" parent="JumpPoints" unique_id=2144299483 instance=ExtResource("34_avv3b")]
+position = Vector2(-141, 427)
+scale = Vector2(1.5432818, 1.3376563)
+jump_am = 3
+
+[node name="JumpPoint4" parent="JumpPoints" unique_id=841572020 instance=ExtResource("33_iqaea")]
+position = Vector2(-114, 242)
+scale = Vector2(1.6275, 1.6275)
+jump_am = 3
+
+[node name="JumpPoint5" parent="JumpPoints" unique_id=53393851 instance=ExtResource("33_iqaea")]
+position = Vector2(-491, -298)
+height = 1.0
+
+[node name="JumpPoint6" parent="JumpPoints" unique_id=527590548 instance=ExtResource("34_avv3b")]
+position = Vector2(-458, -130)
+trigger_size = Vector2i(3, 2)
+jump_directions = Array[int]([4])
+jump_am_v = 1
+height = 0.8
+
+[node name="JumpPoint7" parent="JumpPoints" unique_id=1228342681 instance=ExtResource("34_avv3b")]
+position = Vector2(780, 672)
+
+[node name="JumpPoint8" parent="JumpPoints" unique_id=566654417 instance=ExtResource("33_iqaea")]
+position = Vector2(-839, -992)
+scale = Vector2(1.3527347, 1)
+
+[node name="JumpPoint9" parent="JumpPoints" unique_id=756788395 instance=ExtResource("33_iqaea")]
+position = Vector2(-442, -995)
+scale = Vector2(2.1720288, 0.89287)
+
+[node name="Breakables" type="Node2D" parent="." unique_id=1992785921]
+
+[node name="BreakableSGOre0" parent="Breakables" unique_id=201224244 instance=ExtResource("39_ggbak")]
 position = Vector2(-322, 82)
 default_anim = "Red"
 given_item = "RedFragment"
 
-[node name="BreakableSGOre1" parent="." unique_id=440600241 instance=ExtResource("39_ggbak")]
+[node name="BreakableSGOre1" parent="Breakables" unique_id=440600241 instance=ExtResource("39_ggbak")]
 y_sort_enabled = true
 position = Vector2(-586, -249)
 
-[node name="BreakableSGOre2" parent="." unique_id=1216582050 instance=ExtResource("39_ggbak")]
+[node name="BreakableSGOre2" parent="Breakables" unique_id=1216582050 instance=ExtResource("39_ggbak")]
 position = Vector2(-421, 443)
 default_anim = "Orange"
 given_item = "OrangeFragment"
 
-[node name="BreakableWallSG" parent="." unique_id=453057714 instance=ExtResource("8_pg846")]
-position = Vector2(-491.84552, 561.34406)
+[node name="BreakableWallSG" parent="Breakables" unique_id=453057714 instance=ExtResource("8_pg846")]
+position = Vector2(-492, 561)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BreakableWallSG" unique_id=508372240]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Breakables/BreakableWallSG" unique_id=508372240]
 use_parent_material = true
 position = Vector2(-0.15447998, -6.344055)
 shape = SubResource("RectangleShape2D_nrut7")
 debug_color = Color(0.75, 0.4365, 0.42, 0.0823529)
 
-[node name="Sprite" type="AnimatedSprite2D" parent="BreakableWallSG" unique_id=734155734]
+[node name="Sprite" type="AnimatedSprite2D" parent="Breakables/BreakableWallSG" unique_id=734155734]
 y_sort_enabled = true
 texture_filter = 1
 use_parent_material = true
@@ -1028,16 +1154,16 @@ sprite_frames = SubResource("SpriteFrames_mgap8")
 animation = &"break"
 autoplay = "default"
 
-[node name="BreakableWallSG2" parent="." unique_id=1313048973 instance=ExtResource("8_pg846")]
-position = Vector2(-395.43985, 324.32758)
+[node name="BreakableWallSG2" parent="Breakables" unique_id=1313048973 instance=ExtResource("8_pg846")]
+position = Vector2(-395, 324)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BreakableWallSG2" unique_id=1795629118]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Breakables/BreakableWallSG2" unique_id=1795629118]
 use_parent_material = true
 position = Vector2(-1.5601501, 1.6724243)
 shape = SubResource("RectangleShape2D_fagnv")
 debug_color = Color(0.75, 0.4365, 0.42, 0.0823529)
 
-[node name="Sprite" type="AnimatedSprite2D" parent="BreakableWallSG2" unique_id=120904144]
+[node name="Sprite" type="AnimatedSprite2D" parent="Breakables/BreakableWallSG2" unique_id=120904144]
 y_sort_enabled = true
 texture_filter = 1
 use_parent_material = true
@@ -1045,16 +1171,16 @@ position = Vector2(-0.56015015, 11.672424)
 sprite_frames = SubResource("SpriteFrames_mgap8")
 autoplay = "default"
 
-[node name="BreakableWallSG3" parent="." unique_id=635503168 instance=ExtResource("8_pg846")]
+[node name="BreakableWallSG3" parent="Breakables" unique_id=635503168 instance=ExtResource("8_pg846")]
 position = Vector2(-109, 468)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BreakableWallSG3" unique_id=260382645]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Breakables/BreakableWallSG3" unique_id=260382645]
 use_parent_material = true
 position = Vector2(-0.026916504, -0.100738525)
 shape = SubResource("RectangleShape2D_ee5em")
 debug_color = Color(0.75, 0.4365, 0.42, 0.0823529)
 
-[node name="Sprite" type="AnimatedSprite2D" parent="BreakableWallSG3" unique_id=73002495]
+[node name="Sprite" type="AnimatedSprite2D" parent="Breakables/BreakableWallSG3" unique_id=73002495]
 y_sort_enabled = true
 texture_filter = 1
 use_parent_material = true
@@ -1063,13 +1189,13 @@ sprite_frames = SubResource("SpriteFrames_plwe6")
 animation = &"break"
 autoplay = "default"
 
-[node name="BreakableWallSG4" parent="." unique_id=1700109562 instance=ExtResource("8_pg846")]
+[node name="BreakableWallSG4" parent="Breakables" unique_id=1700109562 instance=ExtResource("8_pg846")]
 position = Vector2(-468, -242)
 collision_layer = 15
 collision_mask = 15
 decrease_z = false
 
-[node name="Sprite" type="AnimatedSprite2D" parent="BreakableWallSG4" unique_id=1365100790]
+[node name="Sprite" type="AnimatedSprite2D" parent="Breakables/BreakableWallSG4" unique_id=1365100790]
 y_sort_enabled = true
 texture_filter = 1
 use_parent_material = true
@@ -1078,15 +1204,15 @@ sprite_frames = SubResource("SpriteFrames_mgap8")
 animation = &"break"
 autoplay = "default"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BreakableWallSG4" unique_id=1806236332]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Breakables/BreakableWallSG4" unique_id=1806236332]
 position = Vector2(-0.5, 10.5)
 shape = SubResource("RectangleShape2D_a7h8m")
 
-[node name="BreakableWallSG5" parent="." unique_id=1606913205 instance=ExtResource("8_pg846")]
+[node name="BreakableWallSG5" parent="Breakables" unique_id=1606913205 instance=ExtResource("8_pg846")]
 position = Vector2(-183, -171)
 decrease_z = false
 
-[node name="Sprite" type="AnimatedSprite2D" parent="BreakableWallSG5" unique_id=1223528084]
+[node name="Sprite" type="AnimatedSprite2D" parent="Breakables/BreakableWallSG5" unique_id=1223528084]
 y_sort_enabled = true
 texture_filter = 1
 use_parent_material = true
@@ -1545,8 +1671,10 @@ TextNode = "sg_jump_reminder"
 position = Vector2(61, 82)
 collision_mask = 15
 script = ExtResource("29_oh1ty")
+ShowTextbox = true
 TextFile = "interact_abad"
 TextNode = "kick_sgplains"
+AlterMovement = true
 KickDirection = Vector2(1, 0)
 metadata/_edit_group_ = true
 
@@ -1564,75 +1692,6 @@ TextNode = "sg_find_bunker"
 [node name="GroundItem" parent="." unique_id=1792744607 instance=ExtResource("7_kvb7h")]
 position = Vector2(-255, -160)
 item_name = "SmallPotion"
-
-[node name="ItemDefault1" parent="." unique_id=1039922182 instance=ExtResource("7_kvb7h")]
-position = Vector2(-261, -51)
-item_name = "SmallPotion"
-
-[node name="ItemDefault2" parent="." unique_id=1568631333 instance=ExtResource("7_kvb7h")]
-position = Vector2(829, 658)
-item_name = "SmallPotion"
-
-[node name="ItemDefault3" parent="." unique_id=1998743597 instance=ExtResource("7_kvb7h")]
-position = Vector2(456, 894)
-item_name = "LifeLave"
-
-[node name="ItemSG1" parent="." unique_id=196992718 instance=ExtResource("7_kvb7h")]
-position = Vector2(-517, 616)
-item_name = "StrangeFruit"
-
-[node name="ItemSG2" parent="." unique_id=1300974869 instance=ExtResource("7_kvb7h")]
-position = Vector2(-419, -257)
-item_name = "SmallPotion"
-
-[node name="ItemSG3" parent="." unique_id=1610980021 instance=ExtResource("7_kvb7h")]
-position = Vector2(-187, 489)
-item_name = "SmallPotion"
-
-[node name="ItemSG4" parent="." unique_id=914204863 instance=ExtResource("7_kvb7h")]
-position = Vector2(-282, 441)
-item_name = "StrangeFruit"
-
-[node name="ItemSG6" parent="." unique_id=994295426 instance=ExtResource("7_kvb7h")]
-position = Vector2(-91, 512)
-item_name = "SmallPotion"
-
-[node name="JumpPoint11" parent="." unique_id=1044978229 instance=ExtResource("34_avv3b")]
-position = Vector2(-588, -954)
-
-[node name="JumpPoint12" parent="." unique_id=1139711343 instance=ExtResource("34_avv3b")]
-position = Vector2(-659, -958)
-
-[node name="JumpPoint13" parent="." unique_id=897708696 instance=ExtResource("34_avv3b")]
-position = Vector2(-730, -947)
-
-[node name="JumpPoint14" parent="." unique_id=1798393785 instance=ExtResource("34_avv3b")]
-position = Vector2(-803, -942)
-
-[node name="JumpPoint15" parent="." unique_id=232804024 instance=ExtResource("34_avv3b")]
-position = Vector2(-513, -948)
-
-[node name="JumpPoint19" parent="." unique_id=1166859554 instance=ExtResource("34_avv3b")]
-position = Vector2(190, -947)
-scale = Vector2(1.88, 1)
-
-[node name="JumpPoint22" parent="." unique_id=422097778 instance=ExtResource("34_avv3b")]
-position = Vector2(290, -925)
-scale = Vector2(1.88, 1)
-
-[node name="JumpPoint5" parent="." unique_id=53393851 instance=ExtResource("33_iqaea")]
-position = Vector2(-491, -298)
-height = 1.0
-
-[node name="JumpPoint6" parent="." unique_id=527590548 instance=ExtResource("34_avv3b")]
-position = Vector2(-458.09613, -129.72061)
-trigger_size = Vector2i(3, 2)
-jump_directions = Array[int]([4])
-jump_am_v = 1
-height = 0.8
-
-[node name="JumpPoint7" parent="." unique_id=1228342681 instance=ExtResource("34_avv3b")]
-position = Vector2(780, 672)
 
 [node name="Ladder1" parent="." unique_id=619055194 instance=ExtResource("8_hjqnr")]
 position = Vector2(565, 777)
@@ -1684,7 +1743,9 @@ use_edge_connections = false
 navigation_layers = 2
 metadata/_edit_group_ = true
 
-[node name="Shard1" parent="." unique_id=2005192995 instance=ExtResource("26_yhh0x")]
+[node name="ShardHazards" type="Node2D" parent="." unique_id=886986562]
+
+[node name="Shard1" parent="ShardHazards" unique_id=2005192995 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(299, 108)
@@ -1694,14 +1755,14 @@ ReturnControl = false
 PlayEvent = true
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard1" unique_id=322957644]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard1" unique_id=322957644]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"3"
 autoplay = "3"
 frame_progress = 0.48911
 
-[node name="Shard10" parent="." unique_id=1992304545 instance=ExtResource("26_yhh0x")]
+[node name="Shard10" parent="ShardHazards" unique_id=1992304545 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(590, 900)
@@ -1710,14 +1771,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard10" unique_id=1998432349]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard10" unique_id=1998432349]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard11" parent="." unique_id=509463789 instance=ExtResource("26_yhh0x")]
+[node name="Shard11" parent="ShardHazards" unique_id=509463789 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(663, 757)
@@ -1726,14 +1787,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard11" unique_id=1017952183]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard11" unique_id=1017952183]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard12" parent="." unique_id=1194036545 instance=ExtResource("26_yhh0x")]
+[node name="Shard12" parent="ShardHazards" unique_id=1194036545 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(400, 34)
@@ -1742,14 +1803,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard12" unique_id=1079834420]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard12" unique_id=1079834420]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"3"
 autoplay = "3"
 frame_progress = 0.198226
 
-[node name="Shard13" parent="." unique_id=123504554 instance=ExtResource("26_yhh0x")]
+[node name="Shard13" parent="ShardHazards" unique_id=123504554 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(397, 140)
@@ -1759,14 +1820,14 @@ ReturnControl = false
 PlayEvent = true
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard13" unique_id=1081419047]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard13" unique_id=1081419047]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"3"
 autoplay = "3"
 frame_progress = 0.198226
 
-[node name="Shard14" parent="." unique_id=1336649829 instance=ExtResource("26_yhh0x")]
+[node name="Shard14" parent="ShardHazards" unique_id=1336649829 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(636, 332)
@@ -1775,14 +1836,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard14" unique_id=1585986215]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard14" unique_id=1585986215]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"3"
 autoplay = "3"
 frame_progress = 0.198226
 
-[node name="Shard2" parent="." unique_id=1465999143 instance=ExtResource("26_yhh0x")]
+[node name="Shard2" parent="ShardHazards" unique_id=1465999143 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(563, 203)
@@ -1792,14 +1853,14 @@ ReturnControl = false
 PlayEvent = true
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard2" unique_id=2004623470]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard2" unique_id=2004623470]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard3" parent="." unique_id=1179568054 instance=ExtResource("26_yhh0x")]
+[node name="Shard3" parent="ShardHazards" unique_id=1179568054 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(516, 35)
@@ -1808,14 +1869,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard3" unique_id=836629858]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard3" unique_id=836629858]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard4" parent="." unique_id=533105922 instance=ExtResource("26_yhh0x")]
+[node name="Shard4" parent="ShardHazards" unique_id=533105922 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(708, 231)
@@ -1824,14 +1885,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard4" unique_id=469530112]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard4" unique_id=469530112]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard5" parent="." unique_id=1216933484 instance=ExtResource("26_yhh0x")]
+[node name="Shard5" parent="ShardHazards" unique_id=1216933484 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(682, 323)
@@ -1840,14 +1901,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard5" unique_id=453130158]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard5" unique_id=453130158]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard6" parent="." unique_id=950582374 instance=ExtResource("26_yhh0x")]
+[node name="Shard6" parent="ShardHazards" unique_id=950582374 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(589, 540)
@@ -1856,14 +1917,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard6" unique_id=1011881628]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard6" unique_id=1011881628]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard7" parent="." unique_id=2031775836 instance=ExtResource("26_yhh0x")]
+[node name="Shard7" parent="ShardHazards" unique_id=2031775836 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(393, 544)
@@ -1872,17 +1933,17 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="CollisionShape2D" parent="Shard7" index="0" unique_id=624211629]
+[node name="CollisionShape2D" parent="ShardHazards/Shard7" index="0" unique_id=624211629]
 shape = SubResource("RectangleShape2D_ggbak")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard7" unique_id=903898466]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard7" unique_id=903898466]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard8" parent="." unique_id=1964677088 instance=ExtResource("26_yhh0x")]
+[node name="Shard8" parent="ShardHazards" unique_id=1964677088 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(518, 707)
@@ -1891,14 +1952,14 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard8" unique_id=170276186]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard8" unique_id=170276186]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
 autoplay = "1"
 frame_progress = 0.142851
 
-[node name="Shard9" parent="." unique_id=2028091381 instance=ExtResource("26_yhh0x")]
+[node name="Shard9" parent="ShardHazards" unique_id=2028091381 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
 position = Vector2(636, 854)
@@ -1907,7 +1968,7 @@ TakeControl = false
 ReturnControl = false
 EventName = "hurt_1"
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Shard9" unique_id=1479115008]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard9" unique_id=1479115008]
 use_parent_material = true
 sprite_frames = SubResource("SpriteFrames_a7h8m")
 animation = &"1"
@@ -2017,62 +2078,11 @@ metadata/_edit_group_ = true
 position = Vector2(438, 59)
 metadata/_edit_group_ = true
 
-[node name="JumpPoint" parent="." unique_id=1339488981 instance=ExtResource("33_iqaea")]
-position = Vector2(-551.19763, -901.83777)
-scale = Vector2(1.2823389, 1)
-
-[node name="JumpPoint8" parent="." unique_id=566654417 instance=ExtResource("33_iqaea")]
-position = Vector2(-839.0326, -992.34015)
-scale = Vector2(1.3527347, 1)
-
-[node name="JumpPoint9" parent="." unique_id=756788395 instance=ExtResource("33_iqaea")]
-position = Vector2(-442.0349, -995.13916)
-scale = Vector2(2.1720288, 0.89287)
-
-[node name="JumpPoint10" parent="." unique_id=1083924144 instance=ExtResource("33_iqaea")]
-position = Vector2(-45.100952, -995.46204)
-scale = Vector2(1.6220312, 1)
-
-[node name="JumpPoint16" parent="." unique_id=363175318 instance=ExtResource("33_iqaea")]
-position = Vector2(-21.81018, -911.31476)
-scale = Vector2(1.397188, 1)
-
-[node name="JumpPoint17" parent="." unique_id=1086772376 instance=ExtResource("33_iqaea")]
-position = Vector2(339.5722, -897.3802)
-
-[node name="JumpPoint18" parent="." unique_id=1205315268 instance=ExtResource("33_iqaea")]
-position = Vector2(240.39868, -993.95935)
-scale = Vector2(1.2503126, 1)
-
-[node name="JumpPoint20" parent="." unique_id=45058381 instance=ExtResource("33_iqaea")]
-position = Vector2(102.30354, -900.01855)
-scale = Vector2(1.2503126, 1)
-
-[node name="JumpPoint2" parent="." unique_id=1949786305 instance=ExtResource("33_iqaea")]
-position = Vector2(-94.182556, 379.78714)
-scale = Vector2(1.6275, 1.6275)
-jump_am = 3
-
-[node name="JumpPoint4" parent="." unique_id=841572020 instance=ExtResource("33_iqaea")]
-position = Vector2(-113.59909, 241.85225)
-scale = Vector2(1.6275, 1.6275)
-jump_am = 3
-
-[node name="JumpPoint3" parent="." unique_id=2144299483 instance=ExtResource("34_avv3b")]
-position = Vector2(-141.15765, 427.35995)
-scale = Vector2(1.5432818, 1.3376563)
-jump_am = 3
-
-[node name="JumpPoint21" parent="." unique_id=502651178 instance=ExtResource("34_avv3b")]
-position = Vector2(-262.43573, 190.90715)
-scale = Vector2(1.5432818, 1.3376563)
-jump_am = 3
-
 [connection signal="body_entered" from="EvKick" to="EvKick" method="_on_body_entered"]
 [connection signal="action" from="SwitchBridge1/SGBridge1" to="DoorLocked1/HideOnFlag" method="check"]
 [connection signal="action" from="SwitchCast1/SGDoor1" to="DoorLocked1/HideOnFlag" method="check"]
 
-[editable path="BreakableWallSG5"]
+[editable path="Breakables/BreakableWallSG5"]
 [editable path="Ladder2"]
 [editable path="Ladder3"]
-[editable path="Shard7"]
+[editable path="ShardHazards/Shard7"]

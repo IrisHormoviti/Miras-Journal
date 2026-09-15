@@ -11,7 +11,7 @@ daze introduction cutscene
 polish bunker
 add animation for Humidity
 add animation for Thunderstorm
-Cutscene for endering shard gardens underground
+Cutscene for entering shard gardens underground
 
 fix escape bug
 fix followers in battle

@@ -42,7 +42,7 @@ corner_radius_top_right = 32
 corner_radius_bottom_right = 32
 corner_radius_bottom_left = 26
 
-[sub_resource type="Theme" id="Theme_iavdl"]
+[sub_resource type="Theme" id="Theme_ebl3n"]
 default_font = ExtResource("4_ebl3n")
 default_font_size = 15
 Button/colors/font_outline_color = Color(0, 0, 0, 1)
@@ -51,7 +51,7 @@ Button/styles/focus = SubResource("StyleBoxFlat_5iklx")
 Button/styles/hover = SubResource("StyleBoxFlat_5iklx")
 Button/styles/pressed = SubResource("StyleBoxFlat_jh1f3")
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pwch7"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hupws"]
 content_margin_left = 6.0
 content_margin_top = 5.0
 content_margin_right = 6.0
@@ -62,16 +62,22 @@ corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_t8kem"]
-content_margin_left = 5.0
-content_margin_top = 4.0
-content_margin_right = 5.0
-content_margin_bottom = 4.0
-bg_color = Color(0.8769407, 0.8769407, 0.8769407, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_2m81j"]
+content_margin_left = 6.0
+content_margin_top = 5.0
+content_margin_right = 6.0
+content_margin_bottom = 5.0
+bg_color = Color(0.88, 0.88, 0.88, 1)
 corner_radius_top_left = 16
 corner_radius_top_right = 16
 corner_radius_bottom_right = 16
 corner_radius_bottom_left = 16
+
+[sub_resource type="InputEventAction" id="InputEventAction_nx28g"]
+action = &"ui_accept"
+
+[sub_resource type="Shortcut" id="Shortcut_iece7"]
+events = [SubResource("InputEventAction_nx28g")]
 
 [node name="Chair" type="Area2D" unique_id=690503422]
 process_mode = 3
@@ -90,11 +96,23 @@ position = Vector2(-3.8147e-06, -3.8147e-06)
 shape = SubResource("CircleShape2D_7h34c")
 debug_color = Color(0.745, 0.337, 0.804, 0.072)
 
-[node name="Pack" type="CanvasGroup" parent="." unique_id=1040141046]
+[node name="JumpSound" type="AudioStreamPlayer2D" parent="." unique_id=110722114]
+stream = ExtResource("7_e1r3o")
+
+[node name="Icon" type="Sprite2D" parent="." unique_id=2066137876]
+light_mask = 0
+z_index = 10
+z_as_relative = false
+position = Vector2(-7.1054274e-15, 1.1920929e-07)
+scale = Vector2(0.271667, 0.271667)
+texture = ExtResource("8_ebl3n")
+script = ExtResource("9_hupws")
+
+[node name="Pack" type="CanvasGroup" parent="." unique_id=334628734]
 visible = false
 scale = Vector2(0.4, 0.4)
 
-[node name="Arrow" type="TextureRect" parent="Pack" unique_id=932353223]
+[node name="Arrow" type="TextureRect" parent="Pack" unique_id=754766565]
 light_mask = 0
 use_parent_material = true
 offset_left = -8.3538
@@ -105,7 +123,7 @@ rotation = -1.57186
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_nd8k5")
 
-[node name="Cnt" type="BoxContainer" parent="Pack" unique_id=628535129]
+[node name="Cnt" type="BoxContainer" parent="Pack" unique_id=1163209786]
 light_mask = 0
 offset_left = -180.0
 offset_top = -45.0
@@ -113,7 +131,7 @@ offset_right = 182.0
 offset_bottom = -13.0
 alignment = 1
 
-[node name="Button" type="Button" parent="Pack/Cnt" unique_id=2075176280]
+[node name="Button" type="Button" parent="Pack/Cnt" unique_id=1685285]
 light_mask = 0
 visibility_layer = 1024
 texture_filter = 2
@@ -122,45 +140,33 @@ layout_mode = 2
 size_flags_stretch_ratio = 0.0
 layout_direction = 1
 focus_mode = 0
-theme = SubResource("Theme_iavdl")
+theme = SubResource("Theme_ebl3n")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
 theme_override_colors/font_focus_color = Color(0, 0, 0, 1)
 theme_override_colors/font_pressed_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_color = Color(0, 0, 0, 1)
 theme_override_colors/font_hover_pressed_color = Color(0, 0, 0, 1)
-theme_override_styles/normal = SubResource("StyleBoxFlat_pwch7")
-theme_override_styles/pressed = SubResource("StyleBoxFlat_pwch7")
-theme_override_styles/hover = SubResource("StyleBoxFlat_t8kem")
-theme_override_styles/focus = SubResource("StyleBoxFlat_pwch7")
+theme_override_styles/normal = SubResource("StyleBoxFlat_hupws")
+theme_override_styles/pressed = SubResource("StyleBoxFlat_hupws")
+theme_override_styles/hover = SubResource("StyleBoxFlat_2m81j")
+theme_override_styles/focus = SubResource("StyleBoxFlat_hupws")
+shortcut = SubResource("Shortcut_iece7")
+shortcut_in_tooltip = false
 text = "Inspect"
 icon = ExtResource("5_hupws")
 text_overrun_behavior = 1
 clip_text = true
 expand_icon = true
 
-[node name="Dots" type="TextureRect" parent="Pack/Cnt/Button" unique_id=1637509118]
+[node name="Dots" type="TextureRect" parent="Pack" unique_id=1995435141]
 light_mask = 0
-layout_mode = 0
-offset_left = 4.0
-offset_top = -4.9999924
-offset_right = 83.999985
-offset_bottom = 74.99999
-scale = Vector2(0.5, 0.5)
+offset_left = -15.0
+offset_top = -40.0
+offset_right = 17.5
+offset_bottom = -8.0
 texture = ExtResource("6_2m81j")
 expand_mode = 1
-
-[node name="JumpSound" type="AudioStreamPlayer2D" parent="." unique_id=110722114]
-stream = ExtResource("7_e1r3o")
-bus = &"EnvSFX"
-
-[node name="Icon" type="Sprite2D" parent="." unique_id=2066137876]
-light_mask = 0
-z_index = 10
-z_as_relative = false
-position = Vector2(-7.1054274e-15, 1.1920929e-07)
-scale = Vector2(0.271667, 0.271667)
-texture = ExtResource("8_ebl3n")
-script = ExtResource("9_hupws")
+stretch_mode = 4
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

@@ -1,18 +1,121 @@
+@tool
 extends CanvasLayer
 
-@export var DiaryEntries: Dictionary
+@export_tool_button("Next Page", "PageNext") var next_page_btn: Callable = next_page_editor
+@export_tool_button("Previous Page", "PagePrevious") var prev_page_btn: Callable = prev_page_editor
+
+@export var diary_entries: Dictionary[String, String]:
+	set(value):
+		diary_entries = value
+
+		if Engine.is_editor_hint() and is_node_ready():
+			save_entries_to_json()
+			update_dropdown_list()
+
+@export_enum("Fail") var edit_entry_id: String:
+	set(value):
+		edit_entry_id = value
+		load_entry_for_editor()
+
+@export_multiline var edit_entry_text: String:
+	set(value):
+		edit_entry_text = value
+		update_editor_preview()
+
+@export_tool_button("Save Entry", "Save") var save_btn: Callable = save_entry_for_editor
+
+var entry_dropdown_list: String = ""
 var stage: String
 var current_pages: Array[String]
 var page_index: int = 0
 var page_day: int = 0
 @onready var page_indicator: PanelContainer = $PageIndicator
+@onready var text_l: RichTextLabel = %TextL
+@onready var text_r: RichTextLabel = %TextR
+
+
+func _validate_property(property: Dictionary) -> void:
+	if property.name == "edit_entry_id":
+		property["hint_string"] = entry_dropdown_list
 
 
 func _ready() -> void:
+	if Engine.is_editor_hint():
+		load_entries()
+		load_entry_for_editor()
+		return
+
 	$Close.icon = Controller.get_scheme().CancelIcon
 	$Select.icon = Controller.get_scheme().ConfirmIcon
 	diary_load_day_list()
 	root()
+
+
+func update_dropdown_list() -> void:
+	var keys: Array = diary_entries.keys()
+	var string_keys: Array[String] = []
+
+	for key: Variant in keys:
+		string_keys.append(str(key))
+
+	entry_dropdown_list = ",".join(string_keys)
+	notify_property_list_changed()
+
+
+func format_entry_text(text: String) -> String:
+	if not text.ends_with('\n'):
+		text += '\n'
+
+	return text + "~~~~~~\n"
+
+
+func load_entry_for_editor() -> void:
+	if diary_entries.is_empty():
+		load_entries()
+
+	if diary_entries.has(edit_entry_id):
+		edit_entry_text = diary_entries[edit_entry_id]
+
+	update_editor_preview()
+
+
+func update_editor_preview() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready():
+		return
+
+	$Pages.show()
+	current_pages = split_by_pages(format_entry_text(edit_entry_text))
+	display_text(current_pages)
+
+
+func next_page_editor() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready():
+		return
+
+	if page_index + 2 < current_pages.size():
+		page_index += 2
+		display_text(current_pages)
+
+
+func prev_page_editor() -> void:
+	if not Engine.is_editor_hint() or not is_node_ready():
+		return
+
+	if page_index - 2 >= 0:
+		page_index -= 2
+		display_text(current_pages)
+
+
+func save_entries_to_json() -> void:
+	var file: FileAccess = FileAccess.open("res://database/Text/Journal/Diary.json", FileAccess.WRITE)
+	file.store_string(JSON.stringify(diary_entries, "\t"))
+	file.close()
+
+
+func save_entry_for_editor() -> void:
+	diary_entries[edit_entry_id] = edit_entry_text
+	save_entries_to_json()
+	update_dropdown_list()
 
 
 func root() -> void:
@@ -25,15 +128,15 @@ func root() -> void:
 	$List.hide()
 	$RootMenu/Diary.grab_focus()
 	page_indicator.hide()
-	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
+	var t: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
 	t.tween_property($Close, "position:x", 200, 0.3)
 	t.tween_property($Journal, "position", Vector2(600, 0), 1).from(Vector2(600, 2000))
 	t.tween_property($RootMenu, "modulate", Color.WHITE, 0.6).from(Color.TRANSPARENT)
 	t.tween_property($RootMenu, "position:x", 254, 0.6).from(400)
 	$Select.show()
-	if get_tree().root.get_node_or_null("MainMenu") != null:
-		t.tween_property(get_tree().root.get_node("MainMenu"), "offset:x", 0, 0.5)
-		t.tween_property(Global.camera, "offset:x", 100, 0.5)
+
+	t.tween_property(get_tree().root.get_node("MainMenu"), "offset:x", 0, 0.5)
+	t.tween_property(Global.camera, "offset:x", 100, 0.5)
 
 
 func diary() -> void:
@@ -46,12 +149,13 @@ func diary() -> void:
 	$List.show()
 	$Select.hide()
 	page_indicator.show()
-	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
+	var t: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
 	t.tween_property($Close, "position:x", 320, 0.5).set_ease(Tween.EASE_OUT)
 	t.tween_property($List, "position:x", 0, 0.5).from(-300)
-	if get_tree().root.get_node_or_null("MainMenu") != null:
-		t.tween_property(get_tree().root.get_node("MainMenu"), "offset:x", -165, 0.5)
-		t.tween_property(Global.camera, "offset:x", 150, 0.5)
+
+	t.tween_property(get_tree().root.get_node("MainMenu"), "offset:x", -165, 0.5)
+	t.tween_property(Global.camera, "offset:x", 150, 0.5)
+
 	$List/List.get_children()[-1].grab_focus()
 
 
@@ -64,29 +168,32 @@ func add_test_entries() -> void:
 
 func diary_load_day_list() -> void:
 	if Event.diary.is_empty(): add_test_entries()
-	for i in Event.diary:
+
+	for i: int in Event.diary:
 		var dub: Button = $List/List/Listing0.duplicate()
 		dub.name = str(i)
 		dub.text = "%s %s" % [Query.get_mmm(Query.get_month(i)), Query.get_date_day(i)]
 		$List/List.add_child(dub)
 		dub.show()
+
 	$List/List/Listing0.queue_free()
 
 
 func diary_focus(day: int) -> void:
 	var text: String = Query.get_month_name(Query.get_month(day)) + " " + Query.get_date_day(day) + "\n\n"
-	for i in Event.diary[day]:
-		text += DiaryEntries.get(i)
-		#text += "\n~~~~~~\n"
+
+	for i: Variant in Event.diary[day]:
+		text += format_entry_text(diary_entries.get(i, ""))
 
 	if page_day > day:
 		current_pages = split_by_pages(text)
+
 	await handle_page_turning(page_day, day, page_index, current_pages.size())
 	current_pages = split_by_pages(text)
 	page_day = day
 
-	%TextL.text = ""
-	%TextR.text = ""
+	text_l.text = ""
+	text_r.text = ""
 	page_index = 0
 	display_text(current_pages)
 
@@ -98,12 +205,13 @@ func handle_page_turning(old_day: int, new_day: int, old_index: int, old_day_pag
 	var L: int = min(new_day, old_day)
 	var R: int = max(new_day, old_day)
 
-	for i in range(L, R):
+	for i: int in range(L, R):
 		if Event.diary.has(i):
 			prints("day i", i)
 			if i == L and old_day_page_count > 1:
-				for j in range(old_index / 2, old_day_page_count / 2):
+				for j: int in range(old_index / 2, old_day_page_count / 2):
 					prints("	j", j)
+
 					if going_right: turn_page_R()
 					else: turn_page_L()
 					await Event.wait(0.1, false)
@@ -118,16 +226,17 @@ func handle_page_turning(old_day: int, new_day: int, old_index: int, old_day_pag
 
 func split_by_pages(text: String) -> Array[String]:
 	text = insert_images(text)
-	const page_line_count := 18
-	var split_by_line := text.split('\n')
+	const page_line_count: int = 18
+	var split_by_line: PackedStringArray = text.split('\n')
 	var result: Array[String]
 	var page_count: int = ceil(float(split_by_line.size()) / float(page_line_count))
 	page_count += text.count("[/img]")
 	page_count += text.count("[page]")
 	var line: int = 0
-	for i in page_count:
+
+	for i: int in page_count:
 		result.append("")
-		for j in page_line_count:
+		for j: int in page_line_count:
 			if line >= split_by_line.size():
 				break
 			elif "[page]" in split_by_line[line]:
@@ -136,27 +245,41 @@ func split_by_pages(text: String) -> Array[String]:
 			else:
 				result[i] += split_by_line[line] + "\n"
 				line += 1
+
 				if "/img" in split_by_line[line - 1]:
 					break
-	while result.back().is_empty() and not result.is_empty():
-		result.erase(result.back())
+
+	while not result.is_empty() and result.back().is_empty():
+		result.pop_back()
+
 	return result
 
 
 func display_text(text: Array[String] = current_pages, left_page: int = page_index) -> void:
 	var pageL: int = left_page
 	var pageR: int = left_page + 1
-	if current_pages.size() > pageL:
-		%TextL.text = current_pages[pageL]
-		if current_pages.size() > pageR:
-			%TextR.text = current_pages[pageR]
+
+	if text.size() > pageL:
+		text_l.text = text_replacement(text[pageL])
 	elif page_index > 0:
-		display_text(current_pages, left_page - 1)
-	%PageIndex.text = "%d/%d" % [ceil(page_index / 2) + 1, max(ceil(current_pages.size() / 2), 1)]
+		display_text(text, left_page - 1)
+
+	if text.size() > pageR:
+		text_r.text = text_replacement(text[pageR])
+	else: text_r.text = ""
+
+	%PageIndex.text = "%d/%d" % [ceil(page_index / 2) + 1, max(ceil(text.size() / 2), 1)]
+
+
+func text_replacement(input: String) -> String:
+	if Engine.is_editor_hint():
+		return input.replace('{{alcine}}', "Alcine")
+
+	return input.replace('{{alcine}}', Global.alcine)
 
 
 func turn_page_R() -> void:
-	const time := 0.3
+	const time: float = 0.3
 	var L: TextureRect = $Pages/PageL.duplicate()
 	var R: TextureRect = $Pages/PageR.duplicate()
 	$Pages.add_child(R)
@@ -164,7 +287,7 @@ func turn_page_R() -> void:
 	R.z_index = 5
 	L.z_index = 2
 
-	var t := create_tween()
+	var t: Tween = create_tween()
 	t.tween_property(R, ^"scale:x", 0, time / 2).from(1)
 	await Event.wait(time / 2, false)
 
@@ -181,7 +304,7 @@ func turn_page_R() -> void:
 
 
 func turn_page_L() -> void:
-	const time := 0.3
+	const time: float = 0.3
 	var L: TextureRect = $Pages/PageL.duplicate()
 	var R: TextureRect = $Pages/PageR.duplicate()
 	$Pages.add_child(R)
@@ -189,7 +312,7 @@ func turn_page_L() -> void:
 	R.z_index = 2
 	L.z_index = 5
 
-	var t := create_tween()
+	var t: Tween = create_tween()
 	t.tween_property(L, ^"scale:x", 0, time / 2).from(1)
 	await Event.wait(time / 2, false)
 
@@ -206,8 +329,7 @@ func turn_page_L() -> void:
 
 
 func close() -> void:
-	if get_tree().root.get_node_or_null("MainMenu") != null:
-		get_tree().root.get_node_or_null("MainMenu")._root()
+	get_tree().root.get_node("MainMenu")._root()
 	queue_free()
 
 
@@ -216,6 +338,7 @@ func _on_back_pressed() -> void:
 	match stage:
 		"root":
 			close()
+
 		"diary":
 			root()
 
@@ -226,21 +349,24 @@ func insert_images(text: String) -> String:
 
 
 func _input(_event: InputEvent) -> void:
+	if Engine.is_editor_hint(): return
+
 	$Close.icon = Controller.get_scheme().CancelIcon
 	$Select.icon = Controller.get_scheme().ConfirmIcon
 
 	if stage == "diary":
 		if Input.is_action_just_pressed("ui_right"):
 			if page_index + 2 >= current_pages.size():
-				var foc := get_viewport().gui_get_focus_owner()
+				var foc: Control = get_viewport().gui_get_focus_owner()
 				foc.find_next_valid_focus().grab_focus()
 			else:
 				page_index += 2
 				turn_page_R()
 				display_text()
+
 		if Input.is_action_just_pressed("ui_left"):
 			if page_index - 2 < 0:
-				var foc := get_viewport().gui_get_focus_owner()
+				var foc: Control = get_viewport().gui_get_focus_owner()
 				foc.find_prev_valid_focus().grab_focus()
 			else:
 				page_index -= 2
@@ -249,10 +375,21 @@ func _input(_event: InputEvent) -> void:
 
 
 func load_entries() -> void:
-	DiaryEntries = YAMLParser.load_yaml_file("res://database/Text/Journal/Diary.yaml")
-	print(DiaryEntries)
+	if not FileAccess.file_exists("res://database/Text/Journal/Diary.json"):
+		return
+
+	var file: FileAccess = FileAccess.open("res://database/Text/Journal/Diary.json", FileAccess.READ)
+	var parsed: Variant = JSON.parse_string(file.get_as_text())
+
+	if parsed is Dictionary:
+		diary_entries.clear()
+		for key: Variant in parsed:
+			diary_entries[str(key)] = str(parsed[key])
+
+	if Engine.is_editor_hint():
+		update_dropdown_list()
 
 
 func diary_focus_button() -> void:
-	var foc := get_viewport().gui_get_focus_owner()
+	var foc: Control = get_viewport().gui_get_focus_owner()
 	diary_focus(int(foc.name))

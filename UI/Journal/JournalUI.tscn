@@ -187,6 +187,168 @@ corner_radius_bottom_left = 24
 process_mode = 3
 layer = 2
 script = ExtResource("1_ttv6j")
+diary_entries = Dictionary[String, String]({
+"baa": "This will now
+go on
+a bit
+longer
+so it can
+overflow to the other
+page
+",
+"bee": "Another test entry 
+to see if this thing 
+really works
+
+Also making sure 
+newlines work properly
+[b]bold text[/b]
+[img width=64]res://art/Icons/Party/Mira.png[/img]
+It will automatically go to the next page after an image
+hello
+hello
+hello hello hello hello hello
+hello
+
+hello
+hello
+",
+"boo": "As I take boo from the
+bee, the bii explodes.
+It was crazy
+",
+"oct31": "So much has happened today. 
+Feels like this is all a 
+big dream.
+
+I woke up in a strange forest,
+with a weird looking sky. 
+Some of my things were laying 
+around, but this journal was 
+nowhere to be found.
+The place is filled with wild 
+monsters that attack me on 
+sight, but I was able to 
+defend myself using my Aura 
+magic.
+[page]
+In that forest I found an 
+adorable little water spirit, 
+which I named {{alcine}}. 
+They really helped me with 
+their healing magic, It's 
+really something I should 
+learn to do myself.
+
+Together we explored a ruined 
+city. From there I got a good
+view of this place, with it's 
+grid patters in the distance.
+
+It must be so far from my 
+home.
+[page]
+This is a little map I drew, 
+and {{alcine}} doodled on it.
+
+[diary_doodle]AmberelmMap.png[/img]
+Unfortunatly I do not know
+where {{alcine}} is now.
+In that ruined city, out
+of nowhere, a giant rock
+monster attacked us.
+
+It was horrifying, and
+stronger than anything we
+we could handle.
+
+But then at the last moment,
+a human saved me and cut 
+that thing in half like it 
+was nothing!
+[page]
+As I'm writing this, I'm sitting 
+in a camp Daze (the human)
+set up.
+
+Somehow, he found this 
+journal, but a lot of the pages
+are mysteriously missing.
+
+A missing page for every 
+missing memory...
+",
+"oct31_dazesus": "[page]
+Daze took care of my wounds
+and everything, so I am
+thankful, but I'm still not sure
+what it is he wants...
+
+He brushed off a lot of things
+I wanted to ask him."
+})
+edit_entry_id = "oct31"
+edit_entry_text = "So much has happened today. 
+Feels like this is all a 
+big dream.
+
+I woke up in a strange forest,
+with a weird looking sky. 
+Some of my things were laying 
+around, but this journal was 
+nowhere to be found.
+The place is filled with wild 
+monsters that attack me on 
+sight, but I was able to 
+defend myself using my Aura 
+magic.
+[page]
+In that forest I found an 
+adorable little water spirit, 
+which I named {{alcine}}. 
+They really helped me with 
+their healing magic, It's 
+really something I should 
+learn to do myself.
+
+Together we explored a ruined 
+city. From there I got a good
+view of this place, with it's 
+grid patters in the distance.
+
+It must be so far from my 
+home.
+[page]
+This is a little map I drew, 
+and {{alcine}} doodled on it.
+
+[diary_doodle]AmberelmMap.png[/img]
+Unfortunatly I do not know
+where {{alcine}} is now.
+In that ruined city, out
+of nowhere, a giant rock
+monster attacked us.
+
+It was horrifying, and
+stronger than anything we
+we could handle.
+
+But then at the last moment,
+a human saved me and cut 
+that thing in half like it 
+was nothing!
+[page]
+As I'm writing this, I'm sitting 
+in a camp Daze (the human)
+set up.
+
+Somehow, he found this 
+journal, but a lot of the pages
+are mysteriously missing.
+
+A missing page for every 
+missing memory...
+"
 
 [node name="Fader" type="ColorRect" parent="." unique_id=677650292]
 visible = false
@@ -242,37 +404,6 @@ texture = ExtResource("7_5mnlf")
 expand_mode = 1
 stretch_mode = 4
 
-[node name="TextL" type="RichTextLabel" parent="Pages/PageL" unique_id=1600387505]
-unique_name_in_owner = true
-z_index = 1
-layout_mode = 0
-offset_left = 55.0
-offset_top = 48.0
-offset_right = 483.33334
-offset_bottom = 685.77783
-theme = SubResource("Theme_vunfc")
-bbcode_enabled = true
-text = "This journal menu is 
-unfinished.
-
-Maybe check it out another 
-time :)
-
-hello
-hello
-hello
-hello
-hello
-hello
-hello
-hello
-hello
-hello
-hello
-hello"
-scroll_active = false
-autowrap_mode = 0
-
 [node name="Lines" type="TextureRect" parent="Pages/PageL" unique_id=588335738]
 self_modulate = Color(0.2, 0.16486667, 0.132, 0.33333334)
 layout_mode = 0
@@ -283,6 +414,32 @@ offset_bottom = 677.77783
 texture = ExtResource("8_5mnlf")
 expand_mode = 1
 
+[node name="TextL" type="RichTextLabel" parent="Pages/PageL" unique_id=1600387505]
+unique_name_in_owner = true
+z_index = 1
+layout_mode = 0
+offset_left = 55.0
+offset_top = 48.0
+offset_right = 483.33334
+offset_bottom = 685.77783
+theme = SubResource("Theme_vunfc")
+bbcode_enabled = true
+text = "As I'm writing this, I'm sitting 
+in a camp Daze (the human)
+set up.
+
+Somehow, he found this 
+journal, but a lot of the pages
+are mysteriously missing.
+
+A missing page for every 
+missing memory...
+~~~~~~
+
+"
+scroll_active = false
+autowrap_mode = 0
+
 [node name="PageR" type="TextureRect" parent="Pages" unique_id=367926668]
 layout_mode = 0
 offset_left = 491.11115
@@ -292,6 +449,16 @@ texture = ExtResource("7_5mnlf")
 expand_mode = 1
 stretch_mode = 4
 flip_h = true
+
+[node name="Lines" type="TextureRect" parent="Pages/PageR" unique_id=1584633498]
+self_modulate = Color(0.2, 0.16486667, 0.132, 0.33333334)
+layout_mode = 0
+offset_left = 65.55548
+offset_top = -5.5555573
+offset_right = 506.66663
+offset_bottom = 678.889
+texture = ExtResource("8_5mnlf")
+expand_mode = 1
 
 [node name="TextR" type="RichTextLabel" parent="Pages/PageR" unique_id=799535873]
 unique_name_in_owner = true
@@ -304,21 +471,8 @@ offset_bottom = 674.85095
 rotation = -0.0010446366
 theme = SubResource("Theme_vunfc")
 bbcode_enabled = true
-text = "Yes, the mechanic in the title 
-of the game is not actually 
-implemented yet, go figure."
 scroll_active = false
 autowrap_mode = 0
-
-[node name="Lines" type="TextureRect" parent="Pages/PageR" unique_id=1584633498]
-self_modulate = Color(0.2, 0.16486667, 0.132, 0.33333334)
-layout_mode = 0
-offset_left = 65.55551
-offset_top = -5.5555534
-offset_right = 506.66666
-offset_bottom = 678.889
-texture = ExtResource("8_5mnlf")
-expand_mode = 1
 
 [node name="RootMenu" type="VBoxContainer" parent="." unique_id=1463312290]
 visible = false
@@ -428,7 +582,7 @@ unique_name_in_owner = true
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_w8w16")
 theme_override_font_sizes/font_size = 32
-text = "1/5"
+text = "3/2"
 horizontal_alignment = 1
 
 [connection signal="pressed" from="RootMenu/Diary" to="." method="diary"]

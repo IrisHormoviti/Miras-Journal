@@ -301,9 +301,9 @@ func disappear(also_hide_bubble := false) -> void:
 			t.tween_property(pack, "self_modulate", Color(1, 1, 1, 0), 0.1)
 			t.tween_property(button, "custom_minimum_size:x", 48, 0.1)
 			await get_tree().create_timer(0.1).timeout
-			pack.hide()
-			dots.hide()
-			button.hide()
+			if pack: pack.hide()
+			if dots: dots.hide()
+			if button: button.hide()
 
 		z_index = 0
 		animating = false

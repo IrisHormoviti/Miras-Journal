@@ -15,7 +15,7 @@ shader = ExtResource("1_s7gua")
 [sub_resource type="CircleShape2D" id="CircleShape2D_tykot"]
 radius = 12.0
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_5iklx"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_tykot"]
 content_margin_left = 8.0
 bg_color = Color(0.160784, 0.160784, 0.160784, 1)
 border_width_left = 12
@@ -28,7 +28,7 @@ corner_radius_top_right = 32
 corner_radius_bottom_right = 32
 corner_radius_bottom_left = 26
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_jh1f3"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ibccg"]
 content_margin_left = 8.0
 bg_color = Color(0.160784, 0.160784, 0.160784, 1)
 border_width_left = 12
@@ -46,9 +46,9 @@ default_font = ExtResource("4_ipu4p")
 default_font_size = 15
 Button/colors/font_outline_color = Color(0, 0, 0, 1)
 Button/constants/outline_size = 1
-Button/styles/focus = SubResource("StyleBoxFlat_5iklx")
-Button/styles/hover = SubResource("StyleBoxFlat_5iklx")
-Button/styles/pressed = SubResource("StyleBoxFlat_jh1f3")
+Button/styles/focus = SubResource("StyleBoxFlat_tykot")
+Button/styles/hover = SubResource("StyleBoxFlat_tykot")
+Button/styles/pressed = SubResource("StyleBoxFlat_ibccg")
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_pwch7"]
 content_margin_left = 6.0
@@ -102,10 +102,11 @@ scale = Vector2(0.271667, 0.271667)
 texture = ExtResource("7_tykot")
 script = ExtResource("8_ibccg")
 
-[node name="Pack" type="CanvasGroup" parent="." unique_id=1040141046]
+[node name="Pack" type="CanvasGroup" parent="." unique_id=1365948381]
+visible = false
 scale = Vector2(0.4, 0.4)
 
-[node name="Arrow" type="TextureRect" parent="Pack" unique_id=932353223]
+[node name="Arrow" type="TextureRect" parent="Pack" unique_id=1434188850]
 light_mask = 0
 use_parent_material = true
 offset_left = -8.3538
@@ -116,7 +117,7 @@ rotation = -1.57186
 scale = Vector2(0.2, 0.2)
 texture = ExtResource("3_l1hkc")
 
-[node name="Cnt" type="BoxContainer" parent="Pack" unique_id=628535129]
+[node name="Cnt" type="BoxContainer" parent="Pack" unique_id=39798902]
 light_mask = 0
 offset_left = -180.0
 offset_top = -45.0
@@ -124,7 +125,7 @@ offset_right = 182.0
 offset_bottom = -13.0
 alignment = 1
 
-[node name="Button" type="Button" parent="Pack/Cnt" unique_id=2075176280]
+[node name="Button" type="Button" parent="Pack/Cnt" unique_id=416885543]
 light_mask = 0
 visibility_layer = 1024
 texture_filter = 2
@@ -151,7 +152,7 @@ text_overrun_behavior = 1
 clip_text = true
 expand_icon = true
 
-[node name="Dots" type="TextureRect" parent="Pack" unique_id=1637509118]
+[node name="Dots" type="TextureRect" parent="Pack" unique_id=2076468754]
 light_mask = 0
 offset_left = -15.0
 offset_top = -40.0
