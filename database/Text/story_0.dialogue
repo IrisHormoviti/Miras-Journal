@@ -472,10 +472,11 @@ Placeholder description: Mira then faints.
 => END
 
 ~ daze_introduction
+do add_to_diary("oct31")
 I open my eyes and see im somewhere else. Is this a tent?
 I get up and look around. My clothes are all ripped and I have a bandage on my left arm.
 Ow, it hurts quite a bit to move it around.
-$> Query.find_member("Daze").FirstName = ""
+$> Party.get_member("Daze").FirstName = ""
 Daze.Neutral: Oh Ms. Levenor, you're finally up!
 A human..?
 I'm not that sure what to say, and I just stare silent for a bit. 
@@ -488,11 +489,13 @@ What do I ask?
 - Who is he?
 	Mira.Neutral: So... who are you?
 	Daze.Neutral: The name is Daze.
-	$> Query.find_member("Daze").FirstName = "Daze"
+	$> Party.get_member("Daze").FirstName = "Daze"
 	Daze.Neutral: I'm from Elmethin, a city to the north of the Capital, but I've been traveling around for a while now.
 	Mira.Neutral: A traveller? Where are you going?
 	Daze.Neutral: That's a long story... and doesn't really matter.
 	Daze.Neutral: What matters is I was seprated from my comanions while traveling.
+	Huh.
+	do add_to_diary("oct31_dazesus")
 - Where are we?
 	Mira.Neutral: do you have any idea where we are?
 	Daze.Neutral: I'm not so sure... I don't remember exactly how I got here.
@@ -506,19 +509,8 @@ What do I ask?
 	Huh? What does he want to show me?
 	Daze.Neutral: Any other questions?
 - How does he know your name?
-	Mira.Neutral: How did you know my name? Have we met before?
-	Daze.Neutral: Oh, it's because of this...
-	He picks up a book next to him... wait that's my journal!
-	I quickly take it from him.
-	Mira.Neutral: Hey! Where did you even find this?!
-	Mira.Neutral: You can't just read people's personal Journals!
-	Daze.Neutral: I'm sorry. It was the only way I could know who you are, since you were unconscious...
-	Mira.Neutral: How much did you read!?
-	Daze.Neutral: Only a few pages, but a lot of the pages also seem to have been ripped out of it.
-	Mira.Neutral: Wait what? How did that happen?
-	Daze.Neutral: I don't know, this is how I found it.
-	It's true, many of the pages seem ripped out.
-	I should take a closer look later.
+	Daze.Neutral: Oh, it's because of this.
+	=>< get_journal 
 - About the monster...
 	Mira.Neutral: How did you take on that monster so easily?
 	Daze.Neutral: Oh it was already quite weakened, I simply finished it off.
@@ -548,36 +540,56 @@ What do I ask?
 	Mira.Neutral: Thank you, I was starving...
 - Nothing else to ask
 	Mira.Neutral: I think that all I had to ask. Thanks.
-	if Flags.get("DazeQuestions") == 0:
+	if flag_int("DazeQuestions") == 0:
 		Daze.Neutral: What is all? You didn't ask anything!
 		Mira.Neutral: Oh I didn't, did I?
 		Mira.Neutral: Sorry, I forgot what I wanted to ask.
 		Daze.Neutral: ...
-	if Flags.get("DazeQuestions") == 1:
+	if flag_int("DazeQuestions") == 1:
 		Daze.Neutral: That was... one question...
 		Mira.Neutral: Yeah, that's all I needed.
 		Daze.Neutral: Understood...
-	if Flags.get("DazeQuestions") == 2:
+	if flag_int("DazeQuestions") == 2:
 		Daze.Neutral: That was just two question...
 		Mira.Neutral: I guess I didn't have as much on my mind as I expected, hehe.
 	=> daze_questions_done
-$> Event.Flags.set("DazeQuestions", Event.Flags.get("DazeQuestions")+1)
+$> add_flag("DazeQuestions", flag_int("DazeQuestions") + 1)
 => daze_questions
 
+~ get_journal
+He picks up a book next to him... wait that's my journal!
+I quickly take it from him.
+[hide]
+do add_item("Journal", &"Key")
+Mira.Neutral: Hey! Where did you even find this?!
+Mira.Neutral: You can't just read people's personal Journals!
+Daze.Neutral: I'm sorry. It was the only way I could know who you are, since you were unconscious...
+Mira.Neutral: How much did you read!?
+Daze.Neutral: Only a few pages, but a lot of the pages also seem to have been ripped out of it.
+Mira.Neutral: Wait what? How did that happen?
+Daze.Neutral: I don't know, this is how I found it.
+It's true, many of the pages seem ripped out.
+I should take a closer look later.
+=> END
+
 ~ daze_questions_done
+if not check_item("Journal"):
+	Daze.Neutral: By the way, I belive this is yours.
+	=>< get_journal
 Mira.Neutral: So what's the plan now?
 Daze.Neutral: You stay here and rest now. 
 Daze.Neutral: I've been wanting to explore this place further, but... let's leave that for tommorow.
-Daze.Neutral: I'll go scout around here for monsters.[br]Just stay here and rest while I'm away, alright?
+Daze.Neutral: I'll go scout around here for monsters.
+Daze.Neutral: Just stay here and rest while I'm away, alright?
 Mira.Neutral: Alright.
-if Query.find_member("Daze").FirstName != "Daze":
+if Party.get_member("Daze").FirstName != "Daze":
 	Mira.Neutral: Oh by the way, I didn't ask. What's your name?
-	if Flags.get("DazeQuestions") < 3:
+	if flag_int("DazeQuestions") < 3:
 		Daze.Neutral: Oh, so you did have more things to ask.
 	Daze.Neutral: It's Daze.
-	$> Query.find_member("Daze").FirstName = "Daze"
+	$> Party.get_member("Daze").FirstName = "Daze"
 	Mira.Neutral: Daze...
 	Mira.Neutral: Is that a first or last name?
 	Daze.Neutral: It's... more of a nickname.
-	Mira.Neutral: Oh, um, got it.
+	Mira.Neutral: Oh, got it.
 => END

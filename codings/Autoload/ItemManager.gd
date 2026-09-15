@@ -33,7 +33,12 @@ func get_animation(icon: Texture2D, named: String, pickup_anim := true) -> void:
 	label.text_overrun_behavior = TextServer.OVERRUN_TRIM_CHAR
 	panel.size.x = 69
 	await Event.wait()
-	var player_pos: Vector2 = Global.player.get_global_transform_with_canvas().origin - Vector2(48, 0)
+
+	var player_pos: Vector2
+	if Global.player:
+		player_pos = Global.player.get_global_transform_with_canvas().origin - Vector2(48, 0)
+	else:
+		player_pos = get_window().get_visible_rect().get_center()
 
 	if is_instance_valid(t): t.kill()
 	t = create_tween()
@@ -127,7 +132,7 @@ func add_item(item_input: Variant, type: StringName = &"", animate := true, play
 
 	if animate:
 		print_rich("[color=cyan]Added item ", to_add.Name, " of type ", to_add.ItemType)
-		get_animation(to_add.Icon, to_add.Name, player_animate)
+		await get_animation(to_add.Icon, to_add.Name, player_animate)
 
 
 func remove_item(item_input: Variant, type: StringName = &"") -> void:

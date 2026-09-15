@@ -1,4 +1,4 @@
-~ folded_paper
+~ FoldedPaper
 
 do fade_txt_background()
 I unfold the paper.
@@ -6,7 +6,7 @@ There are some strange symbols written on its one side.
 I used the other side earlier to write on.
 => END
 
-~ pen_case
+~ PenCase
 
 do fade_txt_background()
 I look inside the case.

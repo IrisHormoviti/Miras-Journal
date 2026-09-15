@@ -68,28 +68,28 @@ fill = 1
 fill_from = Vector2(0.512821, 0.42906)
 fill_to = Vector2(1, 1)
 
-[sub_resource type="Resource" id="Resource_2ig8e"]
+[sub_resource type="Resource" id="Resource_nlfpl"]
 script = ExtResource("9_nlfpl")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_taf6h"]
 size = Vector2(10, 11)
 
-[sub_resource type="Resource" id="Resource_4ygg4"]
+[sub_resource type="Resource" id="Resource_2ig8e"]
 script = ExtResource("9_nlfpl")
 
-[sub_resource type="Resource" id="Resource_n1bc5"]
+[sub_resource type="Resource" id="Resource_4ygg4"]
 script = ExtResource("9_nlfpl")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ig8e"]
 size = Vector2(41, 14)
 
+[sub_resource type="Resource" id="Resource_n1bc5"]
+script = ExtResource("9_nlfpl")
+
 [sub_resource type="Resource" id="Resource_7edst"]
 script = ExtResource("9_nlfpl")
 
 [sub_resource type="Resource" id="Resource_4a3rh"]
-script = ExtResource("9_nlfpl")
-
-[sub_resource type="Resource" id="Resource_sk1io"]
 script = ExtResource("9_nlfpl")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nlfpl"]
@@ -117,10 +117,10 @@ fill_to = Vector2(0.0769231, 0.0384615)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6we5s"]
 size = Vector2(2, 19)
 
-[sub_resource type="Resource" id="Resource_c15y1"]
+[sub_resource type="Resource" id="Resource_sk1io"]
 script = ExtResource("9_nlfpl")
 
-[sub_resource type="Resource" id="Resource_oppqm"]
+[sub_resource type="Resource" id="Resource_c15y1"]
 script = ExtResource("9_nlfpl")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5udm"]
@@ -404,7 +404,7 @@ script = ExtResource("12_7noep")
 [node name="AsteriaOutsideHouse" parent="NPCs" unique_id=1218397049 instance=ExtResource("16_s1pqb")]
 z_index = 0
 position = Vector2(412, 221)
-facing = SubResource("Resource_2ig8e")
+facing = SubResource("Resource_nlfpl")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -437,7 +437,7 @@ offset = Vector2(0, -10)
 
 [node name="AsteriaPlaza" parent="NPCs" unique_id=1605547350 instance=ExtResource("16_s1pqb")]
 position = Vector2(500, 666)
-facing = SubResource("Resource_4ygg4")
+facing = SubResource("Resource_2ig8e")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -472,7 +472,7 @@ offset = Vector2(0, -10)
 [node name="Maple" parent="NPCs" unique_id=1141217796 instance=ExtResource("16_s1pqb")]
 z_index = 4
 position = Vector2(715, 505)
-facing = SubResource("Resource_n1bc5")
+facing = SubResource("Resource_4ygg4")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -586,6 +586,7 @@ chair_faces = Array[String](["L"])
 
 [node name="EvTavern" parent="Events" unique_id=1297631556 instance=ExtResource("26_vxpye")]
 position = Vector2(365, 973)
+TriggerSize = Vector2i(50, 120)
 Flag = "day:3+time:2"
 FlagIsName = false
 FlagShouldBe = true
@@ -605,7 +606,7 @@ metadata/_edit_group_ = true
 [node name="AlcineExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1280122638]
 position = Vector2(103, 157)
 script = ExtResource("21_p415d")
-facing = SubResource("Resource_7edst")
+facing = SubResource("Resource_n1bc5")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -619,7 +620,7 @@ animation = &"IdleDown"
 [node name="AsteriaExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1923902325]
 position = Vector2(74, 146)
 script = ExtResource("21_p415d")
-facing = SubResource("Resource_4a3rh")
+facing = SubResource("Resource_7edst")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -633,7 +634,7 @@ animation = &"IdleDown"
 [node name="DazeExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1204737540]
 position = Vector2(114, 125)
 script = ExtResource("21_p415d")
-facing = SubResource("Resource_sk1io")
+facing = SubResource("Resource_4a3rh")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -734,6 +735,7 @@ title = "gather_pyrson"
 return_control = false
 
 [node name="HomeBuilding" type="Node2D" parent="." unique_id=1028987970]
+visible = false
 z_index = 2
 y_sort_enabled = true
 texture_filter = 1
@@ -788,6 +790,7 @@ ToCamera = 3
 Position = Vector2(750, -524)
 
 [node name="HomeBuilding-DazeRoom" type="Node2D" parent="." unique_id=1562588733]
+visible = false
 z_index = 2
 y_sort_enabled = true
 texture_filter = 1
@@ -814,6 +817,7 @@ tile_map_data = PackedByteArray("AAAaAOz/AwABAAsAAAA=")
 tile_set = ExtResource("27_u6p7b")
 
 [node name="HomeBuilding-Kitchen" type="Node2D" parent="." unique_id=189478252]
+visible = false
 z_index = 2
 texture_filter = 1
 script = ExtResource("3_aq7mb")
@@ -829,6 +833,7 @@ tile_map_data = PackedByteArray("AAARABAAAQADAAIAAAARABUAAQADAAIAAAASABAAAQADAAI
 tile_set = ExtResource("27_u6p7b")
 
 [node name="HomeBuilding-MyRoom" type="Node2D" parent="." unique_id=1096791357]
+visible = false
 z_index = 2
 y_sort_enabled = true
 texture_filter = 1
@@ -877,7 +882,7 @@ flag = "LampInMirasRoom"
 
 [node name="RoomMira" parent="HomeBuilding-MyRoom" unique_id=344934070 instance=ExtResource("16_s1pqb")]
 position = Vector2(-98, 368)
-facing = SubResource("Resource_c15y1")
+facing = SubResource("Resource_sk1io")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -900,6 +905,7 @@ title = "sleep_home"
 Height = 6
 
 [node name="HomeBuilding-UpperFloor" type="Node2D" parent="." unique_id=455964367]
+visible = false
 z_index = 2
 y_sort_enabled = true
 texture_filter = 1
@@ -983,7 +989,7 @@ tile_set = ExtResource("27_u6p7b")
 [node name="Linde" parent="LindeHouse" unique_id=41972483 instance=ExtResource("16_s1pqb")]
 z_index = 0
 position = Vector2(-175, 555)
-facing = SubResource("Resource_oppqm")
+facing = SubResource("Resource_c15y1")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)

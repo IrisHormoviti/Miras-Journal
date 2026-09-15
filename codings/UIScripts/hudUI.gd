@@ -893,11 +893,11 @@ func cmd(cmd_text := "") -> void:
 				var text: String = cmd_text.replace("/item ", "")
 				var split := text.split(":")
 
-				if split.size() < 2:
-					Global.toast("Item type needed")
-					return
+				#if split.size() < 2:
+					#Global.toast("Item type needed")
+					#return
 
-				Item.add_item(split[0], split[1])
+				Item.add_item(split[0], split[1] if split.size() > 1 else "")
 			elif cmd_text.begins_with("/itemrm"):
 				var text: String = cmd_text.replace("/itemrm ", "")
 				var split := text.split(":")

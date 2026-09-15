@@ -1425,7 +1425,7 @@ func StoneGuardian3() -> void:
 	Loader.get_node("Can").layer = 3
 	Party.set_to(["Mira"])
 	Bt.victory(true)
-	await Loader.battle_end
+	await Global.battle_end
 	Event.add_flag("BeatStoneGuardian")
 
 

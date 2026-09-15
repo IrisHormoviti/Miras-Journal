@@ -1684,7 +1684,7 @@ shape = SubResource("RectangleShape2D_thjc7")
 
 [node name="EvSGfindBunker" parent="." unique_id=1389759721 instance=ExtResource("26_yhh0x")]
 position = Vector2(315, -1282)
-scale = Vector2(4.71253, 0.310116)
+TriggerSize = Vector2i(261, 25)
 AddFlag = true
 TextFile = "story_2"
 TextNode = "sg_find_bunker"

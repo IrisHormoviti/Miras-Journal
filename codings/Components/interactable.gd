@@ -1,5 +1,5 @@
 @tool
-@icon("res://art/Icons/Editor/Interactable.png")
+@icon("res://art/Icons/Editor/interactable.png")
 extends Area2D
 class_name Interactable
 

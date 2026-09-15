@@ -1,0 +1,19 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://ec08rw8p7dhg"]
+
+[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_xa4bt"]
+[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="2_n5i0e"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xa4bt"]
+resource_local_to_scene = true
+atlas = ExtResource("1_xa4bt")
+region = Rect2(0, 72, 18, 18)
+filter_clip = true
+
+[resource]
+script = ExtResource("2_n5i0e")
+Name = "Journal"
+Description = "\"Belongs to Mira Levenor\" is written on the first page.
+It's missing a few pages."
+ItemType = "Key"
+Icon = SubResource("AtlasTexture_xa4bt")
+Use = 2

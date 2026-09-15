@@ -1,4 +1,6 @@
 extends CanvasLayer
+class_name MainMenu
+
 var stage := "root"
 var rootIndex := 1
 var t: Tween
@@ -87,6 +89,7 @@ func _ready() -> void:
 	$Confirm.icon = Controller.get_scheme().ConfirmIcon
 	$Back.icon = Controller.get_scheme().CancelIcon
 	$Inventory.hide()
+	$Rail/JournalFollow/JournalButton.disabled = not Item.check_item("Journal")
 	#$Rail.hide()
 	$AnimationPlayer.play("open")
 	rootIndex = 1
@@ -240,12 +243,6 @@ func move_root() -> void:
 		t.set_trans(Tween.TRANS_BACK)
 
 	if rootIndex == 0:
-		if $Rail/JournalFollow/JournalButton.disabled:
-			Audio.buzzer_sound()
-			rootIndex = 1
-			move_root()
-			return
-
 		t.tween_property($Base/Clip, "rotation_degrees", 19.5, 0.3)
 		t.tween_property($Rail/JournalFollow/JournalButton, "scale", Vector2(1.2, 1.2), 0.3)
 		t.tween_property($Rail/ItemFollow/ItemButton, "scale", Vector2(1, 1), 0.3)
@@ -439,7 +436,7 @@ func _item() -> void:
 	t.tween_property($Rail/OptionsFollow, "progress", 587, 0.3)
 	t.tween_property($Party, "position", Vector2(-200, 28), 0.4)
 	$Inventory.show()
-	t.tween_property($Inventory, "size", Vector2(547, 549), 0.3).from(Vector2.ZERO)
+	t.tween_property($Inventory, "size", Vector2(560, 549), 0.3).from(Vector2.ZERO)
 	t.tween_property($Inventory, "position", Vector2(241, 123), 0.3).from(Vector2(803, 446))
 	t.tween_property(Cam, "offset:x", 100, 0.6)
 	t.tween_property($Base, "position", Vector2(-500, 0), 0.6).as_relative()
@@ -595,7 +592,7 @@ func make_slot(item: ItemData, grid: GridContainer) -> void:
 	var dub: Button = $Inventory/Item.duplicate()
 	dub.icon = item.Icon
 	dub.set_meta("ItemData", item)
-	var item_count := Item.count(item)
+	var item_count: int = Item.count(item)
 
 	if item_count > 1:
 		dub.text = str(item_count)
@@ -621,7 +618,7 @@ func focus_item(node: Button) -> void:
 		$DescPaper/Wheel.draw_wheel()
 	else: $DescPaper/Wheel.hide()
 
-	var item_count := Item.count(item)
+	var item_count: int = Item.count(item)
 
 	if item_count > 1:
 		if item.QuantityMeansUses:
@@ -638,7 +635,7 @@ func focus_item(node: Button) -> void:
 	elif item.Use == ItemData.U.INSPECT:
 		$Confirm.disabled = false
 		$Confirm.text = "Inspect"
-	else:
+	elif item.Use != 0:
 		$Confirm.disabled = false
 		$Confirm.text = "Use"
 

@@ -287,7 +287,7 @@ func enter_amberelm_2() -> void:
 func amberelm_guardian() -> void:
 	Battle.start("StoneGuardianBoss")
 	await Global.battle_end
-	if Loader.battle_result == 1:
+	if Battle.battle_result == 1:
 		Party.set_to(["Mira"])
 		Loader.ungray.emit()
 		Event.to_day = 0

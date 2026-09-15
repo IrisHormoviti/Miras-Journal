@@ -13,9 +13,9 @@ Daze.Neutral: You understand what this means, right?
 	Mira.Neutral: It's color is the oposite of mine, its attacks will hurt on me!
 	do! Bt.screen_shake()
 	Daze.Neutral: Not if my [color=#fcde42]Static Saber[/color] can finish it off!
-set Query.find_member("Daze").NextAction = "Ability"
-set Query.find_member("Daze").NextMove = Query.get_ability("StaticSaber")
-set Query.find_member("Mira").Controllable = true
+set Party.get_member("Daze").NextAction = "Ability"
+set Party.get_member("Daze").NextMove = Query.get_ability("StaticSaber")
+set Party.get_member("Mira").Controllable = true
 => END
 
 ~ skritcher_root_daze

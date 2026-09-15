@@ -1,6 +1,8 @@
 @tool
 extends CanvasLayer
 
+const orange_color := Color("#e3936e")
+
 @export_tool_button("Next Page", "PageNext") var next_page_btn: Callable = next_page_editor
 @export_tool_button("Previous Page", "PagePrevious") var prev_page_btn: Callable = prev_page_editor
 
@@ -180,7 +182,7 @@ func diary_load_day_list() -> void:
 
 
 func diary_focus(day: int) -> void:
-	var text: String = Query.get_month_name(Query.get_month(day)) + " " + Query.get_date_day(day) + "\n\n"
+	var text: String = "[b]%s [orange]%s[/orange] [color=#4234216b]%s[/color]\n\n" % [Query.get_month_name(Query.get_month(day)), Query.get_date_day(day), Query.get_year(day)]
 
 	for i: Variant in Event.diary[day]:
 		text += format_entry_text(diary_entries.get(i, ""))
@@ -268,14 +270,15 @@ func display_text(text: Array[String] = current_pages, left_page: int = page_ind
 		text_r.text = text_replacement(text[pageR])
 	else: text_r.text = ""
 
-	%PageIndex.text = "%d/%d" % [ceil(page_index / 2) + 1, max(ceil(text.size() / 2), 1)]
+	%PageIndex.text = "%d / %d" % [ceil(page_index / 2) + 1, ceil(current_pages.size() / 2.0)]
 
 
 func text_replacement(input: String) -> String:
-	if Engine.is_editor_hint():
-		return input.replace('{{alcine}}', "Alcine")
+	input = input.replace('{{alcine}}', "Alcine" if Engine.is_editor_hint() else Global.alcine)
+	input = input.replace('[orange]', '[color=%s]'%orange_color.to_html())
+	input = input.replace('[/orange]', '[/color]')
 
-	return input.replace('{{alcine}}', Global.alcine)
+	return input
 
 
 func turn_page_R() -> void:

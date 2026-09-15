@@ -3,11 +3,11 @@ Daze.Neutral: [[Eyes on me|Over here|It's me you want|Come at me|I can take it]]
 => END
 
 ~ alcine_death
-if Query.find_member("Mira").Health > 0 and Party.has_member("Mira")::
+if Party.get_member("Mira").Health > 0 and Party.has_member("Mira")::
 	Mira.Neutral: [[{{alcine}}!|Hang in there {{alcine}}!|No...!|No, wait! {{alcine}}!!]]!
 => END
 
 ~ mira_death
-if Query.find_member("Daze").Health > 0 and Party.has_member("Daze"):
+if Party.get_member("Daze").Health > 0 and Party.has_member("Daze"):
 	Daze.Neutral: [[You got careless Levenor...|I messed up...|You better hang in there.|I told you to be careful!]]
 => END

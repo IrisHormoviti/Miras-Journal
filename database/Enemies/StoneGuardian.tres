@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="4_px5pt"]
 [ext_resource type="Resource" uid="uid://c2tn8slm5k1jq" path="res://database/Abilities/RockThrow.tres" id="5_uhvrc"]
 [ext_resource type="Shader" uid="uid://cg1448p6ebsbo" path="res://codings/Shaders/color_replace2.gdshader" id="6_oq2ia"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="8_vn7lg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_oq2ia"]
 shader = ExtResource("6_oq2ia")
@@ -22,7 +23,7 @@ PartyIcon = ExtResource("3_px5pt")
 ActorClass = "Boss"
 codename = &"Guardian"
 HealthBar = true
-RecivedSP = 20
+RecivedSP = 0
 CustomPosition = Vector2i(66, 30)
 MaxHP = 300
 MaxAura = 44

@@ -3,7 +3,8 @@
 [ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="1_3xuxp"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_slxnq"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_n1yeb"]
+[sub_resource type="AtlasTexture" id="AtlasTexture_4sbe4"]
+resource_local_to_scene = true
 atlas = ExtResource("1_slxnq")
 region = Rect2(108, 90, 18, 18)
 filter_clip = true
@@ -13,4 +14,4 @@ script = ExtResource("1_3xuxp")
 Name = "Wallet"
 Description = "Contains 63¢ and some train tickets."
 ItemType = "Key"
-Icon = SubResource("AtlasTexture_n1yeb")
+Icon = SubResource("AtlasTexture_4sbe4")

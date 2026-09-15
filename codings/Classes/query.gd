@@ -24,6 +24,10 @@ static func get_mmm(month: int) -> String:
 	return "???"
 
 
+static func get_year(_day: int) -> String:
+	return "cin16"
+
+
 static func get_month_name(month: int) -> String:
 	match month:
 		1: return "January"
