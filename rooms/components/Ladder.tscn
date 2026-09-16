@@ -14,8 +14,8 @@ metadata/_custom_type_script = "uid://bsbkg084xt4ln"
 position = Vector2(0, -20)
 
 [node name="TopInteractable" parent="." unique_id=281369955 instance=ExtResource("2_bewv0")]
-LabelText = "Climb down"
-ActionType = "toggle"
+label_text = "Climb down"
+action_type = "toggle"
 
 [node name="Start1" type="Marker2D" parent="." unique_id=881222092]
 position = Vector2(0, 18)
@@ -25,8 +25,8 @@ position = Vector2(0, 85)
 
 [node name="BottomInteractable" parent="." unique_id=363924431 instance=ExtResource("2_bewv0")]
 position = Vector2(0, 85)
-LabelText = "Climb"
-ActionType = "toggle"
+label_text = "Climb"
+action_type = "toggle"
 
 [node name="End2" type="Marker2D" parent="." unique_id=1844712371]
 position = Vector2(0, 115)

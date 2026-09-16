@@ -1299,7 +1299,7 @@ sprite_frames = SubResource("SpriteFrames_ggbak")
 
 [node name="EnemySG1" parent="." unique_id=67890490 instance=ExtResource("4_ujeyr")]
 position = Vector2(637, 507)
-BattleSeq = SubResource("Resource_xtlyj")
+battle_sequence = SubResource("Resource_xtlyj")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_xjnw0")
@@ -1332,7 +1332,7 @@ position = Vector2(13, -42)
 
 [node name="EnemySG10" parent="." unique_id=559783401 instance=ExtResource("4_ujeyr")]
 position = Vector2(-304, -44)
-BattleSeq = SubResource("Resource_yoqct")
+battle_sequence = SubResource("Resource_yoqct")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_lj216")
@@ -1366,7 +1366,7 @@ position = Vector2(-71, 0)
 
 [node name="EnemySG2" parent="." unique_id=385070043 instance=ExtResource("4_ujeyr")]
 position = Vector2(410, 655)
-BattleSeq = SubResource("Resource_a7h8m")
+battle_sequence = SubResource("Resource_a7h8m")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_wk642")
@@ -1400,7 +1400,7 @@ gizmo_extents = 100.0
 
 [node name="EnemySG3" parent="." unique_id=111469633 instance=ExtResource("4_ujeyr")]
 position = Vector2(271, 759)
-BattleSeq = SubResource("Resource_ggbak")
+battle_sequence = SubResource("Resource_ggbak")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_d6l2x")
@@ -1431,7 +1431,7 @@ gizmo_extents = 100.0
 
 [node name="EnemySG4" parent="." unique_id=1879324709 instance=ExtResource("4_ujeyr")]
 position = Vector2(-456, 434)
-BattleSeq = SubResource("Resource_lmpvr")
+battle_sequence = SubResource("Resource_lmpvr")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_ex6dr")
@@ -1462,7 +1462,7 @@ gizmo_extents = 100.0
 
 [node name="EnemySG5" parent="." unique_id=488271247 instance=ExtResource("4_ujeyr")]
 position = Vector2(-378, -783)
-BattleSeq = SubResource("Resource_qvrxi")
+battle_sequence = SubResource("Resource_qvrxi")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_d3jwk")
@@ -1495,7 +1495,7 @@ position = Vector2(29, 5)
 
 [node name="EnemySG6" parent="." unique_id=902255125 instance=ExtResource("4_ujeyr")]
 position = Vector2(-275, 429)
-BattleSeq = SubResource("Resource_wvntm")
+battle_sequence = SubResource("Resource_wvntm")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_xjok2")
@@ -1528,7 +1528,7 @@ gizmo_extents = 100.0
 
 [node name="EnemySG7" parent="." unique_id=1523710204 instance=ExtResource("4_ujeyr")]
 position = Vector2(-161, 190)
-BattleSeq = SubResource("Resource_n6psl")
+battle_sequence = SubResource("Resource_n6psl")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_k1go5")
@@ -1560,7 +1560,7 @@ gizmo_extents = 100.0
 
 [node name="EnemySG8" parent="." unique_id=1838795273 instance=ExtResource("4_ujeyr")]
 position = Vector2(-418, -405)
-BattleSeq = SubResource("Resource_41yyw")
+battle_sequence = SubResource("Resource_41yyw")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_e642t")
@@ -1590,7 +1590,7 @@ position = Vector2(290, 143)
 
 [node name="EnemySG9" parent="." unique_id=1327575008 instance=ExtResource("4_ujeyr")]
 position = Vector2(-342, -235)
-BattleSeq = SubResource("Resource_pvsn2")
+battle_sequence = SubResource("Resource_pvsn2")
 chase_speed = 90
 speed = 90
 facing = SubResource("Resource_8jaei")
@@ -1624,58 +1624,58 @@ position = Vector2(32, -29)
 
 [node name="EvBlockedPath1" parent="." unique_id=450112031 instance=ExtResource("26_yhh0x")]
 position = Vector2(-335, 620)
-TriggerSize = Vector2i(50, 33)
-AddFlag = true
-TakeControl = false
-ReturnControl = false
+trigger_size = Vector2i(50, 33)
+add_the_flag = true
+take_control = false
+return_control = false
 ShowTextbox = true
-TextFile = "interact_abad"
-TextNode = "blocked_path_sg1"
-UsePassive = true
+text_file = "interact_abad"
+text_cue = "blocked_path_sg1"
+use_passive_textbox = true
 
 [node name="EvBlockedPath2" parent="." unique_id=113802291 instance=ExtResource("26_yhh0x")]
 position = Vector2(-216, -293)
-TriggerSize = Vector2i(50, 34)
-AddFlag = true
-TakeControl = false
-ReturnControl = false
+trigger_size = Vector2i(50, 34)
+add_the_flag = true
+take_control = false
+return_control = false
 ShowTextbox = true
-TextFile = "interact_abad"
-TextNode = "blocked_path_sg2"
-UsePassive = true
+text_file = "interact_abad"
+text_cue = "blocked_path_sg2"
+use_passive_textbox = true
 
 [node name="EvBunkerPanel" parent="." unique_id=124207418 instance=ExtResource("20_pu5uh")]
 position = Vector2(396, -1377)
 scale = Vector2(1.01136, 0.996569)
-ActionType = "event"
+action_type = "event"
 file = "sg_bunker_entrance"
 dialogue_file = "sg_bunker_entrance"
 itemtype = ""
 
 [node name="EvCastLines" parent="." unique_id=1299527673 instance=ExtResource("26_yhh0x")]
 position = Vector2(-143, -26)
-AddFlag = true
-TextFile = "story_2"
-TextNode = "cast_lines_sg"
+add_the_flag = true
+text_file = "story_2"
+text_cue = "cast_lines_sg"
 
 [node name="EvJumpReminder" parent="." unique_id=1221608906 instance=ExtResource("26_yhh0x")]
 position = Vector2(-182, 432)
 scale = Vector2(0.504117, 0.648075)
-AddFlag = true
-TakeControl = false
-ReturnControl = false
-TextFile = "interact_abad"
-TextNode = "sg_jump_reminder"
+add_the_flag = true
+take_control = false
+return_control = false
+text_file = "interact_abad"
+text_cue = "sg_jump_reminder"
 
 [node name="EvKick" type="Area2D" parent="." unique_id=706077465]
 position = Vector2(61, 82)
 collision_mask = 15
 script = ExtResource("29_oh1ty")
 ShowTextbox = true
-TextFile = "interact_abad"
-TextNode = "kick_sgplains"
+text_file = "interact_abad"
+text_cue = "kick_sgplains"
 AlterMovement = true
-KickDirection = Vector2(1, 0)
+kick_direction = Vector2(1, 0)
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EvKick" unique_id=1541769830]
@@ -1684,10 +1684,11 @@ shape = SubResource("RectangleShape2D_thjc7")
 
 [node name="EvSGfindBunker" parent="." unique_id=1389759721 instance=ExtResource("26_yhh0x")]
 position = Vector2(315, -1282)
-TriggerSize = Vector2i(261, 25)
-AddFlag = true
-TextFile = "story_2"
-TextNode = "sg_find_bunker"
+trigger_size = Vector2i(261, 25)
+add_the_flag = true
+ShowTextbox = true
+text_file = "story_2"
+text_cue = "sg_find_bunker"
 
 [node name="GroundItem" parent="." unique_id=1792744607 instance=ExtResource("7_kvb7h")]
 position = Vector2(-255, -160)
@@ -1749,11 +1750,11 @@ metadata/_edit_group_ = true
 z_index = -1
 use_parent_material = true
 position = Vector2(299, 108)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
 PlayEvent = true
-EventName = "hurt_1"
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard1" unique_id=322957644]
 use_parent_material = true
@@ -1766,10 +1767,10 @@ frame_progress = 0.48911
 z_index = -1
 use_parent_material = true
 position = Vector2(590, 900)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard10" unique_id=1998432349]
 use_parent_material = true
@@ -1782,10 +1783,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(663, 757)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard11" unique_id=1017952183]
 use_parent_material = true
@@ -1798,10 +1799,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(400, 34)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard12" unique_id=1079834420]
 use_parent_material = true
@@ -1814,11 +1815,11 @@ frame_progress = 0.198226
 z_index = -1
 use_parent_material = true
 position = Vector2(397, 140)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
 PlayEvent = true
-EventName = "hurt_1"
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard13" unique_id=1081419047]
 use_parent_material = true
@@ -1831,10 +1832,10 @@ frame_progress = 0.198226
 z_index = -1
 use_parent_material = true
 position = Vector2(636, 332)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard14" unique_id=1585986215]
 use_parent_material = true
@@ -1847,11 +1848,11 @@ frame_progress = 0.198226
 z_index = -1
 use_parent_material = true
 position = Vector2(563, 203)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
 PlayEvent = true
-EventName = "hurt_1"
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard2" unique_id=2004623470]
 use_parent_material = true
@@ -1864,10 +1865,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(516, 35)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard3" unique_id=836629858]
 use_parent_material = true
@@ -1880,10 +1881,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(708, 231)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard4" unique_id=469530112]
 use_parent_material = true
@@ -1896,10 +1897,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(682, 323)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard5" unique_id=453130158]
 use_parent_material = true
@@ -1912,10 +1913,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(589, 540)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard6" unique_id=1011881628]
 use_parent_material = true
@@ -1928,10 +1929,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(393, 544)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="CollisionShape2D" parent="ShardHazards/Shard7" index="0" unique_id=624211629]
 shape = SubResource("RectangleShape2D_ggbak")
@@ -1947,10 +1948,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(518, 707)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard8" unique_id=170276186]
 use_parent_material = true
@@ -1963,10 +1964,10 @@ frame_progress = 0.142851
 z_index = -1
 use_parent_material = true
 position = Vector2(636, 854)
-TriggerSize = Vector2i(20, 20)
-TakeControl = false
-ReturnControl = false
-EventName = "hurt_1"
+trigger_size = Vector2i(20, 20)
+take_control = false
+return_control = false
+event_name = "hurt_1"
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard9" unique_id=1479115008]
 use_parent_material = true
@@ -1992,11 +1993,11 @@ texture = SubResource("GradientTexture2D_tdwg2")
 flag = "SGBridge1"
 
 [node name="SGBridge1" parent="SwitchBridge1" unique_id=690503422 instance=ExtResource("20_pu5uh")]
-LabelText = "Switch"
-ActionType = "focus_cam"
+label_text = "Switch"
+action_type = "focus_cam"
 file = "-335"
 dialogue_file = "-335"
-title = "590"
+dialogue_cue = "590"
 itemtype = ""
 focus_position = Vector2(-180, -910)
 add_flag = true
@@ -2018,10 +2019,10 @@ texture = SubResource("GradientTexture2D_tdwg2")
 [node name="HideOnFlag" parent="SwitchCast1" unique_id=852320904 instance=ExtResource("29_5l4ys")]
 
 [node name="SGDoor1" parent="SwitchCast1" unique_id=751756239 instance=ExtResource("20_pu5uh")]
-ActionType = "focus_cam"
+action_type = "focus_cam"
 file = "-335"
 dialogue_file = "-335"
-title = "590"
+dialogue_cue = "590"
 itemtype = ""
 focus_position = Vector2(-335, 589)
 add_flag = true
@@ -2037,7 +2038,7 @@ offset = Vector2(6, 0)
 position = Vector2(2, 27)
 file = "story_2"
 dialogue_file = "story_2"
-title = "blocked_cast_lines"
+dialogue_cue = "blocked_cast_lines"
 itemtype = ""
 Height = 24
 

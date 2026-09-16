@@ -20,7 +20,8 @@ signal action()
 					coll.shape.radius = x
 
 ## The label shown on the bubble
-@export var LabelText: String = "Inspect"
+@export var label_text: String = "Inspect"
+
 ## The mode of the interactable
 @export_enum(
 	"text",
@@ -28,28 +29,27 @@ signal action()
 	"item",
 	"battle",
 	"event",
-	"pass_time",
+	"social_link",
+	#"pass_time",
 	"veinet",
 	"focus_cam",
-	"social_link",
 	"chair",
-) var ActionType: String = "text":
+) var action_type: String = "text":
 	set(x):
-		ActionType = x
+		action_type = x
 		setup_action_options()
 		notify_property_list_changed()
-var Length: int = 120:
-	get():
-		return(LabelText.length() * 10) + 50
+
 @export_category("Action Options")
 @export var file: String = ""
-@export_enum("testbush") var dialogue_file: String
-@export var title: String = ""
+@export_enum("testbush") var dialogue_file: String = "testbush"
+@export_enum("start") var dialogue_cue: String = "start"
 @export_enum("Con", "Mat", "Bti", "Key") var itemtype := "Con":
 	set(x):
 		itemtype = x
 		item = ""
 		notify_property_list_changed()
+
 @export_enum("Failed to Load") var item := ""
 @export var to_time: Event.TOD
 @export var to_time_relative: int
@@ -57,26 +57,35 @@ var Length: int = 120:
 @export var chair_faces: Array[String] = ["U", "D", "L", "R"]
 @export var return_control := true
 @export var focus_position: Vector2
+
 @export_category("Flag")
 @export var add_flag: bool = false
 @export var show_on_flag: StringName
 @export var hide_on_flag: StringName
-@export_category("Bubble Options")
+
+## Hide this node when interacting
+@export_group("Hide this Node")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var hide_this_node: bool = false
+
+## Hide the parent node along with this
+@export var hide_parent: bool = false
+## Instead of hiding, free that node
+@export var free_on_hide: bool = false
+## Disable this collision shape when hiding
+@export var disable_this_collision_shape: CollisionShape2D = null
+
+@export_group("Bubble")
 @export var bubble_always: bool
-@export var Height: int = 0
+@export var bubble_height: int = 0
 @export var offset := 5
 @export var proper_pos := Vector2.ZERO
 @export var proper_face := Vector2.ZERO
 @export var needs_bag := false
-@export_group("Hiding")
-@export var hidesprite: bool = false
-@export var hide_parent: bool = false
-@export var free_on_hide: bool = false
-@export var collision: CollisionShape2D = null
+
 var used_properties: Array[String]
 var action_options: Array[String] = [
 		"file",
-		"title",
+		"dialogue_cue",
 		"item",
 		"itemtype",
 		"to_time",
@@ -93,6 +102,10 @@ var action_options: Array[String] = [
 @onready var dots: TextureRect
 @onready var pack := $Pack
 
+var length: int = 120:
+	get():
+		return(label_text.length() * 10) + 50
+
 var can_interact: bool:
 	get():
 		can_interact = player_is_near() and Global.controllable and check_flag() and not Battle.in_battle
@@ -103,9 +116,9 @@ var animating := false
 
 func setup_action_options() -> void:
 	if dialogue_file.is_empty(): dialogue_file = file
-	match ActionType:
+	match action_type:
 		"text":
-			used_properties = ["title", "return_control", "event_condition", "dialogue_file"]
+			used_properties = ["dialogue_cue", "return_control", "event_condition", "dialogue_file"]
 
 		"toggle":
 			used_properties = []
@@ -141,16 +154,23 @@ func _validate_property(property: Dictionary) -> void:
 			property.usage |= PROPERTY_USAGE_EDITOR
 		else: property.usage = PROPERTY_USAGE_STORAGE
 
-	match ActionType:
+	match action_type:
 		"text", "social_link":
-			if property.name == "dialogue_file":
-				var files := DirAccess.get_files_at("res://database/Text/")
-				var files_filtered: Array[String]
-				for i in files:
-					if not i.ends_with(".import"):
-						files_filtered.append(i.replace(".dialogue", ""))
+			match property.name:
+				"dialogue_file":
+					var files := DirAccess.get_files_at("res://database/Text/")
+					var files_filtered: Array[String]
+					for i in files:
+						if not i.ends_with(".import"):
+							files_filtered.append(i.replace(".dialogue", ""))
 
-				property.hint_string = ",".join(files_filtered)
+					property.hint_string = ",".join(files_filtered)
+
+				"dialogue_cue":
+					var text_res: DialogueResource = load("res://database/Text/"+dialogue_file+".dialogue")
+
+					if text_res:
+						property.hint_string = ",".join(text_res.get_cues())
 
 	if property.name == "item":
 		var type: String
@@ -186,7 +206,7 @@ func _ready() -> void:
 	Global.check.connect(check)
 	do_position()
 	disappear()
-	if ActionType == "veinet": vein_check()
+	if action_type == "veinet": vein_check()
 
 
 func _exit_tree() -> void:
@@ -196,15 +216,15 @@ func _exit_tree() -> void:
 func vein_check() -> void:
 	if Event.check_flag(get_parent().name):
 		get_parent().get_node("Particle").emitting = false
-		LabelText = "Enter"
+		label_text = "Enter"
 		get_parent().get_node("Sprite").show()
 	else:
 		get_parent().get_node("Particle").emitting = true
-		LabelText = "Open"
+		label_text = "Open"
 		get_parent().get_node("Sprite").hide()
 
 	if Event.check_flag("DisableVeinet"):
-		LabelText = "Inspect"
+		label_text = "Inspect"
 
 
 func check() -> void:
@@ -262,7 +282,7 @@ func appear() -> void:
 	if can_interact and not animating:
 		animating = true
 		do_position()
-		button.text = LabelText
+		button.text = label_text
 		button.icon = Controller.get_scheme().ConfirmIcon
 		z_index = 9
 
@@ -279,7 +299,7 @@ func appear() -> void:
 		t.tween_property(pack, "scale", Vector2(0.4, 0.4), 0.1)
 		t.tween_property(dots, "self_modulate", Color(1, 1, 1, 0), 0.1)
 		t.tween_property(pack, "self_modulate", Color.WHITE, 0.1).from(Color.TRANSPARENT)
-		t.tween_property(button, "custom_minimum_size:x", Length, 0.15).from(48)
+		t.tween_property(button, "custom_minimum_size:x", length, 0.15).from(48)
 		await get_tree().create_timer(0.1).timeout
 		animating = false
 
@@ -340,14 +360,14 @@ func do_position() -> void:
 		return
 
 	var cnt: BoxContainer = pack.get_node("Cnt")
-	var dir := Direction.snap_vector(to_local(Global.player.position + Vector2(0, Height - offset)))
+	var dir := Direction.snap_vector(to_local(Global.player.position + Vector2(0, bubble_height - offset)))
 
 	if dir == Vector2.UP and bubble_always: dir = Vector2.DOWN
 	match dir:
 		Vector2.UP:
 			cnt.alignment = BoxContainer.ALIGNMENT_CENTER
 			cnt.position.x = -180
-			pack.position.y = 28 - Height
+			pack.position.y = 28 - bubble_height
 			pack.position.x = 0
 			arrow.flip_h = true
 			arrow.position.y = -42
@@ -356,7 +376,7 @@ func do_position() -> void:
 			cnt.alignment = BoxContainer.ALIGNMENT_CENTER
 			cnt.position.x = -180
 			pack.position.x = 0
-			pack.position.y = -10 - Height
+			pack.position.y = -10 - bubble_height
 			arrow.flip_h = false
 			arrow.position.y = -6
 
@@ -364,7 +384,7 @@ func do_position() -> void:
 			cnt.alignment = BoxContainer.ALIGNMENT_BEGIN
 			cnt.position.x = -24
 			pack.position.x = 0
-			pack.position.y = -10 - Height
+			pack.position.y = -10 - bubble_height
 			arrow.flip_h = false
 			arrow.position.y = -6
 
@@ -373,7 +393,7 @@ func do_position() -> void:
 			cnt.position.x = -342
 			pack.position.x = 0
 			arrow.position.y = -6
-			pack.position.y = -10 - Height
+			pack.position.y = -10 - bubble_height
 			arrow.flip_h = false
 
 
@@ -407,7 +427,7 @@ func _on_button_pressed() -> void:
 	if not (to_time == 0 and to_time_relative == 0):
 		Event.to_time = to_time if to_time_relative == 0 else Event.get_time_progress_from_now(to_time_relative)
 
-	match ActionType:
+	match action_type:
 		"toggle":
 			Audio.confirm_sound()
 
@@ -415,7 +435,7 @@ func _on_button_pressed() -> void:
 			await Event.take_control(false, false, true)
 			disappear(true)
 			if dialogue_file.is_empty(): dialogue_file = file
-			await Textbox.open(dialogue_file, title)
+			await Textbox.open(dialogue_file, dialogue_cue)
 
 		"item":
 			Item.add_item(item, itemtype)
@@ -431,7 +451,7 @@ func _on_button_pressed() -> void:
 			Event.sequence(file)
 
 		"pass_time":
-			if await Hud.confirm_time_passage(title, item):
+			if await Hud.confirm_time_passage(dialogue_cue, item):
 				Audio.confirm_sound()
 				Event.sequence(file)
 
@@ -504,8 +524,8 @@ func _on_button_pressed() -> void:
 	if return_control:
 		Event.give_control(false)
 
-	if hidesprite:
-		if is_instance_valid(collision): collision.set_deferred("disabled", true)
+	if hide_this_node:
+		if is_instance_valid(disable_this_collision_shape): disable_this_collision_shape.set_deferred("disabled", true)
 		if hide_parent: get_parent().queue_free()
 		else: queue_free()
 	action.emit()

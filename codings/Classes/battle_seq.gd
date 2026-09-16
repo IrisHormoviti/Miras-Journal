@@ -19,7 +19,7 @@ class_name BattleSequence
 @export var Transition: bool = true
 ## Show a screen wipe after the battle is over
 @export var Detransition: bool = false
-@export var ReturnControl: bool = true
+@export var return_control: bool = true
 @export var EscPosition: Vector2i
 @export var PositionSameAsPlayer := false
 ## Whether the Escape button should be usable

@@ -219,7 +219,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 
 		if (chased or Battle.in_battle) and is_instance_valid(Battle.attacker):
 			print_rich("[color=green]Too close to an enemy, auto escape")
-			Global.player.position = Battle.attacker.BattleSeq.EscPosition * 24
+			Global.player.position = Battle.attacker.battle_sequence.EscPosition * 24
 			Global.refresh()
 
 	Battle.prevent_battles = false
@@ -279,15 +279,12 @@ func travel_to(
 		"\n",
 	)
 
-	if t.is_running():
-		await t.finished
-
 	traveled_pos = pos
 
 	remembered_scene.assign((sc.split(";").duplicate()))
 	sc = remembered_scene[0]
 
-	if not ".tscn" in sc:
+	if not sc.ends_with(".tscn"):
 		remembered_scene[0] = "res://rooms/" + sc + ".tscn"
 
 	if remembered_scene[0] != "":
@@ -297,7 +294,7 @@ func travel_to(
 	Hud.hide_all(false)
 	get_tree().paused = true
 	status = ResourceLoader.load_threaded_get_status(remembered_scene[0], progress)
-	await Event.wait()
+	await get_tree().process_frame
 	if status == ResourceLoader.THREAD_LOAD_LOADED:
 		await travel_done(controllable, camera_ind)
 	else:

@@ -484,7 +484,7 @@ polygon = PackedVector2Array(60, 381, 78, 392, 98, 389, 119, 377, 130, 359, 125,
 position = Vector2(564, 336)
 collision_layer = 512
 collision_mask = 512
-BattleSeq = SubResource("Resource_dejne")
+battle_sequence = SubResource("Resource_dejne")
 facing = SubResource("Resource_r6fn3")
 
 [node name="HomePoints" type="Node2D" parent="EnemyIronHook1" unique_id=676713038]
@@ -520,7 +520,7 @@ position = Vector2(23, 25)
 position = Vector2(1096, 243)
 collision_layer = 512
 collision_mask = 512
-BattleSeq = SubResource("Resource_gb67y")
+battle_sequence = SubResource("Resource_gb67y")
 facing = SubResource("Resource_q80mj")
 
 [node name="HomePoints" type="Node2D" parent="EnemyIronHook2" unique_id=713731077]
@@ -553,7 +553,7 @@ position = Vector2(-8, -32)
 position = Vector2(1400, 476)
 collision_layer = 512
 collision_mask = 512
-BattleSeq = SubResource("Resource_icl6y")
+battle_sequence = SubResource("Resource_icl6y")
 facing = SubResource("Resource_unhv8")
 
 [node name="HomePoints" type="Node2D" parent="EnemyIronHook3" unique_id=1659952057]
@@ -636,21 +636,21 @@ animation = &"WalkUp"
 [node name="EvRestFirst" parent="." unique_id=1048941317 instance=ExtResource("30_djhcr")]
 z_index = 6
 position = Vector2(-1, 225)
-Flag = "day=0+time=1"
-FlagIsName = false
-FlagShouldBe = true
-TextFile = "interact_abad"
-TextNode = "amberelm_rest_first"
-KickDirection = Vector2(0, 1)
+flag = "day=0+time=1"
+use_name_as_flag = false
+flag_should_be = true
+text_file = "interact_abad"
+text_cue = "amberelm_rest_first"
+kick_direction = Vector2(0, 1)
 
 [node name="EvRestTree" parent="." unique_id=857458501 instance=ExtResource("5_3ycob")]
 z_index = 8
 position = Vector2(83, 352)
 trigger_size = 24
-LabelText = "Rest"
+label_text = "Rest"
 file = "rest_amberelm"
 dialogue_file = "story_0"
-title = "rest_amberelm"
+dialogue_cue = "rest_amberelm"
 itemtype = ""
 to_time = 2
 show_on_flag = &"day=0+time=1"
@@ -659,49 +659,49 @@ Height = 5
 [node name="EvSplash" parent="." unique_id=1901921073 instance=ExtResource("30_djhcr")]
 z_index = 5
 position = Vector2(224, 407)
-TriggerSize = Vector2i(80, 50)
-Flag = "EnteredAmberelm3"
-FlagIsName = false
-AddFlag = true
-ReturnControl = false
+trigger_size = Vector2i(80, 50)
+flag = "EnteredAmberelm3"
+use_name_as_flag = false
+add_the_flag = true
+return_control = false
 PlayEvent = true
-EventName = "enter_amberelm_2"
+event_name = "enter_amberelm_2"
 
 [node name="EvStoneGuardian" parent="." unique_id=28897104 instance=ExtResource("30_djhcr")]
 position = Vector2(2460, -120)
-TriggerSize = Vector2i(50, 140)
-Flag = "BeatStoneGuardian"
-FlagIsName = false
-ReturnControl = false
+trigger_size = Vector2i(50, 140)
+flag = "BeatStoneGuardian"
+use_name_as_flag = false
+return_control = false
 PlayEvent = true
-EventName = "amberelm_guardian"
+event_name = "amberelm_guardian"
 ShowTextbox = true
 AlterMovement = true
 
 [node name="EvStoneGuardianCheckBody" parent="." unique_id=1297631556 instance=ExtResource("30_djhcr")]
 position = Vector2(2567, -121)
-TriggerSize = Vector2i(50, 130)
-Flag = "day:1+time<5+!AlcineAlone"
-FlagShouldBe = true
-AddFlag = true
-ReturnControl = false
-TextFile = "story_1"
-TextNode = "destroyed_guardian_event"
+trigger_size = Vector2i(50, 130)
+flag = "day:1+time<5+!AlcineAlone"
+flag_should_be = true
+add_the_flag = true
+return_control = false
+text_file = "story_1"
+text_cue = "destroyed_guardian_event"
 
 [node name="EvStoneGuardian2" parent="." unique_id=2071850113 instance=ExtResource("30_djhcr")]
 position = Vector2(2388, -146)
-TriggerSize = Vector2i(50, 33)
-Flag = "AlcineAlone"
-FlagIsName = false
-FlagShouldBe = true
-ReturnControl = false
-EventName = "amberelm_reunion"
+trigger_size = Vector2i(50, 33)
+flag = "AlcineAlone"
+use_name_as_flag = false
+flag_should_be = true
+return_control = false
+event_name = "amberelm_reunion"
 
 [node name="InteractBackround" parent="." unique_id=373005192 instance=ExtResource("5_3ycob")]
 position = Vector2(69, 206)
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "the_sky"
+dialogue_cue = "the_sky"
 itemtype = ""
 Height = 5
 
@@ -713,16 +713,16 @@ shape = SubResource("RectangleShape2D_ylfhl")
 position = Vector2(369, 344)
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "broken_bridge"
+dialogue_cue = "broken_bridge"
 itemtype = ""
 Height = 5
 
 [node name="InteractSign" parent="." unique_id=810826483 instance=ExtResource("5_3ycob")]
 position = Vector2(347, 396)
-LabelText = "Read"
+label_text = "Read"
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "amberelm_sign"
+dialogue_cue = "amberelm_sign"
 itemtype = ""
 Height = 5
 
@@ -731,10 +731,10 @@ position = Vector2(-1, 8)
 
 [node name="InteractSign2" parent="." unique_id=690503422 instance=ExtResource("5_3ycob")]
 position = Vector2(1020, 418)
-LabelText = "Read"
+label_text = "Read"
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "amberelm_sign_storage"
+dialogue_cue = "amberelm_sign_storage"
 itemtype = ""
 Height = 5
 
@@ -755,7 +755,7 @@ item_name = "SharpRock"
 position = Vector2(24, 101)
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "day10_gap"
+dialogue_cue = "day10_gap"
 itemtype = ""
 Height = 5
 
@@ -869,10 +869,10 @@ position = Vector2(2218, -133)
 
 [node name="EvBench" parent="." unique_id=557881661 instance=ExtResource("5_3ycob")]
 position = Vector2(2220, -156)
-LabelText = "Rest"
+label_text = "Rest"
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "quick_rest"
+dialogue_cue = "quick_rest"
 itemtype = ""
 
 [node name="EvDestroyedGuardian" type="StaticBody2D" parent="." unique_id=511751132]
@@ -900,7 +900,7 @@ free_instead = true
 position = Vector2(-10, 5)
 file = "story_1"
 dialogue_file = "story_1"
-title = "destroyed_guardian"
+dialogue_cue = "destroyed_guardian"
 itemtype = ""
 add_flag = true
 
@@ -964,13 +964,13 @@ position = Vector2(83, 354)
 y_sort_enabled = true
 use_parent_material = true
 position = Vector2(1066, 459)
-TriggerSize = Vector2i(50, 80)
-Flag = "day=0+!ColorTutorial"
-FlagShouldBe = true
-ReturnControl = false
+trigger_size = Vector2i(50, 80)
+flag = "day=0+!ColorTutorial"
+flag_should_be = true
+return_control = false
 ShowTextbox = true
-TextFile = "story_0"
-TextNode = "color_tutorial"
+text_file = "story_0"
+text_cue = "color_tutorial"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EvMagicWall" unique_id=2132624866]
 use_parent_material = true

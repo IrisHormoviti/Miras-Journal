@@ -275,7 +275,7 @@ fill = 1
 fill_from = Vector2(0.494787, 0.514692)
 fill_to = Vector2(0.835294, 0.135294)
 
-[sub_resource type="Resource" id="Resource_lbvu1"]
+[sub_resource type="Resource" id="Resource_va2q4"]
 script = ExtResource("28_e7y1u")
 
 [sub_resource type="Gradient" id="Gradient_s6doo"]
@@ -290,7 +290,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.84188, 0.863248)
 
-[sub_resource type="Resource" id="Resource_su8cc"]
+[sub_resource type="Resource" id="Resource_u8txd"]
 script = ExtResource("28_e7y1u")
 way = 4
 metadata/_custom_type_script = "uid://bhw57f1k8vvrj"
@@ -322,16 +322,16 @@ fill_to = Vector2(0.852941, 0.894118)
 [sub_resource type="CircleShape2D" id="CircleShape2D_wjino"]
 radius = 24.0207
 
-[sub_resource type="Resource" id="Resource_2q7ov"]
-script = ExtResource("28_e7y1u")
-
-[sub_resource type="Resource" id="Resource_va2q4"]
-script = ExtResource("28_e7y1u")
-
-[sub_resource type="Resource" id="Resource_u8txd"]
-script = ExtResource("28_e7y1u")
-
 [sub_resource type="Resource" id="Resource_f3j3j"]
+script = ExtResource("28_e7y1u")
+
+[sub_resource type="Resource" id="Resource_lbvu1"]
+script = ExtResource("28_e7y1u")
+
+[sub_resource type="Resource" id="Resource_su8cc"]
+script = ExtResource("28_e7y1u")
+
+[sub_resource type="Resource" id="Resource_67djc"]
 script = ExtResource("28_e7y1u")
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ovn4b"]
@@ -833,7 +833,7 @@ motion_mode = 1
 script = ExtResource("19_dpu00")
 ID = "Alcine"
 speed = 100
-facing = SubResource("Resource_lbvu1")
+facing = SubResource("Resource_va2q4")
 default_state = 6
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
@@ -869,7 +869,7 @@ offset = Vector2(0, -5)
 
 [node name="EvAlcineBelow" parent="Event" unique_id=344934070 instance=ExtResource("23_va2q4")]
 position = Vector2(1258, -652)
-facing = SubResource("Resource_su8cc")
+facing = SubResource("Resource_u8txd")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -895,41 +895,41 @@ animation = &"IdleRight"
 
 [node name="EvAlcineFollow1" parent="Event" unique_id=1297631556 instance=ExtResource("36_2q7ov")]
 position = Vector2(1250, -635)
-Flag = "day=0+AlcineFollow<1"
-FlagIsName = false
-FlagShouldBe = true
-EventName = "AlcineFollow1"
+flag = "day=0+AlcineFollow<1"
+use_name_as_flag = false
+flag_should_be = true
+event_name = "AlcineFollow1"
 
 [node name="EvAlcineFollow2" parent="Event" unique_id=554411234 instance=ExtResource("36_2q7ov")]
 position = Vector2(1271, -934)
-Flag = "day=0+AlcineFollow=1"
-FlagIsName = false
-FlagShouldBe = true
+flag = "day=0+AlcineFollow=1"
+use_name_as_flag = false
+flag_should_be = true
 PlayEvent = true
-EventName = "AlcineFollow2"
+event_name = "AlcineFollow2"
 
 [node name="EvAlcineFollow3" parent="Event" unique_id=73391420 instance=ExtResource("36_2q7ov")]
 z_index = 1
 position = Vector2(1573, -1073)
-Flag = "day=0+AlcineFollow=2"
-FlagIsName = false
-FlagShouldBe = true
-ReturnControl = false
+flag = "day=0+AlcineFollow=2"
+use_name_as_flag = false
+flag_should_be = true
+return_control = false
 ShowTextbox = true
-TextFile = "story_0"
-TextNode = "approach"
+text_file = "story_0"
+text_cue = "approach"
 
 [node name="EvAmbWoodsBridge" parent="Event" unique_id=200704634 instance=ExtResource("36_2q7ov")]
 position = Vector2(1956, -1318)
-AddFlag = true
-TakeControl = false
-ReturnControl = false
+add_the_flag = true
+take_control = false
+return_control = false
 ShowTextbox = true
-TextFile = "story_0"
-TextNode = "a_bridge"
-UsePassive = true
+text_file = "story_0"
+text_cue = "a_bridge"
+use_passive_textbox = true
 AlterMovement = true
-SlowDown = true
+slow_down = true
 
 [node name="EvAxe" type="Sprite2D" parent="Event" unique_id=1994878896]
 z_index = 1
@@ -948,8 +948,8 @@ shape = SubResource("RectangleShape2D_juphf")
 position = Vector2(-1, 0)
 collision_layer = 257
 collision_mask = 257
-LabelText = "Pick up"
-ActionType = "event"
+label_text = "Pick up"
+action_type = "event"
 file = "axe_seq"
 dialogue_file = "axe_seq"
 itemtype = "Key"
@@ -976,8 +976,8 @@ shape = SubResource("RectangleShape2D_bv7fr")
 position = Vector2(-1, 0)
 collision_layer = 257
 collision_mask = 257
-LabelText = "Pick up"
-ActionType = "event"
+label_text = "Pick up"
+action_type = "event"
 file = "bag_seq"
 dialogue_file = "bag_seq"
 return_control = false
@@ -991,24 +991,24 @@ free_on_hide = true
 
 [node name="EvDashTutorial" parent="Event" unique_id=1415250702 instance=ExtResource("36_2q7ov")]
 position = Vector2(105, 277)
-AddFlag = true
+add_the_flag = true
 PopTutorial = true
-TutorialName = "dash"
+tutorial_name = "dash"
 
 [node name="EvFirstBattle" parent="Event" unique_id=1834140387 instance=ExtResource("36_2q7ov")]
 position = Vector2(729, 512)
-ReturnControl = false
+return_control = false
 PlayEvent = true
-EventName = "first_battle"
+event_name = "first_battle"
 
 [node name="EvFlameActive" parent="Event" unique_id=1901921073 instance=ExtResource("36_2q7ov")]
 position = Vector2(1535, -35)
 rotation = -0.53980017
 scale = Vector2(2.0800018, 2.0800018)
-AddFlag = true
+add_the_flag = true
 ShowTextbox = true
-TextFile = "story_0"
-TextNode = "getting_dark"
+text_file = "story_0"
+text_cue = "getting_dark"
 
 [node name="EvPterogon" type="AnimatedSprite2D" parent="Event" unique_id=130907456]
 visible = false
@@ -1032,9 +1032,9 @@ texture_scale = 2.0
 
 [node name="EvTutorialBag" parent="Event" unique_id=1019876011 instance=ExtResource("36_2q7ov")]
 position = Vector2(1423, 373)
-AddFlag = true
+add_the_flag = true
 PopTutorial = true
-TutorialName = "bag"
+tutorial_name = "bag"
 
 [node name="Transfers" type="Node" parent="." unique_id=1850034220]
 
@@ -1067,19 +1067,19 @@ collision_layer = 257
 collision_mask = 257
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "skeleton"
+dialogue_cue = "skeleton"
 
 [node name="CollisionShape2D" parent="Interactables/InteractSkeleton" index="0" unique_id=2035817221]
 position = Vector2(2.00228, 9.99954)
 shape = SubResource("CircleShape2D_wjino")
 
-[node name="InteractSkeleton2" parent="Interactables" unique_id=1969657351 instance=ExtResource("21_hylag")]
+[node name="InteractStatue" parent="Interactables" unique_id=1969657351 instance=ExtResource("21_hylag")]
 position = Vector2(1428, -532)
 collision_layer = 257
 collision_mask = 257
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "statue_legs"
+dialogue_cue = "statue_legs"
 Height = 15
 
 [node name="InteractSymbol" parent="Interactables" unique_id=756593628 instance=ExtResource("21_hylag")]
@@ -1088,14 +1088,14 @@ collision_layer = 257
 collision_mask = 257
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "symbol"
+dialogue_cue = "symbol"
 proper_pos = Vector2(1410, -444)
 proper_face = Vector2(1, 0)
 
 [node name="EnemyCrawlingSludge1" parent="." unique_id=80482356 instance=ExtResource("10_rx6j2")]
 position = Vector2(1365, 223)
-BattleSeq = ExtResource("11_1cjwu")
-facing = SubResource("Resource_2q7ov")
+battle_sequence = ExtResource("11_1cjwu")
+facing = SubResource("Resource_f3j3j")
 
 [node name="HomePoints" type="Node2D" parent="EnemyCrawlingSludge1" unique_id=739350443]
 
@@ -1137,8 +1137,8 @@ gizmo_extents = 100.0
 
 [node name="EnemyCrawlingSludge2" parent="." unique_id=1918852949 instance=ExtResource("10_rx6j2")]
 position = Vector2(1189, -338)
-BattleSeq = ExtResource("14_hs8tf")
-facing = SubResource("Resource_va2q4")
+battle_sequence = ExtResource("14_hs8tf")
+facing = SubResource("Resource_lbvu1")
 
 [node name="HomePoints" type="Node2D" parent="EnemyCrawlingSludge2" unique_id=421879962]
 
@@ -1180,8 +1180,8 @@ gizmo_extents = 100.0
 
 [node name="EnemyCrawlingSludge3" parent="." unique_id=1347610146 instance=ExtResource("10_rx6j2")]
 position = Vector2(1638, 369)
-BattleSeq = ExtResource("13_812cc")
-facing = SubResource("Resource_u8txd")
+battle_sequence = ExtResource("13_812cc")
+facing = SubResource("Resource_su8cc")
 
 [node name="HomePoints" type="Node2D" parent="EnemyCrawlingSludge3" unique_id=2002211728]
 
@@ -1218,8 +1218,8 @@ gizmo_extents = 100.0
 
 [node name="EnemyCrawlingSludge4" parent="." unique_id=28278289 instance=ExtResource("10_rx6j2")]
 position = Vector2(1258, -491)
-BattleSeq = ExtResource("21_e7y1u")
-facing = SubResource("Resource_f3j3j")
+battle_sequence = ExtResource("21_e7y1u")
+facing = SubResource("Resource_67djc")
 
 [node name="HomePoints" type="Node2D" parent="EnemyCrawlingSludge4" unique_id=1500271890]
 
@@ -1253,9 +1253,9 @@ gizmo_extents = 100.0
 [node name="EnteredAmberelm2" parent="." unique_id=413285406 instance=ExtResource("36_2q7ov")]
 z_index = 1
 position = Vector2(1956, -1758)
-Flag = "EnterAmberelm"
-ReturnControl = false
-EventName = "enter_amberelm"
+flag = "EnterAmberelm"
+return_control = false
+event_name = "enter_amberelm"
 
 [node name="RegionEnemy" type="NavigationRegion2D" parent="." unique_id=213061388]
 visible = false

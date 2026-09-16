@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://cr3hn08s615pf" path="res://rooms/components/NPC.tscn" id="12_toobe"]
 [ext_resource type="Texture2D" uid="uid://c05rdatesxgtl" path="res://art/OV/Objects/Harold.png" id="12_xx0e1"]
 [ext_resource type="PackedScene" uid="uid://h8hsgjo5gg6" path="res://rooms/components/Item.tscn" id="13_b8v1n"]
+[ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="15_78w0y"]
 [ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EvTripwire.tscn" id="16_35d7e"]
 [ext_resource type="SpriteFrames" uid="uid://b4iv6g76q0x8r" path="res://art/OV/Daze/DazeOV.tres" id="17_en1a7"]
 [ext_resource type="Texture2D" uid="uid://c1pk3d7vu8n26" path="res://art/OV/Objects/Shadow1.png" id="18_wmbgr"]
@@ -35,13 +36,6 @@ width = 32
 height = 32
 fill_to = Vector2(1, 0.773504)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_gtdj1"]
-atlas = ExtResource("8_xyolw")
-region = Rect2(0, 18, 18, 18)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_72f6p"]
-size = Vector2(16, 12.5)
-
 [sub_resource type="Gradient" id="Gradient_5nhgl"]
 interpolation_mode = 2
 interpolation_color_space = 2
@@ -54,8 +48,27 @@ fill = 1
 fill_from = Vector2(0.504274, 0.491453)
 fill_to = Vector2(0.115385, 0.867521)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_gtdj1"]
+atlas = ExtResource("8_xyolw")
+region = Rect2(0, 18, 18, 18)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_72f6p"]
+size = Vector2(16, 12.5)
+
+[sub_resource type="Resource" id="Resource_78w0y"]
+script = ExtResource("15_78w0y")
+way = 2
+
+[sub_resource type="Resource" id="Resource_12esp"]
+script = ExtResource("15_78w0y")
+way = 2
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_dxoxl"]
 size = Vector2(12.5, 14)
+
+[sub_resource type="Resource" id="Resource_5vm5p"]
+script = ExtResource("15_78w0y")
+way = 2
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_u8txd"]
 atlas = ExtResource("21_pty4k")
@@ -383,6 +396,22 @@ Colors = Array[Color]([Color(0.839216, 0.803922, 0.690196, 1), Color(0.839216, 0
 Energy = Array[float]([0.8, 0.3, 0.5, 0.8, 0.8])
 metadata/_edit_group_ = true
 
+[node name="IteractLamp" parent="." unique_id=1389352068 instance=ExtResource("6_pmuyc")]
+position = Vector2(59.7305, -36.4454)
+label_text = "Toggle Lamp"
+action_type = "toggle"
+
+[node name="PointLight2D" type="PointLight2D" parent="IteractLamp" unique_id=1531683962]
+position = Vector2(0.269501, 0.4454)
+scale = Vector2(4.18577, 3.73135)
+color = Color(1, 0.317647, 0, 1)
+energy = 1.5
+shadow_enabled = true
+shadow_filter_smooth = 11.0
+shadow_item_cull_mask = 3
+texture = SubResource("GradientTexture2D_tk2xs")
+script = ExtResource("7_bbmkb")
+
 [node name="EvAxe" type="Sprite2D" parent="." unique_id=1481103296]
 use_parent_material = true
 position = Vector2(-42, 19)
@@ -400,14 +429,15 @@ shape = SubResource("RectangleShape2D_72f6p")
 position = Vector2(-0.999969, 0.00745392)
 collision_layer = 257
 collision_mask = 257
-LabelText = "Pick up"
-ActionType = "item"
+label_text = "Pick up"
+action_type = "item"
 file = "testbush"
 dialogue_file = "testbush"
 itemtype = "Key"
 item = "LightweightAxe"
-hidesprite = true
+hide_this_node = null
 hide_parent = true
+bubble_height = null
 
 [node name="EvDummy" type="Sprite2D" parent="." unique_id=1187520318]
 z_index = 1
@@ -427,12 +457,13 @@ shape = SubResource("RectangleShape2D_72f6p")
 
 [node name="Fight" parent="EvDummy" unique_id=1996157492 instance=ExtResource("6_pmuyc")]
 position = Vector2(-1.833, 0.901522)
-LabelText = "Fight"
+label_text = "Fight"
 file = "testbush"
 dialogue_file = "testbush"
-title = "battle_test"
+dialogue_cue = "battle_test"
 return_control = false
-Height = 16
+hide_this_node = null
+bubble_height = null
 
 [node name="EvHarold" type="Sprite2D" parent="." unique_id=943113080]
 z_index = 1
@@ -452,46 +483,48 @@ shape = SubResource("RectangleShape2D_72f6p")
 
 [node name="NewGame" parent="EvHarold" unique_id=789011594 instance=ExtResource("6_pmuyc")]
 position = Vector2(0, 8)
-LabelText = "Select"
+label_text = "Select"
 file = "testbush"
 dialogue_file = "testbush"
-title = "chapter_select"
+dialogue_cue = "chapter_select"
 return_control = false
-Height = 16
+hide_this_node = null
+bubble_height = null
 
 [node name="EvKick" parent="." unique_id=1509469914 instance=ExtResource("16_35d7e")]
 position = Vector2(-191, 60)
-Flag = "HasBag"
-TextFile = "interactions"
-TextNode = "kick_debug"
-KickDirection = Vector2(1, 0)
+flag = "HasBag"
+text_file = "interactions"
+text_cue = "kick_debug"
+kick_direction = Vector2(1, 0)
 
 [node name="InteractBush" parent="." unique_id=1801924940 instance=ExtResource("6_pmuyc")]
 position = Vector2(60.2736, 36.5526)
 file = "testbush"
 dialogue_file = "testbush"
-title = "bush"
-Height = 4
+hide_this_node = null
+bubble_height = null
 
 [node name="InteractRest" parent="." unique_id=56388288 instance=ExtResource("6_pmuyc")]
 position = Vector2(276, 63)
-LabelText = "Sleep"
-ActionType = "pass_time"
+label_text = "Sleep"
+action_type = "pass_time"
 file = "sleep_home"
 dialogue_file = "sleep_home"
-title = "Sleep"
 itemtype = "Bti"
 to_time = 1
 hide_on_flag = &"time:1"
-Height = 6
+hide_this_node = null
+bubble_height = null
 
 [node name="InteractFastTravel" parent="." unique_id=142965281 instance=ExtResource("6_pmuyc")]
 position = Vector2(11.5979, -54.0878)
-LabelText = "Fast Travel"
+label_text = "Fast Travel"
 file = "testbush"
 dialogue_file = "testbush"
-title = "travel"
-Height = 16
+dialogue_cue = "travel"
+hide_this_node = null
+bubble_height = null
 
 [node name="PointLight2D2" type="PointLight2D" parent="." unique_id=689197905]
 position = Vector2(293, 75)
@@ -508,27 +541,16 @@ script = ExtResource("7_bbmkb")
 position = Vector2(-61, 59)
 item_name = "SmallPotion"
 
-[node name="IteractLamp" parent="." unique_id=1389352068 instance=ExtResource("6_pmuyc")]
-position = Vector2(59.7305, -36.4454)
-LabelText = "Toggle Lamp"
-ActionType = "toggle"
-
-[node name="PointLight2D" type="PointLight2D" parent="IteractLamp" unique_id=1531683962]
-position = Vector2(0.269501, 0.4454)
-scale = Vector2(4.18577, 3.73135)
-color = Color(1, 0.317647, 0, 1)
-energy = 1.5
-shadow_enabled = true
-shadow_filter_smooth = 11.0
-shadow_item_cull_mask = 3
-texture = SubResource("GradientTexture2D_tk2xs")
-script = ExtResource("7_bbmkb")
-
 [node name="Ladder1" parent="." unique_id=1338487090 instance=ExtResource("23_5somt")]
 position = Vector2(136, -30)
 metadata/_edit_group_ = true
 
 [node name="NPC" parent="." unique_id=1663552864 instance=ExtResource("12_toobe")]
+facing = SubResource("Resource_78w0y")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="NPC" unique_id=951535178]
 use_parent_material = true
@@ -542,6 +564,11 @@ z_index = 1
 position = Vector2(221, 22)
 motion_mode = 1
 script = ExtResource("10_yq8yv")
+facing = SubResource("Resource_12esp")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="NPCDaze" unique_id=1375955543]
@@ -565,19 +592,24 @@ animation = &"WalkUp"
 
 [node name="TalkPrompt" parent="NPCDaze" unique_id=562294727 instance=ExtResource("6_pmuyc")]
 position = Vector2(1.14441e-05, 8)
-LabelText = "Talk"
-ActionType = "pass_time"
+label_text = "Talk"
+action_type = "pass_time"
 file = "waste_time"
 dialogue_file = "waste_time"
-title = "Waste a bit of time"
 itemtype = "Mat"
 to_time = -1
 to_time_relative = 1
+hide_this_node = null
 bubble_always = true
-Height = 16
+bubble_height = null
 
 [node name="NPCAsteria" parent="." unique_id=344934070 instance=ExtResource("12_toobe")]
 position = Vector2(247, 36)
+facing = SubResource("Resource_5vm5p")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="NPCAsteria" unique_id=169870246]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9EYXplL0RhemVPVi5hc2Vwcml0ZQpsYXllcnw9Cm9wX2V4cHw9dHJ1ZQpvX2ZvbGRlcnw9cmVzOi8vYXJ0L09WL0RhemUvCm9fbmFtZXw9RGF6ZU9WLnBuZwpvbmx5X3Zpc2libGV8PWZhbHNlCm9fZXhfcHw9Cg=="

@@ -4,7 +4,7 @@ extends NPC
 
 @export_tool_button("Add Homepoints and Sprites", "Add") var add_node_button: Callable = add_nodes
 @export_tool_button("Apply positions", "CheckBox") var set_positions_button: Callable = set_positions
-@export var BattleSeq: BattleSequence
+@export var battle_sequence: BattleSequence
 @export var Defeated := false
 @export var give_up_after := 3
 @export var patrol_speed := 20
@@ -52,22 +52,22 @@ func add_nodes() -> void:
 		add_child(scn_marker)
 		scn_marker.owner = $".."
 
-	if BattleSeq != null:
-		esc_marker.global_position = BattleSeq.EscPosition * 24
-		scn_marker.global_position = BattleSeq.ScenePosition
+	if battle_sequence != null:
+		esc_marker.global_position = battle_sequence.EscPosition * 24
+		scn_marker.global_position = battle_sequence.ScenePosition
 		scn_marker.gizmo_extents = 100
 
 
 func set_positions() -> void:
 	var scn_marker: Marker2D = get_node_or_null("ScenePosition")
 
-	if scn_marker != null and BattleSeq != null:
-		BattleSeq.ScenePosition = scn_marker.global_position
+	if scn_marker != null and battle_sequence != null:
+		battle_sequence.ScenePosition = scn_marker.global_position
 
 	var esc_marker: Marker2D = get_node_or_null("EscapePosition")
 
-	if esc_marker != null and BattleSeq != null:
-		BattleSeq.EscPosition = Vector2i(esc_marker.global_position / 24)
+	if esc_marker != null and battle_sequence != null:
+		battle_sequence.EscPosition = Vector2i(esc_marker.global_position / 24)
 
 
 func default() -> void:
@@ -157,7 +157,7 @@ func begin_battle(advatage := 0) -> void:
 	Battle.attacker = self
 	Global.player.dramatic_attack_pause()
 	Controller.rumble(1, 1, 0.2)
-	await Battle.start(BattleSeq, advatage)
+	await Battle.start(battle_sequence, advatage)
 	global_position = default_position
 
 

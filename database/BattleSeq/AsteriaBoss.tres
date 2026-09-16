@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="3_bg0et"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_ym1rv"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="4_6tm4s"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="5_bg0et"]
 
 [sub_resource type="Resource" id="Resource_ym1rv"]
 script = ExtResource("3_bg0et")
@@ -30,9 +31,9 @@ metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 [resource]
 script = ExtResource("4_6tm4s")
 Enemies = Array[ExtResource("3_ym1rv")]([ExtResource("3_6tm4s")])
-Transition = false
-ReturnControl = false
 ScenePosition = Vector2(-351, 312)
+Transition = false
+return_control = false
 CanEscape = false
 VictoryText = "Victory?"
 PartyOverride = ["Mira", "Alcine", "Daze"]

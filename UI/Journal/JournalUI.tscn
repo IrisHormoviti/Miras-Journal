@@ -424,18 +424,20 @@ offset_right = 483.33334
 offset_bottom = 685.77783
 theme = SubResource("Theme_vunfc")
 bbcode_enabled = true
-text = "As I'm writing this, I'm sitting 
-in a camp Daze (the human)
-set up.
+text = "So much has happened today. 
+Feels like this is all a 
+big dream.
 
-Somehow, he found this 
-journal, but a lot of the pages
-are mysteriously missing.
-
-A missing page for every 
-missing memory...
-~~~~~~
-
+I woke up in a strange forest,
+with a weird looking sky. 
+Some of my things were laying 
+around, but this journal was 
+nowhere to be found.
+The place is filled with wild 
+monsters that attack me on 
+sight, but I was able to 
+defend myself using my Aura 
+magic.
 "
 scroll_active = false
 autowrap_mode = 0
@@ -471,6 +473,22 @@ offset_bottom = 674.85095
 rotation = -0.0010446366
 theme = SubResource("Theme_vunfc")
 bbcode_enabled = true
+text = "In that forest I found an 
+adorable little water spirit, 
+which I named Alcine. 
+They really helped me with 
+their healing magic, It's 
+really something I should 
+learn to do myself.
+
+Together we explored a ruined 
+city. From there I got a good
+view of this place, with it's 
+grid patters in the distance.
+
+It must be so far from my 
+home.
+"
 scroll_active = false
 autowrap_mode = 0
 
@@ -583,7 +601,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 theme_override_fonts/font = ExtResource("2_w8w16")
 theme_override_font_sizes/font_size = 32
-text = "3 / 2"
+text = "1 / 3"
 
 [connection signal="pressed" from="RootMenu/Diary" to="." method="diary"]
 [connection signal="focus_entered" from="List/List/Listing0" to="." method="diary_focus_button"]

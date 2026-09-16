@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_skvew")
 title = "Asteria Boss"
+room = "BunkerSectorA"
 room_name = "Bunker Sector A"
 party = Array[StringName]([&"Mira", &"Alcine", &"Daze", &""])
 members = Array[Dictionary]([{

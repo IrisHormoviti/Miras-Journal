@@ -119,8 +119,8 @@ frame = 3
 offset = Vector2(0.5, 0.5)
 
 [node name="Interactable" parent="." unique_id=1703852966 instance=ExtResource("3_uqxwf")]
-LabelText = "Search"
-ActionType = "item"
+label_text = "Search"
+action_type = "item"
 add_flag = true
 hide_on_flag = &"ItemDefault1"
 offset = 10

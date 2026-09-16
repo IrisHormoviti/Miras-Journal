@@ -45,8 +45,8 @@ color_ramp = SubResource("GradientTexture1D_fq0ps")
 [node name="VPVainPoint" type="Node2D" unique_id=597176728]
 
 [node name="Interactable" parent="." unique_id=68636642 instance=ExtResource("1_sli5j")]
-LabelText = "Enter"
-ActionType = "veinet"
+label_text = "Enter"
+action_type = "veinet"
 
 [node name="Icon" parent="Interactable" index="2" unique_id=1758546671]
 visible = false

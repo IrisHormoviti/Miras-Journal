@@ -229,7 +229,11 @@ func go_to_subroom(subroom: String, fast := false) -> Vector2:
 	for i in search_nodes:
 		if not is_instance_valid(i): continue
 		if i is SubRoom and i.name == subroom:
-			await i.transition(0)
+			if fast:
+				i.transition(0)
+			else:
+				await i.transition(0)
+
 			return i.cam_pos
 		elif i is TransferZone and i.name == "Transfer" + subroom:
 			return i.come_from()

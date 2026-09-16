@@ -413,10 +413,10 @@ hide_if = false
 
 [node name="Interactable" parent="AlcineCamp" unique_id=1591526370 instance=ExtResource("4_d8pup")]
 position = Vector2(0, -2)
-LabelText = "Talk"
+label_text = "Talk"
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "alcine_camp"
+dialogue_cue = "alcine_camp"
 bubble_always = true
 
 [node name="DazeCamp" parent="." unique_id=1420936725 instance=ExtResource("5_6fdth")]
@@ -439,10 +439,10 @@ flag = "InCamp"
 hide_if = false
 
 [node name="Interactable" parent="DazeCamp" unique_id=2120091847 instance=ExtResource("4_d8pup")]
-LabelText = "Talk"
+label_text = "Talk"
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "daze_camp"
+dialogue_cue = "daze_camp"
 bubble_always = true
 Height = 10
 
@@ -466,10 +466,10 @@ flag = "InCamp+AsteriaBoss=5"
 hide_if = false
 
 [node name="Interactable" parent="AsteriaCamp" unique_id=2033615367 instance=ExtResource("4_d8pup")]
-LabelText = "Talk"
+label_text = "Talk"
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "asteria_camp"
+dialogue_cue = "asteria_camp"
 bubble_always = true
 Height = 10
 
@@ -531,7 +531,7 @@ sprite_frames = SubResource("SpriteFrames_vctnq")
 position = Vector2(364, -134)
 collision_layer = 512
 collision_mask = 512
-BattleSeq = SubResource("Resource_ncxtw")
+battle_sequence = SubResource("Resource_ncxtw")
 patrol_speed = 220
 chase_speed = 220
 speed = 100
@@ -564,7 +564,7 @@ position = Vector2(270, -74)
 position = Vector2(-279, -324)
 collision_layer = 512
 collision_mask = 512
-BattleSeq = SubResource("Resource_ncxtw")
+battle_sequence = SubResource("Resource_ncxtw")
 patrol_speed = 220
 chase_speed = 220
 speed = 100
@@ -597,7 +597,7 @@ position = Vector2(270, -74)
 position = Vector2(253, -843)
 collision_layer = 512
 collision_mask = 512
-BattleSeq = SubResource("Resource_it168")
+battle_sequence = SubResource("Resource_it168")
 patrol_speed = 220
 chase_speed = 220
 speed = 100
@@ -633,7 +633,7 @@ position = Vector2(254, 47)
 position = Vector2(61, 0)
 collision_layer = 512
 collision_mask = 512
-BattleSeq = SubResource("Resource_p063c")
+battle_sequence = SubResource("Resource_p063c")
 patrol_speed = 100
 chase_speed = 220
 speed = 100
@@ -669,7 +669,7 @@ position = Vector2(656, -156)
 position = Vector2(1252, -285)
 collision_layer = 512
 collision_mask = 512
-BattleSeq = SubResource("Resource_ofsxd")
+battle_sequence = SubResource("Resource_ofsxd")
 patrol_speed = 80
 chase_speed = 200
 facing = SubResource("Resource_hngf4")
@@ -698,48 +698,48 @@ position = Vector2(209, -125)
 
 [node name="EvDazeEnemy1" parent="." unique_id=2007210965 instance=ExtResource("15_mqvg4")]
 position = Vector2(515, -108)
-TriggerSize = Vector2i(11, 180)
-Flag = "day=1"
-FlagShouldBe = true
-AddFlag = true
-ReturnControl = false
+trigger_size = Vector2i(11, 180)
+flag = "day=1"
+flag_should_be = true
+add_the_flag = true
+return_control = false
 PlayEvent = true
-EventName = "daze_enemy_1"
+event_name = "daze_enemy_1"
 
 [node name="EvDazeEnemy2" parent="." unique_id=475487490 instance=ExtResource("15_mqvg4")]
 position = Vector2(-912, -51)
-TriggerSize = Vector2i(6, 245)
-Flag = "day=1"
-FlagShouldBe = true
-AddFlag = true
-ReturnControl = false
+trigger_size = Vector2i(6, 245)
+flag = "day=1"
+flag_should_be = true
+add_the_flag = true
+return_control = false
 StartBattle = true
-BattleSeq = ExtResource("16_lemrk")
+battle_sequence = ExtResource("16_lemrk")
 
 [node name="EvDazeEnemy4" parent="." unique_id=809219924 instance=ExtResource("15_mqvg4")]
 position = Vector2(-36, -585)
-TriggerSize = Vector2i(13, 29)
-AddFlag = true
-ReturnControl = false
+trigger_size = Vector2i(13, 29)
+add_the_flag = true
+return_control = false
 StartBattle = true
-BattleSeq = ExtResource("22_it168")
+battle_sequence = ExtResource("22_it168")
 
 [node name="EvLostSpiritRed" parent="." unique_id=1140443618 instance=ExtResource("15_mqvg4")]
 position = Vector2(-371, 496)
-TriggerSize = Vector2i(10, 63)
-AddFlag = true
-ReturnControl = false
-BattleSeq = SubResource("Resource_lemrk")
+trigger_size = Vector2i(10, 63)
+add_the_flag = true
+return_control = false
+battle_sequence = SubResource("Resource_lemrk")
 
 [node name="EvTripwire0" parent="." unique_id=1903024655 instance=ExtResource("15_mqvg4")]
 position = Vector2(-467, 265)
-EventName = "WL_alcine_slide"
+event_name = "WL_alcine_slide"
 
 [node name="EvWLVoidMira" parent="." unique_id=1300572210 instance=ExtResource("15_mqvg4")]
 position = Vector2(1025, -1714)
 scale = Vector2(16.552042, 0.9619772)
-TakeControl = false
-EventName = "WL_void"
+take_control = false
+event_name = "WL_void"
 
 [node name="Flame" type="PointLight2D" parent="." unique_id=1861159934]
 texture_filter = 2
@@ -756,10 +756,10 @@ amount = 0.08
 
 [node name="Interactable" parent="." unique_id=980109826 instance=ExtResource("4_d8pup")]
 position = Vector2(780, -256)
-LabelText = "Rest"
+label_text = "Rest"
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "rest_camp"
+dialogue_cue = "rest_camp"
 
 [node name="JumpPoint2" parent="." unique_id=61352011 instance=ExtResource("22_5vs6x")]
 position = Vector2(-636, 408.00003)
@@ -787,10 +787,10 @@ texture = SubResource("GradientTexture2D_5vs6x")
 flag = "WLDoor1b"
 
 [node name="WLAlcineSwitch1" parent="SwitchCast1" unique_id=244300434 instance=ExtResource("4_d8pup")]
-ActionType = "focus_cam"
+action_type = "focus_cam"
 file = "-741"
 dialogue_file = "-741"
-title = "320"
+dialogue_cue = "320"
 focus_position = Vector2(-745, 318)
 add_flag = true
 hide_on_flag = &"WLDoor1b"
@@ -812,10 +812,10 @@ texture = SubResource("GradientTexture2D_5vs6x")
 flag = "WLDoor1a"
 
 [node name="WLDoor1a" parent="SwitchCast2" unique_id=191020952 instance=ExtResource("4_d8pup")]
-ActionType = "focus_cam"
+action_type = "focus_cam"
 file = "-681"
 dialogue_file = "-681"
-title = "406"
+dialogue_cue = "406"
 focus_position = Vector2(-675, 413)
 add_flag = true
 hide_on_flag = &"WLDoor1a"
@@ -829,15 +829,15 @@ ToCamera = 2
 
 [node name="EvMetalicGate" parent="." unique_id=241315403 instance=ExtResource("15_mqvg4")]
 position = Vector2(-208, -976)
-TriggerSize = Vector2i(226, 50)
-AddFlag = true
+trigger_size = Vector2i(226, 50)
+add_the_flag = true
 ShowTextbox = true
-TextFile = "story_1"
-TextNode = "metalic_gate"
+text_file = "story_1"
+text_cue = "metalic_gate"
 
 [node name="WLBunkerSwitch" parent="." unique_id=743108280 instance=ExtResource("4_d8pup")]
 position = Vector2(-275, -1010)
-ActionType = "event"
+action_type = "event"
 file = "WL_bunker_switch"
 dialogue_file = "WL_bunker_switch"
 return_control = false
@@ -863,10 +863,10 @@ sprite_frames = SubResource("SpriteFrames_ug3t0")
 
 [node name="Interactable2" parent="DoorLocked4/HideOnFlag" unique_id=1759938912 instance=ExtResource("4_d8pup")]
 position = Vector2(0, 35)
-LabelText = "Force Open"
+label_text = "Force Open"
 file = "interact_abad"
 dialogue_file = "interact_abad"
-title = "bunker_gate_budge"
+dialogue_cue = "bunker_gate_budge"
 hide_on_flag = &"Bunker1Open"
 
 [node name="TransferBunker" parent="." unique_id=50807784 instance=ExtResource("3_lemrk")]
@@ -882,10 +882,10 @@ position = Vector2(931, -169)
 
 [node name="VPTutorial" parent="." unique_id=1760939469 instance=ExtResource("4_d8pup")]
 position = Vector2(931, -169)
-LabelText = "Stab Ground"
+label_text = "Stab Ground"
 file = "story_1"
 dialogue_file = "story_1"
-title = "vp_tutorial"
+dialogue_cue = "vp_tutorial"
 return_control = false
 show_on_flag = &"day>1+time>3"
 hide_on_flag = &"VPOldCamp||!AsteriaBoss=5"

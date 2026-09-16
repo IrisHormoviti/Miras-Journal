@@ -412,16 +412,16 @@ step_frames = Dictionary[String, PackedInt32Array]({
 
 [node name="TalkPrompt" parent="NPCs/AsteriaOutsideHouse" unique_id=776850733 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
-LabelText = "Talk"
-ActionType = "social_link"
+label_text = "Talk"
+action_type = "social_link"
 file = "sl_asteria"
 dialogue_file = "sl_asteria"
+dialogue_cue = ""
 to_time_relative = 2
 event_condition = "sl_asteria_outside_house"
-bubble_always = true
-Height = 16
 hide_parent = true
 free_on_hide = true
+bubble_always = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="NPCs/AsteriaOutsideHouse" unique_id=1649321420]
 position = Vector2(-1, 0)
@@ -445,17 +445,17 @@ step_frames = Dictionary[String, PackedInt32Array]({
 
 [node name="TalkPrompt" parent="NPCs/AsteriaPlaza" unique_id=523109857 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
-LabelText = "Talk"
-ActionType = "social_link"
+label_text = "Talk"
+action_type = "social_link"
 file = "sl_asteria"
 dialogue_file = "sl_asteria"
+dialogue_cue = ""
 to_time = -1
 to_time_relative = 2
 event_condition = "sl_asteria"
-bubble_always = true
-Height = 16
 hide_parent = true
 free_on_hide = true
+bubble_always = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="NPCs/AsteriaPlaza" unique_id=2126308859]
 position = Vector2(-1, 0)
@@ -489,17 +489,17 @@ offset = Vector2(0, -16)
 
 [node name="TalkPrompt" parent="NPCs/Maple" unique_id=2087883881 instance=ExtResource("9_w0u03")]
 position = Vector2(1.14441e-05, 1)
-LabelText = "Talk"
-ActionType = "social_link"
+label_text = "Talk"
+action_type = "social_link"
 file = "sl_maple"
 dialogue_file = "sl_maple"
+dialogue_cue = ""
 to_time = -1
 to_time_relative = 2
 event_condition = "sl_maple"
-bubble_always = true
-Height = 16
 hide_parent = true
 free_on_hide = true
+bubble_always = true
 
 [node name="JumpPoints" type="Node" parent="." unique_id=483877055]
 
@@ -550,49 +550,65 @@ to_layers = 3
 
 [node name="Chair" parent="Chairs" unique_id=690503422 instance=ExtResource("33_u6p7b")]
 position = Vector2(516, 1094)
+dialogue_file = ""
+dialogue_cue = ""
 chair_faces = Array[String](["R"])
 
 [node name="Chair2" parent="Chairs" unique_id=445798075 instance=ExtResource("33_u6p7b")]
 position = Vector2(588, 1094)
+dialogue_file = ""
+dialogue_cue = ""
 chair_faces = Array[String](["L"])
 
 [node name="Chair3" parent="Chairs" unique_id=1050009947 instance=ExtResource("33_u6p7b")]
 position = Vector2(552, 1046)
+dialogue_file = ""
+dialogue_cue = ""
 chair_faces = Array[String](["D"])
 
 [node name="Chair4" parent="Chairs" unique_id=1644665959 instance=ExtResource("33_u6p7b")]
 position = Vector2(552, 926)
+dialogue_file = ""
+dialogue_cue = ""
 chair_faces = Array[String](["D"])
 
 [node name="Chair7" parent="Chairs" unique_id=1884803340 instance=ExtResource("33_u6p7b")]
 position = Vector2(624, 420)
 trigger_size = 4
+dialogue_file = ""
+dialogue_cue = ""
 chair_faces = Array[String](["U"])
 
 [node name="Chair9" parent="Chairs" unique_id=1174175057 instance=ExtResource("33_u6p7b")]
 position = Vector2(600, 420)
 trigger_size = 4
+dialogue_file = ""
+dialogue_cue = ""
 chair_faces = Array[String](["U"])
 
 [node name="Chair5" parent="Chairs" unique_id=1240111794 instance=ExtResource("33_u6p7b")]
 position = Vector2(660, 1071)
+dialogue_file = ""
+dialogue_cue = ""
 chair_faces = Array[String](["R"])
 
 [node name="Chair6" parent="Chairs" unique_id=1132110392 instance=ExtResource("33_u6p7b")]
 position = Vector2(732, 1071)
+dialogue_file = ""
+dialogue_cue = ""
 chair_faces = Array[String](["L"])
 
 [node name="Events" type="Node2D" parent="." unique_id=416298774]
 
 [node name="EvTavern" parent="Events" unique_id=1297631556 instance=ExtResource("26_vxpye")]
 position = Vector2(365, 973)
-TriggerSize = Vector2i(50, 120)
-Flag = "day:3+time:2"
-FlagIsName = false
-FlagShouldBe = true
+trigger_size = Vector2i(50, 120)
+flag = "day:3+time:2"
+use_name_as_flag = false
+flag_should_be = true
 ShowTextbox = true
-TextFile = "story_2"
-TextNode = "nov3_tavern"
+text_file = "story_2"
+text_cue = "nov3_tavern"
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="Events/EvTavern" unique_id=1893579325]
 position = Vector2(141, -67)
@@ -649,10 +665,10 @@ animation = &"IdleDown"
 texture_filter = 1
 position = Vector2(96, 149)
 trigger_size = 32
-LabelText = "Talk"
+label_text = "Talk"
 file = "story_1"
 dialogue_file = "story_2"
-title = "nov3_exit"
+dialogue_cue = "nov3_exit"
 return_control = false
 show_on_flag = &"day:3+time:3"
 hide_parent = true
@@ -673,6 +689,8 @@ position = Vector2(1, 15)
 
 [node name="TopInteractable" parent="Ladder" index="1" unique_id=281369955]
 position = Vector2(0, 34)
+dialogue_file = ""
+dialogue_cue = ""
 
 [node name="Start1" parent="Ladder" index="2" unique_id=881222092]
 position = Vector2(0, 50)
@@ -682,6 +700,8 @@ position = Vector2(0, 81)
 
 [node name="BottomInteractable" parent="Ladder" index="4" unique_id=363924431]
 position = Vector2(0, 79)
+dialogue_file = ""
+dialogue_cue = ""
 
 [node name="End2" parent="Ladder" index="5" unique_id=1844712371]
 position = Vector2(0, 102.5)
@@ -728,14 +748,13 @@ up_index = NodePath("../Index4")
 position = Vector2(79, 127)
 
 [node name="Interactable" parent="VPGate" index="0" unique_id=68636642]
-ActionType = "text"
+action_type = "text"
 file = "interact_pyrson"
 dialogue_file = "interact_pyrson"
-title = "gather_pyrson"
+dialogue_cue = "gather_pyrson"
 return_control = false
 
 [node name="HomeBuilding" type="Node2D" parent="." unique_id=1028987970]
-visible = false
 z_index = 2
 y_sort_enabled = true
 texture_filter = 1
@@ -758,8 +777,10 @@ position = Vector2(335, 492)
 
 [node name="Lamp3" parent="HomeBuilding" unique_id=1553265074 instance=ExtResource("9_w0u03")]
 position = Vector2(225, 412)
-LabelText = "Toggle Lamp"
-ActionType = "toggle"
+label_text = "Toggle Lamp"
+action_type = "toggle"
+dialogue_file = ""
+dialogue_cue = ""
 
 [node name="PointLight2D" type="PointLight2D" parent="HomeBuilding/Lamp3" unique_id=630158991]
 position = Vector2(2.38419e-07, -3.8147e-06)
@@ -785,9 +806,53 @@ shape = SubResource("RectangleShape2D_6we5s")
 position = Vector2(320, 411)
 trigger_size = Vector2i(20, 22)
 _direction = 0
-room = "Pyrson;HomeBuilding-UpperFloor"
+room = "Pyrson"
+subroom = "HomeBuilding-UpperFloor"
 ToCamera = 3
+UseExactPosition = true
 Position = Vector2(750, -524)
+
+[node name="HomeBuilding-UpperFloor" type="Node2D" parent="." unique_id=455964367]
+z_index = 2
+y_sort_enabled = true
+texture_filter = 1
+script = ExtResource("3_aq7mb")
+Title = "Home building Upper Floor"
+cam_pos = Vector2(740, -500)
+cam_zoom = 3.5
+
+[node name="Border" type="TileMapLayer" parent="HomeBuilding-UpperFloor" unique_id=657143670]
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAAaAO3/AwAAAAIAAAAbAO3/AwAAAAIAAAAcAO3/AwAAAAIAAAAdAO3/AwAAAAIAAAAeAO3/AwAAAAIAAAAgAO3/AwAAAAIAAAAhAO3/AwAAAAIAAAAiAO3/AwAAAAIAAAAiAOz/AwAAAAIAAAAiAOv/AwAAAAIAAAAiAOr/AwAAAAIAAAAiAOn/AwAAAAIAAAAhAOn/AwAAAAIAAAAgAOn/AwAAAAIAAAAfAOn/AwAAAAIAAAAeAOn/AwAAAAIAAAAdAOn/AwAAAAIAAAAcAOn/AwAAAAIAAAAbAOn/AwAAAAIAAAAaAOn/AwAAAAIAAAAaAOv/AwAAAAIAAAAaAOz/AwAAAAIAAAAfAO3/AwAAAAIAAAA=")
+tile_set = ExtResource("27_u6p7b")
+script = ExtResource("24_u5udm")
+hide_instead = true
+
+[node name="Floor" type="TileMapLayer" parent="HomeBuilding-UpperFloor" unique_id=561555285]
+z_index = -1
+tile_map_data = PackedByteArray("AAAaAOj/AQABAAcAABAaAOn/AQACAAcAABAaAOv/AQABAAcAABAaAOz/AQACAAcAABAbAOj/AQADAAAAAAAbAOn/AQADAAEAAAAbAOr/AQACAAIAAAAbAOv/AQACAAIAAAAbAOz/AQACAAIAAAAcAOj/AQADAAAAAAAcAOn/AQADAAEAAAAcAOr/AQACAAIAAAAcAOv/AQACAAIAAAAcAOz/AQACAAIAAAAdAOj/AQADAAAAAAAdAOn/AQADAAEAAAAdAOr/AQACAAIAAAAdAOv/AQACAAIAAAAdAOz/AQACAAIAAAAeAOj/AQADAAAAAAAeAOn/AQADAAEAAAAeAOr/AQACAAIAAAAeAOv/AQACAAIAAAAeAOz/AQACAAIAAAAfAOj/AQADAAAAAAAfAOn/AQADAAEAAAAfAOr/AQACAAIAAAAfAOv/AQACAAIAAAAfAOz/AQACAAIAAAAgAOj/AQADAAAAAAAgAOn/AQADAAEAAAAgAOr/AwAIAAEAAAAgAOv/AQACAAIAAAAgAOz/AQACAAIAAAAhAOj/AQADAAAAAAAhAOn/AQADAAEAAAAhAOr/AQACAAIAAAAhAOv/AQACAAIAAAAhAOz/AQACAAIAAAAiAOj/AQABAAcAAAAiAOn/AQABAAcAAAAiAOr/AQABAAcAAAAiAOv/AQABAAcAAAAiAOz/AQACAAcAAAA=")
+tile_set = ExtResource("27_u6p7b")
+
+[node name="Wall" type="TileMapLayer" parent="HomeBuilding-UpperFloor" unique_id=14152143]
+y_sort_enabled = true
+tile_map_data = PackedByteArray("AAAfAOz/AwABAAIAACA=")
+tile_set = ExtResource("27_u6p7b")
+
+[node name="RoomDoor" type="Area2D" parent="HomeBuilding-UpperFloor" unique_id=1460167508 node_paths=PackedStringArray("LeftSubarea", "RightSubarea")]
+position = Vector2(651, -516)
+script = ExtResource("8_3nvdu")
+LeftSubarea = NodePath("../../HomeBuilding-DazeRoom")
+RightSubarea = NodePath("..")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HomeBuilding-UpperFloor/RoomDoor" unique_id=1089043872]
+shape = SubResource("RectangleShape2D_6we5s")
+
+[node name="Transfer" parent="HomeBuilding-UpperFloor" unique_id=797416010 instance=ExtResource("28_prfhr")]
+position = Vector2(780, -516)
+trigger_size = Vector2i(16, 23)
+_direction = 0
+room = "Pyrson;HomeBuilding"
+Position = Vector2(296, 414)
 
 [node name="HomeBuilding-DazeRoom" type="Node2D" parent="." unique_id=1562588733]
 visible = false
@@ -833,7 +898,6 @@ tile_map_data = PackedByteArray("AAARABAAAQADAAIAAAARABUAAQADAAIAAAASABAAAQADAAI
 tile_set = ExtResource("27_u6p7b")
 
 [node name="HomeBuilding-MyRoom" type="Node2D" parent="." unique_id=1096791357]
-visible = false
 z_index = 2
 y_sort_enabled = true
 texture_filter = 1
@@ -862,11 +926,13 @@ tile_map_data = PackedByteArray("AAAPABgAAQACAAEAAAAFABUAAQACAAEAAAAGABUAAQACAAE
 tile_set = ExtResource("27_u6p7b")
 
 [node name="Lamp2" parent="HomeBuilding-MyRoom" unique_id=2034912881 instance=ExtResource("9_w0u03")]
-position = Vector2(65, 405)
+position = Vector2(59, 413)
 trigger_size = 6
-LabelText = "Toggle Lamp"
-ActionType = "toggle"
-Height = 4
+label_text = "Toggle Lamp"
+action_type = "toggle"
+dialogue_file = ""
+dialogue_cue = ""
+bubble_height = 10
 
 [node name="PointLight2D" type="PointLight2D" parent="HomeBuilding-MyRoom/Lamp2" unique_id=505359653]
 position = Vector2(5, -3.8147e-06)
@@ -898,54 +964,10 @@ animation = &"Sleep"
 [node name="Sleep" parent="HomeBuilding-MyRoom" unique_id=1350986013 instance=ExtResource("9_w0u03")]
 position = Vector2(85, 415)
 trigger_size = 6
-LabelText = "Sleep"
+label_text = "Sleep"
 file = "interact_pyrson"
 dialogue_file = "interact_pyrson"
-title = "sleep_home"
-Height = 6
-
-[node name="HomeBuilding-UpperFloor" type="Node2D" parent="." unique_id=455964367]
-visible = false
-z_index = 2
-y_sort_enabled = true
-texture_filter = 1
-script = ExtResource("3_aq7mb")
-Title = "Home building Upper Floor"
-cam_pos = Vector2(740, -500)
-cam_zoom = 3.5
-
-[node name="Border" type="TileMapLayer" parent="HomeBuilding-UpperFloor" unique_id=657143670]
-y_sort_enabled = true
-tile_map_data = PackedByteArray("AAAaAO3/AwAAAAIAAAAbAO3/AwAAAAIAAAAcAO3/AwAAAAIAAAAdAO3/AwAAAAIAAAAeAO3/AwAAAAIAAAAgAO3/AwAAAAIAAAAhAO3/AwAAAAIAAAAiAO3/AwAAAAIAAAAiAOz/AwAAAAIAAAAiAOv/AwAAAAIAAAAiAOr/AwAAAAIAAAAiAOn/AwAAAAIAAAAhAOn/AwAAAAIAAAAgAOn/AwAAAAIAAAAfAOn/AwAAAAIAAAAeAOn/AwAAAAIAAAAdAOn/AwAAAAIAAAAcAOn/AwAAAAIAAAAbAOn/AwAAAAIAAAAaAOn/AwAAAAIAAAAaAOv/AwAAAAIAAAAaAOz/AwAAAAIAAAAfAO3/AwAAAAIAAAA=")
-tile_set = ExtResource("27_u6p7b")
-script = ExtResource("24_u5udm")
-hide_instead = true
-
-[node name="Floor" type="TileMapLayer" parent="HomeBuilding-UpperFloor" unique_id=561555285]
-z_index = -1
-tile_map_data = PackedByteArray("AAAaAOj/AQABAAcAABAaAOn/AQACAAcAABAaAOv/AQABAAcAABAaAOz/AQACAAcAABAbAOj/AQADAAAAAAAbAOn/AQADAAEAAAAbAOr/AQACAAIAAAAbAOv/AQACAAIAAAAbAOz/AQACAAIAAAAcAOj/AQADAAAAAAAcAOn/AQADAAEAAAAcAOr/AQACAAIAAAAcAOv/AQACAAIAAAAcAOz/AQACAAIAAAAdAOj/AQADAAAAAAAdAOn/AQADAAEAAAAdAOr/AQACAAIAAAAdAOv/AQACAAIAAAAdAOz/AQACAAIAAAAeAOj/AQADAAAAAAAeAOn/AQADAAEAAAAeAOr/AQACAAIAAAAeAOv/AQACAAIAAAAeAOz/AQACAAIAAAAfAOj/AQADAAAAAAAfAOn/AQADAAEAAAAfAOr/AQACAAIAAAAfAOv/AQACAAIAAAAfAOz/AQACAAIAAAAgAOj/AQADAAAAAAAgAOn/AQADAAEAAAAgAOr/AwAIAAEAAAAgAOv/AQACAAIAAAAgAOz/AQACAAIAAAAhAOj/AQADAAAAAAAhAOn/AQADAAEAAAAhAOr/AQACAAIAAAAhAOv/AQACAAIAAAAhAOz/AQACAAIAAAAiAOj/AQABAAcAAAAiAOn/AQABAAcAAAAiAOr/AQABAAcAAAAiAOv/AQABAAcAAAAiAOz/AQACAAcAAAA=")
-tile_set = ExtResource("27_u6p7b")
-
-[node name="Wall" type="TileMapLayer" parent="HomeBuilding-UpperFloor" unique_id=14152143]
-y_sort_enabled = true
-tile_map_data = PackedByteArray("AAAfAOz/AwABAAIAACA=")
-tile_set = ExtResource("27_u6p7b")
-
-[node name="RoomDoor" type="Area2D" parent="HomeBuilding-UpperFloor" unique_id=1460167508 node_paths=PackedStringArray("LeftSubarea", "RightSubarea")]
-position = Vector2(651, -516)
-script = ExtResource("8_3nvdu")
-LeftSubarea = NodePath("../../HomeBuilding-DazeRoom")
-RightSubarea = NodePath("..")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="HomeBuilding-UpperFloor/RoomDoor" unique_id=1089043872]
-shape = SubResource("RectangleShape2D_6we5s")
-
-[node name="Transfer" parent="HomeBuilding-UpperFloor" unique_id=797416010 instance=ExtResource("28_prfhr")]
-position = Vector2(780, -516)
-trigger_size = Vector2i(16, 23)
-_direction = 0
-room = "Pyrson;HomeBuilding"
-Position = Vector2(296, 414)
+dialogue_cue = "sleep_home"
 
 [node name="HomeBuildingDoor" type="Area2D" parent="." unique_id=1930868321 node_paths=PackedStringArray("ToSubarea")]
 visible = false
@@ -997,17 +1019,17 @@ step_frames = Dictionary[String, PackedInt32Array]({
 
 [node name="TalkPrompt" parent="LindeHouse/Linde" unique_id=2045856511 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
-LabelText = "Talk"
-ActionType = "social_link"
+label_text = "Talk"
+action_type = "social_link"
 file = "sl_linde"
 dialogue_file = "sl_linde"
+dialogue_cue = ""
 to_time = -1
 to_time_relative = 2
 event_condition = "sl_linde"
-bubble_always = true
-Height = 16
 hide_parent = true
 free_on_hide = true
+bubble_always = true
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="LindeHouse/Linde" unique_id=1172703311]
 position = Vector2(-1, 0)
@@ -1040,9 +1062,10 @@ shape = SubResource("RectangleShape2D_u5udm")
 position = Vector2(0, -1)
 collision_layer = 271
 collision_mask = 271
-ActionType = "social_link"
+action_type = "social_link"
 file = "sl_linde"
 dialogue_file = "sl_linde"
+dialogue_cue = ""
 to_time = -1
 to_time_relative = 1
 event_condition = "sl_linde"
@@ -1084,13 +1107,13 @@ shape = SubResource("RectangleShape2D_6we5s")
 
 [node name="EvNov2TownHall" parent="TownHall" unique_id=18392500 instance=ExtResource("26_vxpye")]
 position = Vector2(373, 204)
-TriggerSize = Vector2i(50, 4)
-Flag = "day:2+time:4"
-FlagIsName = false
-FlagShouldBe = true
-ReturnControl = false
-TextFile = "story_1"
-TextNode = "nov2_town_hall"
+trigger_size = Vector2i(50, 4)
+flag = "day:2+time:4"
+use_name_as_flag = false
+flag_should_be = true
+return_control = false
+text_file = "story_1"
+text_cue = "nov2_town_hall"
 
 [node name="TransferBasementEntrance" parent="TownHall" unique_id=681761258 instance=ExtResource("28_prfhr")]
 position = Vector2(325, 131)
@@ -1150,9 +1173,9 @@ up_index = NodePath("../Index0")
 [connection signal="action" from="HomeBuilding/Lamp3" to="HomeBuilding/Lamp3/PointLight2D" method="_on_interactable_action"]
 [connection signal="body_entered" from="HomeBuilding/RoomDoor" to="HomeBuilding/RoomDoor" method="_on_body_entered"]
 [connection signal="body_exited" from="HomeBuilding/RoomDoor" to="HomeBuilding/RoomDoor" method="_on_body_exited"]
-[connection signal="action" from="HomeBuilding-MyRoom/Lamp2" to="HomeBuilding-MyRoom/Lamp2/PointLight2D" method="_on_interactable_action"]
 [connection signal="body_entered" from="HomeBuilding-UpperFloor/RoomDoor" to="HomeBuilding-UpperFloor/RoomDoor" method="_on_body_entered"]
 [connection signal="body_exited" from="HomeBuilding-UpperFloor/RoomDoor" to="HomeBuilding-UpperFloor/RoomDoor" method="_on_body_exited"]
+[connection signal="action" from="HomeBuilding-MyRoom/Lamp2" to="HomeBuilding-MyRoom/Lamp2/PointLight2D" method="_on_interactable_action"]
 [connection signal="body_entered" from="HomeBuildingDoor" to="HomeBuildingDoor" method="_on_body_entered"]
 [connection signal="body_exited" from="HomeBuildingDoor" to="HomeBuildingDoor" method="_on_body_exited"]
 [connection signal="body_entered" from="LindeDoor" to="LindeDoor" method="_on_body_entered"]

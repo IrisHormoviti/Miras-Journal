@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="9_3alpk"]
 [ext_resource type="Resource" uid="uid://bsdc68x2mth0w" path="res://database/Enemies/AsteriaSummonBird.tres" id="10_aktg6"]
 [ext_resource type="Resource" uid="uid://h2dsutkgob4w" path="res://database/Enemies/AsteriaSummonLion.tres" id="11_h8w5e"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="12_h8w5e"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5mg01"]
 resource_local_to_scene = true

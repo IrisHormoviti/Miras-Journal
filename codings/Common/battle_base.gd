@@ -1533,7 +1533,7 @@ static func post_battle() -> void:
 		if Event.f(&"FlameActive"):
 			Global.player.activate_flame()
 
-	if sequence.ReturnControl:
+	if sequence.return_control:
 		Hud.ui_visible = true
 		Event.give_control(true)
 
