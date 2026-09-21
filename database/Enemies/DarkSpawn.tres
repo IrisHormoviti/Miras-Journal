@@ -2,11 +2,11 @@
 
 [ext_resource type="Resource" uid="uid://b1h2pffoho6bu" path="res://database/Abilities/ToxicSplash.tres" id="1_ge8t8"]
 [ext_resource type="Texture2D" uid="uid://deqeff2tjgq00" path="res://art/Icons/Enemies/Slime.png" id="1_gfcpg"]
-[ext_resource type="PackedScene" uid="uid://co34lfhkwbp56" path="res://sound/Sets/DefaultSoundSet.tscn" id="1_lfptl"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_tn5j1"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_nskis"]
 [ext_resource type="Resource" uid="uid://dadlaa3lk8441" path="res://database/Abilities/Guard.tres" id="2_pmj1l"]
 [ext_resource type="Resource" uid="uid://d38c2f7pbaqyj" path="res://database/Abilities/Attacks/JumpAttack.tres" id="4_bmd5k"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="7_54arq"]
 
 [resource]
 script = ExtResource("2_nskis")
@@ -14,7 +14,6 @@ FirstName = "Dark Spawn"
 MainColor = Color(0.768627, 0.654902, 0.929412, 1)
 PartyIcon = ExtResource("1_gfcpg")
 ActorClass = "Support"
-WeaponPower = 4
 RecivedSP = 3
 MaxHP = 20
 MaxAura = 15

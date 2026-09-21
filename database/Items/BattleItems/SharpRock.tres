@@ -27,5 +27,4 @@ Deals weak Physical damage to one enemy."
 ItemType = "Bti"
 Icon = SubResource("AtlasTexture_85b45")
 UsedInBattle = true
-OvTarget = 1
 BattleEffect = SubResource("Resource_as5re")

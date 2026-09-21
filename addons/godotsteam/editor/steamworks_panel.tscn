@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://cyniebd6yahu5"]
+[gd_scene format=3 uid="uid://cyniebd6yahu5"]
 
 [ext_resource type="Script" uid="uid://1oo0gvamoxgp" path="res://addons/godotsteam/editor/steamworks_panel.gd" id="1_qn6cd"]
 [ext_resource type="Script" uid="uid://b4nvgu7h84u53" path="res://addons/godotsteam/editor/updates/updates.gd" id="2_qn6cd"]
@@ -17,7 +17,7 @@ bg_color = Color(0.337255, 0.619608, 1, 1)
 ProgressBar/styles/background = SubResource("StyleBoxFlat_qn6cd")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_qf1vo")
 
-[node name="Steamworks" type="Control"]
+[node name="Steamworks" type="Control" unique_id=1962760104]
 process_mode = 3
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 3
@@ -29,7 +29,7 @@ grow_vertical = 2
 script = ExtResource("1_qn6cd")
 metadata/_edit_lock_ = true
 
-[node name="Scroller" type="ScrollContainer" parent="."]
+[node name="Scroller" type="ScrollContainer" parent="." unique_id=398332784]
 custom_minimum_size = Vector2(0, 150)
 layout_mode = 1
 anchors_preset = 15
@@ -39,7 +39,7 @@ grow_horizontal = 2
 grow_vertical = 2
 metadata/_edit_lock_ = true
 
-[node name="DockFrame" type="TabContainer" parent="Scroller"]
+[node name="DockFrame" type="TabContainer" parent="Scroller" unique_id=1501919019]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
@@ -47,7 +47,7 @@ size_flags_vertical = 3
 current_tab = 0
 metadata/_edit_lock_ = true
 
-[node name="Updates" type="MarginContainer" parent="Scroller/DockFrame"]
+[node name="Updates" type="MarginContainer" parent="Scroller/DockFrame" unique_id=1031346215]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/margin_left = 10
@@ -58,41 +58,41 @@ script = ExtResource("2_qn6cd")
 metadata/_tab_index = 0
 metadata/_edit_lock_ = true
 
-[node name="ContainerFrame" type="VBoxContainer" parent="Scroller/DockFrame/Updates"]
+[node name="ContainerFrame" type="VBoxContainer" parent="Scroller/DockFrame/Updates" unique_id=1661653621]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_constants/separation = 10
 metadata/_edit_lock_ = true
 
-[node name="HFrame" type="HBoxContainer" parent="Scroller/DockFrame/Updates/ContainerFrame"]
+[node name="HFrame" type="HBoxContainer" parent="Scroller/DockFrame/Updates/ContainerFrame" unique_id=193113908]
 layout_mode = 2
 theme_override_constants/separation = 25
 metadata/_edit_lock_ = true
 
-[node name="Type" type="Label" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame"]
+[node name="Type" type="Label" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame" unique_id=1748930417]
 custom_minimum_size = Vector2(125, 25)
 layout_mode = 2
 text = "GodotSteam"
 metadata/_edit_lock_ = true
 
-[node name="InstalledLabel" type="Label" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame"]
+[node name="InstalledLabel" type="Label" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame" unique_id=982442355]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Installed version 4.18"
+text = "Installed version 4.22.1"
 metadata/_edit_lock_ = true
 
-[node name="UpdateLabel" type="Label" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame"]
+[node name="UpdateLabel" type="Label" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame" unique_id=1007705448]
 unique_name_in_owner = true
 layout_mode = 2
 metadata/_edit_lock_ = true
 
-[node name="Updating" type="HBoxContainer" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame"]
+[node name="Updating" type="HBoxContainer" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame" unique_id=1758380986]
 layout_mode = 2
 size_flags_horizontal = 10
 theme_override_constants/separation = 25
 metadata/_edit_lock_ = true
 
-[node name="Downloading" type="ProgressBar" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame/Updating"]
+[node name="Downloading" type="ProgressBar" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame/Updating" unique_id=1462202797]
 unique_name_in_owner = true
 visible = false
 custom_minimum_size = Vector2(200, 30)
@@ -102,14 +102,14 @@ step = 1.0
 rounded = true
 metadata/_edit_lock_ = true
 
-[node name="InstallButton" type="Button" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame/Updating"]
+[node name="InstallButton" type="Button" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame/Updating" unique_id=726494779]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
 text = "Install"
 metadata/_edit_lock_ = true
 
-[node name="UpdateButton" type="Button" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame/Updating"]
+[node name="UpdateButton" type="Button" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame/Updating" unique_id=190054063]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 8
@@ -117,7 +117,7 @@ disabled = true
 text = "Up-to-date"
 metadata/_edit_lock_ = true
 
-[node name="CancelButton" type="Button" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame/Updating"]
+[node name="CancelButton" type="Button" parent="Scroller/DockFrame/Updates/ContainerFrame/HFrame/Updating" unique_id=768223870]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

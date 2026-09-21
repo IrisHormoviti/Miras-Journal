@@ -2,11 +2,16 @@
 
 [ext_resource type="Script" uid="uid://gfinmw5y4txi" path="res://codings/Classes/NPC.gd" id="1_dnwjs"]
 [ext_resource type="Texture2D" uid="uid://d1tcv45k4skug" path="res://art/Icons/Editor/npc.png" id="2_n2ikt"]
+[ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="2_yku7r"]
 [ext_resource type="Script" uid="uid://cqt3rk0rxvrpk" path="res://codings/Components/editor_only.gd" id="3_a0g5d"]
 [ext_resource type="Texture2D" uid="uid://c1pk3d7vu8n26" path="res://art/OV/Objects/Shadow1.png" id="4_xha1c"]
 [ext_resource type="Material" uid="uid://bk3wcarpqpgmi" path="res://codings/Shaders/Pixelart.tres" id="5_qa61s"]
 [ext_resource type="SpriteFrames" uid="uid://cgnsvgqdju2dh" path="res://art/Effects/Bubble.tres" id="6_yku7r"]
 [ext_resource type="PackedScene" uid="uid://cx1hh5a1t043t" path="res://sound/Sets/FootstepsSoundSet.tscn" id="7_qa61s"]
+
+[sub_resource type="Resource" id="Resource_huxjc"]
+script = ExtResource("2_yku7r")
+way = 2
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_vnvbs"]
 radius = 7.0
@@ -16,8 +21,13 @@ z_index = 1
 use_parent_material = true
 motion_mode = 1
 script = ExtResource("1_dnwjs")
+facing = SubResource("Resource_huxjc")
 shadow_sprite = NodePath("Shadow")
 Nav = NodePath("Nav")
+step_frames = Dictionary[String, PackedInt32Array]({
+"Loop": PackedInt32Array(0, 1),
+"Walk": PackedInt32Array(0, 2)
+})
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1340304904]
@@ -48,12 +58,12 @@ frame_progress = 1.0
 
 [node name="StdrFootsteps" parent="." unique_id=1832001664 instance=ExtResource("7_qa61s")]
 
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=17809523]
+rect = Rect2(-100, -100, 200, 200)
+show_rect = false
+
 [node name="Shadow" type="Sprite2D" parent="." unique_id=56653812]
 unique_name_in_owner = true
 show_behind_parent = true
 texture_filter = 1
 texture = ExtResource("4_xha1c")
-
-[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="." unique_id=17809523]
-rect = Rect2(-100, -100, 200, 200)
-show_rect = false

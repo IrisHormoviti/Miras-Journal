@@ -1,16 +1,13 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://dqpbm8e3533pp"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_7v0ps"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_7v0ps"]
 
 [resource]
 script = ExtResource("1_7v0ps")
 title = "End of content"
-party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
 room = "res://rooms/ShardGardens.tscn"
 room_name = "Shard gardens"
-player_position = Vector2(324, -1399.645)
-camera_index = 2
-Z = 0
+party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 14,
@@ -117,11 +114,12 @@ members = Array[Dictionary]([{
 "WeaponPower": 80000,
 "codename": &"Mira"
 }])
+player_position = Vector2(324, -1399.645)
+camera_index = 2
 defeated_enemies = ["EnemySG8", "EnemySG9", "EnemySG5"]
 start_time = 1759087800.664549
 saved_time = 1773014034.178484
 play_time = 14951.0
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "CyanFragment:Mat", "CyanFragment:Mat", "OrangeFragment:Mat", "RedFragment:Mat", "StrangeFruit:Con"])
 flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
@@ -181,4 +179,4 @@ flags = Dictionary[StringName, int]({
 &"sl_linde_1": 1,
 &"time": 4
 })
-version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "CyanFragment:Mat", "CyanFragment:Mat", "OrangeFragment:Mat", "RedFragment:Mat", "StrangeFruit:Con"])

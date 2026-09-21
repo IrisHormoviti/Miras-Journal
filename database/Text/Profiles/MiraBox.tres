@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BoxProfile" format=3 uid="uid://cnpmp4umxxgic"]
 
-[ext_resource type="Script" uid="uid://ojp6ga7rf3xg" path="box_profile.gd" id="1_3dtyf"]
+[ext_resource type="Script" uid="uid://ojp6ga7rf3xg" path="res://codings/Classes/box_profile.gd" id="1_3dtyf"]
 [ext_resource type="AudioStream" uid="uid://bwaags6jxi3bi" path="res://sound/SFX/Mira/Voice.ogg" id="1_r8pyh"]
 
 [resource]

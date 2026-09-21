@@ -1,15 +1,13 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://ch6wmx6ws8ybf"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_0d8lm"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_0d8lm"]
 
 [resource]
 script = ExtResource("1_0d8lm")
 title = "test thund"
-party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
 room = "res://rooms/ShardGardens.tscn"
 room_name = "Shard gardens"
-player_position = Vector2(564, 900)
-Z = 0
+party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 9,
@@ -123,12 +121,16 @@ members = Array[Dictionary]([{
 "WeaponPower": 15,
 "codename": &"Mira"
 }])
+player_position = Vector2(564, 900)
 complimentaries = Array[String](["FluidBlast", "Thunderstorm"])
 defeated_enemies = ["EnemySG1", "EnemySG2"]
 start_time = 1773014079.152903
 saved_time = 1773062617.799657
 play_time = 3406.0
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "LifeLave:Con", "LifeLave:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])
+diary = Dictionary[int, PackedStringArray]({
+2: PackedStringArray("boo"),
+5: PackedStringArray("boo", "bee")
+})
 flags = Dictionary[StringName, int]({
 &"AlcineFollow": 4,
 &"AlcineFollow4": 4,
@@ -189,8 +191,4 @@ flags = Dictionary[StringName, int]({
 &"day": 3,
 &"time": 3
 })
-diary = Dictionary[int, PackedStringArray]({
-2: PackedStringArray("boo"),
-5: PackedStringArray("boo", "bee")
-})
-version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "LifeLave:Con", "LifeLave:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])

@@ -1,60 +1,66 @@
-[gd_scene load_steps=2 format=3 uid="uid://b1jb5yierm2bq"]
+[gd_scene format=3 uid="uid://b1jb5yierm2bq"]
 
 [ext_resource type="Script" uid="uid://bbcunrpgig552" path="res://addons/AsepriteWizard/interface/docks/wizard/wizard_nodes/details.gd" id="1_1v4dc"]
 
-[node name="Details" type="VBoxContainer"]
+[sub_resource type="DPITexture" id="DPITexture_brc5y"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
+
+[node name="Details" type="VBoxContainer" unique_id=920966392]
 offset_right = 40.0
 offset_bottom = 40.0
 script = ExtResource("1_1v4dc")
 
-[node name="label" type="Button" parent="."]
+[node name="label" type="Button" parent="." unique_id=666914862]
 layout_mode = 2
 text = "Details"
+icon = SubResource("DPITexture_brc5y")
 flat = true
 alignment = 0
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=1004258980]
 layout_mode = 2
 theme_override_constants/margin_left = 10
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer" unique_id=2102362017]
+visible = false
 layout_mode = 2
 theme_override_constants/h_separation = 5
 columns = 2
 
-[node name="split_layers_label" type="Label" parent="MarginContainer/GridContainer"]
+[node name="split_layers_label" type="Label" parent="MarginContainer/GridContainer" unique_id=1520322400]
 layout_mode = 2
 text = "Split layers:"
 
-[node name="split_layers" type="Label" parent="MarginContainer/GridContainer"]
+[node name="split_layers" type="Label" parent="MarginContainer/GridContainer" unique_id=255748538]
 layout_mode = 2
 
-[node name="only_visible_layers_label" type="Label" parent="MarginContainer/GridContainer"]
+[node name="only_visible_layers_label" type="Label" parent="MarginContainer/GridContainer" unique_id=338364966]
 layout_mode = 2
 text = "Only visible layers:"
 
-[node name="only_visible_layers" type="Label" parent="MarginContainer/GridContainer"]
+[node name="only_visible_layers" type="Label" parent="MarginContainer/GridContainer" unique_id=2116315266]
 layout_mode = 2
 
-[node name="layer_exclusion_pattern_label" type="Label" parent="MarginContainer/GridContainer"]
+[node name="layer_exclusion_pattern_label" type="Label" parent="MarginContainer/GridContainer" unique_id=1204833266]
 layout_mode = 2
 text = "Layer Ex Pattern:"
 
-[node name="layer_exclusion_pattern" type="Label" parent="MarginContainer/GridContainer"]
+[node name="layer_exclusion_pattern" type="Label" parent="MarginContainer/GridContainer" unique_id=247144488]
 layout_mode = 2
 
-[node name="output_name_label" type="Label" parent="MarginContainer/GridContainer"]
+[node name="output_name_label" type="Label" parent="MarginContainer/GridContainer" unique_id=974303633]
 layout_mode = 2
 text = "Output name:"
 
-[node name="output_name" type="Label" parent="MarginContainer/GridContainer"]
+[node name="output_name" type="Label" parent="MarginContainer/GridContainer" unique_id=1801639662]
 layout_mode = 2
 
-[node name="do_not_create_resource_label" type="Label" parent="MarginContainer/GridContainer"]
+[node name="do_not_create_resource_label" type="Label" parent="MarginContainer/GridContainer" unique_id=280750683]
 layout_mode = 2
 text = "Do not create resource:"
 
-[node name="do_not_create_resource" type="Label" parent="MarginContainer/GridContainer"]
+[node name="do_not_create_resource" type="Label" parent="MarginContainer/GridContainer" unique_id=924036915]
 layout_mode = 2
 
 [connection signal="pressed" from="label" to="." method="_on_label_pressed"]

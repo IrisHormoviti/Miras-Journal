@@ -1,14 +1,13 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://bfuypp88k2npa"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_w3lrs"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_w3lrs"]
 
 [resource]
 script = ExtResource("1_w3lrs")
 title = "Test revive"
-party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
 room = "res://rooms/Debug.tscn"
 room_name = "Debug room"
-player_position = Vector2(2, -29.511839)
+party = Array[StringName]([&"Mira", &"Alcine", &"", &""])
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 15,
@@ -115,10 +114,10 @@ members = Array[Dictionary]([{
 "WeaponPower": 15,
 "codename": &"Mira"
 }])
+player_position = Vector2(2, -29.511839)
 start_time = 1759087800.664549
 saved_time = 1775820978.190764
 play_time = 10656.0
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
 flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
@@ -153,4 +152,4 @@ flags = Dictionary[StringName, int]({
 &"day": 2,
 &"time": 2
 })
-version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])

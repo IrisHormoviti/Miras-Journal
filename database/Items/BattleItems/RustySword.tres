@@ -29,5 +29,4 @@ Icon = SubResource("AtlasTexture_asmxh")
 QuantityMeansUses = true
 AmountOnAdd = 3
 UsedInBattle = true
-OvTarget = 1
 BattleEffect = SubResource("Resource_as5re")

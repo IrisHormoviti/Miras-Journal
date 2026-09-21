@@ -8,7 +8,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("1_qyyir")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Idle",
 "speed": 5.0
 }]

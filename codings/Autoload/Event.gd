@@ -714,7 +714,7 @@ func start_time_events(location: String) -> void:
 	if map.has_section(id):
 		var event_script: bool = map.get_value(id, "event_script", false)
 		var file: String = map.get_value(id, "file", "")
-		var title: String = map.get_value(id, "title", id)
+		var title: String = map.get_value(id, "cue", id)
 
 		print_rich("[color=purple]Starting date event: " + id)
 

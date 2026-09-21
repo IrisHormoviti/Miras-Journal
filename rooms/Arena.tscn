@@ -208,7 +208,6 @@ sources/0 = SubResource("TileSetAtlasSource_87swt")
 [node name="Arena" type="Node2D" unique_id=1406597942]
 process_mode = 1
 script = ExtResource("4_gfx0h")
-Name = "Arena"
 
 [node name="Layer0" type="TileMapLayer" parent="." unique_id=1332807072]
 use_parent_material = true

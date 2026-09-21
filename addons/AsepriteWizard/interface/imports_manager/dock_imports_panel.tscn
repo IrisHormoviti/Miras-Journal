@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://ci67r2f2btg5"]
+[gd_scene format=3 uid="uid://ci67r2f2btg5"]
 
 [ext_resource type="Script" uid="uid://ll67u43bmpjh" path="res://addons/AsepriteWizard/interface/imports_manager/dock_imports_panel.gd" id="1_1xyeb"]
 [ext_resource type="PackedScene" uid="uid://cisgsfvp4nf1g" path="res://addons/AsepriteWizard/interface/shared/tree/resource_tree.tscn" id="2_d1s4o"]
@@ -8,7 +8,7 @@
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_edrvq"]
 
-[node name="dock_imports" type="Panel"]
+[node name="dock_imports" type="Panel" unique_id=1582490053]
 custom_minimum_size = Vector2(600, 400)
 anchors_preset = 15
 anchor_right = 1.0
@@ -20,7 +20,7 @@ size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxEmpty_edrvq")
 script = ExtResource("1_1xyeb")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=580394880]
 custom_minimum_size = Vector2(400, 300)
 layout_mode = 1
 anchors_preset = 15
@@ -35,47 +35,48 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=215906606]
 layout_mode = 2
 
-[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/VBoxContainer"]
+[node name="HSplitContainer" type="HSplitContainer" parent="MarginContainer/VBoxContainer" unique_id=1592764462]
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="tree" parent="MarginContainer/VBoxContainer/HSplitContainer" instance=ExtResource("2_d1s4o")]
+[node name="tree" parent="MarginContainer/VBoxContainer/HSplitContainer" unique_id=1816323610 instance=ExtResource("2_d1s4o")]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HSplitContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HSplitContainer" unique_id=872741638]
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer" unique_id=461792790]
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer"]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" unique_id=1668277674]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer"]
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer/MarginContainer" unique_id=1005491530]
 layout_mode = 2
 text = "Details"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer"]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" unique_id=1974927116]
 layout_mode = 2
 
-[node name="nothing" type="Label" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer"]
+[node name="nothing" type="Label" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" unique_id=1822953851]
 layout_mode = 2
 size_flags_vertical = 6
 text = "Nothing selected"
 horizontal_alignment = 1
 
-[node name="single_item" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_4ufqa")]
+[node name="single_item" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" unique_id=1044290621 instance=ExtResource("3_4ufqa")]
 layout_mode = 2
 
-[node name="multiple_items" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_pw8ds")]
+[node name="multiple_items" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" unique_id=612779636 instance=ExtResource("3_pw8ds")]
 layout_mode = 2
 
-[node name="confirmation_warning" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" instance=ExtResource("3_2us73")]
+[node name="confirmation_warning" parent="MarginContainer/VBoxContainer/HSplitContainer/MarginContainer/VBoxContainer" unique_id=552402964 instance=ExtResource("3_2us73")]
+visible = false
 layout_mode = 2
 
 [connection signal="multi_selected" from="MarginContainer/VBoxContainer/HSplitContainer/tree" to="." method="_on_resource_tree_multi_selected"]

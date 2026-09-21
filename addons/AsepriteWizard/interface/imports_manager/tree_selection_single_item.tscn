@@ -1,151 +1,151 @@
-[gd_scene load_steps=3 format=3 uid="uid://dnlk2yep7teea"]
+[gd_scene format=3 uid="uid://dnlk2yep7teea"]
 
 [ext_resource type="Script" uid="uid://drq8003ny6g6k" path="res://addons/AsepriteWizard/interface/imports_manager/tree_selection_single_item.gd" id="1_bb3ui"]
 [ext_resource type="PackedScene" uid="uid://c1l0bk12iwln3" path="res://addons/AsepriteWizard/interface/shared/tree/inline_warning_panel.tscn" id="2_weuqf"]
 
-[node name="single_item" type="VBoxContainer"]
+[node name="single_item" type="VBoxContainer" unique_id=1870428208]
 visible = false
 script = ExtResource("1_bb3ui")
 
-[node name="GridContainer" type="GridContainer" parent="."]
+[node name="GridContainer" type="GridContainer" parent="." unique_id=723188384]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/h_separation = 10
 columns = 2
 
-[node name="type_label" type="Label" parent="GridContainer"]
+[node name="type_label" type="Label" parent="GridContainer" unique_id=245680954]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Type"
 
-[node name="type_value" type="Label" parent="GridContainer"]
+[node name="type_value" type="Label" parent="GridContainer" unique_id=287898801]
 layout_mode = 2
 text = "-"
 
-[node name="name_label" type="Label" parent="GridContainer"]
+[node name="name_label" type="Label" parent="GridContainer" unique_id=1188981915]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Name"
 
-[node name="name_value" type="Label" parent="GridContainer"]
+[node name="name_value" type="Label" parent="GridContainer" unique_id=1451013430]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "-"
 autowrap_mode = 2
 
-[node name="path_label" type="Label" parent="GridContainer"]
+[node name="path_label" type="Label" parent="GridContainer" unique_id=861353965]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Path"
 
-[node name="path_value" type="Label" parent="GridContainer"]
+[node name="path_value" type="Label" parent="GridContainer" unique_id=1279145827]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "-"
 autowrap_mode = 1
 
-[node name="HSeparator" type="HSeparator" parent="GridContainer"]
+[node name="HSeparator" type="HSeparator" parent="GridContainer" unique_id=1658469014]
 layout_mode = 2
 
-[node name="HSeparator2" type="HSeparator" parent="GridContainer"]
+[node name="HSeparator2" type="HSeparator" parent="GridContainer" unique_id=683763761]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="source_file_label" type="Label" parent="GridContainer"]
+[node name="source_file_label" type="Label" parent="GridContainer" unique_id=127947952]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Aseprite File"
 
-[node name="source_file_value" type="Label" parent="GridContainer"]
+[node name="source_file_value" type="Label" parent="GridContainer" unique_id=1708673429]
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "-"
 autowrap_mode = 1
 
-[node name="layer_label" type="Label" parent="GridContainer"]
+[node name="layer_label" type="Label" parent="GridContainer" unique_id=1104682623]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Layer"
 
-[node name="layer_value" type="Label" parent="GridContainer"]
+[node name="layer_value" type="Label" parent="GridContainer" unique_id=413649727]
 layout_mode = 2
 text = "-"
 
-[node name="slice_label" type="Label" parent="GridContainer"]
+[node name="slice_label" type="Label" parent="GridContainer" unique_id=587396987]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Slice"
 
-[node name="slice_value" type="Label" parent="GridContainer"]
+[node name="slice_value" type="Label" parent="GridContainer" unique_id=596304963]
 layout_mode = 2
 text = "-"
 
-[node name="o_folder_label" type="Label" parent="GridContainer"]
+[node name="o_folder_label" type="Label" parent="GridContainer" unique_id=969640217]
 visible = false
 layout_mode = 2
 size_flags_vertical = 0
 text = "Output folder"
 
-[node name="o_folder_value" type="Label" parent="GridContainer"]
+[node name="o_folder_value" type="Label" parent="GridContainer" unique_id=145816727]
 visible = false
 custom_minimum_size = Vector2(50, 0)
 layout_mode = 2
 size_flags_horizontal = 3
 text = "-"
 
-[node name="o_name_label" type="Label" parent="GridContainer"]
+[node name="o_name_label" type="Label" parent="GridContainer" unique_id=1073261818]
 layout_mode = 2
 size_flags_vertical = 0
 text = "Spritesheet name"
 
-[node name="o_name_value" type="Label" parent="GridContainer"]
+[node name="o_name_value" type="Label" parent="GridContainer" unique_id=363198882]
 layout_mode = 2
 text = "-"
 
-[node name="source_changed_warning" parent="." instance=ExtResource("2_weuqf")]
+[node name="source_changed_warning" parent="." unique_id=1814462020 instance=ExtResource("2_weuqf")]
 layout_mode = 2
 
-[node name="resource_buttons" type="HFlowContainer" parent="."]
+[node name="resource_buttons" type="HFlowContainer" parent="." unique_id=1835661070]
 visible = false
 layout_mode = 2
 
-[node name="import" type="Button" parent="resource_buttons"]
+[node name="import" type="Button" parent="resource_buttons" unique_id=1949437017]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Re-Import"
 
-[node name="open_scene" type="Button" parent="resource_buttons"]
+[node name="open_scene" type="Button" parent="resource_buttons" unique_id=1534650190]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Open Scene"
 
-[node name="scene_buttons" type="HFlowContainer" parent="."]
+[node name="scene_buttons" type="HFlowContainer" parent="." unique_id=1341720161]
 visible = false
 layout_mode = 2
 
-[node name="import_all" type="Button" parent="scene_buttons"]
+[node name="import_all" type="Button" parent="scene_buttons" unique_id=1407402472]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Re-Import all"
 
-[node name="open_scene" type="Button" parent="scene_buttons"]
+[node name="open_scene" type="Button" parent="scene_buttons" unique_id=2027735256]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Open Scene"
 
-[node name="dir_buttons" type="HFlowContainer" parent="."]
+[node name="dir_buttons" type="HFlowContainer" parent="." unique_id=1674809031]
 visible = false
 layout_mode = 2
 
-[node name="import_all" type="Button" parent="dir_buttons"]
+[node name="import_all" type="Button" parent="dir_buttons" unique_id=294601635]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Re-Import all"
 
-[node name="show_dir_in_fs" type="Button" parent="dir_buttons"]
+[node name="show_dir_in_fs" type="Button" parent="dir_buttons" unique_id=131595930]
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Show In FileSystem"

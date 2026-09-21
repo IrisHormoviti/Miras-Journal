@@ -1,7 +1,6 @@
 [gd_resource type="Resource" script_class="Actor" format=3 uid="uid://dyqwhhom23j2x"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_j4a1g"]
-[ext_resource type="PackedScene" uid="uid://co34lfhkwbp56" path="res://sound/Sets/DefaultSoundSet.tscn" id="2_tk2k6"]
 [ext_resource type="Resource" uid="uid://xkuji6v3lk6" path="res://database/Abilities/Indestructible.tres" id="2_ubodn"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_3qp5y"]
 [ext_resource type="Resource" uid="uid://dmhsvhd1lkkue" path="res://database/Abilities/Summon.tres" id="3_8lohf"]
@@ -9,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://b1xu46a1gjneu" path="res://database/Abilities/BowToMe.tres" id="4_hsgqg"]
 [ext_resource type="Resource" uid="uid://c63vtxcgx6spf" path="res://database/Abilities/Attacks/Pass.tres" id="6_ubodn"]
 [ext_resource type="Resource" uid="uid://dssdstvmfydt3" path="res://database/Enemies/LazuliteHeartLeft.tres" id="9_hsgqg"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="10_8lohf"]
 [ext_resource type="Resource" uid="uid://01s5imheles6" path="res://database/Enemies/LazuliteHeartRight.tres" id="10_amlp5"]
 
 [resource]
@@ -18,7 +18,6 @@ MainColor = Color(0.25098, 0.917647, 1, 1)
 PartyIcon = ExtResource("3_wvs21")
 ActorClass = "Boss"
 codename = &"LHBody"
-WeaponPower = 0
 HealthBar = true
 RecivedSP = 30
 SummonedAllies = Array[ExtResource("3_3qp5y")]([ExtResource("9_hsgqg"), ExtResource("10_amlp5")])

@@ -1,13 +1,16 @@
-~ nov1_dream
-do lower_layer()
+~ nov1_morning
+$>> Loader.gray_out(1)
+$>> lower_layer()
+$> Loader.travel_to("WitheredLeaves", Vector2.ZERO, 1)
+$> Event.no_player()
+$> Event.spawn("Daze", "TentInside+(-8,-5)", "Sleep", 1, true)
+$> Event.spawn("Mira", "TentInside+(8,0)", "Sleep", 1, true)
 I feel like I'm in a city... I walk around... 
 There is large buildings... Lots of people...
 Suddenly my view shatters, I see many pieces of glass around me that reflect like mirrors.... 
 The people around me are gone, but I feel like there is still someone with me... 
 I hear a loud noise.
-=> END
-
-~ nov1_morning
+$> Loader.ungray.emit()
 ...
 Sleeping next to him is quite akward...
 My fur touching his bare Human skin feels weird.
@@ -21,12 +24,18 @@ set ToDay = 1
 do! time_transition()
 => END
 
-~ nov1_daytime_0
+~ nov1_daytime
 Daze seems to have woken up.
 I guess I should get up too...
-=> END
-
-~ nov1_daytime
+$> Loader.travel_to("WitheredLeaves", Vector2(720, -211), 0, Direction.DOWN, false)
+$> Event.no_player()
+$> Event.zoom(5)
+$> Event.spawn("Mira", Vector2(770, -211), "SitLeft")
+$> Event.spawn("Daze", Vector2(670, -211), Direction.RIGHT)
+$> Party.set_to(["Mira", 'Daze'])
+$> Item.remove_item("LightweightAxe", &"Key")
+$> Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
+$> Loader.travel_to("WitheredLeaves", Vector2(775, -211))
 Daze.Neutral: The food I have really won't last us long, I really didn't prepare for this situation.
 Mira.Smile: Hey, my supplies weren't even enough to take a step outside my village!
 [hide]

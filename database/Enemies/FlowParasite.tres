@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="Actor" format=3 uid="uid://dxfkwyq3xh4d"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_aaqm5"]
-[ext_resource type="PackedScene" uid="uid://co34lfhkwbp56" path="res://sound/Sets/DefaultSoundSet.tscn" id="2_ckpjf"]
 [ext_resource type="Resource" uid="uid://dsmlea0nfgq7h" path="res://database/Abilities/FluidBlast.tres" id="2_mpd0n"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_3fqbs"]
 [ext_resource type="Resource" uid="uid://cfe2jjap5iytv" path="res://database/Abilities/Humidity.tres" id="3_mf60o"]
 [ext_resource type="Texture2D" uid="uid://br3ayvp6wpv2r" path="res://art/Icons/Enemies/Parasite.png" id="3_sinrd"]
 [ext_resource type="Resource" uid="uid://d1ri7q5c1bkev" path="res://database/Abilities/PitchIn.tres" id="4_mf60o"]
 [ext_resource type="Resource" uid="uid://17bbb0h04khb" path="res://database/Abilities/Attacks/CloseupAttack.tres" id="5_sinrd"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="8_mpd0n"]
 
 [resource]
 script = ExtResource("3_3fqbs")
@@ -15,7 +15,6 @@ FirstName = "Flow Parasite"
 MainColor = Color(0.258824, 0.392157, 0.541176, 1)
 PartyIcon = ExtResource("3_sinrd")
 ActorClass = "Mage"
-WeaponPower = 10
 RecivedSP = 6
 MaxHP = 63
 Attack = 0.4

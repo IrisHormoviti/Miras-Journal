@@ -1,7 +1,7 @@
 [gd_resource type="Resource" script_class="BoxProfile" format=3 uid="uid://b28b6eda2u4a"]
 
 [ext_resource type="AudioStream" uid="uid://dw2nj5al7n00g" path="res://sound/SFX/Asteria/Voice.ogg" id="1_gkvks"]
-[ext_resource type="Script" uid="uid://ojp6ga7rf3xg" path="box_profile.gd" id="1_uetgw"]
+[ext_resource type="Script" uid="uid://ojp6ga7rf3xg" path="res://codings/Classes/box_profile.gd" id="1_uetgw"]
 
 [resource]
 script = ExtResource("1_uetgw")

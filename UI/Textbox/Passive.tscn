@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://bmpwjae3tgvdx"]
 
 [ext_resource type="Script" uid="uid://dhy3yoqxs5k4s" path="res://codings/UIScripts/passive.gd" id="1_jjmcy"]
-[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/dialogue_label.tscn" id="2_adpgd"]
+[ext_resource type="PackedScene" uid="uid://ckvgyvclnwggo" path="res://addons/dialogue_manager/nodes/dialogue_label/dialogue_label.tscn" id="2_adpgd"]
 [ext_resource type="Script" uid="uid://bqfs1nucd5qo" path="res://codings/UIScripts/dialogue_label_ext.gd" id="3_2bhme"]
 [ext_resource type="FontFile" uid="uid://sehkl0mea74i" path="res://UI/Fonts/cyrenia-regular.ttf" id="3_irkq5"]
 

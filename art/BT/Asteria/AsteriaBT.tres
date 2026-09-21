@@ -268,7 +268,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_2u4wx")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Ability",
 "speed": 10.0
 }, {
@@ -309,7 +309,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_fvnok")
 }],
-"loop": true,
+"loop": 1,
 "name": &"AbilityLoop",
 "speed": 10.0
 }, {
@@ -341,7 +341,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_41q4e")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Attack1",
 "speed": 12.0
 }, {
@@ -349,7 +349,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_r1seu")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Entrance",
 "speed": 5.0
 }, {
@@ -366,7 +366,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nqys6")
 }],
-"loop": false,
+"loop": 0,
 "name": &"Hit",
 "speed": 8.0
 }, {
@@ -383,7 +383,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_u0wh1")
 }],
-"loop": true,
+"loop": 1,
 "name": &"Idle",
 "speed": 4.0
 }, {
@@ -412,7 +412,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_xhsgy")
 }],
-"loop": false,
+"loop": 0,
 "name": &"KnockOut",
 "speed": 8.0
 }]

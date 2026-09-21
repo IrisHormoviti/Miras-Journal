@@ -594,7 +594,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_0usjx")
 }],
-"loop": true,
+"loop": 1,
 "name": &"45angle",
 "speed": 10.0
 }, {
@@ -617,7 +617,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_8v5mt")
 }],
-"loop": true,
+"loop": 1,
 "name": &"BagIdle",
 "speed": 2.0
 }, {
@@ -637,7 +637,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_iej2h")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashDownHit",
 "speed": 10.0
 }, {
@@ -660,7 +660,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vbnm4")
 }],
-"loop": true,
+"loop": 1,
 "name": &"DashDownLoop",
 "speed": 10.0
 }, {
@@ -668,7 +668,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_44jwq")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashDownStart",
 "speed": 12.0
 }, {
@@ -682,7 +682,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_iej2h")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashDownStop",
 "speed": 10.0
 }, {
@@ -705,7 +705,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_c0cri")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashLeftHit",
 "speed": 10.0
 }, {
@@ -725,7 +725,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_p4h4e")
 }],
-"loop": true,
+"loop": 1,
 "name": &"DashLeftLoop",
 "speed": 10.0
 }, {
@@ -736,7 +736,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_afnts")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashLeftStart",
 "speed": 12.0
 }, {
@@ -753,7 +753,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_c0cri")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashLeftStop",
 "speed": 10.0
 }, {
@@ -776,7 +776,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_57joh")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashRightHit",
 "speed": 10.0
 }, {
@@ -796,7 +796,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_qqfyq")
 }],
-"loop": true,
+"loop": 1,
 "name": &"DashRightLoop",
 "speed": 10.0
 }, {
@@ -807,7 +807,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_cel0t")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashRightStart",
 "speed": 12.0
 }, {
@@ -824,7 +824,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_57joh")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashRightStop",
 "speed": 10.0
 }, {
@@ -841,7 +841,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bipux")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashUpHit",
 "speed": 10.0
 }, {
@@ -861,7 +861,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_t4ymc")
 }],
-"loop": true,
+"loop": 1,
 "name": &"DashUpLoop",
 "speed": 10.0
 }, {
@@ -872,7 +872,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_vhnhb")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashUpStart",
 "speed": 12.0
 }, {
@@ -889,7 +889,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_n4jhi")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DashUpStop",
 "speed": 10.0
 }, {
@@ -906,7 +906,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_5ar6k")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DenyDown",
 "speed": 8.0
 }, {
@@ -923,7 +923,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_c3seo")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DenyLeft",
 "speed": 8.0
 }, {
@@ -940,7 +940,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_rqxi0")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DenyRight",
 "speed": 8.0
 }, {
@@ -957,7 +957,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_v80ts")
 }],
-"loop": false,
+"loop": 0,
 "name": &"DenyUp",
 "speed": 8.0
 }, {
@@ -980,7 +980,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_nsop4")
 }],
-"loop": false,
+"loop": 0,
 "name": &"FlameActive",
 "speed": 8.0
 }, {
@@ -1021,7 +1021,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_taa51")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleDown",
 "speed": 4.0
 }, {
@@ -1056,7 +1056,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_3n5a1")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleLeft",
 "speed": 4.0
 }, {
@@ -1091,7 +1091,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bvgn4")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleRight",
 "speed": 4.0
 }, {
@@ -1132,7 +1132,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i8ngx")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleUp",
 "speed": 4.0
 }, {
@@ -1155,7 +1155,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_12b4h")
 }],
-"loop": false,
+"loop": 0,
 "name": &"OpenBag",
 "speed": 10.0
 }, {
@@ -1169,7 +1169,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_lrbcm")
 }],
-"loop": true,
+"loop": 1,
 "name": &"PickUpLeft",
 "speed": 5.0
 }, {
@@ -1183,7 +1183,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_80ebs")
 }],
-"loop": true,
+"loop": 1,
 "name": &"PickUpRight",
 "speed": 5.0
 }, {
@@ -1215,7 +1215,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_bfixc")
 }],
-"loop": false,
+"loop": 0,
 "name": &"ReachOut",
 "speed": 8.0
 }, {
@@ -1232,7 +1232,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_i2xxs")
 }],
-"loop": true,
+"loop": 1,
 "name": &"WalkDown",
 "speed": 4.0
 }, {
@@ -1249,7 +1249,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_ffxjr")
 }],
-"loop": true,
+"loop": 1,
 "name": &"WalkLeft",
 "speed": 4.0
 }, {
@@ -1266,7 +1266,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_jycwk")
 }],
-"loop": true,
+"loop": 1,
 "name": &"WalkRight",
 "speed": 4.0
 }, {
@@ -1283,7 +1283,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_73eiy")
 }],
-"loop": true,
+"loop": 1,
 "name": &"WalkUp",
 "speed": 4.0
 }]

@@ -1,8 +1,9 @@
-[gd_scene load_steps=2 format=3 uid="uid://0x3mlxsex7eb"]
+[gd_scene format=3 uid="uid://0x3mlxsex7eb"]
 
 [ext_resource type="Script" uid="uid://dmaetujyo1ov5" path="res://addons/AsepriteWizard/interface/imports_manager/aseprite_imports_manager.gd" id="1_wrm15"]
 
-[node name="AsepriteDockImportsWindow" type="Window"]
+[node name="AsepriteDockImportsWindow" type="Window" unique_id=1216495877]
+oversampling_override = 1.0
 title = "Aseprite Imports Manager"
 initial_position = 1
 size = Vector2i(612, 458)

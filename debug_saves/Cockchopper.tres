@@ -1,15 +1,12 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://2b68wnjukfgo"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_xr6ji"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_xr6ji"]
 
 [resource]
 script = ExtResource("1_xr6ji")
 title = "Cockchopper"
 room = "res://rooms/ShardGardens.tscn"
 room_name = "Shard gardens"
-player_position = Vector2(-123.99999, -211)
-camera_index = 1
-Z = 0
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
@@ -116,11 +113,12 @@ members = Array[Dictionary]([{
 "WeaponPower": 80000,
 "codename": &"Mira"
 }])
+player_position = Vector2(-123.99999, -211)
+camera_index = 1
 defeated_enemies = ["EnemySG4", "EnemySG7"]
 start_time = 1759087800.664549
 saved_time = 1772986602.674413
 play_time = 11457.0
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "CyanFragment:Mat", "OrangeFragment:Mat", "RedFragment:Mat", "StrangeFruit:Con"])
 flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
@@ -169,4 +167,4 @@ flags = Dictionary[StringName, int]({
 &"day": 4,
 &"time": 4
 })
-version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "CyanFragment:Mat", "OrangeFragment:Mat", "RedFragment:Mat", "StrangeFruit:Con"])

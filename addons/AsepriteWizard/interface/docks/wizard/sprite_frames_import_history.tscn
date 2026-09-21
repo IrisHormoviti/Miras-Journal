@@ -1,8 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cyoin5ncul0fm"]
+[gd_scene format=3 uid="uid://cyoin5ncul0fm"]
 
 [ext_resource type="Script" uid="uid://08o6vyjcvqrf" path="res://addons/AsepriteWizard/interface/docks/wizard/sprite_frames_import_history.gd" id="1"]
 
-[node name="SpriteFramesImportHistory" type="PanelContainer"]
+[node name="SpriteFramesImportHistory" type="PanelContainer" unique_id=2071592195]
 anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
@@ -10,75 +10,75 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1")
 
-[node name="MarginContainer" type="MarginContainer" parent="."]
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=102513489]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=1450777550]
 layout_mode = 2
 
-[node name="list actions" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="list actions" type="HBoxContainer" parent="MarginContainer/VBoxContainer" unique_id=2009045693]
 layout_mode = 2
 size_flags_vertical = 0
 alignment = 2
 
-[node name="divider" type="Label" parent="MarginContainer/VBoxContainer/list actions"]
+[node name="divider" type="Label" parent="MarginContainer/VBoxContainer/list actions" unique_id=746496256]
 layout_mode = 2
 
-[node name="sort_label" type="Label" parent="MarginContainer/VBoxContainer/list actions"]
+[node name="sort_label" type="Label" parent="MarginContainer/VBoxContainer/list actions" unique_id=1530904985]
 layout_mode = 2
 text = "Sort by:"
 
-[node name="SortOptions" type="OptionButton" parent="MarginContainer/VBoxContainer/list actions"]
+[node name="SortOptions" type="OptionButton" parent="MarginContainer/VBoxContainer/list actions" unique_id=561458005]
 layout_mode = 2
-item_count = 2
 selected = 0
+item_count = 2
 popup/item_0/text = "Date"
 popup/item_0/id = 0
 popup/item_1/text = "Source File"
 popup/item_1/id = 1
 
-[node name="loading_warning" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="loading_warning" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1436693012]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
 text = "Loading..."
 
-[node name="no_history_warning" type="Label" parent="MarginContainer/VBoxContainer"]
+[node name="no_history_warning" type="Label" parent="MarginContainer/VBoxContainer" unique_id=847619970]
 visible = false
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 6
 text = "No import history"
 
-[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer"]
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/VBoxContainer" unique_id=866221159]
 visible = false
 layout_mode = 2
 size_flags_vertical = 3
 
-[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/ScrollContainer"]
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/VBoxContainer/ScrollContainer" unique_id=538512570]
 layout_mode = 2
 size_flags_horizontal = 3
 columns = 5
 
-[node name="date_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+[node name="date_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=29146384]
 layout_mode = 2
 text = "Date"
 
-[node name="source_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+[node name="source_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1322908705]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 2.0
 text = "Source File"
 
-[node name="output_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+[node name="output_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=137876324]
 layout_mode = 2
 text = "Output Folder"
 
-[node name="details_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+[node name="details_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=1455363773]
 layout_mode = 2
 text = "Details"
 
-[node name="actions_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer"]
+[node name="actions_label" type="Label" parent="MarginContainer/VBoxContainer/ScrollContainer/GridContainer" unique_id=457976842]
 layout_mode = 2
 text = "Actions"
 

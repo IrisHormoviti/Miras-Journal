@@ -1,34 +1,6 @@
 extends Node
 
 
-func nov1_morning() -> void:
-	Loader.gray_out(1)
-	await Textbox.open(name, "nov1_dream")
-	await Loader.travel_to("WitheredLeaves", Vector2.ZERO, 1)
-	await Event.spawn("Daze", "TentInside+(-8,-5)", "Sleep", 1, true)
-	await Event.spawn("Mira", "TentInside+(8,0)", "Sleep", 1, true)
-	Loader.ungray.emit()
-	Event.no_player()
-	Textbox.open(name, "nov1_morning")
-
-
-func nov1_daytime() -> void:
-	await Loader.travel_to("WitheredLeaves", Vector2(-96, -384), 1)
-	Event.no_player()
-	await Event.spawn("Mira", "TentInside+(8,0)", "Sleep", 1, true)
-	await Textbox.open(name, "nov1_daytime_0")
-	await Loader.travel_to("WitheredLeaves", Vector2(720, -211), 0, Direction.DOWN, false)
-	Event.no_player()
-	Event.zoom(5)
-	await Event.spawn("Mira", Vector2(770, -211), "SitLeft")
-	await Event.spawn("Daze", Vector2(670, -211), Direction.RIGHT)
-	await Textbox.open(name, "nov1_daytime")
-	Party.set_to(["Mira", 'Daze'])
-	Item.remove_item("LightweightAxe", &"Key")
-	Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
-	await Loader.travel_to("WitheredLeaves", Vector2(775, -211))
-
-
 func daze_enemy_1() -> void:
 	if Event.day == 1 and Party.has_member("Mira") and Party.has_member("Daze"):
 		Event.npc("P").look_to(Direction.LEFT)

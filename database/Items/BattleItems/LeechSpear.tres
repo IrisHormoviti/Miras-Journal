@@ -28,6 +28,5 @@ ItemType = "Bti"
 Icon = SubResource("AtlasTexture_2utmj")
 Use = 4
 UsedInBattle = true
-OvTarget = 1
 BattleEffect = SubResource("Resource_gruww")
 metadata/_custom_type_script = "uid://b1asade5rjus"

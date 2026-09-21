@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="Actor" format=3 uid="uid://cdwcbsh8dnrli"]
 
-[ext_resource type="PackedScene" uid="uid://co34lfhkwbp56" path="res://sound/Sets/DefaultSoundSet.tscn" id="1_1fcvt"]
 [ext_resource type="Resource" uid="uid://b6f6kbhpdgv87" path="res://database/Abilities/ProtectiveField.tres" id="1_5d3ws"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_sf34e"]
 [ext_resource type="Resource" uid="uid://dsel12nodt7a6" path="res://database/Abilities/Sharpen.tres" id="2_fq2qt"]
 [ext_resource type="Texture2D" uid="uid://64lecqcynv4b" path="res://art/Icons/Enemies/Mechanical.png" id="2_ix1hr"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_jf3ey"]
 [ext_resource type="Resource" uid="uid://17bbb0h04khb" path="res://database/Abilities/Attacks/CloseupAttack.tres" id="4_tcrsf"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="7_k6h8r"]
 
 [resource]
 script = ExtResource("2_jf3ey")

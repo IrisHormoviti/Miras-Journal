@@ -2040,7 +2040,6 @@ file = "story_2"
 dialogue_file = "story_2"
 dialogue_cue = "blocked_cast_lines"
 itemtype = ""
-Height = 24
 
 [node name="StaticBody2D" type="StaticBody2D" parent="SwitchCastLines2" unique_id=1886172275]
 

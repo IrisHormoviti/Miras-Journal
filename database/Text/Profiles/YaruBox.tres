@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="BoxProfile" format=3 uid="uid://cwog04axh4c7e"]
 
-[ext_resource type="Script" uid="uid://ojp6ga7rf3xg" path="box_profile.gd" id="2_gq7wq"]
+[ext_resource type="Script" uid="uid://ojp6ga7rf3xg" path="res://codings/Classes/box_profile.gd" id="2_gq7wq"]
 
 [resource]
 script = ExtResource("2_gq7wq")

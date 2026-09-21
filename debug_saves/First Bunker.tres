@@ -1,15 +1,13 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://dhwuhsx8xeajx"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_pwo4x"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_pwo4x"]
 
 [resource]
 script = ExtResource("1_pwo4x")
 title = "First Bunker"
-party = Array[StringName]([&"Mira", &"Alcine", &"Daze", &""])
 room = "res://rooms/WitheredLeaves.tscn"
 room_name = "Withered Leaves"
-player_position = Vector2(-201, -1039.3335)
-Z = 0
+party = Array[StringName]([&"Mira", &"Alcine", &"Daze", &""])
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
@@ -116,6 +114,7 @@ members = Array[Dictionary]([{
 "WeaponPower": 14,
 "codename": &"Mira"
 }])
+player_position = Vector2(-201, -1039.3335)
 start_time = 1759087800.664549
 saved_time = 1785267470.327128
 play_time = 10478.0
@@ -153,5 +152,4 @@ flags = Dictionary[StringName, int]({
 &"day": 2,
 &"time": 2
 })
-version = 0
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])

@@ -1,6 +1,5 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://d0vb7v6x0hrtp"]
 
-[ext_resource type="Texture2D" uid="uid://cj2ohe8qn3uph" path="res://art/Icons/Items.tres" id="1_jx4tx"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_3ahn1"]
 
 [resource]

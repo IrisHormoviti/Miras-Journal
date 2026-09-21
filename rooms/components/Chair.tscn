@@ -88,7 +88,6 @@ collision_mask = 256
 script = ExtResource("2_e1r3o")
 label_text = "Sit"
 action_type = "chair"
-Height = -10
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2035817221]

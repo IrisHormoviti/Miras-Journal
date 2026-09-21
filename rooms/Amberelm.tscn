@@ -156,7 +156,7 @@ ScenePosition = Vector2(587, 361)
 EscPosition = Vector2i(19, 8)
 metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
-[sub_resource type="Resource" id="Resource_r6fn3"]
+[sub_resource type="Resource" id="Resource_70ffl"]
 script = ExtResource("17_q80mj")
 
 [sub_resource type="Resource" id="Resource_gb67y"]
@@ -168,7 +168,7 @@ Detransition = true
 EscPosition = Vector2i(37, 9)
 metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
-[sub_resource type="Resource" id="Resource_q80mj"]
+[sub_resource type="Resource" id="Resource_wi37m"]
 script = ExtResource("17_q80mj")
 
 [sub_resource type="Resource" id="Resource_icl6y"]
@@ -178,13 +178,13 @@ ScenePosition = Vector2(1392, 488)
 EscPosition = Vector2i(48, 19)
 metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
-[sub_resource type="Resource" id="Resource_unhv8"]
+[sub_resource type="Resource" id="Resource_o5qnj"]
 script = ExtResource("17_q80mj")
 
-[sub_resource type="Resource" id="Resource_70ffl"]
+[sub_resource type="Resource" id="Resource_h0vpq"]
 script = ExtResource("17_q80mj")
 
-[sub_resource type="Resource" id="Resource_wi37m"]
+[sub_resource type="Resource" id="Resource_ghwov"]
 script = ExtResource("17_q80mj")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ylfhl"]
@@ -485,7 +485,7 @@ position = Vector2(564, 336)
 collision_layer = 512
 collision_mask = 512
 battle_sequence = SubResource("Resource_dejne")
-facing = SubResource("Resource_r6fn3")
+facing = SubResource("Resource_70ffl")
 
 [node name="HomePoints" type="Node2D" parent="EnemyIronHook1" unique_id=676713038]
 
@@ -521,7 +521,7 @@ position = Vector2(1096, 243)
 collision_layer = 512
 collision_mask = 512
 battle_sequence = SubResource("Resource_gb67y")
-facing = SubResource("Resource_q80mj")
+facing = SubResource("Resource_wi37m")
 
 [node name="HomePoints" type="Node2D" parent="EnemyIronHook2" unique_id=713731077]
 
@@ -554,7 +554,7 @@ position = Vector2(1400, 476)
 collision_layer = 512
 collision_mask = 512
 battle_sequence = SubResource("Resource_icl6y")
-facing = SubResource("Resource_unhv8")
+facing = SubResource("Resource_o5qnj")
 
 [node name="HomePoints" type="Node2D" parent="EnemyIronHook3" unique_id=1659952057]
 
@@ -595,7 +595,7 @@ collision_mask = 0
 motion_mode = 1
 script = ExtResource("8_spg60")
 speed = 50
-facing = SubResource("Resource_70ffl")
+facing = SubResource("Resource_h0vpq")
 default_state = 1
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
@@ -621,7 +621,7 @@ animation = &"WalkUp"
 [node name="MiraCut" parent="EvEntranceCutscene" unique_id=344934070 instance=ExtResource("26_r6fn3")]
 z_index = 4
 position = Vector2(302, 1336)
-facing = SubResource("Resource_wi37m")
+facing = SubResource("Resource_ghwov")
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
 "Walk": PackedInt32Array(0, 2)
@@ -654,7 +654,6 @@ dialogue_cue = "rest_amberelm"
 itemtype = ""
 to_time = 2
 show_on_flag = &"day=0+time=1"
-Height = 5
 
 [node name="EvSplash" parent="." unique_id=1901921073 instance=ExtResource("30_djhcr")]
 z_index = 5
@@ -703,7 +702,6 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "the_sky"
 itemtype = ""
-Height = 5
 
 [node name="CollisionShape2D2" type="CollisionShape2D" parent="InteractBackround" unique_id=1702740099]
 position = Vector2(1, 1)
@@ -715,7 +713,6 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "broken_bridge"
 itemtype = ""
-Height = 5
 
 [node name="InteractSign" parent="." unique_id=810826483 instance=ExtResource("5_3ycob")]
 position = Vector2(347, 396)
@@ -724,7 +721,6 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "amberelm_sign"
 itemtype = ""
-Height = 5
 
 [node name="CollisionShape2D" parent="InteractSign" index="0" unique_id=2035817221]
 position = Vector2(-1, 8)
@@ -736,7 +732,6 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "amberelm_sign_storage"
 itemtype = ""
-Height = 5
 
 [node name="ItemRustySword1" parent="." unique_id=431728369 instance=ExtResource("14_15y50")]
 z_index = 6
@@ -757,7 +752,6 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "day10_gap"
 itemtype = ""
-Height = 5
 
 [node name="Ladder1" parent="." unique_id=475790957 instance=ExtResource("25_vddgi")]
 position = Vector2(493, 210)

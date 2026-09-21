@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="1_xk7u8"]
 [ext_resource type="Texture2D" uid="uid://budghnw4lgtg4" path="res://art/Icons/Enemies/Object.png" id="2_g2uxp"]
 [ext_resource type="Resource" uid="uid://dmhsvhd1lkkue" path="res://database/Abilities/Summon.tres" id="2_s38ka"]
-[ext_resource type="PackedScene" uid="uid://co34lfhkwbp56" path="res://sound/Sets/DefaultSoundSet.tscn" id="3_nn5al"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="6_737pj"]
 [ext_resource type="Resource" uid="uid://bdfytl8ohvtj6" path="res://database/Enemies/DarkSpawn.tres" id="8_s38ka"]
 
 [resource]
@@ -13,7 +13,6 @@ FirstName = "Dummy"
 MainColor = Color(1, 0.25098, 1, 1)
 PartyIcon = ExtResource("2_g2uxp")
 ActorClass = "Unknown"
-WeaponPower = 1
 RecivedSP = 99
 SummonedAllies = Array[ExtResource("1_xk7u8")]([ExtResource("8_s38ka")])
 MaxHP = 200

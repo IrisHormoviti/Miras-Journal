@@ -5,6 +5,7 @@
 [ext_resource type="Resource" uid="uid://briso80ln21mg" path="res://database/Enemies/AquaFlowent.tres" id="3_cdfhe"]
 [ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="4_sotm4"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="5_2isgh"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="5_d6nks"]
 
 [sub_resource type="Resource" id="Resource_xovcb"]
 script = ExtResource("4_sotm4")

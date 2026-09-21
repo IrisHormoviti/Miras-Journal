@@ -48,7 +48,7 @@ color_ramp = SubResource("GradientTexture1D_fq0ps")
 label_text = "Enter"
 action_type = "veinet"
 
-[node name="Icon" parent="Interactable" index="2" unique_id=1758546671]
+[node name="Icon" parent="Interactable" index="1" unique_id=1758546671]
 visible = false
 
 [node name="Sprite" type="Sprite2D" parent="." unique_id=1825868405]

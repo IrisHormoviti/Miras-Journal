@@ -432,12 +432,9 @@ collision_mask = 257
 label_text = "Pick up"
 action_type = "item"
 file = "testbush"
-dialogue_file = "testbush"
 itemtype = "Key"
 item = "LightweightAxe"
-hide_this_node = null
 hide_parent = true
-bubble_height = null
 
 [node name="EvDummy" type="Sprite2D" parent="." unique_id=1187520318]
 z_index = 1
@@ -459,11 +456,8 @@ shape = SubResource("RectangleShape2D_72f6p")
 position = Vector2(-1.833, 0.901522)
 label_text = "Fight"
 file = "testbush"
-dialogue_file = "testbush"
 dialogue_cue = "battle_test"
 return_control = false
-hide_this_node = null
-bubble_height = null
 
 [node name="EvHarold" type="Sprite2D" parent="." unique_id=943113080]
 z_index = 1
@@ -485,11 +479,8 @@ shape = SubResource("RectangleShape2D_72f6p")
 position = Vector2(0, 8)
 label_text = "Select"
 file = "testbush"
-dialogue_file = "testbush"
 dialogue_cue = "chapter_select"
 return_control = false
-hide_this_node = null
-bubble_height = null
 
 [node name="EvKick" parent="." unique_id=1509469914 instance=ExtResource("16_35d7e")]
 position = Vector2(-191, 60)
@@ -501,9 +492,6 @@ kick_direction = Vector2(1, 0)
 [node name="InteractBush" parent="." unique_id=1801924940 instance=ExtResource("6_pmuyc")]
 position = Vector2(60.2736, 36.5526)
 file = "testbush"
-dialogue_file = "testbush"
-hide_this_node = null
-bubble_height = null
 
 [node name="InteractRest" parent="." unique_id=56388288 instance=ExtResource("6_pmuyc")]
 position = Vector2(276, 63)
@@ -514,17 +502,12 @@ dialogue_file = "sleep_home"
 itemtype = "Bti"
 to_time = 1
 hide_on_flag = &"time:1"
-hide_this_node = null
-bubble_height = null
 
 [node name="InteractFastTravel" parent="." unique_id=142965281 instance=ExtResource("6_pmuyc")]
 position = Vector2(11.5979, -54.0878)
 label_text = "Fast Travel"
 file = "testbush"
-dialogue_file = "testbush"
 dialogue_cue = "travel"
-hide_this_node = null
-bubble_height = null
 
 [node name="PointLight2D2" type="PointLight2D" parent="." unique_id=689197905]
 position = Vector2(293, 75)
@@ -599,9 +582,7 @@ dialogue_file = "waste_time"
 itemtype = "Mat"
 to_time = -1
 to_time_relative = 1
-hide_this_node = null
 bubble_always = true
-bubble_height = null
 
 [node name="NPCAsteria" parent="." unique_id=344934070 instance=ExtResource("12_toobe")]
 position = Vector2(247, 36)

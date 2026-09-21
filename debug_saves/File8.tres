@@ -1,14 +1,12 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://b23moomo20fps"]
 
-[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_yaix8"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_yaix8"]
 
 [resource]
 script = ExtResource("1_yaix8")
 title = "File8"
 room = "res://rooms/WitheredLeaves.tscn"
 room_name = "Withered Leaves"
-player_position = Vector2(776.3328, -240)
-Z = 0
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
@@ -16,7 +14,6 @@ members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Alcine",
 "Health": 60,
@@ -29,7 +26,8 @@ members = Array[Dictionary]([{
 "SkillPoints": 0,
 "Weapon": "Arms?",
 "WeaponPower": 14,
-"codename": &"Alcine"
+"codename": &"Alcine",
+"complimentaries": Dictionary[String, int]({})
 }, {
 "AbilitiesList": Array[String](["PhantomGuard", "Tighten", "RedShift"]),
 "Aura": 47,
@@ -37,7 +35,6 @@ members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Asteria",
 "Health": 90,
@@ -50,7 +47,8 @@ members = Array[Dictionary]([{
 "SkillPoints": 16,
 "Weapon": "Possessed Scarf",
 "WeaponPower": 16,
-"codename": &"Asteria"
+"codename": &"Asteria",
+"complimentaries": Dictionary[String, int]({})
 }, {
 "AbilitiesList": Array[String](["Guard", "Attention", "StaticSaber"]),
 "Aura": 14,
@@ -58,7 +56,6 @@ members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"complimentaries": Dictionary[String, int]({}),
 "Controllable": false,
 "FirstName": "Daze",
 "Health": 150,
@@ -71,7 +68,8 @@ members = Array[Dictionary]([{
 "SkillPoints": 21,
 "Weapon": "Gold-trimmed Katana",
 "WeaponPower": 30,
-"codename": &"Daze"
+"codename": &"Daze",
+"complimentaries": Dictionary[String, int]({})
 }, {
 "AbilitiesList": Array[String]([]),
 "Aura": 90,
@@ -79,7 +77,6 @@ members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"complimentaries": Dictionary[String, int]({}),
 "Controllable": false,
 "FirstName": "Erinn",
 "Health": 85,
@@ -92,7 +89,8 @@ members = Array[Dictionary]([{
 "SkillPoints": 0,
 "Weapon": "",
 "WeaponPower": 24,
-"codename": &"Erinn"
+"codename": &"Erinn",
+"complimentaries": Dictionary[String, int]({})
 }, {
 "AbilitiesList": Array[String](["Guard", "FlameSpark"]),
 "Aura": 20,
@@ -100,7 +98,6 @@ members = Array[Dictionary]([{
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
-"complimentaries": Dictionary[String, int]({}),
 "Controllable": true,
 "FirstName": "Mira",
 "Health": 100,
@@ -113,13 +110,14 @@ members = Array[Dictionary]([{
 "SkillPoints": 0,
 "Weapon": "Lightweight Axe",
 "WeaponPower": 14,
-"codename": &"Mira"
+"codename": &"Mira",
+"complimentaries": Dictionary[String, int]({})
 }])
+player_position = Vector2(776.3328, -240)
 defeated_enemies = ["CS1"]
 start_time = 1759087800.664549
 saved_time = 1764353007.476843
 play_time = 10304.0
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
 flags = Dictionary[StringName, int]({
 &"": 1,
 &"AlcineFollow": 4,
@@ -152,4 +150,4 @@ flags = Dictionary[StringName, int]({
 &"day": 1,
 &"time": 5
 })
-version = 0
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])

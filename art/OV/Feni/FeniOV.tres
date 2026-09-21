@@ -96,7 +96,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_1mbyv")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleDown",
 "speed": 3.0
 }, {
@@ -116,7 +116,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_csb3n")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleLeft",
 "speed": 3.0
 }, {
@@ -136,7 +136,7 @@ animations = [{
 "duration": 0.5,
 "texture": SubResource("AtlasTexture_dgoa0")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleRight",
 "speed": 3.0
 }, {
@@ -153,7 +153,7 @@ animations = [{
 "duration": 1.0,
 "texture": SubResource("AtlasTexture_crir3")
 }],
-"loop": true,
+"loop": 1,
 "name": &"IdleUp",
 "speed": 3.0
 }]

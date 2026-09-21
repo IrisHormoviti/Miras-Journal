@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://ctw68h5rdpqm5"]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://bnfaoccf24flc"]
 
 [ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_2jtsk"]
 
 [resource]
 script = ExtResource("1_2jtsk")
 title = "after daze meet"
+room = "WitheredLeaves"
 room_name = "Withered Leaves"
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 5,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -24,13 +24,11 @@ members = Array[Dictionary]([{
 "OV": "",
 "SkillLevel": 2,
 "SkillPoints": 14,
-"Weapon": "Arms?",
-"WeaponPower": 14,
+"WeaponName": "ArmWhip",
 "codename": &"Alcine"
 }, {
 "AbilitiesList": Array[String](["PhantomGuard", "Tighten", "RedShift"]),
 "Aura": 47,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -45,13 +43,11 @@ members = Array[Dictionary]([{
 "OV": "",
 "SkillLevel": 7,
 "SkillPoints": 16,
-"Weapon": "Possessed Scarf",
-"WeaponPower": 16,
+"WeaponName": "PocessedScarf",
 "codename": &"Asteria"
 }, {
 "AbilitiesList": Array[String](["Guard", "Attention", "StaticSaber"]),
 "Aura": 24,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -66,13 +62,11 @@ members = Array[Dictionary]([{
 "OV": "",
 "SkillLevel": 18,
 "SkillPoints": 21,
-"Weapon": "Gold-trimmed Katana",
-"WeaponPower": 30,
+"WeaponName": "GoldPlatedKatana",
 "codename": &"Daze"
 }, {
 "AbilitiesList": Array[String]([]),
 "Aura": 90,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -87,13 +81,11 @@ members = Array[Dictionary]([{
 "OV": "res://art/OV/Erinn/ErinnOV.tres",
 "SkillLevel": 1,
 "SkillPoints": 0,
-"Weapon": "",
-"WeaponPower": 24,
+"WeaponName": "DefaultWeapon",
 "codename": &"Erinn"
 }, {
 "AbilitiesList": Array[String](["Guard", "FlameSpark", "HeatWave", "PitchIn"]),
 "Aura": 5,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -110,20 +102,17 @@ members = Array[Dictionary]([{
 "OV": "Bag",
 "SkillLevel": 3,
 "SkillPoints": 11,
-"Weapon": "Lightweight Axe",
-"WeaponPower": 14,
+"WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-player_position = Vector2(800, -235)
+player_position = Vector2(794.99994, -194.92516)
 complimentaries = Array[String](["FluidBlast"])
 defeated_enemies = ["EnemyIronHook1", "EnemyIronHook2", "EnemyIronHook3"]
 start_time = 1773014079.152903
-saved_time = 1774053338.552997
-play_time = 1643.0
+saved_time = 1789859929.786348
+play_time = 1698.0
 diary = Dictionary[int, PackedStringArray]({
-0: PackedStringArray("oct31"),
-2: PackedStringArray("boo"),
-5: PackedStringArray("boo", "bee")
+0: PackedStringArray("oct31")
 })
 flags = Dictionary[StringName, int]({
 &"AlcineFollow": 4,
@@ -139,6 +128,7 @@ flags = Dictionary[StringName, int]({
 &"CrateAmb3": 1,
 &"DashTutorial0": 1,
 &"DazeQuestions": 1,
+&"DisableMenus": 0,
 &"DisableVeinet": 1,
 &"EnteredAmberelm3": 1,
 &"EvAmbWoodsBridge": 1,
@@ -164,4 +154,5 @@ flags = Dictionary[StringName, int]({
 &"day": 0,
 &"time": 5
 })
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "StrangeFruit:Con", "LifeLave:Con", "SmallPotion:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti", "Journal:Key"])
+version = 8

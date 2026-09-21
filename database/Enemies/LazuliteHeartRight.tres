@@ -1,13 +1,13 @@
 [gd_resource type="Resource" script_class="Actor" format=3 uid="uid://01s5imheles6"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_a8rpr"]
-[ext_resource type="PackedScene" uid="uid://co34lfhkwbp56" path="res://sound/Sets/DefaultSoundSet.tscn" id="2_o7yw6"]
 [ext_resource type="Texture2D" uid="uid://budghnw4lgtg4" path="res://art/Icons/Enemies/Object.png" id="3_7ifqy"]
 [ext_resource type="Resource" uid="uid://bhnd7jyfc0grt" path="res://database/Abilities/Attacks/AOEAttack.tres" id="3_mpd6k"]
 [ext_resource type="Resource" uid="uid://bd3g408v78yyv" path="res://database/Abilities/Zapper.tres" id="4_3pclf"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="4_7ifqy"]
 [ext_resource type="Resource" uid="uid://i76o7dyxd0rh" path="res://database/Abilities/Tighten.tres" id="4_mpd6k"]
 [ext_resource type="Resource" uid="uid://17bbb0h04khb" path="res://database/Abilities/Attacks/CloseupAttack.tres" id="5_n2qf8"]
+[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="8_elb8i"]
 
 [resource]
 script = ExtResource("4_7ifqy")
@@ -15,7 +15,6 @@ FirstName = "Right Arm"
 MainColor = Color(0.943278, 0.879228, 0.469971, 1)
 PartyIcon = ExtResource("3_7ifqy")
 codename = &"LHRight"
-WeaponPower = 20
 RecivedSP = 0
 CustomPosition = Vector2i(22, 0)
 MaxAura = 35

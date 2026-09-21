@@ -955,10 +955,9 @@ dialogue_file = "axe_seq"
 itemtype = "Key"
 add_flag = true
 hide_on_flag = &"PickedUpAxe"
-needs_bag = true
-hidesprite = true
 hide_parent = true
 free_on_hide = true
+needs_bag = true
 
 [node name="EvBag" type="Sprite2D" parent="Event" unique_id=1289465666]
 use_parent_material = true
@@ -983,11 +982,10 @@ dialogue_file = "bag_seq"
 return_control = false
 show_on_flag = &"day=0"
 hide_on_flag = &"HasBag"
-proper_pos = Vector2(100, 406)
-proper_face = Vector2(1, 0)
-hidesprite = true
 hide_parent = true
 free_on_hide = true
+proper_pos = Vector2(100, 406)
+proper_face = Vector2(1, 0)
 
 [node name="EvDashTutorial" parent="Event" unique_id=1415250702 instance=ExtResource("36_2q7ov")]
 position = Vector2(105, 277)
@@ -1080,7 +1078,6 @@ collision_mask = 257
 file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "statue_legs"
-Height = 15
 
 [node name="InteractSymbol" parent="Interactables" unique_id=756593628 instance=ExtResource("21_hylag")]
 position = Vector2(1440, -439)
