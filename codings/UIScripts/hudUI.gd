@@ -12,14 +12,21 @@ var ui_visible: bool = false:
 			return # Prevents running if the state hasn't changed
 
 		ui_visible = value
+		_ui_visible_state = value
 
 		# Run show_all or hide_all when this variable changes
 		if not Battle.in_battle:
-			if ui_visible and not Event.check_flag("DisableMenus") and not disabled:
+			if value and not Event.check_flag("DisableMenus") and not disabled:
 				if Global.settings.AutoHideHUD != 1:
 					show_all()
 			else:
 				hide_all()
+
+	get():
+		return _ui_visible_state
+## Set ui_visible without calling setter
+var _ui_visible_state := false
+
 var inactive := false
 ## To remember if it should or shouldn't unpause the game after exiting
 var was_paused := false
@@ -107,11 +114,10 @@ func show_all(except_date := false, animate := true) -> void:
 	if disabled:
 		return
 
-	if is_instance_valid(Global.player) and Global.settings.AutoHideHUD == 1 and Global.player.move_frames > 0:
+	if Global.player and Global.settings.AutoHideHUD == 1 and Global.player.move_frames > 0:
 		return
 
-	if not ui_visible:
-		ui_visible = true
+	_ui_visible_state = true
 
 	inactive = false
 	# Animate the date UI in, except_date prevents this
@@ -151,8 +157,7 @@ func show_all(except_date := false, animate := true) -> void:
 
 ## Hides the partyboxes
 func hide_all(animate := true) -> void:
-	if ui_visible:
-		ui_visible = false
+	_ui_visible_state = false
 
 	if animate:
 		t = create_tween()

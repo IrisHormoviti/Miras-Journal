@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://nnv7ly12oc7"]
+
+[ext_resource type="Script" uid="uid://covtpmbfaf4cl" path="res://codings/UIScripts/transition.gd" id="1_qnbxr"]
+
+[sub_resource type="Animation" id="Animation_3n5d1"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fade:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(1),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_pq2sp"]
+resource_name = "show"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Fade:modulate:a")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, 1.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_rkcj1"]
+_data = {
+&"RESET": SubResource("Animation_3n5d1"),
+&"fade": SubResource("Animation_pq2sp")
+}
+
+[node name="FadeTransition" type="CanvasLayer" unique_id=1994364752]
+process_mode = 3
+layer = 2
+script = ExtResource("1_qnbxr")
+
+[node name="Fade" type="ColorRect" parent="." unique_id=1576771398]
+modulate = Color(1, 1, 1, 0)
+light_mask = 16
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.0509804, 0.0509804, 0.0509804, 1)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=301125497]
+libraries/ = SubResource("AnimationLibrary_rkcj1")

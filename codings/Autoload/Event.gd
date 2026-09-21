@@ -655,15 +655,14 @@ func time_transition(location := Global.room.codename()) -> void:
 		#await Event.wait(0.3, false)
 
 	await Event.take_control()
-	await Loader.transition()
-	Loader.ungray.emit()
-	await Loader.flip_time(time_of_day, to_time)
+	await Transition.flip_time(time_of_day, to_time)
 	if day != to_day:
 		day = to_day
 		Global.toast(Query.get_month_name(Query.get_month(day)) + " " + str(day) + " cin16")
 		Loader.defeated.clear()
 
 	set_time(to_time)
+	Transition.unwipe()
 	await start_time_events(location)
 
 
@@ -738,7 +737,7 @@ func start_time_events(location: String) -> void:
 				give_control()
 
 	Global.check.emit()
-	Loader.detransition()
+	Transition.unwipe()
 
 
 #TODO Make this adapt to diffrent months

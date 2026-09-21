@@ -52,7 +52,7 @@ func _ready() -> void:
 		cant_save = true
 		$MainButtons/SaveManagment.text = "Start the Game"
 
-	Loader.detransition(Direction.CENTER)
+	Transition.unwipe()
 	show()
 
 	$Silhouette.texture = Loader.preview
@@ -271,7 +271,7 @@ func main() -> void:
 		i.toggle_mode = false
 
 	$Confirm.show()
-	Loader.ungray.emit()
+	Transition.fade_out()
 	await t.finished
 	if stage == "main":
 		$SavePanel.hide()
@@ -313,8 +313,8 @@ func save_managment() -> void:
 	if stage == "save_managment": return
 	if stage != "main": await loaded
 	if not save_files_loaded and not no_main:
-		Loader.icon_load()
-		#Loader.gray_out()
+		Transition.load_icon()
+		#Transition.fade_in_gray()
 	else:
 		if %Files/File0.visible:
 			%Files/File0/Button.grab_focus()
@@ -360,6 +360,7 @@ func save_managment() -> void:
 				%Files/File0/Button.grab_focus()
 			else: %Files/New/NewGame.grab_focus()
 		stage = "save_managment"
+		Transition.load_icon_close()
 	).call_deferred()
 
 
@@ -610,9 +611,7 @@ func load_save_files() -> void:
 	await Event.wait()
 	if not save_files_loaded:
 		save_files_loaded = true
-		Loader.ungray.emit()
-		#if Input.is_action_pressed(&"ui_accept"):
-			#_on_save_load()
+		Transition.fade_out()
 
 
 func file_sort(a: Control, b: Control) -> bool:
@@ -755,7 +754,7 @@ func _on_save_overwrite() -> void:
 	$SavePanel/Buttons/Overwrite.button_pressed = false
 
 	if panel.get_node("ProgressBar").value == 100:
-		Loader.gray_out()
+		Transition.fade_in_gray()
 		Audio.confirm_sound()
 		print("Overwriting user://" + panel.name + ".tres")
 		await Loader.save(panel.name)
@@ -765,7 +764,7 @@ func _on_save_overwrite() -> void:
 		t.tween_property(panel.get_node("ProgressBar"), "modulate:a", 0, 1)
 		%Files.get_child(2).get_node("Button").grab_focus()
 		#await t.finished
-		Loader.ungray.emit()
+		Transition.fade_out()
 	else:
 		Audio.buzzer_sound()
 		hold_down()
@@ -833,7 +832,7 @@ func _new_file() -> void:
 
 	stage = "saving"
 	Audio.confirm_sound()
-	#Loader.gray_out()
+	#Transition.fade_in_gray()
 	%Files/New/NewFile.hide()
 	%Files/New/NewFile.show()
 	var i := 1
@@ -851,10 +850,10 @@ func _new_file() -> void:
 			continue
 
 	if allowed:
-		Loader.icon_save()
+		Transition.save_icon()
 		await Loader.save(filename, false)
 		await load_save_files()
-		#Loader.ungray.emit()
+		#Transition.fade_out()
 		%Files.get_child(2).get_node("Button").grab_focus()
 		if Loader.get_node("Can/Icon").is_playing():
 			await Loader.get_node("Can/Icon").animation_finished

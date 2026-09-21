@@ -1,6 +1,5 @@
 extends Control
 
-signal ungray
 signal thread_loaded
 
 const area_spawn_path: NodePath = "/root/GameViewport/SubViewport"
@@ -35,11 +34,9 @@ var traveled_pos: Vector2
 
 func _ready() -> void:
 	can.hide()
-	Icon.global_position = Vector2(1181, 870)
 	t = create_tween()
 	t.tween_property(self, "position", position, 0)
 	validate_save("user://Autosave.tres")
-	ungray.connect(_on_ungray)
 
 
 func _process(_delta: float) -> void:
@@ -71,7 +68,7 @@ func save(filename: String = "Autosave", showicon := true) -> void:
 	print_rich("[color=green]Saving to user://" + filename + ".tres")
 
 	if showicon:
-		icon_save()
+		Transition.save_icon()
 
 	Global.save_settings()
 	Event.add_flag("day", Event.day)
@@ -124,15 +121,13 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	if is_instance_valid(Global.bt):
 		Global.bt.free()
 
-	t = create_tween()
-	t.tween_property(Icon, "global_position", Vector2(1181, 702), 0.2).from(Vector2(1181, 900))
-	Icon.play("Load")
-	await transition(Direction.CENTER)
+	Transition.load_icon()
+	await Transition.close_in()
 	if get_tree().root.has_node("Initializer"):
 		get_tree().root.get_node("Initializer").queue_free()
 
 	if not validate_save(filepath):
-		Loader.detransition()
+		Transition.unwipe()
 		return
 
 	Battle.prevent_battles = true
@@ -205,10 +200,10 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	Hud.shrink()
 
 	if transition_after_done:
-		await detransition(Direction.CENTER)
+		await Transition.unwipe()
 	else:
 		await Event.take_control()
-		dismiss_load_icon()
+		Transition.load_icon_close()
 
 	preview = (await data.preview())
 	print_rich("[color=green]File loaded!\n-------------------------")
@@ -290,7 +285,7 @@ func travel_to(
 	if remembered_scene[0] != "":
 		ResourceLoader.load_threaded_request(remembered_scene[0])
 
-	await transition(trans)
+	await Transition.wipe(trans)
 	Hud.hide_all(false)
 	get_tree().paused = true
 	status = ResourceLoader.load_threaded_get_status(remembered_scene[0], progress)
@@ -298,7 +293,7 @@ func travel_to(
 	if status == ResourceLoader.THREAD_LOAD_LOADED:
 		await travel_done(controllable, camera_ind)
 	else:
-		Icon.play("Load")
+		Transition.load_icon()
 		loading_scene = true
 		await thread_loaded
 		if status == ResourceLoader.THREAD_LOAD_LOADED:
@@ -319,6 +314,7 @@ func travel_done(controllable := false, index: int = 0) -> void:
 		Global.room.queue_free()
 
 	Event.npc_list.clear()
+	DialogueManager._registered_contexts.clear()
 	if get_tree().root.has_node("MainMenu"):
 		get_tree().root.get_node("MainMenu").queue_free()
 
@@ -354,48 +350,19 @@ func travel_done(controllable := false, index: int = 0) -> void:
 		if controllable and look_dir != null:
 			Global.player.look_to(look_dir)
 
-	if remembered_direction != null:
-		detransition()
-
-	Global.camera.position_smoothing_enabled = true
+	#Global.camera.position_smoothing_enabled = true
 	get_tree().paused = false
 
 	if controllable:
-		await Event.wait(0.1, false)
 		await Hud.show_all(false, false)
+		await Event.wait(0.1, false)
 		Hud.shrink(true)
 		Event.give_control(false)
 	else:
 		Global.controllable = false
 
-
-func transition(dir: Direction = Global.player.facing if Global.player else remembered_direction) -> void:
-	if dir == null:
-		return
-
-	remembered_direction = dir
-	Global.controllable = false
-	can.show()
-	can.layer = 9
-	$Can/Bars.modulate = Color.WHITE
-	$Can/Bars.self_modulate = Color.WHITE
-
-	if Textbox.is_open and get_tree().root.has_node("Textbox"):
-		lower_layer()
-
-	if is_instance_valid(t):
-		t.kill()
-
-	t = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART).set_parallel()
-
-	if Icon.is_playing():
-		t.tween_property(Icon, "global_position", Vector2(1181, 702), 0.2)
-
-	var letter := dir.get_letter()
-	animate_bars_in(letter)
-
-	await Event.wait(0.35, false)
-	reset_bars(letter)
+	Transition.unwipe()
+	Transition.load_icon_close()
 
 
 func animate_bars_in(letter: String) -> void:
@@ -444,33 +411,6 @@ func reset_bars(letter: String) -> void:
 			$Can/Bars/Left.position = Vector2(-200, -200)
 
 
-func detransition(dir := remembered_direction) -> void:
-	if dir == null:
-		return
-
-	#Engine.time_scale = 0.1
-
-	if Global.camera: Global.camera.position_smoothing_enabled = false
-
-	t.kill()
-	t = create_tween()
-	t.set_parallel()
-	t.set_ease(Tween.EASE_IN)
-	t.set_trans(Tween.TRANS_QUART)
-	$Can/Bars.self_modulate = Color.WHITE
-	t.tween_property($Can/Bars/Down, "position", BAR_DOWN_POS, 0.4) #.from(Vector2(-235,-126))
-	t.tween_property($Can/Bars/Up, "position", BAR_UP_POS, 0.4) #.from(Vector2(-156,-126))
-	t.tween_property($Can/Bars/Left, "position", BAR_LEFT_POS, 0.4) #.from(Vector2(-200,-204))
-	t.tween_property($Can/Bars/Right, "position", BAR_RIGHT_POS, 0.4) #.from(Vector2(-200,-177))
-	dismiss_load_icon()
-	await Event.wait(0.4, false)
-	if Global.camera: Global.camera.position_smoothing_enabled = true
-
-	Global.check.emit()
-	#Global.ready_window()
-	can.hide()
-
-
 func restore_bars(dir: String = "") -> void:
 	$Can/Bars/Down.global_position = BAR_DOWN_POS
 	$Can/Bars/Up.global_position = BAR_UP_POS
@@ -485,53 +425,6 @@ func is_in_transition() -> bool:
 			$Can/Bars/Left.global_position == BAR_LEFT_POS and
 			$Can/Bars/Right.global_position == BAR_RIGHT_POS
 	)
-
-
-func dismiss_load_icon() -> void:
-	if Icon.is_playing():
-		Icon.play("Close")
-
-	t = create_tween()
-	t.tween_property($Can/Icon, "global_position", Vector2(1181, 900), 0.3)
-
-	#InBattle = true
-
-
-func icon_save() -> void:
-	if Icon.is_playing():
-		return
-
-	t = create_tween()
-	t.set_ease(Tween.EASE_OUT)
-	t.set_trans(Tween.TRANS_QUART)
-	can.show()
-	t.tween_property(Icon, "global_position", Vector2(1181, 702), 0.2)
-	#.from(Vector2(1181, 900))
-	Icon.play("Save")
-	await Icon.animation_finished
-	t = create_tween()
-	t.set_ease(Tween.EASE_IN)
-	t.set_trans(Tween.TRANS_QUART)
-	t.tween_property($Can/Icon, "global_position", Vector2(1181, 900), 0.3)
-	await t.finished
-	#can.hide()
-
-
-func icon_load() -> void:
-	t = create_tween()
-	t.set_ease(Tween.EASE_OUT)
-	t.set_trans(Tween.TRANS_QUART)
-	can.show()
-	t.tween_property(Icon, "global_position", Vector2(1181, 702), 0.2)
-	#.from(Vector2(1181, 900))
-	Icon.play("Load")
-	await ungray
-	Icon.play("Close")
-	t = create_tween()
-	t.set_ease(Tween.EASE_IN)
-	t.set_trans(Tween.TRANS_QUART)
-	t.tween_property($Can/Icon, "global_position", Vector2(1181, 900), 0.3)
-	await t.finished
 
 
 func battle_bars(x: int, time: float = 0.5, easing := Tween.EASE_IN_OUT) -> void:
@@ -587,38 +480,6 @@ func chase_mode() -> void:
 	chased = true
 
 
-func white_fadeout(out_time: float = 7, wait_time: float = 2, in_time: float = 0.1, opacity: float = 1) -> void:
-	can.show()
-	fader = $Can/Bars/Left.duplicate()
-	can.add_child(fader)
-	fader.position = Vector2(-134, -189)
-	fader.modulate = Color.TRANSPARENT
-	fader.color = Color.WHITE
-	var tf := create_tween()
-	tf.tween_property(fader, "modulate", Color(1, 1, 1, opacity), in_time)
-	await tf.finished
-	await Event.wait(wait_time, false)
-	can.show()
-	tf = create_tween()
-	tf.tween_property(fader, "modulate", Color.TRANSPARENT, out_time)
-	await tf.finished
-	fader.queue_free()
-
-
-func gray_out(amount := 0.8, in_time := 0.3, out_time := 0, color: Color = Color.BLACK) -> void:
-	can.show()
-	can.layer = 3
-	fader = $Can/Bars/Left.duplicate()
-	can.add_child(fader)
-	fader.position = Vector2(-134, -189)
-	fader.modulate = Color.TRANSPARENT
-	fader.color = color
-	var tf := create_tween()
-	tf.tween_property(fader, "modulate:a", amount, in_time)
-	if out_time == 0:
-		await ungray
-
-
 func validate_save(savefile: String) -> bool:
 	if FileAccess.file_exists(savefile):
 		var file: SaveFile = load(savefile)
@@ -647,47 +508,5 @@ func validate_save(savefile: String) -> bool:
 		return false
 
 
-func flip_time(from: Event.TOD, to: Event.TOD) -> void:
-	var tod: Button = $Can/TimeOfDay
-	tod.modulate = Color.TRANSPARENT
-	tod.scale = Vector2(0.6, 0.6)
-	tod.text = Query.to_tod_text(from)
-	tod.icon = await Query.to_tod_icon(from)
-	tod.show()
-	Hud.hide_all(false)
-	var tf := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
-	tf.tween_property(tod, "scale", Vector2(1, 1), 0.3)
-	tf.tween_property(tod, "modulate", Color.WHITE, 0.3)
-	get_tree().paused = false
-	await tf.finished
-	await Event.wait(0.3, false)
-	tf = create_tween()
-	tf.tween_property(tod, "scale:x", 0, 0.1)
-	await tf.finished
-	tod.text = Query.to_tod_text(to)
-	tod.icon = await Query.to_tod_icon(to)
-	tf = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC)
-	tf.tween_property(tod, "scale:x", 1, 0.3)
-	await Event.wait(0.6, false)
-	tf = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC).set_parallel()
-	tf.tween_property(tod, "scale", Vector2(0.6, 0.6), 0.3)
-	tf.tween_property(tod, "modulate", Color.TRANSPARENT, 0.3)
-	await tf.finished
-	tod.hide()
-
-
 func lower_layer() -> void:
 	can.layer = 3
-
-
-func _on_ungray() -> void:
-	if fader == null:
-		return
-
-	var tf := create_tween()
-	tf.tween_property(fader, "modulate:a", 0, 0.3)
-	await tf.finished
-	if fader == null:
-		return
-
-	fader.queue_free()

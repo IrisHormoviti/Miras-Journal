@@ -85,13 +85,12 @@ func quit(save_first := true) -> void:
 			not Battle.in_battle and is_instance_valid(player) and is_instance_valid(room) and (
 			Global.controllable or get_tree().root.has_node("MainMenu") or get_tree().root.has_node("Options"))
 		):
-			Loader.icon_save()
 			await Loader.save()
 		elif is_instance_valid(room):
 			if not await Global.warning("The game cannot be saved right now.\nQuit the game anyways?", "QUIT", ["Canel", "Quit Game"]):
 				return
 
-		await Loader.transition(Direction.CENTER)
+		await Transition.close_in()
 		if Engine.has_singleton("Steam") and using_steam:
 			Steam.steamShutdown()
 

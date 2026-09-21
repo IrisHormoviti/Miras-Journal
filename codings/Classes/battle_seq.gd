@@ -16,7 +16,7 @@ class_name BattleSequence
 ## The position on the map the battle takes place
 @export var ScenePosition: Vector2 = Vector2.ZERO
 ## Show a screen wipe when the battle starts.
-@export var Transition: bool = true
+@export var transition: bool = true
 ## Show a screen wipe after the battle is over
 @export var Detransition: bool = false
 @export var return_control: bool = true

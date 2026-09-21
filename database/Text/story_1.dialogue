@@ -1,7 +1,6 @@
 ~ nov1_morning
-$>> Loader.gray_out(1)
-$>> lower_layer()
-$> Loader.travel_to("WitheredLeaves", Vector2.ZERO, 1)
+$> Transition.fade_in(Color.BLACK, 0)
+$> Loader.travel_to("WitheredLeaves", Vector2.ZERO, 1, null)
 $> Event.no_player()
 $> Event.spawn("Daze", "TentInside+(-8,-5)", "Sleep", 1, true)
 $> Event.spawn("Mira", "TentInside+(8,0)", "Sleep", 1, true)
@@ -10,7 +9,8 @@ There is large buildings... Lots of people...
 Suddenly my view shatters, I see many pieces of glass around me that reflect like mirrors.... 
 The people around me are gone, but I feel like there is still someone with me... 
 I hear a loud noise.
-$> Loader.ungray.emit()
+[hide]
+$> Transition.fade_out()
 ...
 Sleeping next to him is quite akward...
 My fur touching his bare Human skin feels weird.
@@ -19,14 +19,16 @@ I don't think I can ever get enough rest with all that's happened.
 I wonder what {{alcine}} is doing now... I left them all alone...
 Maybe I should ask Daze to go back to Amberelm so I can find them.
 [hide]
-set ToTime = 2
-set ToDay = 1
-do! time_transition()
+$> to_time = 2
+$> to_day = 1
+$>> time_transition()
 => END
 
 ~ nov1_daytime
+$> Daze.hide()
 Daze seems to have woken up.
 I guess I should get up too...
+[hide]
 $> Loader.travel_to("WitheredLeaves", Vector2(720, -211), 0, Direction.DOWN, false)
 $> Event.no_player()
 $> Event.zoom(5)
@@ -35,16 +37,15 @@ $> Event.spawn("Daze", Vector2(670, -211), Direction.RIGHT)
 $> Party.set_to(["Mira", 'Daze'])
 $> Item.remove_item("LightweightAxe", &"Key")
 $> Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
-$> Loader.travel_to("WitheredLeaves", Vector2(775, -211))
 Daze.Neutral: The food I have really won't last us long, I really didn't prepare for this situation.
 Mira.Smile: Hey, my supplies weren't even enough to take a step outside my village!
 [hide]
-do! gray_out(1)
-do lower_layer()
-do wait(1)
+$>> Transition.fade_in()
+$> lower_layer()
+$> wait(1)
 After we finish eating, I'll ask.
 [hide]
-do ungray.emit()
+$> Transition.fade_out()
 Mira.Curious: Um... would you mind if we went towards that abandoned city you found me in again?
 Daze.Neutral: Did you forget something there?
 Mira.Neutral: Remember that spirit I mentioned?
@@ -53,18 +54,19 @@ Mira.Upset: But I lost them when the... Guardian attacked.
 Mira.Neutral: You think we can take a look..?
 Daze.Neutral: I was planning on exploring further today.
 [hide]
-do npc("Mira").bubble("Sweat")
+$> npc("Mira").bubble("Sweat")
 Daze.Neutral: But... suppose we can go back if really want to.
-do! npc("Mira").bubble("Excited")
+$>> npc("Mira").bubble("Excited")
 Mira.Smile: Yay![br]We're off then!
 [hide]
-do npc("Mira").move_dir(Direction.UP)
+$> Mira.move_dir(Direction.UP)
 I go to pick up my axe, but it seems too hard to hold it with my injured arm.
 Daze.Neutral: No, Ms. Levenor, you are in no state to be fighting.
+$> Mira.look_to(Direction.LEFT)
 Mira: But-
 Daze.Neutral: Absolutely not! If we run into any monters I'll do the fighting and you stay back. Undertood?
-do npc("Mira").look_to(Direction.UP)
 Mira.Angry: Ugh, fine...
+$> Loader.travel_to("WitheredLeaves", Vector2(775, -211))
 => END
 
 ~ daze_enemy_1
@@ -118,10 +120,10 @@ Mira: I'm surprised you can't tell them appart Mr. Swordsman warrior who fights 
 Daze: I don't-[wait=1]\n *sigh...*
 Daze: So you're saying there is something important around here that needs to be protected?
 Mira: Possibly.
-(hide)
+[hide]
 Daze: I think we should take this, it seems to still contain a lot of power.
 Mira: Mhm.
-(hide)
+[hide]
 Mira: Still no traces of {{alcine}} though... Where did they wander off to?
 do! sequence("where_is_alcine_1")
 => END
@@ -177,7 +179,7 @@ else:
 	Mira: Oh, morning {{alcine}}...
 	Mira: Could you not sleep on my face, pretty please?
 Alcine.Tired: Whooomm...
-(hide)[wait=1]
+[hide][wait=1]
 I notice Daze is not in the tent.
 Mira: Yawnn...[wait=0.5] Do you know where Daze is?
 {{alcine}} looks outside the tent. Then shakes their head at me.
@@ -185,8 +187,8 @@ Mira: Mmh, I think I'll sleep a bit longer. He's out hunting or something.
 Alcine: Sho?
 Mira: I dunno {{alcine}}, that guy probably eats monsters for breakfast.
 {{alcine}} gets out of the tent.
-(hide)
-do! gray_out(1)
+[hide]
+do! Transition.fade_out(1)
 do wait(2)
 I wake up, just to find I'm somewhere else.
 I'm being cheered on by people I do and don't know.
@@ -195,7 +197,7 @@ I charge in with all my might.
 => END
 
 ~ nov2_daytime
-do ungray.emit()
+$> Transition.fade_out()
 ...[wait=1]Huh?
 That was a dream?
 ...
@@ -238,24 +240,24 @@ Mira.Neutral: We could try.
 Daze: Maybe this makes it open somehow?
 do npc("Mira").look_to("R")
 Mira: Wait.
-(hide)
+[hide]
 do npc("Daze").look_to("R")
 do npc("Alcine").look_to("R")
 do npc("Daze").bubble("Question")
 Placeholder description: Mira uses her aura to reveal hidden lines that are used for creating magic spells.
 set Camera.position = Vector2(-180, -1010)
-(hide)
+[hide]
 Mira: This mechanism has a ton of cast lines leading that way.
 do npc("Mira").look_to("U")
 Mira: This might be some sort of switch..?
 do npc("Daze").look_to("U")
 Daze puts his hand on the panel.
-(hide)
+[hide]
 ...[wait=1]Nothing happens.
 do npc("Daze").look_to("R")
 Daze: Well if it is, I cannot understand how it's activated.
 Daze: Maybe the mechanism is hidden?
-(hide)
+[hide]
 do npc("Mira").look_to("R")
 do npc("Alcine").look_to("R")
 do! npc("Daze").go_to(Vector2(-111, -1036), false, false, Vector2(0, -1))
@@ -301,7 +303,7 @@ Mira: I think this page is about... some medical stuff, im not sure.
 Mira: This one talks about... some Freeze based magic? Seems to be in a context of some conflict.
 Daze: A weapon perhaps?
 Mira: Maybe.
-(hide)
+[hide]
 Daze: What about this one?
 Daze hands me something that looks like a newspaper.
 On the top is a picture of some sort of long mechanical cylinder.
@@ -414,8 +416,8 @@ This must be what she was reffering to.
 	Asteria jumps into the purple hole. I can't see well but it looks like she's floating?
 	Daze jumps in as well.
 	Mira: Okay... here goes...
-	(hide)
-	do! Loader.gray_out(1)
+	[hide]
+	do! Loader.Transition.fade_out(1)
 	do Loader.lower_layer()
 	I jump in, start to float as well. Around me are various colors, creating many paths around me.
 	Alcine jumps in as well
@@ -454,7 +456,7 @@ do! npc("F2").go_to(Vector2(390, 184), false, false, "U")
 do! npc("F1").go_to(Vector2(350, 190), false, false, "U")
 do no_nametag()
 Feni.Neutral: ...know you meant well, but I don't think we can handle-[next=auto]
-(hide)
+[hide]
 do npc("Feni").bubble("Surprise")
 do camera_unlock()
 set Camera.position += Vector2(0, 48)
@@ -534,12 +536,12 @@ do npc("P").look_to("D")
 Daze.Neutral: The weird shimmering darkness I saw near that bunker?
 do npc("Asteria").look_to("D")
 Asteria.Neutral: That's right, the thing keeping me here in Abad!
-(hide)
+[hide]
 do! npc("P").bubble("Surprise")
 do npc("P").look_to("R")
 do npc("Asteria").look_to("L")
 Mira.Curious: Keeping you? You're trapped here!?
-(hide)
+[hide]
 do npc("Asteria").bubble("Sweat")
 do npc("Asteria").look_to("L")
 Asteria.Neutral: I'm so sorry, I didn't know you weren't aware...
@@ -549,7 +551,7 @@ Mira.Surprised: Aware of what!?
 Daze: Levenor, we-[next=auto]
 do npc("Asteria").look_to("R")
 Asteria: I'm not...
-(hide)
+[hide]
 do! npc("P").bubble("Excited")
 do! npc("P").set_anim("IdleRight")
 Mira.OpenMouth: Come on, spill it!
@@ -602,7 +604,7 @@ do! npc("P").set_anim("EvAngryWings")
 do! tween(npc("P").get_node("Flame"), "energy", 1, 1)
 Mira: [big]I won't stand for it!
 do! npc("P").set_anim("EvAngryWingsLoop")
-(hide)
+[hide]
 Daze.Neutral: Levenor calm down! 
 Daze.Neutral: I know this is a lot to take in but this hysteria won't help!
 Mira: Hysteria? How can you stay so calm after hearing that?!
@@ -742,7 +744,7 @@ Maple: ...[br]Sure.
 do wait(2)
 do transition(Direction.LEFT)
 After spending some time looking out with Maple, I headed back to my new room.
-set ToDay = 3
-set ToTime = 1
+$> to_day = 3
+$> to_time = 1
 do! time_transition()
 => END

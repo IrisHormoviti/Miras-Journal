@@ -114,7 +114,7 @@ func location_selected() -> void:
 	t.set_parallel()
 	t.tween_property(Global.camera, "zoom", Vector2(4, 4), 0.3)
 	t.tween_property(Global.camera, "position", map_point.global_position, 0.3)
-	await Loader.transition(Direction.CENTER)
+	await Transition.close_in()
 	hide()
 	var room: String = foc.get_meta("Room")
 	print("Veinet: Going to ", room)

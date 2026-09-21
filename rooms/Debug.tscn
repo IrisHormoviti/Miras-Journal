@@ -492,6 +492,7 @@ kick_direction = Vector2(1, 0)
 [node name="InteractBush" parent="." unique_id=1801924940 instance=ExtResource("6_pmuyc")]
 position = Vector2(60.2736, 36.5526)
 file = "testbush"
+dialogue_cue = "bush"
 
 [node name="InteractRest" parent="." unique_id=56388288 instance=ExtResource("6_pmuyc")]
 position = Vector2(276, 63)
@@ -530,10 +531,6 @@ metadata/_edit_group_ = true
 
 [node name="NPC" parent="." unique_id=1663552864 instance=ExtResource("12_toobe")]
 facing = SubResource("Resource_78w0y")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="NPC" unique_id=951535178]
 use_parent_material = true
@@ -587,10 +584,6 @@ bubble_always = true
 [node name="NPCAsteria" parent="." unique_id=344934070 instance=ExtResource("12_toobe")]
 position = Vector2(247, 36)
 facing = SubResource("Resource_5vm5p")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="NPCAsteria" unique_id=169870246]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9EYXplL0RhemVPVi5hc2Vwcml0ZQpsYXllcnw9Cm9wX2V4cHw9dHJ1ZQpvX2ZvbGRlcnw9cmVzOi8vYXJ0L09WL0RhemUvCm9fbmFtZXw9RGF6ZU9WLnBuZwpvbmx5X3Zpc2libGV8PWZhbHNlCm9fZXhfcHw9Cg=="

@@ -176,7 +176,7 @@ func check_menu_buttons(event: InputEvent) -> void:
 			elif Input.is_action_just_pressed("Load"):
 				Loader.load_game()
 			elif Input.is_action_just_pressed("Debug"):
-				Loader.travel_to("Debug", Vector2.ZERO, 0, "")
+				Loader.travel_to("Debug")
 				Event.remove_flag("HideDate")
 				Event.remove_flag("FlameActive")
 			elif Input.is_action_just_pressed("DebugT"):

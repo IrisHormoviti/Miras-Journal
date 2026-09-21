@@ -4,7 +4,7 @@ do Textbox.open("rank"+str(Event.condition("sl_maple"))+"_prepare")
 
 ~ rank1_prepare
 Asteria.Neutral: Oh, hey Mira.
-set ToTime = 1
+$> to_time = 1
 if confirm_time_passage("Talk to Asteria" ,"I've been looking for a chance to talk to her, maybe I can sit with her for a bit."):
 	Mira.Neutral: Mind if I sit here for a bit?
 	do! sequence("sl_asteria_1")
@@ -12,11 +12,11 @@ if confirm_time_passage("Talk to Asteria" ,"I've been looking for a chance to ta
 
 ~ rank1_1
 Mira.Neutral: So...
-(hide)
+[hide]
 do wait(1)
 Asteria.Neutral: How are you holding up?
 Mira.Neutral: M-Me? I'm not sure...
-(hide)
+[hide]
 do wait(2)
 Asteria.Neutral: Are you liking this village?
 - Somewhat
@@ -27,7 +27,7 @@ Asteria.Neutral: Are you liking this village?
 	Asteria.Neutral: Or maybe I don't...
 - No
 	Mira.Neutral: I just want to go home...
-	(hide)
+	[hide]
 	do wait(1)
 	Asteria.Neutral: ...[wait=1]I get it.
 	Asteria.Neutral: What was... your home like?
@@ -41,7 +41,7 @@ Asteria.Neutral: I've been here my whole life. There isn't much to miss...
 Mira.Neutral: Your whole life?
 Asteria.Neutral: That's right.
 Mira.Neutral: ...
-(hide)
+[hide]
 do wait(2)
 Mira.Neutral: So... you mentioned knowing someone who can dispell?
 Asteria.Neutral: Oh right, [shake rate=20 level=8]them[/shake].
@@ -56,7 +56,7 @@ Asteria.Neutral: Turn the door handle twice, then cast a straight line.
 Mira.Neutral: Is that some sort of passcode? Can't I just... knock the door?
 Asteria.Neutral: No, just do what I said.
 Mira.Neutral: Okay...
-(hide)
+[hide]
 do wait(2)
 Asteria.Neutral: One... last thing...
 Asteria.Neutral: I'm sorry about everything back at the bunker... I jumped to conclusions too fast!
@@ -72,7 +72,7 @@ Asteria.Neutral: I'm sorry if I hurt you...
 	Mira.Neutral: It's totally valid how you'd feel about those keepers.
 	Mira.Neutral: Just...[wait=0.5] make sure you're aiming at the right person next time, okay?
 Asteria.Neutral: Yeah...
-(hide)
+[hide]
 do transition()
 do lower_layer()
 do wait(1)
@@ -90,7 +90,7 @@ She seems to be very stressed, maybe I should help out.
 if confirm_time_passage("Help Asteria" ,"This could be a chance to get to know Asteria better.", 2):
 	Mira.Neutral: Can I help somehow?
 	Asteria.Neutral: You really want to help!? Thank you!
-	(hide)
+	[hide]
 	=> rank2_1
 else:
 	Mira.Neutral: That sucks.
@@ -105,12 +105,12 @@ do spawn("Asteria:AsteriaOV2", Vector2(53, -210), "R")
 Mira.Neutral: You weren't kidding... What was the last time this place was cleaned?
 Asteria.Neutral: Could be 2 or 3 years ago, who keeps track?
 Mira.Neutral: ...
-(hide)
+[hide]
 do transition()
 do lower_layer()
 We start putting stuff to the side to clean the floor.
 I pick some wooden toys that were on the floor.
-(hide)
+[hide]
 do detransition()
 Mira.Neutral: Ooh this is cute, it's like a little train! Were these yours?
 Asteria.Neutral: Y-Yes...
@@ -140,29 +140,29 @@ Asteria.Neutral: Right. Back then Pyrson wasn't what it is now, there were only 
 	Mira.Neutral: What was it like?
 	Asteria.Neutral: You're asking me? This is the only place I know.
 	Asteria.Neutral: I can say that food was pretty scarce when I was little, but we have fairly big fields now-days.
-(hide)
+[hide]
 do transition()
 do lower_layer()
 We spent a few hours organizing the room
 Asteria.Neutral: Right, I'll go bring the cleaning supplies.
-(hide)
+[hide]
 do detransition()
 Whole thing happens here
 Asteria.Neutral: I'm back!
 Mira.Neutral: Asteria! Those things on the self over there fell by themselves!
 Asteria.Neutral: Huh... Oh! Don't worry about it I'll put them back up.
 She's acting like this is normal...
-(hide)
+[hide]
 do transition()
 do lower_layer()
 We spend a little more time cleaning
-(hide)
+[hide]
 do detransition()
 Asteria.Neutral: I think we're about done here, thank you for all the help today!
 Mira.Neutral: Don't mention it!
 Mira.Neutral: It's getting a bit late, I think I'll be going now.
 Asteria.Neutral: 'Night.
-(hide)
+[hide]
 do transition()
 do lower_layer()
 I return to my room.

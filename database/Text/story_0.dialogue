@@ -180,7 +180,7 @@ Mira.Neutral: We should be safe now.
 Mira.Neutral: If it wasn't for you, I'd be done for.
 Mira.Neutral: We should stick together for now, [wait=0.5]umm...
 Mira.Neutral: Wait, do you have a name?
-(hide)
+[hide]
 $> npc("Alcine").bubble("Question")
 Mira.Neutral: Right, you can't talk. But I need to call you something...
 Mira.Neutral: Oh I got it! [br]I'll come up with a name and you tell me if you like it, okay?
@@ -207,10 +207,10 @@ $> npc("MiraCut").bubble("Surprise")
 
 $> npc("AlcineCut").look_to(Vector2(0, -1))
 Mira.Neutral: Look {{alcine}}!
-(hide)
+[hide]
 $> npc("AlcineCut").chain_moves([Vector2(-1, 0), Vector2(0, -1)])
 Mira.Neutral: That looks like a town, doesn't it?
-(hide)
+[hide]
 $> npc("AlcineCut").bubble("Excited")
 Mira.Neutral: Come on let's go! The people there might be able to help us!
 => END
@@ -533,10 +533,10 @@ What do I ask?
 	Mira.Neutral: Ahh... I didn't drink anything the whole day yesterday...
 	Daze.Neutral: And you were fighting that thing? You need like a week's worth of rest...
 	Daze.Neutral: I also got some food packed up. Hold on.
-	$>>  Loader.gray_out(1)
+	$> Transition.fade_in()
 	He gives me some bread wraps he had. 
 	It's nothing special, but not having eated a whole day makes anything taste amazing.
-	$> Loader.ungray.emit()
+	$> Transition.fade_out()
 	Mira.Neutral: Thank you, I was starving...
 - Nothing else to ask
 	Mira.Neutral: I think that all I had to ask. Thanks.

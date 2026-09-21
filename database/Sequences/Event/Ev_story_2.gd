@@ -74,7 +74,7 @@ func lazulite_boss() -> void:
 	await Battle.start("LazuliteHeartBoss")
 	await Loader.battle_end
 	print("battle done")
-	Loader.ungray.emit()
+	Transition.fade_out()
 	await Textbox.open(name, "lazulite_heart_after")
 	Loader.white_fadeout(0.5, 0.3, 0.5)
 	Event.add_flag("DefeatedLazuliteHeart")

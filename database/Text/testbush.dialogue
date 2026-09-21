@@ -17,7 +17,7 @@ Mira.Neutral: Yes, this is [[indeed|in fact]] a bush
 	Mira.Smile: Yeah, sure i can say a *bunch of stuff*.
 	Mira.Smile: I just like the sound of my voice, *beep boop.
 	Mira.Smile: So how's your day bush? [p]Anything going on?
-	[wait=0.5](hide)[next=auto]
+	[wait=0.5][hide][next=auto]
 	Mira.Smile: Yeah I thought so.
 	Mira.Smile: The purpose of this dialog is to test text sounds and dialog skipping.
 	do picture("Placeholder")
@@ -78,7 +78,7 @@ Where to go?
 ~ greetings
 Mira.Neutral: Hello everyone! This is a passive textbox of sorts.
 Mira.OpenMouth: I can still move while saying this.
-(hide)
+[hide]
 Mira.OpenMouth: boo
 => END
 
@@ -191,8 +191,8 @@ Choose battle
 Event select
 - Petrogon fight
 	do Event.Flags.clear()
-	set ToDay = 0
-	set ToTime = TOD.NIGHT
+	$> to_day = 0
+	$> to_time = TOD.NIGHT
 	do Event.add_flag("HasBag")
 	do Event.add_flag("FlameActive")
 	do travel_to("TempleWoods", Vector2(1272, -966), 2)
@@ -201,8 +201,8 @@ Event select
 	set TimeOfDay = TOD.NIGHT
 	do! textbox_open("story_1", "maple_meet")
 - Going to shard gardens
-	set ToDay = 3
-	set ToTime = TOD.AFTERNOON
+	$> to_day = 3
+	$> to_time = TOD.AFTERNOON
 	do! time_transition()
 => END
 

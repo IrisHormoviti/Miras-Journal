@@ -13,6 +13,7 @@ maplethorpe social links in general
 daze introduction cutscene
 enemies in bunker
 first cutscene doodles at least
+refactor transition system
 
 bug fixes:
 fix escape bug

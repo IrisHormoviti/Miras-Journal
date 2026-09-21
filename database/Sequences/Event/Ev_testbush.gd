@@ -11,10 +11,10 @@ func jump_playtest() -> void:
 
 func waste_time() -> void:
 	await Event.take_control()
-	await Loader.transition()
+	await Transition.wipe()
 	Event.progress_by_time(1)
 	await Event.time_transition()
-	Loader.detransition()
+	Transition.unwipe()
 	Event.give_control()
 
 

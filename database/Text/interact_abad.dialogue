@@ -114,7 +114,7 @@ elif Party.has_member("Mira"):
 	Mira.Neutral: [[Wanna rest here for a bit?|Should we take a break?|Let's take a break.|Seems like a good place to rest.]]
 do Event.progress_by_time(1)
 if confirm_time_passage("Rest", "Fully restore health."):
-	(hide)
+	[hide]
 	do heal_party()
 	do! Event.time_transition()
 => END
@@ -171,7 +171,7 @@ if Day == 1
 		Daze.Neutral: 18, why?
 		Mira.Neutral: WHAT!?
 		Mira.Neutral: That makes me the oldest one here! I should be the leader!!!
-		(hide)
+		[hide]
 		Daze looks down at me with a straight face, making it clear that he's a whole head taller than me.
 		He proceeds to pat my head.
 		Daze: That's cute.
@@ -197,12 +197,12 @@ if Day == 1:
 		Alcine.Neutral: Whim!
 	elif f_past("AlcineIsTheLeaderReal", 1):
 		Mira.Neutral: Psst, {{alcine()}}! How old are you?
-		(hide)
+		[hide]
 		do npc("AlcineCamp").bubble("Question")
 		{{alcine()}} seems unsure. Maybe more confused.
 		Mira.Neutral: Not surprised, you could be a thousand years old for all I know.
 		Mira.Neutral: Maybe you should be the leader!
-		(hide)
+		[hide]
 		do npc("AlcineCamp").bubble("Ellipsis")
 		do npc("AlcineCamp").bubble("Excited")
 		{{alcine()}} thinks about it for a moment, then poses heroically at me.

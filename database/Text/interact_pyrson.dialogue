@@ -53,7 +53,7 @@ elif date_is_reserved():
 else:
 	[[Should I gather the others?|Should I bring anyone else?|Let's call the others first.|Time to head out.]]
 	- Gather allies
-		(hide)
+		[hide]
 		do transition("L")
 		do Party.add("Alcine")
 		do Party.add("Asteria")

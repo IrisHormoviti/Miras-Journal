@@ -85,7 +85,6 @@ func _on_options_pressed() -> void:
 
 func dismiss_title() -> void:
 	title_screen.hide()
-	#Loader.detransition()
 	queue_free()
 
 

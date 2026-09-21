@@ -1137,7 +1137,7 @@ func FirstBattle1() -> void:
 	Loader.battle_bars(4)
 	Global.player.hide()
 	await Event.wait(0.5, false)
-	Loader.ungray.emit()
+	Transition.fade_out()
 	await Event.wait(0.3, false)
 	#Hud.battle_state(true)
 	#$"../EnemyUI"._on_battle_ui_target_foc(Bt.Troop[0])
@@ -1419,7 +1419,7 @@ func StoneGuardian3() -> void:
 	await Bt.focus_cam(mira, 3)
 	await Event.wait(1)
 	mira.CantDie = false
-	Loader.gray_out(1)
+	Transition.fade_in()
 	await Event.wait(1)
 	await Textbox.open("story_0", "placeholder_daze")
 	Loader.get_node("Can").layer = 3
@@ -1507,11 +1507,11 @@ func AsteriaBossFollowup() -> void:
 
 
 func nov2_mira_dream() -> void:
-	Loader.gray_out(1)
+	Transition.fade_in()
 	await Event.wait(0.7)
 	Event.to_day = 2
 	Event.to_time = 2
-	Loader.ungray.emit()
+	Transition.fade_out()
 	Event.time_transition()
 	Bt.end_battle()
 

@@ -108,7 +108,7 @@ static func start(stg: Variant, advantage := 0) -> void:
 	Global.get_tree().paused = true
 	remembered_camera_zoom = Global.camera.zoom
 
-	if sequence.Transition:
+	if sequence.transition:
 		if is_instance_valid(attacker):
 			if sequence.Music:
 				Audio.change_music_from_to(sequence.Music.track, 0, sequence.Music.intro_end)
@@ -427,7 +427,7 @@ func entrance() -> void:
 	Global.controllable = false
 	cam.position_smoothing_enabled = false
 
-	if sequence.Transition:
+	if sequence.transition:
 		Loader.battle_bars(3)
 		if sequence.EntranceBanter != "":
 			if sequence.EntranceBanterIsPassive:
@@ -465,7 +465,7 @@ func entrance() -> void:
 
 	Loader.battle_bars(2)
 	await Event.wait(0.5, false)
-	if not sequence.Transition: enemy_ui.all_enemy_ui(true)
+	if not sequence.transition: enemy_ui.all_enemy_ui(true)
 	Hud.battle_state(true)
 	Hud.save_box_positions()
 	await Event.wait(0.7, false)

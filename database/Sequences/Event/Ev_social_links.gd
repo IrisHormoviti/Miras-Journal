@@ -7,7 +7,7 @@ func sl_maple_1() -> void:
 	await Event.spawn("Mira:MiraOVBag", Vector2(300, 778), Direction.RIGHT)
 	await Event.spawn("Maple", Vector2(350, 778), Direction.LEFT)
 	Event.zoom(5)
-	Loader.detransition()
+	Transition.unwipe()
 	await Event.wait(1)
 	await Textbox.open("sl_maple", "rank1_1")
 	Event.progress_by_time(1)
@@ -21,7 +21,7 @@ func sl_asteria_1() -> void:
 	var asteria: NPC = Event.npc("AsteriaPlaza")
 	asteria.position = Vector2(506, 640)
 	asteria.look_to(Direction.RIGHT)
-	await Loader.detransition()
+	await Transition.unwipe()
 	mira.state = NPC.S.CUSTOM
 	mira.set_anim("SitRight")
 	asteria.set_anim("IdleRight")

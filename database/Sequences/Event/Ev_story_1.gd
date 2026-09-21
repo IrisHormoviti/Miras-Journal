@@ -76,9 +76,9 @@ func amberelm_reunion() -> void:
 
 
 func nov2_morning() -> void:
-	Loader.gray_out(1)
+	Transition.fade_in()
 	await Loader.travel_to("WitheredLeaves", Vector2(-96, -384), 1)
-	Loader.ungray.emit()
+	Transition.fade_out()
 	Event.no_player()
 	await Textbox.open(name, "nov2_morning")
 	Event.remove_flag("InCamp")
@@ -98,7 +98,7 @@ func nov2_daytime() -> void:
 	await Loader.travel_to("WitheredLeaves", Vector2(-96, -384), 1, "none", false)
 	Event.no_player()
 	await Event.spawn("Mira", "TentInside+(8,0)", "Sleep")
-	Loader.ungray.emit()
+	Transition.fade_out()
 	await Textbox.open(name, "nov2_daytime")
 	Party.set_to(["Mira", "Alcine", "Daze"])
 	Event.add_flag("HasBag")
@@ -120,13 +120,13 @@ func nov2_daytime() -> void:
 
 
 func WL_bunker_switch() -> void:
-	await Loader.transition()
+	await Transition.wipe()
 	await Loader.travel_to("WitheredLeaves", Vector2(-250, -1010), 0, "none", false)
 	await Event.no_player()
 	await Event.spawn("Mira:MiraOVBag", Vector2(-250, -1000), Direction.UP)
 	await Event.spawn("Daze", Vector2(-275, -1010), Direction.UP)
 	await Event.spawn("Alcine", Vector2(-275, -990), Direction.UP)
-	await Loader.detransition(Direction.UP)
+	await Transition.unwipe()
 	await Textbox.open(name, "WL_bunker_switch")
 	await Loader.travel_to("WitheredLeaves", Vector2(-275, -986), 0, Direction.UP)
 	await Loader.save()
@@ -171,7 +171,7 @@ func enter_pyrson() -> void:
 	Event.remove_flag("InCamp")
 	Global.player.hide()
 	Global.player.camera_follow(false)
-	Loader.ungray.emit()
+	Transition.fade_out()
 	Event.camera_move(Vector2(568, 669))
 	Event.camera_move(Vector2(214, 172), 5)
 	Global.location_name("Pyrson")

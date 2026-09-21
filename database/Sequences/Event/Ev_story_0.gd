@@ -118,12 +118,12 @@ func first_battle() -> void:
 	Global.player.move_dir(Vector2.RIGHT * 2)
 	Loader.travel_to("TempleWoods", Vector2(1220, 461), 1, Direction.RIGHT, false)
 	await Event.wait(0.2)
-	Loader.gray_out(1)
+	Transition.fade_in()
 	await Event.wait(0.5)
 	Event.take_control()
 	Global.player.camera_follow(false)
 	Event.camera_move(Vector2(1446, -605), 0)
-	Loader.ungray.emit()
+	Transition.fade_out()
 	Event.camera_move(Vector2(1486, -300), 5, Tween.EASE_IN_OUT, Tween.TRANS_LINEAR)
 	await Event.wait(0.5)
 	Global.location_name("Temple Woods")
@@ -131,7 +131,7 @@ func first_battle() -> void:
 	Event.camera_move(Vector2(1558, 318), 0)
 	Global.player.hide()
 	await Event.camera_move(Vector2(1429, 450), 4, Tween.EASE_OUT)
-	Loader.gray_out(1)
+	Transition.fade_in()
 	Battle.start("FirstBattle")
 	Event.add_flag("EvFirstBattle")
 	Event.add_flag("DisableMenus", false)
@@ -224,7 +224,7 @@ func AlcineFollow4() -> void:
 	Hud.ui_visible = true
 	Event.add_flag("FlameActive")
 	Global.room.followers[0].dont_follow = false
-	Loader.detransition()
+	Transition.unwipe()
 	Hud.shrink()
 	Event.give_control(true)
 	Event.pop_tutorial("party")
@@ -275,11 +275,11 @@ func enter_amberelm_2() -> void:
 	Event.take_control(false, true)
 	await Event.wait(1)
 	Global.room.followers[0].position = Global.player.position + Vector2(0, 24)
-	Loader.ungray.emit()
+	Transition.fade_out()
 	await Textbox.open(name, "what_happened_here")
-	await Loader.transition(Direction.RIGHT)
+	await Transition.wipe(Direction.RIGHT)
 	Global.player.position = Vector2(150, 345)
-	Loader.detransition()
+	Transition.unwipe()
 	Event.give_control(true)
 	Global.player.set_anim("IdleRight")
 
@@ -289,7 +289,7 @@ func amberelm_guardian() -> void:
 	await Global.battle_end
 	if Battle.battle_result == 1:
 		Party.set_to(["Mira"])
-		Loader.ungray.emit()
+		Transition.fade_out()
 		Event.to_day = 0
 		Event.to_time = 5
 		Event.add_flag("BeatStoneGuardian")
