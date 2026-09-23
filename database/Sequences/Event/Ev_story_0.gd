@@ -32,7 +32,7 @@ func new_game() -> void:
 	Global.check.emit()
 
 	# Now start the transition
-	Loader.white_fadeout(7, 1, 0, 1)
+	Transition.fade_in_out(Color.WHITE, 0, 7, 1)
 	await Loader.travel_to("TempleWoods", Vector2.ZERO, 0, null, false)
 	get_tree().paused = false
 	# Skip intro shortcut

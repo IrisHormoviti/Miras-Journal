@@ -43,7 +43,7 @@ static func fade_in_gray(opacity := 0.8) -> Transition:
 	return await fade_in(Color(1,1,1, opacity))
 
 
-static func fade_in(color: Color = Color.BLACK, in_time := 0.3, out_time := -1, wait_time := 0) -> Transition:
+static func fade_in(color := Color.BLACK, in_time := 0.3) -> Transition:
 	const transition_name := "fade"
 	const exit_transition_name := "fade"
 
@@ -62,19 +62,37 @@ static func fade_in(color: Color = Color.BLACK, in_time := 0.3, out_time := -1, 
 
 	print("Fade Transition: ", transition_name + " > ", exit_transition_name)
 
-	if out_time < 0:
-		active_transitions.append(transition)
-		await transition.animation_player.animation_finished
-		return transition
-	else:
-		await transition.animation_player.animation_finished
-		if wait_time > 0:
-			await Event.wait(wait_time)
+	active_transitions.append(transition)
+	await transition.animation_player.animation_finished
+	return transition
 
-		var out_speed := anim_length / out_time
-		transition.animation_player.speed_scale = out_speed
-		await transition.exit()
-		return null
+
+static func fade_in_out(color: Color = Color.BLACK, in_time := 0.3, out_time := 0.3, wait_time := 0.0) -> void:
+	const transition_name := "fade"
+	const exit_transition_name := "fade"
+
+	var transition: Transition = preload("res://UI/Transition/FadeTransition.tscn").instantiate()
+	transition.name = transition_name + "_" + str(randi())
+	transition.exit_animation = exit_transition_name
+	transition.exit_in_reverse = true
+	transition.get_node("Fade").color = color
+	Global.get_tree().root.add_child(transition)
+
+	var anim_length := transition.animation_player.get_animation(transition_name).length
+	var in_speed := anim_length / in_time
+
+	transition.animation_player.speed_scale = in_speed
+	transition.play_animation(transition_name)
+
+	print("Fade Transition: ", transition_name + " > ", exit_transition_name)
+
+	await transition.animation_player.animation_finished
+	if wait_time > 0:
+		await Event.wait(wait_time)
+
+	var out_speed := anim_length / out_time
+	transition.animation_player.speed_scale = out_speed
+	await transition.exit()
 
 
 static func fade_out(out_time := 0.3) -> void:

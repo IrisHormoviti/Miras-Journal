@@ -608,7 +608,7 @@ func Summon(target: Actor) -> void:
 		Bt.battle_msg("summon_fail")
 		await Event.wait(1)
 	else:
-		Loader.white_fadeout(1, 0.5, 0.5)
+		Transition.fade_in_out(Color.WHITE, 0.5, 0.5, 0.5)
 		await Event.wait(0.5)
 		#FIXME
 		Bt.add_to_troop(CurrentChar.SummonedAllies.pick_random())
@@ -1070,8 +1070,8 @@ func Eat(target: Actor) -> void:
 func ItemCure(target: Actor) -> void:
 	Bt.focus_cam(CurrentChar, 0.3)
 	Bt.zoom(5.5)
-	print(Bt.CurrentAbility.Type)
-	if Bt.CurrentAbility.Type == "Healing":
+	print(Bt.CurrentAbility.Types)
+	if "Healing" in Bt.CurrentAbility.Types:
 		Bt.heal(CurrentChar, int(Bt.CurrentAbility.Parameter))
 
 	CurrentChar.remove_state(Bt.CurrentAbility.InflictsState)
@@ -1453,7 +1453,7 @@ func AsteriaBoss3() -> void:
 	if not Event.f_past("AsteriaBoss", 4):
 		await Bt.cut_in("Asteria")
 		await Bt.anim("Ability", asteria)
-		Loader.white_fadeout(0, 0, 0.5)
+		Transition.fade_in_out(Color.WHITE, 0.5, 0)
 		await Event.wait(0.3)
 		Bt.anim("", asteria)
 		if Bt.has_actor("Bird") or Bt.has_actor("Bird"):
@@ -1478,7 +1478,7 @@ func AsteriaBoss3() -> void:
 			Event.add_flag("AsteriaBoss", 3)
 			asteria.Health = asteria.MaxHP
 
-		Loader.white_fadeout(0.5, 0, 0)
+		Transition.fade_in_out(Color.WHITE, 0.5, 0, 0)
 	else:
 		Bt.lock_turn = true
 		Bt.anim("", asteria)
@@ -1493,7 +1493,7 @@ func AsteriaBossFollowup() -> void:
 	Bt.focus_cam(asteria)
 	Bt.zoom(6)
 	await Bt.anim("Ability", asteria)
-	Loader.white_fadeout(0, 0, 0.5)
+	Transition.fade_in_out(Color.WHITE, 0.5, 0, 0)
 	await Event.wait(0.5)
 	if Event.flag_int("AsteriaBoss") < 4:
 		for i in Bt.Troop:
@@ -1542,7 +1542,6 @@ func LazuliteHeartBoss1() -> void:
 
 func LazuliteHeartBoss2() -> void:
 	await Textbox.open("story_2", "lazulite_heart_3")
-	Loader.gray_out(1, 0.5, 1, Color.WHITE)
-	await Event.wait(1)
+	await Transition.fade_in(Color.WHITE, 1)
 	Bt.victory(true)
 #endregion

@@ -810,7 +810,6 @@ func _on_save_load() -> void:
 
 	if panel.get_node("ProgressBar").value == 100 or quick_load:
 		if not FileAccess.file_exists("user://" + filename + ".tres"): return
-		stage = "closing"
 		Loader.load_game(filename)
 	else:
 		Audio.buzzer_sound()

@@ -622,10 +622,6 @@ animation = &"WalkUp"
 z_index = 4
 position = Vector2(302, 1336)
 facing = SubResource("Resource_ghwov")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 dont_use_collision = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EvEntranceCutscene/MiraCut" unique_id=1076550043]

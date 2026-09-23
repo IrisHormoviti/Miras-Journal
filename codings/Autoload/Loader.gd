@@ -24,7 +24,6 @@ var remembered_camera_zoom: Vector2 = Vector2(4, 4)
 var traveled_pos: Vector2
 
 @onready var t: Tween
-@onready var Icon: AnimatedSprite2D = $Can/Icon
 @onready var can: CanvasLayer = $Can
 @onready var BAR_DOWN_POS: Vector2 = $Can/Bars/Down.position
 @onready var BAR_UP_POS: Vector2 = $Can/Bars/Up.position
@@ -128,6 +127,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 
 	if not validate_save(filepath):
 		Transition.unwipe()
+		Transition.load_icon_close()
 		return
 
 	Battle.prevent_battles = true
@@ -460,7 +460,6 @@ func battle_bars(x: int, time: float = 0.5, easing := Tween.EASE_IN_OUT) -> void
 			t.tween_property($Can/Bars, "self_modulate", Color(1, 1, 1, 1), time / 2)
 			
 
-	t.tween_property($Can/Icon, "global_position", Vector2(1181, 900), 0.3)
 	await t.finished
 
 
@@ -497,7 +496,9 @@ func validate_save(savefile: String) -> bool:
 					ResourceSaver.save(file, savefile)
 					return true
 				else:
-					Global.warning("Sorry but the stored save data is from an incompatible version, and cannot be used.\nYou might have to start a new game or use the proper version of the game.", "ERROR", ["Okay fine"])
+					Global.warning(
+						"Sorry but the stored save data is from an incompatible version, and cannot be migrated. You might have to start a new game or use the proper version of the game.", "ERROR", ["Okay fine"]
+					)
 					Global.options(1)
 					return false
 		else:

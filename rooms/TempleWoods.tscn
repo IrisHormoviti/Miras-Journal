@@ -870,10 +870,6 @@ offset = Vector2(0, -5)
 [node name="EvAlcineBelow" parent="Event" unique_id=344934070 instance=ExtResource("23_va2q4")]
 position = Vector2(1258, -652)
 facing = SubResource("Resource_u8txd")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 no_shadow = true
 
 [node name="HideOnFlag" parent="Event/EvAlcineBelow" unique_id=206159318 instance=ExtResource("23_dpu00")]
@@ -955,6 +951,7 @@ dialogue_file = "axe_seq"
 itemtype = "Key"
 add_flag = true
 hide_on_flag = &"PickedUpAxe"
+hide_this_node = true
 hide_parent = true
 free_on_hide = true
 needs_bag = true
@@ -982,6 +979,7 @@ dialogue_file = "bag_seq"
 return_control = false
 show_on_flag = &"day=0"
 hide_on_flag = &"HasBag"
+hide_this_node = true
 hide_parent = true
 free_on_hide = true
 proper_pos = Vector2(100, 406)
