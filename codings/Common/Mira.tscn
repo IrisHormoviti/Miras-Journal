@@ -733,6 +733,7 @@ texture = ExtResource("10_dxclp")
 [node name="Bubble" type="AnimatedSprite2D" parent="." unique_id=1706025424]
 light_mask = 0
 z_index = 3
+use_parent_material = true
 position = Vector2(-0.00622558, -34.0003)
 sprite_frames = ExtResource("11_buww2")
 animation = &"Surprise"

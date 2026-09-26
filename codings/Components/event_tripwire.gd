@@ -54,7 +54,7 @@ extends Area2D
 ## While the event lasts, the player walks slower
 @export var slow_down: bool = false
 ## Move the player to a specific direction when the event is triggered
-@export var kick_direction: Vector2
+@export var kick_direction: Direction
 
 
 func _validate_property(property: Dictionary) -> void:
@@ -109,7 +109,7 @@ func _on_body_entered(body: Node2D) -> void:
 		if take_control:
 			await Event.take_control(false, true, true)
 
-		if kick_direction != Vector2.ZERO:
+		if not kick_direction.is_vector(Vector2.ZERO):
 			kick()
 
 		if event_name != "":

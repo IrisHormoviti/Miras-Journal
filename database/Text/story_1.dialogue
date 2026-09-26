@@ -54,9 +54,9 @@ Mira.Upset: But I lost them when the... Guardian attacked.
 Mira.Neutral: You think we can take a look..?
 Daze.Neutral: I was planning on exploring further today.
 [hide]
-$> npc("Mira").bubble("Sweat")
+$> Mira.bubble("Sweat")
 Daze.Neutral: But... suppose we can go back if really want to.
-$>> npc("Mira").bubble("Excited")
+$>> Mira.bubble("Excited")
 Mira.Smile: Yay![br]We're off then!
 [hide]
 $> Mira.move_dir(Direction.UP)
@@ -84,21 +84,21 @@ Daze.Neutral: I hope you learned something.
 Mira.Angry: Can you please not treat me like child?
 Mira.Angry: I know plenty about magic, I've studied these things thoroughly!
 Mira.Angry: You just wanted to show off [i]how much better you are[/i]!
-do! npc("F1").move_dir(Vector2.DOWN*6)
+$>> npc("F1").move_by(Vector2.DOWN*6)
 Mira.Neutral: Let's just just hurry up, I want to see {{alcine}}.
 Daze.Neutral: *sigh*
 [hide]
-do! travel_to("WitheredLeaves", npc("F1").position)
-do wait(0.5, false)
-do! Party.set_to(["Mira", "Daze"])
+$>> travel_to("WitheredLeaves", npc("F1").position)
+$> wait(0.5, false)
+$>> Party.set_to(["Mira", "Daze"])
 => END!
 
 
 ~ destroyed_guardian_event
-do travel_to("Amberelm", Vector2(2559, -112), 2)
-do no_player()
-do spawn("Mira", Vector2(2559, -124), "U")
-do spawn("Daze", Vector2(2586, -124), "U")
+$> travel_to("Amberelm", Vector2(2559, -112), 2)
+$> no_player()
+$> spawn("Mira", Vector2(2559, -124), Direction.UP)
+$> spawn("Daze", Vector2(2586, -124), Direction.UP)
 Mira: Hey, the remains of the Guardian are all here.
 Daze: Guardian?
 Mira: It's a name I just came up with for this thing.
@@ -125,7 +125,7 @@ Daze: I think we should take this, it seems to still contain a lot of power.
 Mira: Mhm.
 [hide]
 Mira: Still no traces of {{alcine}} though... Where did they wander off to?
-do! sequence("where_is_alcine_1")
+$>> sequence("where_is_alcine_1")
 => END
 
 ~ destroyed_guardian
@@ -134,11 +134,11 @@ if Party.Leader.codename == "Alcine":
 elif check_flag("EvDestroyedGuardian"):
 	The remains of the Stone Guardian.
 	Daze cut it completely clean.
-elif Event.Day == 0:
+elif Event.day == 0:
 	So this is what remains of the Guardian.
 	It's quite dark, and I can't see it well.
 	But... it feels like this thing is still somehow alive.
-	do npc("P").look_to("R")
+	$> player.look_to(Direction.RIGHT)
 	I should probably go back, this place is incredibly dangerous.
 => END
 
@@ -146,12 +146,12 @@ elif Event.Day == 0:
 Mira.Neutral: {{alcine}}!!
 Alcine.Happy: Mewaaa!!
 Daze.Neutral: So this is the {{alcine}} you were talking about.
-do! npc("P").bubble("Question")
+$>> player.bubble("Question")
 Alcine.Neutral: Mwwoo?
 Mira.Neutral: Oh {{alcine}}, this is Daze. He saved us from that big rock monster!
-do npc("P").move_dir(Vector2.RIGHT)
+$> player.move_by(Vector2.RIGHT)
 Alcine.Upset: Sheww...
-do! npc("Mira").bubble("Question")
+$>> Mira.bubble("Question")
 Mira.Neutral: Huh?
 Daze.Neutral: Did I do something wrong?
 => END
@@ -188,8 +188,8 @@ Alcine: Sho?
 Mira: I dunno {{alcine}}, that guy probably eats monsters for breakfast.
 {{alcine}} gets out of the tent.
 [hide]
-do! Transition.fade_out(1)
-do wait(2)
+$>> Transition.fade_out(1)
+$> wait(2)
 I wake up, just to find I'm somewhere else.
 I'm being cheered on by people I do and don't know.
 Someone in front of me... my greatest enemy.
@@ -227,10 +227,10 @@ Mira.Neutral: (Why am I feeling deja vu all of a sudden...)[wait=2]
 => END
 
 ~ metalic_gate
-do player.look_to("U")
-do player.camera_follow(false)
-set Camera.position = Vector2(-205, -1080)
-do wait(1)
+$> player.look_to(Direction.UP)
+$> player.camera_follow(false)
+$> camera_move(Vector2(-205, -1080))
+$> wait(1)
 Mira.Neutral: This is new...
 Daze.Neutral: This looks to be some sort of metallic gate. You think we can get in?
 Mira.Neutral: We could try.
@@ -238,53 +238,53 @@ Mira.Neutral: We could try.
 
 ~ WL_bunker_switch
 Daze: Maybe this makes it open somehow?
-do npc("Mira").look_to("R")
+$> Mira.look_to(Direction.RIGHT)
 Mira: Wait.
 [hide]
-do npc("Daze").look_to("R")
-do npc("Alcine").look_to("R")
-do npc("Daze").bubble("Question")
+$> Daze.look_to(Direction.RIGHT)
+$> Alcine.look_to(Direction.RIGHT)
+$> Daze.bubble("Question")
 Placeholder description: Mira uses her aura to reveal hidden lines that are used for creating magic spells.
-set Camera.position = Vector2(-180, -1010)
+$> move_camera(Vector2(-180, -1010))
 [hide]
 Mira: This mechanism has a ton of cast lines leading that way.
-do npc("Mira").look_to("U")
+$> Mira.look_to(Direction.UP)
 Mira: This might be some sort of switch..?
-do npc("Daze").look_to("U")
+$> Daze.look_to(Direction.UP)
 Daze puts his hand on the panel.
 [hide]
 ...[wait=1]Nothing happens.
-do npc("Daze").look_to("R")
+$> Daze.look_to(Direction.RIGHT)
 Daze: Well if it is, I cannot understand how it's activated.
 Daze: Maybe the mechanism is hidden?
 [hide]
-do npc("Mira").look_to("R")
-do npc("Alcine").look_to("R")
-do! npc("Daze").go_to(Vector2(-111, -1036), false, false, Vector2(0, -1))
-do wait(0.5)
-do! npc("Alcine").go_to(Vector2(-124, -1020), false, false, Vector2(0, -1))
-do npc("Mira").move_dir(Vector2(1, 0))
-do wait(2)
-do npc("Mira").look_to("U")
-do! npc("Daze").go_to(Vector2(-90, -1036), false, false)
-do wait(2)
-do npc("Mira").go_to(Vector2(-276, -1010), false)
-do npc("Mira").look_to("U")
-do Passive.open("story_1", "something_in_here")
-do npc("Daze").move_dir(Vector2(-1, 0))
-do npc("Daze").look_to("U")
-do npc("Mira").bubble("Ellipsis")
-do npc("Daze").move_dir(Vector2(1, 0))
-do npc("Daze").look_to("U")
-do wait(2)
-do add_flag("Bunker1Open")
-do check.emit()
-do screen_shake()
-do wait(0.5)
-do! npc("Mira").bubble("Surprise")
-do npc("Daze").look_to("L")
-do npc("Alcine").look_to("L")
-do wait(2)
+$> Mira.look_to(Direction.RIGHT)
+$> Alcine.look_to(Direction.RIGHT)
+$>> Daze.go_to(Vector2(-111, -1036), false, false, Vector2(0, -1))
+$> wait(0.5)
+$>> Alcine.go_to(Vector2(-124, -1020), false, false, Vector2(0, -1))
+$> Mira.move_by(Vector2(1, 0))
+$> wait(2)
+$> Mira.look_to(Direction.UP)
+$>> Daze.go_to(Vector2(-90, -1036), false, false)
+$> wait(2)
+$> Mira.go_to(Vector2(-276, -1010), false)
+$> Mira.look_to(Direction.UP)
+$> Passive.open("story_1", "something_in_here")
+$> Daze.move_by(Vector2(-1, 0))
+$> Daze.look_to(Direction.UP)
+$> Mira.bubble("Ellipsis")
+$> Daze.move_by(Vector2(1, 0))
+$> Daze.look_to(Direction.UP)
+$> wait(2)
+$> add_flag("Bunker1Open")
+$> check.emit()
+$> screen_shake()
+$> wait(0.5)
+$>> Mira.bubble("Surprise")
+$> Daze.look_to(Direction.LEFT)
+$> Alcine.look_to(Direction.LEFT)
+$> wait(2)
 Mira: Wha? What did I do?!
 => END
 
@@ -314,19 +314,19 @@ Mira: This is... some time before the Sinking.
 Daze: What is-[next=auto]
 Placeholder description: Before he could finish his sentence, something suddenly grabs all of them in the air. A scarf.
 Placeholder description: Someone then walks into the room.
-do next_box("Asteria")
+$> next_box("Asteria")
 There you are. I've finally caught you!
-do next_box("Asteria")
+$> next_box("Asteria")
 You people, that have kept us caged all these years. Then going playing around like it's no big deal!
 Mira: What in the Depths are you talking about?!
-do next_box("Asteria")
+$> next_box("Asteria")
 Don't play dumb! I've seen what you've done!
 {{alcine}} just slips out of the scarf and gets them out.
-do next_box("Asteria")
+$> next_box("Asteria")
 Wha..?
 Mira: Good thinking {{alcine}}!
 The Frayse girl calls back the scarf
-do next_box("Asteria")
+$> next_box("Asteria")
 I won't let you go that easily!
 => END
 
@@ -337,26 +337,26 @@ Asteria.Neutral: Maybe I should even the playing feild for once!
 
 ~ asteria_boss_3
 Placeholder description: Time has stopped for everyone but Asteria
-do next_box("Asteria")
+$> next_box("Asteria")
 *Huff... Huff...*
-do next_box("Yaru")
+$> next_box("Yaru")
 you're pushing yourself too hard there, star...
-do next_box("Asteria")
+$> next_box("Asteria")
 But I have to do this, it's my only chance!
-do next_box("Yaru")
+$> next_box("Yaru")
 i trust you.
 Placeholder description: Asteria uses a bunch of items and fully heals herself.
 => END
 
 ~ asteria_boss_4
 Placeholder description: Time has stopped for everyone but Asteria
-do next_box("Asteria")
+$> next_box("Asteria")
 Oh- *huff*, that was close.
-do next_box("Asteria")
+$> next_box("Asteria")
 We're... nearly out of items.
-do next_box("Yaru")
+$> next_box("Yaru")
 should i take over?
-do next_box("Asteria")
+$> next_box("Asteria")
 Yes... PLEASE..!
 => END
 
@@ -387,13 +387,13 @@ Mira: Key to freedom..?
 Daze: And do these keepers tend to be teams of Humans, Cyrenians and water blobs...?
 Asteria: I don't know... I just jumped to conclusions because you had access to this place.
 Placeholder description: {{alcine}} is making Asteria's ears swing around
-do! npc("AsteriaCamp").look_to("R")
-do  npc("AsteriaCamp").bubble("Surprise")
+$>> AsteriaCamp.look_to(Direction.RIGHT)
+$>  AsteriaCamp.bubble("Surprise")
 Asteria.Neutral: Hey-[wait=0.3] Will you quit doing that!
-do transition("R")
-set npc("AlcineCamp").position = Vector2(800, -232)
-do npc("AsteriaCamp").look_to("D")
-do detransition("R")
+$> Transition.wipe(Direction.RIGHT)
+$> AlcineCamp.position = Vector2(800, -232)
+$> AsteriaCamp.look_to(Direction.DOWN)
+$> Transition.unwipe()
 Mira: Where do we go from here?
 Asteria: I can take you two to the village. Mom could probably find a place for you two to stay.
 Daze: A village...That'd be nice.
@@ -417,51 +417,50 @@ This must be what she was reffering to.
 	Daze jumps in as well.
 	Mira: Okay... here goes...
 	[hide]
-	do! Loader.Transition.fade_out(1)
-	do Loader.lower_layer()
+	$>> Transition.fade_out()
 	I jump in, start to float as well. Around me are various colors, creating many paths around me.
 	Alcine jumps in as well
 	Asteria: I'll take us to the village now. Ready? 
 	Mira: Which way do we... WHAAA-
 	As asteria moves, we're all dragged around and go really fast.
-	do add_flag("VPOldCamp")
-	do remove_flag("DisableVeinet")
-	do! sequence("enter_pyrson")
+	$> add_flag("VPOldCamp")
+	$> remove_flag("DisableVeinet")
+	$>> sequence("enter_pyrson")
 	=> END
 - Not yet
-	do give_control()
+	$> give_control()
 	=> END
 
 ~ enter_pyrson
 Placeholder description: Asteria comes out of a gate and lands gracefully, Daze comes out striking a cool pose as he lands.
 Placeholder description: Mira falls out and land right on her face, {{alcine}} lands and becomes a puddle, then reforms.
-do npc("Asteria").look_to("L")
+$> Asteria.look_to(Direction.LEFT)
 Asteria.Neutral: Well, here we are.\nHow did you like the trip?
 Alcine.Tired: Weeww..
 Mira: Ughh... I'm gonna throw up...
 Asteria.Neutral: That was Vein Network, the fastest way of getting around Abad. You'll get used to it.
 Asteria.Neutral: Regardless, I welcome you Pyrson village!
 Daze.Neutral: It's a lot better looking than I expected.
-do npc("Asteria").look_to("R")
+$> Asteria.look_to(Direction.RIGHT)
 Asteria.Neutral: Maybe first... I should inform my mother that you're here.
 Asteria.Neutral: Follow me if you'd like.
 => END
 
 #FIXME
 ~ nov2_town_hall
-do spawn("Feni", Vector2(381, 130), "D", 3)
-do spawn("Asteria", Vector2(368, 150), "U", 3)
-do! npc("P").go_to(Vector2(368, 184), false, false, "U")
-do! npc("F2").go_to(Vector2(390, 184), false, false, "U")
-do! npc("F1").go_to(Vector2(350, 190), false, false, "U")
-do no_nametag()
+$> spawn("Feni", Vector2(381, 130), Direction.DOWN, 3)
+$> spawn("Asteria", Vector2(368, 150), Direction.UP, 3)
+$>> player.go_to(Vector2(368, 184), false, false, Direction.UP)
+$>> F2.go_to(Vector2(390, 184), false, false, Direction.UP)
+$>> F1.go_to(Vector2(350, 190), false, false, Direction.UP)
+$> no_nametag()
 Feni.Neutral: ...know you meant well, but I don't think we can handle-[next=auto]
 [hide]
-do npc("Feni").bubble("Surprise")
-do camera_unlock()
-set Camera.position += Vector2(0, 48)
-do no_nametag()
-do npc("Asteria").look_to("D")
+$> Feni.bubble("Surprise")
+$> camera_unlock()
+$> camera_move(Vector2(0, 48))
+$> no_nametag()
+$> Asteria.look_to(Direction.DOWN)
 Feni.Neutral: Oh, this must be them.
 Asteria.Neutral: Well everyone, this is my mother and... "Mayor" of this village, Feni Versea.
 Asteria.Neutral: And mom, this is... uhh...
@@ -478,132 +477,132 @@ Feni.Neutral: Certainly. There should be a few unused rooms at Marcus'.
 Feni.Neutral: Can you take 'em there, dear?
 Asteria.Neutral: Right, follow me.
 [hide]
-do add_flag("EvNov2TownHall")
-do travel_to("Pyrson", Vector2(275, 606), 0, -1, "D", false)
-do no_player()
-do spawn("Asteria", Vector2(400, 606), "L", 0)
-do spawn("Mira", Vector2(424, 600), "L", 0)
-do spawn("Daze", Vector2(464, 600), "L", 0)
-do spawn("Alcine", Vector2(448, 600), "L", 0)
-do! npc("Asteria").go_to(Vector2(275, 572))
-do! npc("Alcine").go_to(Vector2(300, 596))
-do! npc("Daze").go_to(Vector2(320, 575))
-do! npc("Mira").go_to(Vector2(260, 600))
-do wait(2.5)
-do! npc("Asteria").look_to("D")
-do! npc("Mira").look_to("U")
-do! npc("Daze").look_to("L")
-do! npc("Alcine").look_to("U")
+$> add_flag("EvNov2TownHall")
+$> travel_to("Pyrson", Vector2(275, 606), 0, Direction.DOWN, false)
+$> no_player()
+$> spawn("Asteria", Vector2(400, 606), Direction.LEFT, 0)
+$> spawn("Mira", Vector2(424, 600), Direction.LEFT, 0)
+$> spawn("Daze", Vector2(464, 600), Direction.LEFT, 0)
+$> spawn("Alcine", Vector2(448, 600), Direction.LEFT, 0)
+$>> Asteria.go_to(Vector2(275, 572))
+$>> Alcine.go_to(Vector2(300, 596))
+$>> Daze.go_to(Vector2(320, 575))
+$>> Mira.go_to(Vector2(260, 600))
+$> wait(2.5)
+$>> Asteria.look_to(Direction.DOWN)
+$>> Mira.look_to(Direction.UP)
+$>> Daze.look_to(Direction.LEFT)
+$>> Alcine.look_to(Direction.UP)
 Asteria.Neutral: Here, this is the building.
 [hide]
-do add_flag("PyrsonHome")
-do Party.set_to(["Mira"])
-do Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(112, 439), 0, 2, "", false)
-do spawn("Daze", Vector2(153, 474), "U", 0)
-do spawn("Asteria", Vector2(164, 428), "L", 0)
-do spawn("Alcine", Vector2(115, 482), "L", 0)
-do camera_move_relative(Vector2(0, 24))
-do npc("P").look_to("L")
-do wait(1)
+$> add_flag("PyrsonHome")
+$> Party.set_to(["Mira"])
+$> Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(112, 439), 0, Direction.UP, false)
+$> spawn("Daze", Vector2(153, 474), Direction.UP, 0)
+$> spawn("Asteria", Vector2(164, 428), Direction.LEFT, 0)
+$> spawn("Alcine", Vector2(115, 482), Direction.LEFT, 0)
+$> camera_move_relative(Vector2(0, 24))
+$> player.look_to(Direction.LEFT)
+$> wait(1)
 Mira.Curious: So this is [wait=0.5]my room?[br]As in...[wait=0.5] I can stay here?
-do npc("P").look_to("R")
+$> player.look_to(Direction.RIGHT)
 Asteria.Neutral: Right.
-do npc("Asteria").look_to("D")
+$> Asteria.look_to(Direction.DOWN)
 Asteria.Curious: So... Daze, was it? Your room is upstairs.
 Mira.Upset: Our own rooms... 
 Mira.Smile: Do you guys do this with any random person you fight with?
-do npc("Asteria").look_to("L")
+$> Asteria.look_to(Direction.LEFT)
 Asteria.Neutral: The more people we have in the village, the better.
 Asteria.Neutral: We can all help each other after all. We're stuck here togeather.
-do npc("Daze").move_dir(Vector2(-12, -12), false)
+$> Daze.move_by(Vector2(-12, -12))
 Daze.Neutral: Don't worry, I'm sure we'll get through this.
-do npc("Asteria").look_to("D")
+$> Asteria.look_to(Direction.DOWN)
 Daze.Neutral: You've seen what we've done as a team already.
 Daze.Neutral: I'm sure with your help, and everyone else here, we will all eventually break out.
-do npc("P").move_dir(Vector2(12, 0), false)
-do npc("P").look_to("D")
-do npc("P").bubble("Question")
+$> player.move_by(Vector2(12, 0))
+$> player.look_to(Direction.DOWN)
+$> player.bubble("Question")
 Mira.Worried: Wait, what are you talking about?
 Mira.Neutral: I just want to head back to my village tommorrow, I don't have time to stick around.
-do! npc("Asteria").bubble("Question")
-do npc("P").look_to("R")
-do npc("Asteria").look_to("L")
+$>> Asteria.bubble("Question")
+$> player.look_to(Direction.RIGHT)
+$> Asteria.look_to(Direction.LEFT)
 Asteria.Curious: To your village..?
 Asteria.Curious: You two know a way around the void?
-do! npc("P").bubble("Question")
+$>> player.bubble("Question")
 Mira.Worried: The void?
-do npc("P").look_to("D")
+$> player.look_to(Direction.DOWN)
 Daze.Neutral: The weird shimmering darkness I saw near that bunker?
-do npc("Asteria").look_to("D")
+$> Asteria.look_to(Direction.DOWN)
 Asteria.Neutral: That's right, the thing keeping me here in Abad!
 [hide]
-do! npc("P").bubble("Surprise")
-do npc("P").look_to("R")
-do npc("Asteria").look_to("L")
+$>> player.bubble("Surprise")
+$> player.look_to(Direction.RIGHT)
+$> Asteria.look_to(Direction.LEFT)
 Mira.Curious: Keeping you? You're trapped here!?
 [hide]
-do npc("Asteria").bubble("Sweat")
-do npc("Asteria").look_to("L")
+$> Asteria.bubble("Sweat")
+$> Asteria.look_to(Direction.LEFT)
 Asteria.Neutral: I'm so sorry, I didn't know you weren't aware...
 Daze.Neutral: Asteria... [next=auto]
-do! npc("P").hop()
+$>> player.hop()
 Mira.Surprised: Aware of what!?
 Daze: Levenor, we-[next=auto]
-do npc("Asteria").look_to("R")
+$> Asteria.look_to(Direction.RIGHT)
 Asteria: I'm not...
 [hide]
-do! npc("P").bubble("Excited")
-do! npc("P").set_anim("IdleRight")
+$>> player.bubble("Excited")
+$>> player.set_anim("IdleRight")
 Mira.OpenMouth: Come on, spill it!
 Asteria.Neutral: I'm not the only one trapped here...
 [hide]
-do npc("P").bubble("Surprise")
-do npc("P").move_dir(Vector2(12, 0), false)
+$> player.bubble("Surprise")
+$> player.move_by(Vector2(12, 0), false)
 Mira: Y-You mean...
 Asteria: I thought you knew.
-do npc("Asteria").look_to("U")
+$> Asteria.look_to(Direction.UP)
 Asteria: The entire realm is surrounded by the void on all sides...
 Asteria: And... [wait=0.5]the people brave enough to have tried to cross it-
 Asteria: They distort and... [wait=0.5]break apart. [br][wait=0.5]Perishing soon after...
 Daze.Neutral: And you're certain of this? Surely there is a way.
-do npc("Asteria").look_to("D")
+$> Asteria.look_to(Direction.DOWN)
 Asteria.Neutral: I've seen it happen myself...
-do npc("P").move_dir(Vector2(-24, -12), false)
+$> player.move_by(Vector2(-24, -12), false)
 Mira: You mean I can't...
-do! npc("P").set_anim("EvCoverFace")
+$>> player.set_anim("EvCoverFace")
 Mira: I'm never going... to see...
 Mira: ...
 [hide]
-do wait(1)
-do! npc("P").set_anim("EvAngryReserve")
+$> wait(1)
+$>> player.set_anim("EvAngryReserve")
 Mira: No.
 [hide]
-do npc("Asteria").look_to("L")
-do npc("Asteria").bubble("Question")
+$> Asteria.look_to(Direction.LEFT)
+$> Asteria.bubble("Question")
 Asteria.Curious: No?-[next=0.5]
 Mira: No.[wait=0.5] There is a way out, there has to be!
 [hide]
-do! npc("Asteria").bubble("Surprise")
+$>> Asteria.bubble("Surprise")
 Asteria.Angry: You think my entire village hasn't already tried to-[next=auto]
 Daze.Neutral: Levenor, please-[next=auto]
 Mira: NO! I'm not going to stand here and- and-
-do! screen_shake()
+$>> screen_shake()
 Mira: [big]Take in some villager's dumb folklore!
-do npc("Alcine").set_anim("Scared")
-do! screen_shake()
+$> Alcine.set_anim("Scared")
+$>> screen_shake()
 Asteria.Angry: [big]Excuse me?
 Alcine.Upset: Squee...
-do! npc("P").set_anim("EvAngryWave")
+$>> player.set_anim("EvAngryWave")
 Mira: What about the Keepers you mentioned?! That they're the key to freedom?!
-do! npc("P").set_anim("EvAngryWave")
+$>> player.set_anim("EvAngryWave")
 Mira: The more the better, right 'steria!?
-do! npc("P").set_anim("EvCoverFace")
+$>> player.set_anim("EvCoverFace")
 Mira: You all just want people trapped in here, and have someone make food for you or- or-
 Mira: Do your chores!
-do! npc("P").set_anim("EvAngryWings")
-do! tween(npc("P").get_node("Flame"), "energy", 1, 1)
+$>> player.set_anim("EvAngryWings")
+$>> tween(player.get_node("Flame"), "energy", 1, 1)
 Mira: [big]I won't stand for it!
-do! npc("P").set_anim("EvAngryWingsLoop")
+$>> player.set_anim("EvAngryWingsLoop")
 [hide]
 Daze.Neutral: Levenor calm down! 
 Daze.Neutral: I know this is a lot to take in but this hysteria won't help!
@@ -612,118 +611,118 @@ Alcine.Upset: Wiieouu!!
 Daze.Neutral: You're scaring {{alcine}}!
 Asteria.Neutral: We're just doing the best we can!
 Mira: [b]You don't know what it's like![/b] You've never REALLY had to flee a hopeless situation!
-do! npc("P").set_anim("EvCoverFaceWings")
+$>> player.set_anim("EvCoverFaceWings")
 Mira: Surrounded on all sides by chaos, and *sniffle* [wait=0.5][br]still made it out!
 Asteria.Angry: [big]You don't know me! 
 Asteria.Angry: [big]You don't know what I've been through!
-do! screen_shake()
-do! npc("P").set_anim("EvAngryWaveWings")
+$>> screen_shake()
+$>> player.set_anim("EvAngryWaveWings")
 Mira: [big]YOU DON'T KNOW WHAT [i]I'VE[/i] BEEN THROUGH!
 [hide]
-do! npc("P").set_anim("EvAngryWingsLoop")
+$>> player.set_anim("EvAngryWingsLoop")
 Mira: What about you Daze?! You have NOTHING to say about this?
 Daze: I... sort of figured this was the case early on.
 Daze: I didn't want to alarm you Ms. Levenor, I...[next=auto]
-do! screen_shake()
-do! npc("P").set_anim("EvAngryWaveWings")
+$>> screen_shake()
+$>> player.set_anim("EvAngryWaveWings")
 Mira: [big]SO YOU JUST KEEP CRUCIAL INFORMATION TO YOUR SELF!
-do! npc("P").set_anim("EvAngryWaveWings")
+$>> player.set_anim("EvAngryWaveWings")
 Mira: Because that will make the grand reveal [big]SO MUCH BETTER!!
-do! npc("P").set_anim("EvCoverFaceWings")
+$>> player.set_anim("EvCoverFaceWings")
 Mira: And because of all this, I'm NEVER seeing my family, my friends....[br]*sniffle*[br][wait=0.5]I'll never...
-do! npc("P").set_anim("EvCoverFace")
+$>> player.set_anim("EvCoverFace")
 Mira: I...
 [hide]
-do! tween_linear(npc("P"), "position", Vector2(217, 441), 0.5)
-do! npc("P").set_anim("DashRightLoop")
-do wait(0.5)
-do npc("P").hide()
-do npc("Daze").look_to("R")
-do npc("Asteria").look_to("R")
-do wait(2)
+$>> tween_linear(player, "position", Vector2(217, 441), 0.5)
+$>> player.set_anim("DashRightLoop")
+$> wait(0.5)
+$> player.hide()
+$> Daze.look_to(Direction.RIGHT)
+$> Asteria.look_to(Direction.RIGHT)
+$> wait(2)
 => maple_meet
 
 ~ maple_meet
-do travel_to("Pyrson;MapleBench+(0, 24)")
-do zoom(5, true)
-do no_player()
-do spawn("Mira:MiraOVBag", "MapleBench+(24,150)", "DashUpLoop", 3)
-do check.emit()
-do tween_linear(npc("Mira"), "position", get_marker_pos("MapleBench+(24,32)"), 1)
-do npc("Mira").set_anim("DashUpStop")
-do wait(0.5)
+$> travel_to("Pyrson;MapleBench+(0, 24)")
+$> zoom(5, true)
+$> no_player()
+$> spawn("Mira:MiraOVBag", "MapleBench+(24,150)", "DashUpLoop", 3)
+$> check.emit()
+$> tween_linear(Mira, "position", get_marker_pos("MapleBench+(24,32)"), 1)
+$> Mira.set_anim("DashUpStop")
+$> wait(0.5)
 Mira: [small]*sniff.... sniffle...*
 [hide]
-do npc("Mira").look_to(Direction.RIGHT)
-do wait(0.5)
-do npc("Mira").look_to(Direction.LEFT)
-do wait(0.5)
-do npc("Mira").go_to("MapleBench+(24,0)")
-do npc("Mira").go_to("MapleBench")
-do npc("Mira").set_anim("SitUp")
-do wait(1)
+$> Mira.look_to(Direction.RIGHT)
+$> wait(0.5)
+$> Mira.look_to(Direction.LEFT)
+$> wait(0.5)
+$> Mira.go_to("MapleBench+(24,0)")
+$> Mira.go_to("MapleBench")
+$> Mira.set_anim("SitUp")
+$> wait(1)
 Mira: ...
 [hide]
-do wait(1)
-do spawn("Maple", "MapleBench+(24,150)", Direction.UP, 3)
-do npc("Maple").go_to("MapleBench+(24,24)")
-do wait(0.5)
-do no_nametag()
+$> wait(1)
+$> spawn("Maple", "MapleBench+(24,150)", Direction.UP, 3)
+$> npc("Maple").go_to("MapleBench+(24,24)")
+$> wait(0.5)
+$> no_nametag()
 Maple.Neutral: Cyrenian?
 Mira.Upset: ...
 [hide]
-do npc("Maple").go_to("MapleBench+(24,-12)")
-do npc("Maple").look_to(Direction.LEFT)
-do no_nametag()
+$> npc("Maple").go_to("MapleBench+(24,-12)")
+$> npc("Maple").look_to(Direction.LEFT)
+$> no_nametag()
 Maple.Neutral: You don't look well.
 Mira.Upset: I'm not...
 [hide]
-do npc("Maple").bubble("Surprise")
+$> npc("Maple").bubble("Surprise")
 He stares at the bandage on my arm.
 Maple.Neutral: Wait, I know just the thing!
-do npc("Mira").move_dir(Vector2(-24, -12), false)
-do npc("Mira").set_anim("EvAngryWave")
+$> Mira.move_by(Vector2(-24, -12), false)
+$> Mira.set_anim("EvAngryWave")
 Mira.Shocked: GET AWAY YOU...!
-do npc("Maple").move_dir(Vector2(-24, 0), false)
+$> npc("Maple").move_by(Vector2(-24, 0), false)
 [hide]
-do ui_sound("heal")
-do wait(1)
-do no_nametag()
+$> ui_sound("heal")
+$> wait(1)
+$> no_nametag()
 Maple.Neutral: Are you feeling any better?
-do npc("Mira").look_to(Direction.RIGHT)
+$> Mira.look_to(Direction.RIGHT)
 Mira.Worried: You healed my arm...
-do no_nametag()
-do npc("Maple").move_dir(Direction.RIGHT)
-do npc("Maple").look_to(Direction.LEFT)
+$> no_nametag()
+$> npc("Maple").move_dir(Direction.RIGHT)
+$> npc("Maple").look_to(Direction.LEFT)
 Maple.Neutral: Oh, sorry. I thought it was injured.
 Mira.Upset: N-no no! It... was.
-do npc("Mira").move_dir(Direction.RIGHT)
-do npc("Mira").set_anim("EvCoverFace")
+$> Mira.move_dir(Direction.RIGHT)
+$> Mira.set_anim("EvCoverFace")
 Mira: Thank you...
 Mira: I'm sorry...
 [hide]
-do npc("Mira").look_to(Direction.RIGHT)
-do wait(0.5)
-do npc("Mira").bubble("Ellipsis")
+$> Mira.look_to(Direction.RIGHT)
+$> wait(0.5)
+$> Mira.bubble("Ellipsis")
 Mira.Curious: F-floris?
-do no_nametag()
+$> no_nametag()
 Maple.Neutral: Infloris.
-do npc("Mira").set_anim("EvCoverFace")
+$> Mira.set_anim("EvCoverFace")
 Mira.Upset: Oh, I...
-do npc("Mira").look_to(Direction.RIGHT)
+$> Mira.look_to(Direction.RIGHT)
 Mira.Neutral: I've read about your species!
-do no_nametag()
+$> no_nametag()
 Maple.Neutral: Same!
-do no_nametag()
+$> no_nametag()
 Maple.Neutral: I mean- Cyrenians![br]You look so cool!
-do no_nametag()
+$> no_nametag()
 Maple.Neutral: I've never actually talked to one up-close, excuse my excitement-
 Mira.Smile: Hehe... We are a rarity these days, aren't we...
 [hide]
-do npc("Mira").go_to("MapleBench+(-12, 0)")
-do npc("Mira").set_anim("SitUp")
-do npc("Maple").go_to("MapleBench+(12, 0)")
-do npc("Mira").set_anim("IdleUp")
+$> Mira.go_to("MapleBench+(-12, 0)")
+$> Mira.set_anim("SitUp")
+$> npc("Maple").go_to("MapleBench+(12, 0)")
+$> Mira.set_anim("IdleUp")
 Mira: Your name?
 Maple.Neutral: Maple.
 Mira: It's a nice name...[br]I'm Mira by the way.
@@ -731,7 +730,7 @@ Mira: It's a nice name...[br]I'm Mira by the way.
 Mira.Curious: Hey, What was the thing you poured on my arm earlier?
 Maple.Neutral: Oh it's a homebrewed potion. Alchemy fascinates me.
 [hide]
-do wait(0.5)
+$> wait(0.5)
 Mira: I'm sorry if I disturbed you earlier... I was just...
 Maple.Neutral: Very distraught and emotionally conflicted so you had to run away to get some alone time?
 Maple.Neutral: Umm, yeah.
@@ -741,10 +740,10 @@ Mira: Wait-
 Mira: Can you... stay a bit longer?
 Maple: ...[br]Sure.
 [hide]
-do wait(2)
-do transition(Direction.LEFT)
+$> wait(2)
+$> Transition.fade_out()
 After spending some time looking out with Maple, I headed back to my new room.
 $> to_day = 3
 $> to_time = 1
-do! time_transition()
+$>> time_transition()
 => END

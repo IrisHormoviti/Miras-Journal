@@ -68,16 +68,6 @@ func obj(id: String) -> Node2D:
 	return object_list.get(id)
 
 
-##Move an [NPC] relative to their current coords
-func move_dir(dir: Vector2 = Global.get_direction(), chara: String = "P") -> void:
-	await npc(chara).move_dir(dir)
-
-
-##Move an [NPC] to the specified coords
-func move_to(pos: Vector2 = Global.get_direction(), chara: String = "P") -> void:
-	await npc(chara).go_to(pos)
-
-
 ## Wait a specified amount of time or one frame by default
 ## short for:
 ## [codeblock]

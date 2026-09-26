@@ -62,7 +62,7 @@ func amberelm_reunion() -> void:
 	await Event.wait(0.3)
 	Global.player.chain_moves([Vector2.LEFT * 2, Vector2.DOWN, Vector2.LEFT * 2])
 	await Event.wait(1)
-	await Event.npc("Mira").move_dir(Vector2.DOWN)
+	await Event.npc("Mira").move_by(Vector2.DOWN)
 	Event.npc("Mira").look_to(Direction.RIGHT)
 	await Event.npc("Mira").bubble("Surprise")
 	await Textbox.open(name, "amberelm_reunion")
@@ -140,11 +140,11 @@ func asteria_boss() -> void:
 	await Battle.start("AsteriaBoss")
 	Event.npc("Asteria").hide()
 	await Global.battle_end
-	if Loader.battle_result == 1:
+	if Battle.battle_result == 1:
 		Event.npc("Asteria").show()
 		Event.add_flag("AsteriaBoss", 5)
 		Event.take_control()
-		Event.npc("F1").move_dir(Vector2(1, 0))
+		Event.npc("F1").move_by(Vector2(1, 0))
 		await Textbox.open(name, "asteria_boss_after")
 		asteria_joins()
 
@@ -185,5 +185,5 @@ func enter_pyrson() -> void:
 	Event.give_control(true)
 	Event.npc("Asteria").speed = 120
 	await Event.npc("Asteria").go_to(Vector2(372, 227), false)
-	await Event.npc("Asteria").move_dir(Vector2.UP)
+	await Event.npc("Asteria").move_by(Vector2.UP)
 	Event.npc("Asteria").queue_free()

@@ -247,21 +247,15 @@ func get_tile(layer: int) -> TileData:
 	return Global.room.get_tile(Global.room.local_to_map(global_position), layer)
 
 
-## Move towards a direction x24
-## Input can be a Vector2, String ("U", "R", etc) or Direction
-## A vector input can be bigger than 1 to move further
-func move_dir(dir: Variant, use_coords := true) -> void:
-	var vector: Vector2
+## Move towards a direction by 24 pixels
+func move_dir(dir: Direction) -> void:
+	var vector: Vector2 = dir.vector * 24
+	await move_by(vector)
 
-	if dir is String: vector = Direction.from_letter(dir).vector
-	elif dir is Direction: vector = dir.vector
-	elif dir is Vector2: vector = dir
-	else:
-		push_error("Invalid use of move_dir: ", dir)
-		return
 
-	if use_coords: await go_to(position + vector * 24)
-	else: await go_to(position + vector)
+## Go to a relative position from the current one
+func move_by(vector: Vector2) -> void:
+	await go_to(position + vector)
 
 
 ## The characted looks to a new direction and becomes IDLE

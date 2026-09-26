@@ -1,0 +1,148 @@
+[gd_resource type="Resource" script_class="SaveFile" format=3]
+
+[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_6lngb"]
+
+[resource]
+script = ExtResource("1_6lngb")
+title = "..."
+room = "WitheredLeaves"
+room_name = "Withered Leaves"
+members = Array[Dictionary]([{
+"AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
+"Aura": 15,
+"CantDie": false,
+"CantDodge": false,
+"ClutchDmg": false,
+"ComplimentaryList": Dictionary[String, int]({}),
+"Controllable": false,
+"FirstName": "Alcine",
+"Health": 60,
+"IgnoreStates": false,
+"LastName": "",
+"MaxAura": 25,
+"MaxHP": 60,
+"OV": "",
+"SkillLevel": 3,
+"SkillPoints": 5,
+"WeaponName": "ArmWhip",
+"codename": &"Alcine"
+}, {
+"AbilitiesList": Array[String](["PhantomGuard", "Tighten", "RedShift"]),
+"Aura": 47,
+"CantDie": false,
+"CantDodge": false,
+"ClutchDmg": false,
+"ComplimentaryList": Dictionary[String, int]({}),
+"Controllable": false,
+"FirstName": "Asteria",
+"Health": 90,
+"IgnoreStates": false,
+"LastName": "Versea",
+"MaxAura": 47,
+"MaxHP": 90,
+"OV": "",
+"SkillLevel": 7,
+"SkillPoints": 16,
+"WeaponName": "PocessedScarf",
+"codename": &"Asteria"
+}, {
+"AbilitiesList": Array[String](["Guard", "Attention", "StaticSaber"]),
+"Aura": 24,
+"CantDie": false,
+"CantDodge": false,
+"ClutchDmg": false,
+"ComplimentaryList": Dictionary[String, int]({}),
+"Controllable": false,
+"FirstName": "Daze",
+"Health": 130,
+"IgnoreStates": false,
+"LastName": "",
+"MaxAura": 24,
+"MaxHP": 130,
+"OV": "",
+"SkillLevel": 14,
+"SkillPoints": 26,
+"WeaponName": "GoldPlatedKatana",
+"codename": &"Daze"
+}, {
+"AbilitiesList": Array[String]([]),
+"Aura": 90,
+"CantDie": false,
+"CantDodge": false,
+"ClutchDmg": false,
+"ComplimentaryList": Dictionary[String, int]({}),
+"Controllable": false,
+"FirstName": "Erinn",
+"Health": 85,
+"IgnoreStates": false,
+"LastName": "Levenor",
+"MaxAura": 90,
+"MaxHP": 85,
+"OV": "res://art/OV/Erinn/ErinnOV.tres",
+"SkillLevel": 1,
+"SkillPoints": 0,
+"WeaponName": "DefaultWeapon",
+"codename": &"Erinn"
+}, {
+"AbilitiesList": Array[String](["Guard", "FlameSpark", "HeatWave"]),
+"Aura": 20,
+"CantDie": false,
+"CantDodge": false,
+"ClutchDmg": true,
+"ComplimentaryList": Dictionary[String, int]({}),
+"Controllable": true,
+"FirstName": "Mira",
+"Health": 100,
+"IgnoreStates": false,
+"LastName": "Levenor",
+"MaxAura": 20,
+"MaxHP": 120,
+"OV": "",
+"SkillLevel": 3,
+"SkillPoints": 5,
+"WeaponName": "LightweightAxe",
+"codename": &"Mira"
+}])
+player_position = Vector2(888.8328, -155.41696)
+start_time = 1759087800.664549
+saved_time = 1790459114.643807
+play_time = 10576.0
+flags = Dictionary[StringName, int]({
+&"": 1,
+&"AlcineFollow": 4,
+&"AlcineFollow4": 4,
+&"AsteriaBoss": 5,
+&"BeatStoneGuardian": 1,
+&"BreakablePurpleOre0": 1,
+&"BreakableVines1": 1,
+&"Bunker1Open": 1,
+&"DashTutorial0": 1,
+&"DazeQuestions": 0,
+&"DebugBattle": 1,
+&"DisableMenus": 0,
+&"EnterAmberelm": 1,
+&"EnteredAmberelm3": 1,
+&"EvAmbWoodsBridge": 1,
+&"EvDazeEnemy1": 1,
+&"EvDazeEnemy2": 1,
+&"EvDazeEnemy4": 1,
+&"EvDestroyedGuardian": 1,
+&"EvMetalicGate": 1,
+&"EvRestAmberelm": 1,
+&"HasBag": 1,
+&"InCamp": 1,
+&"Incamp": 1,
+&"ItemRustySword1": 1,
+&"ItemSharpRock1": 1,
+&"ItemStrangeFruit1": 1,
+&"PickedUpAxe": 1,
+&"Started": 1,
+&"TWflame": 1,
+&"TutorialBag": 1,
+&"VeinetDisabled": 1,
+&"WLLeftSideOpen": 1,
+&"day": 2,
+&"time": 4
+})
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
+version = 8

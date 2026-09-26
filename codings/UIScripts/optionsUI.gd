@@ -827,7 +827,7 @@ func _on_save_load() -> void:
 
 
 func _new_file() -> void:
-	const banned: Array[String] = ['/', '\\', 'options', ':', '<', '>']
+	const banned: Array[String] = ['/', '\\', 'options', ':', '<', '>', '.']
 
 	stage = "saving"
 	Audio.confirm_sound()
@@ -854,10 +854,8 @@ func _new_file() -> void:
 		await load_save_files()
 		#Transition.fade_out()
 		%Files.get_child(2).get_node("Button").grab_focus()
-		if Loader.get_node("Can/Icon").is_playing():
-			await Loader.get_node("Can/Icon").animation_finished
 	else:
-		Global.warning("\"%s\" contains a weird word or character.", "SAVE FAILED")
+		Global.error("\"%s\" contains a weird word or character."%[filename], "SAVE FAILED")
 
 	stage = "save_managment"
 

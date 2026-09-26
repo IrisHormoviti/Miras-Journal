@@ -187,6 +187,11 @@ script = ExtResource("17_q80mj")
 [sub_resource type="Resource" id="Resource_ghwov"]
 script = ExtResource("17_q80mj")
 
+[sub_resource type="Resource" id="Resource_8pygo"]
+script = ExtResource("17_q80mj")
+way = 2
+metadata/_custom_type_script = "uid://bhw57f1k8vvrj"
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ylfhl"]
 size = Vector2(70, 20)
 
@@ -635,9 +640,11 @@ position = Vector2(-1, 225)
 flag = "day=0+time=1"
 use_name_as_flag = false
 flag_should_be = true
+ShowTextbox = true
 text_file = "interact_abad"
 text_cue = "amberelm_rest_first"
-kick_direction = Vector2(0, 1)
+AlterMovement = true
+kick_direction = SubResource("Resource_8pygo")
 
 [node name="EvRestTree" parent="." unique_id=857458501 instance=ExtResource("5_3ycob")]
 z_index = 8
@@ -661,6 +668,7 @@ add_the_flag = true
 return_control = false
 PlayEvent = true
 event_name = "enter_amberelm_2"
+kick_direction = Vector2(0, 0)
 
 [node name="EvStoneGuardian" parent="." unique_id=28897104 instance=ExtResource("30_djhcr")]
 position = Vector2(2460, -120)
@@ -672,6 +680,7 @@ PlayEvent = true
 event_name = "amberelm_guardian"
 ShowTextbox = true
 AlterMovement = true
+kick_direction = Vector2(0, 0)
 
 [node name="EvStoneGuardianCheckBody" parent="." unique_id=1297631556 instance=ExtResource("30_djhcr")]
 position = Vector2(2567, -121)
@@ -682,6 +691,7 @@ add_the_flag = true
 return_control = false
 text_file = "story_1"
 text_cue = "destroyed_guardian_event"
+kick_direction = Vector2(0, 0)
 
 [node name="EvStoneGuardian2" parent="." unique_id=2071850113 instance=ExtResource("30_djhcr")]
 position = Vector2(2388, -146)
@@ -691,6 +701,7 @@ use_name_as_flag = false
 flag_should_be = true
 return_control = false
 event_name = "amberelm_reunion"
+kick_direction = Vector2(0, 0)
 
 [node name="InteractBackround" parent="." unique_id=373005192 instance=ExtResource("5_3ycob")]
 position = Vector2(69, 206)
@@ -961,6 +972,7 @@ return_control = false
 ShowTextbox = true
 text_file = "story_0"
 text_cue = "color_tutorial"
+kick_direction = Vector2(0, 0)
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EvMagicWall" unique_id=2132624866]
 use_parent_material = true

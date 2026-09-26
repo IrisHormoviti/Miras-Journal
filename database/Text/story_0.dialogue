@@ -57,7 +57,7 @@ $> Party.Leader.node.hide()
 $> player.show()
 Hm, what's that?
 [hide]
-$> player.move_dir(Vector2(3, 0))
+$> player.move_by(Vector2(3, 0))
 $> Item.add_item("WhiteSlime", "Mat")
 $> Event.wait(1)
 These slime remnants seems to contain some of that monster's essence.
@@ -284,7 +284,7 @@ Placeholder description: {{alcine}} who was resting on Mira also gets up.
 Mira.Neutral: Mmm... Good morning {{alcine}}. Or is it afternoon?
 Alcine.Tired: Meuummm...
 Placeholder description: Mira picks up the paper from yesterday.
-$> npc("Mira").bubble("Surprise")
+$> Mira.bubble("Surprise")
 $> picture("RestAmberelmDrawing")
 Mira.Neutral: Huh? Is that me?
 Alcine.Happy: Mloop!
@@ -344,9 +344,9 @@ Mira.Worried: Oh, sorry {{alcine}}, I was just-
 $> player.bubble("Surprise")
 {{alcine}}! That's it![br]They can naturally use the freeze spells that I can't!
 [hide]
-$>> player.move_dir(Vector2(-3, -1))
+$>> player.move_by(Vector2(-3, -1))
 $> wait(1)
-$> F1.move_dir(Vector2(-2, 1))
+$> F1.move_by(Vector2(-2, 1))
 $> F1.look_to(Direction.UP)
 Mira.Smile: Hey...
 [hide]
@@ -437,7 +437,7 @@ Their aura color, and thus affinity for magic, is nearly oposite to mine.
 But... {{alcine}} has kind of inspired me.
 Perhaps I could give liquid magic a try.
 [hide]
-$> add_complimentary("FluidBlast", alcine())
+$> add_complimentary("FluidBlast", alcine)
 $> npc("P").jump_to(get_marker_pos("BenchBeforeGuardian"))
 $> save()
 => END
@@ -472,7 +472,7 @@ Placeholder description: Mira then faints.
 => END
 
 ~ daze_introduction
-do add_to_diary("oct31")
+$> add_to_diary("oct31")
 I open my eyes and see im somewhere else. Is this a tent?
 I get up and look around. My clothes are all ripped and I have a bandage on my left arm.
 Ow, it hurts quite a bit to move it around.
@@ -495,7 +495,7 @@ What do I ask?
 	Daze.Neutral: That's a long story... and doesn't really matter.
 	Daze.Neutral: What matters is I was seprated from my comanions while traveling.
 	Huh.
-	do add_to_diary("oct31_dazesus")
+	$> add_to_diary("oct31_dazesus")
 - Where are we?
 	Mira.Neutral: do you have any idea where we are?
 	Daze.Neutral: I'm not so sure... I don't remember exactly how I got here.
@@ -560,7 +560,7 @@ $> add_flag("DazeQuestions", flag_int("DazeQuestions") + 1)
 He picks up a book next to him... wait that's my journal!
 I quickly take it from him.
 [hide]
-do add_item("Journal", &"Key")
+$> add_item("Journal", &"Key")
 Mira.Neutral: Hey! Where did you even find this?!
 Mira.Neutral: You can't just read people's personal Journals!
 Daze.Neutral: I'm sorry. It was the only way I could know who you are, since you were unconscious...

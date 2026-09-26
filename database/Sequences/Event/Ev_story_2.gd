@@ -48,7 +48,7 @@ func nov3_enterSG() -> void:
 	await Event.wait(4)
 	Global.player.collision(false)
 	await Event.take_control(false, true)
-	await Global.player.move_dir(Vector2(6, 0))
+	await Global.player.move_by(Vector2(6, 0))
 	await Textbox.open(name, "nov3_sg_enter")
 	Event.give_control(true)
 	Event.add_flag("Nov3_WentToSG")

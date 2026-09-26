@@ -399,14 +399,9 @@ Energy = Array[float]([0.8, 0.2, 0.5, 0.8, 1.0])
 z_index = 0
 position = Vector2(824, -251)
 facing = SubResource("Resource_8pygo")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="AlcineCamp" unique_id=245814845]
 use_parent_material = true
-position = Vector2(0, -6)
 sprite_frames = ExtResource("25_xe12t")
 animation = &"IdleDown"
 
@@ -421,19 +416,15 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "alcine_camp"
 bubble_always = true
+bubble_height = 10
 
 [node name="DazeCamp" parent="." unique_id=1420936725 instance=ExtResource("5_6fdth")]
 z_index = 0
 position = Vector2(698, -221)
 facing = SubResource("Resource_hngf4")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DazeCamp" unique_id=1318976911]
 use_parent_material = true
-position = Vector2(0, -6)
 sprite_frames = ExtResource("6_3p2gw")
 animation = &"IdleRight"
 
@@ -447,19 +438,15 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "daze_camp"
 bubble_always = true
+bubble_height = 20
 
 [node name="AsteriaCamp" parent="." unique_id=267053427 instance=ExtResource("5_6fdth")]
 z_index = 0
 position = Vector2(732, -229)
 facing = SubResource("Resource_4ctaf")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="AsteriaCamp" unique_id=611286719]
 use_parent_material = true
-position = Vector2(0, -6)
 sprite_frames = ExtResource("9_ug3t0")
 animation = &"IdleDown"
 
@@ -473,6 +460,7 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "asteria_camp"
 bubble_always = true
+bubble_height = 20
 
 [node name="DoorLocked1" type="StaticBody2D" parent="." unique_id=1707909631]
 position = Vector2(-742, 321)
@@ -706,6 +694,7 @@ add_the_flag = true
 return_control = false
 PlayEvent = true
 event_name = "daze_enemy_1"
+kick_direction = Vector2(0, 0)
 
 [node name="EvDazeEnemy2" parent="." unique_id=475487490 instance=ExtResource("15_mqvg4")]
 position = Vector2(-912, -51)
@@ -716,6 +705,7 @@ add_the_flag = true
 return_control = false
 StartBattle = true
 battle_sequence = ExtResource("16_lemrk")
+kick_direction = Vector2(0, 0)
 
 [node name="EvDazeEnemy4" parent="." unique_id=809219924 instance=ExtResource("15_mqvg4")]
 position = Vector2(-36, -585)
@@ -724,6 +714,7 @@ add_the_flag = true
 return_control = false
 StartBattle = true
 battle_sequence = ExtResource("22_it168")
+kick_direction = Vector2(0, 0)
 
 [node name="EvLostSpiritRed" parent="." unique_id=1140443618 instance=ExtResource("15_mqvg4")]
 position = Vector2(-371, 496)
@@ -731,16 +722,19 @@ trigger_size = Vector2i(10, 63)
 add_the_flag = true
 return_control = false
 battle_sequence = SubResource("Resource_lemrk")
+kick_direction = Vector2(0, 0)
 
 [node name="EvTripwire0" parent="." unique_id=1903024655 instance=ExtResource("15_mqvg4")]
 position = Vector2(-467, 265)
 event_name = "WL_alcine_slide"
+kick_direction = Vector2(0, 0)
 
 [node name="EvWLVoidMira" parent="." unique_id=1300572210 instance=ExtResource("15_mqvg4")]
 position = Vector2(1025, -1714)
 scale = Vector2(16.552042, 0.9619772)
 take_control = false
 event_name = "WL_void"
+kick_direction = Vector2(0, 0)
 
 [node name="Flame" type="PointLight2D" parent="." unique_id=1861159934]
 texture_filter = 2
@@ -835,6 +829,7 @@ add_the_flag = true
 ShowTextbox = true
 text_file = "story_1"
 text_cue = "metalic_gate"
+kick_direction = Vector2(0, 0)
 
 [node name="WLBunkerSwitch" parent="." unique_id=743108280 instance=ExtResource("4_d8pup")]
 position = Vector2(-275, -1010)

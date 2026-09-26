@@ -115,7 +115,7 @@ func axe_seq() -> void:
 
 
 func first_battle() -> void:
-	Global.player.move_dir(Vector2.RIGHT * 2)
+	Global.player.move_by(Vector2.RIGHT * 2)
 	Loader.travel_to("TempleWoods", Vector2(1220, 461), 1, Direction.RIGHT, false)
 	await Event.wait(0.2)
 	Transition.fade_in()
@@ -147,7 +147,7 @@ func AlcineFollow1() -> void:
 	await Event.wait(0.5)
 	Alcine.look_to(Vector2.DOWN)
 	await Alcine.bubble("Surprise")
-	await Alcine.move_dir(Vector2.UP * 5)
+	await Alcine.move_by(Vector2.UP * 5)
 	await Textbox.open("story_0", "was_that_a")
 	Event.flag_progress("AlcineFollow", 1)
 	Event.give_control(true)
@@ -233,7 +233,7 @@ func AlcineFollow4() -> void:
 
 
 func enter_amberelm() -> void:
-	Global.player.move_dir(Vector2(0, -2))
+	Global.player.move_by(Vector2(0, -2))
 	await Loader.travel_to("Amberelm", Vector2.ZERO, 1, Direction.UP, false)
 	var mira: NPC = Event.npc("MiraCut")
 	var alcine: NPC = Event.npc("AlcineCut")
@@ -252,7 +252,7 @@ func enter_amberelm() -> void:
 	Event.day = 0
 	await Textbox.open(name, "morning")
 	Event.npc("MiraCut").speed = 75
-	Event.npc("MiraCut").move_dir(Vector2.UP * 5)
+	Event.npc("MiraCut").move_by(Vector2.UP * 5)
 	Event.npc("AlcineCut").chain_moves([Vector2.RIGHT, Vector2.UP * 5])
 	await Event.wait(0.8)
 	Loader.travel_to("Amberelm", Vector2.ZERO, 0, Direction.UP)

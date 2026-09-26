@@ -355,7 +355,7 @@ Alcine.Neutral: ...!?
 Mira.Neutral: What's wrong?
 Asteria.Neutral: So they can feel it too...
 Daze.Neutral: ?
-do toast(alcine()+ " hesitates.")
+do toast(alcine+ " hesitates.")
 set Party.Member1.NextAction = "Attack"
 set Party.Member1.NextMove = Ability.nothing()
 => END!
