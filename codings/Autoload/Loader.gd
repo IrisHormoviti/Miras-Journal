@@ -210,7 +210,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	await Event.wait()
 
 	if is_instance_valid(Global.player):
-		Global.player.look_to(Vector2.DOWN)
+		Global.player.look_to(Direction.DOWN)
 
 		if (chased or Battle.in_battle) and is_instance_valid(Battle.attacker):
 			print_rich("[color=green]Too close to an enemy, auto escape")

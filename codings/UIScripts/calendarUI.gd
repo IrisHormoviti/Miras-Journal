@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 func _check_party() -> void:
-	if Event.f("HideDate"):
+	if Event.f("UI/HideDate"):
 		$Date/Day.add_theme_font_size_override("font_size", 140)
 		$Date/Month.text = "Date"
 		$Date/Day.text = "Unknown"
@@ -26,7 +26,7 @@ func _check_party() -> void:
 
 func confirm_time_passage(title: String, description: String, to_time: Event.TOD) -> bool:
 	Global.check.emit()
-	Event.add_flag("DisableMenus", false)
+	Event.add_flag("UI/DisableMenus", false)
 	Global.controllable = false
 	get_tree().paused = true
 	Hud.show_all()

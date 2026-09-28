@@ -104,6 +104,8 @@ func _ready() -> void:
 
 func setup_shadow() -> void:
 	if sprite:
+		sprite.use_parent_material = true
+
 		if sprite.sprite_frames.has_animation("IdleDown"):
 			sprite.offset.y = - sprite.sprite_frames.get_frame_texture("IdleDown", 0).get_size().y / 2 + 7
 
@@ -258,25 +260,18 @@ func move_by(vector: Vector2) -> void:
 	await go_to(position + vector)
 
 
+## Go to a relative position from the current one x24
+func move_by_tiles(vector: Vector2) -> void:
+	await go_to(position + vector * 24)
+
+
 ## The characted looks to a new direction and becomes IDLE
-## Input can be a Vector2, String ("U", "R", etc) or Direction
-func look_to(dir: Variant) -> void:
-	var vector: Vector2
-
-	if dir is String: vector = Direction.from_letter(dir).vector
-	elif dir is Direction: vector = dir.vector
-	elif dir is Vector2: vector = dir
-	else:
-		push_error("Invalid use of look_to: ", dir)
-		return
-
-	
+func look_to(dir: Direction) -> void:	
 	state = S.IDLE
-	facing.vector = vector
-	direction = vector
+	facing = dir
 
 
-func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector2 = Vector2.ZERO) -> void:
+func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Direction = null) -> void:
 	if Nav == null: return
 	if self is Mira and Global.controllable: await Event.take_control()
 	#await stop_going()
@@ -302,7 +297,7 @@ func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector
 	position = Vector2i(position)
 	direction = Vector2.ZERO
 	await Event.wait()
-	if look_dir != Vector2.ZERO:
+	if look_dir:
 		look_to(look_dir)
 
 
@@ -311,7 +306,7 @@ func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector
 ##If autostop is true, it will stop when hitting a wall.
 ##look_dir is the direction the NPC will face after reaching the destination.
 ##accuracy detarmines how close to the destination the NPC should get.
-func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Variant = Vector2.ZERO, accuracy: int = 8) -> void:
+func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Direction = null, accuracy: int = 8) -> void:
 	if pos is String:
 		pos = Event.get_marker_pos(pos)
 
@@ -338,7 +333,8 @@ func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Varia
 	direction = Vector2.ZERO
 	state = S.IDLE
 
-	if look_dir is String or look_dir != Vector2.ZERO: look_to(look_dir)
+	if look_dir: 
+		look_to(look_dir)
 
 
 func set_anim(anim: String, wait := false, overwrite_state := true) -> void:
@@ -392,9 +388,9 @@ func collision(tog: bool = $CollisionShape2D.disabled) -> void:
 	$CollisionShape2D.set_deferred("disabled", not tog)
 
 
-func chain_moves(moves: Array) -> void:
-	for i:Variant in moves:
-		await move_dir(i)
+func chain_moves(moves: Array[Vector2]) -> void:
+	for i in moves:
+		await move_by(i * 24)
 
 
 func chain_positions(moves: Array[Vector2]) -> void:

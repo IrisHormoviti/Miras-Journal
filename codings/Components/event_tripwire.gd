@@ -85,6 +85,10 @@ func kick() -> void:
 		await Global.player.move_dir(kick_direction)
 
 
+func get_name_flag() -> String:
+	return Global.room.codename() + "/Tripwire/" + name
+
+
 func _on_body_entered(body: Node2D) -> void:
 	if flag.is_empty() and use_name_as_flag:
 		flag = name

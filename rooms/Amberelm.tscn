@@ -668,7 +668,6 @@ add_the_flag = true
 return_control = false
 PlayEvent = true
 event_name = "enter_amberelm_2"
-kick_direction = Vector2(0, 0)
 
 [node name="EvStoneGuardian" parent="." unique_id=28897104 instance=ExtResource("30_djhcr")]
 position = Vector2(2460, -120)
@@ -680,7 +679,6 @@ PlayEvent = true
 event_name = "amberelm_guardian"
 ShowTextbox = true
 AlterMovement = true
-kick_direction = Vector2(0, 0)
 
 [node name="EvStoneGuardianCheckBody" parent="." unique_id=1297631556 instance=ExtResource("30_djhcr")]
 position = Vector2(2567, -121)
@@ -691,7 +689,6 @@ add_the_flag = true
 return_control = false
 text_file = "story_1"
 text_cue = "destroyed_guardian_event"
-kick_direction = Vector2(0, 0)
 
 [node name="EvStoneGuardian2" parent="." unique_id=2071850113 instance=ExtResource("30_djhcr")]
 position = Vector2(2388, -146)
@@ -701,7 +698,6 @@ use_name_as_flag = false
 flag_should_be = true
 return_control = false
 event_name = "amberelm_reunion"
-kick_direction = Vector2(0, 0)
 
 [node name="InteractBackround" parent="." unique_id=373005192 instance=ExtResource("5_3ycob")]
 position = Vector2(69, 206)
@@ -740,13 +736,13 @@ dialogue_file = "interact_abad"
 dialogue_cue = "amberelm_sign_storage"
 itemtype = ""
 
-[node name="ItemRustySword1" parent="." unique_id=431728369 instance=ExtResource("14_15y50")]
+[node name="RustySword33" parent="." unique_id=431728369 instance=ExtResource("14_15y50")]
 z_index = 6
 position = Vector2(224, 250)
 item_type = "Bti"
 item_name = "RustySword"
 
-[node name="ItemSharpRock2" parent="." unique_id=640826869 instance=ExtResource("14_15y50")]
+[node name="SharpRock34" parent="." unique_id=640826869 instance=ExtResource("14_15y50")]
 z_index = 6
 z_as_relative = false
 position = Vector2(-48, 329)
@@ -972,7 +968,6 @@ return_control = false
 ShowTextbox = true
 text_file = "story_0"
 text_cue = "color_tutorial"
-kick_direction = Vector2(0, 0)
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EvMagicWall" unique_id=2132624866]
 use_parent_material = true

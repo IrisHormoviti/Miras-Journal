@@ -10,7 +10,7 @@ func daze_enemy_1() -> void:
 		Event.npc("EnemyFlowent1").look_to(Direction.LEFT)
 		await Event.wait(2)
 		Event.npc("F1").speed = 150
-		await Event.npc("F1").go_to(Event.npc("EnemyFlowent1").position, false, false, Vector2.LEFT, 10)
+		await Event.npc("F1").go_to(Event.npc("EnemyFlowent1").position, false, false, Direction.LEFT, 10)
 		Global.intro_effect(Event.npc("EnemyFlowent1"))
 		Loader.attacker = Event.npc("EnemyFlowent1")
 		Battle.start("DazeEnemyTutorial", 1)
@@ -90,7 +90,7 @@ func nov2_morning() -> void:
 	#Party.set_to(["Alcine"])
 	#Event.remove_flag("HasBag")
 	#Event.add_flag("AlcineAlone")
-	#Event.remove_flag("HideDate")
+	#Event.remove_flag("UI/HideDate")
 	#await Loader.travel_to("WitheredLeaves", Vector2(775, -211))
 
 
@@ -103,7 +103,7 @@ func nov2_daytime() -> void:
 	Party.set_to(["Mira", "Alcine", "Daze"])
 	Event.add_flag("HasBag")
 	Event.remove_flag("AlcineAlone")
-	Event.remove_flag("HideDate")
+	Event.remove_flag("UI/HideDate")
 	await Loader.travel_to("WitheredLeaves", Vector2(775, -211), 0, Direction.DOWN)
 	Event.npc("F1").position.x += 24
 	Event.npc("F2").position.y -= 24

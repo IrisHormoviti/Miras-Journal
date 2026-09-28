@@ -104,7 +104,7 @@ animations = [{
 "speed": 10.0
 }]
 
-[node name="ItemDefault1" type="Node2D" unique_id=1701809483]
+[node name="0" type="Node2D" unique_id=1701809483]
 script = ExtResource("1_65lo7")
 metadata/_custom_type_script = "uid://bn783yamujd4k"
 metadata/_edit_group_ = true
@@ -115,7 +115,7 @@ light_mask = 0
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_t6ikl")
 autoplay = "default"
-frame = 9
+frame = 2
 offset = Vector2(0.5, 0.5)
 
 [node name="Interactable" parent="." unique_id=1703852966 instance=ExtResource("3_uqxwf")]
@@ -126,9 +126,6 @@ hide_on_flag = &"ItemDefault1"
 hide_parent = true
 offset = 10
 needs_bag = true
-
-[node name="CollisionShape2D" parent="Interactable" index="0" unique_id=2035817221]
-debug_color = Color(0.13281694, 0.64641684, 1.92523e-07, 0.07058824)
 
 [node name="Icon" parent="Interactable" index="1" unique_id=1758546671]
 visible = false

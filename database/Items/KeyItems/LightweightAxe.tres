@@ -13,7 +13,7 @@ filter_clip = true
 [resource]
 script = ExtResource("3_v30n1")
 attack = ExtResource("2_y350c")
-power = 20
+power = 18
 Name = "Lightweight Axe"
 Description = "A light and easy to weild axe.
 It can be attached to a strap on the bag."

@@ -10,10 +10,22 @@ Asteria.Neutral: Oh, hey Mira.
 $> to_time = 1
 if confirm_time_passage("Talk to Asteria" ,"I've been looking for a chance to talk to her, maybe I can sit with her for a bit."):
 	Mira.Neutral: Mind if I sit here for a bit?
-	do! sequence("sl_asteria_1")
+	[hide]
+	=> rank1
 => END
 
-~ rank1_1
+~ rank1
+$> Transition.close_in()
+$> Loader.travel_to("Pyrson", Vector2(490, 680), 0, null)
+$> no_player()
+$> zoom(5, true)
+$> spawn("Mira:MiraOV", Vector2(506, 680), Direction.RIGHT)
+$> AsteriaPlaza.position = Vector2(506, 640)
+$> AsteriaPlaza.look_to(Direction.RIGHT)
+$> Transition.unwipe()
+$> Mira.set_anim("SitRight")
+$> AsteriaPlaza.set_anim("IdleRight")
+$> wait(2)
 Mira.Neutral: So...
 [hide]
 do wait(1)
@@ -40,9 +52,8 @@ Asteria.Neutral: Are you liking this village?
 	Mira.Neutral: My family, the few friends I had... I don't want to just leave them.
 Mira.Neutral: What about you?
 Asteria.Neutral: Me..?
-Asteria.Neutral: I've been here my whole life. There isn't much to miss...
-Mira.Neutral: Your whole life?
-Asteria.Neutral: That's right.
+Asteria.Neutral: I've been here since I was a child. There isn't much to miss...
+Mira.Neutral: Oh...
 Mira.Neutral: ...
 [hide]
 do wait(2)
@@ -76,10 +87,11 @@ Asteria.Neutral: I'm sorry if I hurt you...
 	Mira.Neutral: Just...[wait=0.5] make sure you're aiming at the right person next time, okay?
 Asteria.Neutral: Yeah...
 [hide]
-do transition()
-do lower_layer()
-do wait(1)
+$> Transition.fade_in()
 After saying good night to asteria, I head back home to bed.
+$> add_flag("SL/Asteria", 1)
+$> progress_by_time(1)
+$> time_transition()
 => END
 
 ~ rank2_prepare
@@ -94,13 +106,13 @@ if confirm_time_passage("Help Asteria" ,"This could be a chance to get to know A
 	Mira.Neutral: Can I help somehow?
 	Asteria.Neutral: You really want to help!? Thank you!
 	[hide]
-	=> rank2_1
+	=> rank2
 else:
 	Mira.Neutral: That sucks.
 	Asteria.Neutral: Yeah...
 => END
 
-~ rank2_1
+~ rank2
 do travel_to("Pyrson", Vector2(53, -183), 2)
 do no_player()
 do spawn("Mira:MiraOV", Vector2(64, -183), "R")

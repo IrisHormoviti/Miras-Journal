@@ -1003,35 +1003,35 @@ debug_color = Color(0.661949, 0.495265, 0.3822, 0.42)
 
 [node name="Items" type="Node2D" parent="." unique_id=1587437509]
 
-[node name="ItemDefault1" parent="Items" unique_id=1039922182 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion0" parent="Items" unique_id=1039922182 instance=ExtResource("7_kvb7h")]
 position = Vector2(-261, -51)
 item_name = "SmallPotion"
 
-[node name="ItemDefault2" parent="Items" unique_id=1568631333 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion1" parent="Items" unique_id=1568631333 instance=ExtResource("7_kvb7h")]
 position = Vector2(829, 658)
 item_name = "SmallPotion"
 
-[node name="ItemDefault3" parent="Items" unique_id=1998743597 instance=ExtResource("7_kvb7h")]
+[node name="LifeLave2" parent="Items" unique_id=1998743597 instance=ExtResource("7_kvb7h")]
 position = Vector2(456, 894)
 item_name = "LifeLave"
 
-[node name="ItemSG1" parent="Items" unique_id=196992718 instance=ExtResource("7_kvb7h")]
+[node name="StrangeFruit3" parent="Items" unique_id=196992718 instance=ExtResource("7_kvb7h")]
 position = Vector2(-517, 616)
 item_name = "StrangeFruit"
 
-[node name="ItemSG2" parent="Items" unique_id=1300974869 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion4" parent="Items" unique_id=1300974869 instance=ExtResource("7_kvb7h")]
 position = Vector2(-419, -257)
 item_name = "SmallPotion"
 
-[node name="ItemSG3" parent="Items" unique_id=1610980021 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion5" parent="Items" unique_id=1610980021 instance=ExtResource("7_kvb7h")]
 position = Vector2(-187, 489)
 item_name = "SmallPotion"
 
-[node name="ItemSG4" parent="Items" unique_id=914204863 instance=ExtResource("7_kvb7h")]
+[node name="StrangeFruit6" parent="Items" unique_id=914204863 instance=ExtResource("7_kvb7h")]
 position = Vector2(-282, 441)
 item_name = "StrangeFruit"
 
-[node name="ItemSG6" parent="Items" unique_id=994295426 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion7" parent="Items" unique_id=994295426 instance=ExtResource("7_kvb7h")]
 position = Vector2(-91, 512)
 item_name = "SmallPotion"
 
@@ -1695,7 +1695,7 @@ ShowTextbox = true
 text_file = "story_2"
 text_cue = "sg_find_bunker"
 
-[node name="GroundItem" parent="." unique_id=1792744607 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion37" parent="." unique_id=1792744607 instance=ExtResource("7_kvb7h")]
 position = Vector2(-255, -160)
 item_name = "SmallPotion"
 
@@ -2089,8 +2089,6 @@ position = Vector2(438, 59)
 metadata/_edit_group_ = true
 
 [connection signal="body_entered" from="EvKick" to="EvKick" method="_on_body_entered"]
-[connection signal="action" from="SwitchBridge1/SGBridge1" to="DoorLocked1/HideOnFlag" method="check"]
-[connection signal="action" from="SwitchCast1/SGDoor1" to="DoorLocked1/HideOnFlag" method="check"]
 
 [editable path="Breakables/BreakableWallSG5"]
 [editable path="Ladder2"]

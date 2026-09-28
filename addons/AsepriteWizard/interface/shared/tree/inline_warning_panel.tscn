@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://ctf8re8bekyl1" path="res://addons/AsepriteWizard/interface/shared/tree/inline_warning_panel.gd" id="1_aomsj"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rpkoa"]
-bg_color = Color(0.5686275, 0.25490198, 0.6745098, 0.2)
+bg_color = Color(0.13333334, 0.2509804, 0.6313726, 0.2)
 border_width_left = 10
 border_color = Color(0.8, 0.8, 0.8, 0)
 corner_radius_top_left = 5

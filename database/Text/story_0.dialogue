@@ -57,7 +57,7 @@ $> Party.Leader.node.hide()
 $> player.show()
 Hm, what's that?
 [hide]
-$> player.move_by(Vector2(3, 0))
+$> player.move_by_tiles(Vector2(3, 0))
 $> Item.add_item("WhiteSlime", "Mat")
 $> Event.wait(1)
 These slime remnants seems to contain some of that monster's essence.

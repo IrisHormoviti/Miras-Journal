@@ -12,8 +12,8 @@ func new_game() -> void:
 	Event.flags.clear()
 	Event.add_flag("Started")
 	Event.add_flag("HasBag", false)
-	Event.add_flag("DisableMenus", true)
-	Event.add_flag("HideDate", true)
+	Event.add_flag("UI/DisableMenus", true)
+	Event.add_flag("UI/HideDate", true)
 	Event.add_flag("DisableVeinet")
 	Event.add_flag("time", Event.TOD.NIGHT)
 	Event.add_flag("day", 0)
@@ -115,13 +115,10 @@ func axe_seq() -> void:
 
 
 func first_battle() -> void:
-	Global.player.move_by(Vector2.RIGHT * 2)
-	Loader.travel_to("TempleWoods", Vector2(1220, 461), 1, Direction.RIGHT, false)
-	await Event.wait(0.2)
-	Transition.fade_in()
-	await Event.wait(0.5)
-	Event.take_control()
-	Global.player.camera_follow(false)
+	Global.player.move_by_tiles(Vector2.RIGHT * 2)
+	await Transition.fade_in()
+	await Loader.travel_to("TempleWoods", Vector2(1220, 461), 1, null, false)
+	Event.camera_unlock()
 	Event.camera_move(Vector2(1446, -605), 0)
 	Transition.fade_out()
 	Event.camera_move(Vector2(1486, -300), 5, Tween.EASE_IN_OUT, Tween.TRANS_LINEAR)
@@ -134,7 +131,7 @@ func first_battle() -> void:
 	Transition.fade_in()
 	Battle.start("FirstBattle")
 	Event.add_flag("EvFirstBattle")
-	Event.add_flag("DisableMenus", false)
+	Event.add_flag("UI/DisableMenus", false)
 	Hud.disabled = false
 
 
@@ -145,7 +142,7 @@ func AlcineFollow1() -> void:
 	await Event.take_control()
 	Global.player.set_anim("IdleUp")
 	await Event.wait(0.5)
-	Alcine.look_to(Vector2.DOWN)
+	Alcine.look_to(Direction.DOWN)
 	await Alcine.bubble("Surprise")
 	await Alcine.move_by(Vector2.UP * 5)
 	await Textbox.open("story_0", "was_that_a")
@@ -208,10 +205,10 @@ func AlcineFollow4() -> void:
 	Alcine.show()
 	await Alcine.go_to(Vector2(66, -45), true)
 	await Event.wait(0.3)
-	Alcine.look_to(Vector2.RIGHT)
+	Alcine.look_to(Direction.RIGHT)
 	Global.camera.position = Global.player.position - Vector2(18, 0)
 	Event.take_control()
-	Global.player.look_to(Vector2.LEFT)
+	Global.player.look_to(Direction.LEFT)
 	Global.player.position = Vector2(1619, -1068)
 	await Textbox.open("story_0", "got_through_that")
 	await Global.alcine_naming()
@@ -243,9 +240,9 @@ func enter_amberelm() -> void:
 	alcine.go_to(Vector2(13, 50), true, false)
 	await mira.go_to(Vector2(13, 49), true, false)
 	await Event.wait(0.2)
-	mira.look_to(Vector2.RIGHT)
+	mira.look_to(Direction.RIGHT)
 	await Event.wait(0.2)
-	alcine.look_to(Vector2.RIGHT)
+	alcine.look_to(Direction.RIGHT)
 	await Event.wait(0.3)
 	alcine.speed = 75
 	Event.time_of_day = Event.TOD.MORNING
@@ -307,7 +304,7 @@ func oct31_night() -> void:
 	await Textbox.open(name, "daze_introduction")
 	Item.remove_item("LightweightAxe", &"Key")
 	Event.add_flag("DisableVeinet")
-	Event.remove_flag("HideDate")
+	Event.remove_flag("UI/HideDate")
 	Party.set_to(["Mira"])
 	Party.Leader.ClutchDmg = false
 	await Loader.travel_to("WitheredLeaves", Vector2(775, -211))

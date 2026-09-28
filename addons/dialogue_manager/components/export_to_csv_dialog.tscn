@@ -2,8 +2,13 @@
 
 [ext_resource type="Script" uid="uid://cnqjxwe5nbejq" path="res://addons/dialogue_manager/components/export_to_csv_dialog.gd" id="1_k3ych"]
 
+[sub_resource type="DPITexture" id="DPITexture_brc5y"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
+
 [node name="ExportToCsvDialog" type="ConfirmationDialog" unique_id=1024741315]
 oversampling_override = 1.0
+title = "Simple CSV export..."
 position = Vector2i(0, 36)
 size = Vector2i(331, 333)
 visible = true
@@ -41,7 +46,7 @@ size_flags_horizontal = 3
 [node name="PathButton" type="Button" parent="VBoxContainer/Path/CsvPath" unique_id=1307396272]
 unique_name_in_owner = true
 layout_mode = 2
-text = "..."
+icon = SubResource("DPITexture_brc5y")
 
 [node name="Locale" type="VBoxContainer" parent="VBoxContainer" unique_id=2082649931]
 layout_mode = 2
@@ -50,12 +55,13 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Default locale "
+text = "Default locale"
 
 [node name="LocaleEdit" type="LineEdit" parent="VBoxContainer/Locale" unique_id=1329469690]
 unique_name_in_owner = true
 custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
+text = "en"
 placeholder_text = "en"
 
 [node name="Delimiter" type="VBoxContainer" parent="VBoxContainer" unique_id=1277602714]
@@ -65,7 +71,7 @@ layout_mode = 2
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
-text = "Default delimiter "
+text = "Default delimiter"
 
 [node name="DelimiterMenu" type="OptionButton" parent="VBoxContainer/Delimiter" unique_id=537449544]
 unique_name_in_owner = true
@@ -74,12 +80,12 @@ layout_mode = 2
 [node name="IncludeCharacterNamesButton" type="CheckBox" parent="VBoxContainer" unique_id=714454400]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Include character names"
+text = "Include character name column"
 
 [node name="IncludeNotesButton" type="CheckBox" parent="VBoxContainer" unique_id=1875570652]
 unique_name_in_owner = true
 layout_mode = 2
-text = "Include notes"
+text = "Include notes column"
 
 [node name="FileDialog" type="FileDialog" parent="." unique_id=1143071127]
 unique_name_in_owner = true

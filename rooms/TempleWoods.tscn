@@ -557,44 +557,44 @@ tile_set = ExtResource("7_2y4jd")
 [node name="Items" type="Node2D" parent="." unique_id=224220623]
 use_parent_material = true
 
-[node name="ItemLifeLave1" parent="Items" unique_id=2078540959 instance=ExtResource("26_k6j3t")]
+[node name="LifeLave0" parent="Items" unique_id=2078540959 instance=ExtResource("26_k6j3t")]
 position = Vector2(1616, -214)
 item_name = "LifeLave"
 
-[node name="ItemLifeLave2" parent="Items" unique_id=1064751762 instance=ExtResource("26_k6j3t")]
+[node name="LifeLave1" parent="Items" unique_id=1064751762 instance=ExtResource("26_k6j3t")]
 position = Vector2(1430, -277)
 item_name = "LifeLave"
 
-[node name="ItemSharpRock1" parent="Items" unique_id=159193781 instance=ExtResource("26_k6j3t")]
+[node name="SharpRock2" parent="Items" unique_id=159193781 instance=ExtResource("26_k6j3t")]
 position = Vector2(1234, 268)
 item_type = "Bti"
 item_name = "SharpRock"
 
-[node name="ItemStrangeFruit1" parent="Items" unique_id=1130146568 instance=ExtResource("26_k6j3t")]
+[node name="StrangeFruit3" parent="Items" unique_id=1130146568 instance=ExtResource("26_k6j3t")]
 position = Vector2(1332, 515)
 item_name = "StrangeFruit"
 
-[node name="ItemStrangeFruit2" parent="Items" unique_id=297885294 instance=ExtResource("26_k6j3t")]
+[node name="StrangeFruit4" parent="Items" unique_id=297885294 instance=ExtResource("26_k6j3t")]
 position = Vector2(1640, 370)
 item_name = "StrangeFruit"
 
-[node name="ItemStrangeFruit3" parent="Items" unique_id=93552328 instance=ExtResource("26_k6j3t")]
+[node name="StrangeFruit5" parent="Items" unique_id=93552328 instance=ExtResource("26_k6j3t")]
 position = Vector2(1307, -1141)
 item_name = "StrangeFruit"
 
-[node name="ItemStrangeFruit4" parent="Items" unique_id=1575434167 instance=ExtResource("26_k6j3t")]
+[node name="StrangeFruit6" parent="Items" unique_id=1575434167 instance=ExtResource("26_k6j3t")]
 position = Vector2(1431, -966)
 item_name = "StrangeFruit"
 
-[node name="ItemStrangeFruit5" parent="Items" unique_id=1161754808 instance=ExtResource("26_k6j3t")]
+[node name="StrangeFruit7" parent="Items" unique_id=1161754808 instance=ExtResource("26_k6j3t")]
 position = Vector2(1598, -950)
 item_name = "StrangeFruit"
 
-[node name="ItemStrangeFruit6" parent="Items" unique_id=1889137226 instance=ExtResource("26_k6j3t")]
+[node name="StrangeFruit8" parent="Items" unique_id=1889137226 instance=ExtResource("26_k6j3t")]
 position = Vector2(1185, -210)
 item_name = "StrangeFruit"
 
-[node name="ItemStrangeFruit7" parent="Items" unique_id=205627241 instance=ExtResource("26_k6j3t")]
+[node name="StrangeFruit9" parent="Items" unique_id=205627241 instance=ExtResource("26_k6j3t")]
 position = Vector2(1447, -600)
 item_name = "StrangeFruit"
 
@@ -950,7 +950,6 @@ file = "axe_seq"
 dialogue_file = "axe_seq"
 itemtype = "Key"
 add_flag = true
-hide_on_flag = &"PickedUpAxe"
 hide_this_node = true
 hide_parent = true
 free_on_hide = true
@@ -983,7 +982,6 @@ hide_this_node = true
 hide_parent = true
 free_on_hide = true
 proper_pos = Vector2(100, 406)
-proper_face = Vector2(1, 0)
 
 [node name="EvDashTutorial" parent="Event" unique_id=1415250702 instance=ExtResource("36_2q7ov")]
 position = Vector2(105, 277)
@@ -993,6 +991,7 @@ tutorial_name = "dash"
 
 [node name="EvFirstBattle" parent="Event" unique_id=1834140387 instance=ExtResource("36_2q7ov")]
 position = Vector2(729, 512)
+trigger_size = Vector2i(50, 90)
 return_control = false
 PlayEvent = true
 event_name = "first_battle"
@@ -1085,7 +1084,6 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "symbol"
 proper_pos = Vector2(1410, -444)
-proper_face = Vector2(1, 0)
 
 [node name="EnemyCrawlingSludge1" parent="." unique_id=80482356 instance=ExtResource("10_rx6j2")]
 position = Vector2(1365, 223)
@@ -1267,5 +1265,4 @@ length = 105
 down_index = NodePath("../Index1")
 up_index = NodePath("../Index2")
 
-[editable path="Event/EvAxe/PickUp"]
 [editable path="Interactables/InteractSkeleton"]
