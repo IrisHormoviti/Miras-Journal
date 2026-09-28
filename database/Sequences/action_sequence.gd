@@ -1071,7 +1071,7 @@ func ItemCure(target: Actor) -> void:
 	Bt.focus_cam(CurrentChar, 0.3)
 	Bt.zoom(5.5)
 	print(Bt.CurrentAbility.Types)
-	if "Healing" in Bt.CurrentAbility.Types:
+	if Ability.TP.HEALING in Bt.CurrentAbility.Types:
 		Bt.heal(CurrentChar, int(Bt.CurrentAbility.Parameter))
 
 	CurrentChar.remove_state(Bt.CurrentAbility.InflictsState)

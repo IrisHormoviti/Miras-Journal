@@ -856,7 +856,7 @@ texture = SubResource("GradientTexture2D_pd21j")
 texture_scale = 2.0
 
 [node name="HideOnFlag" parent="Event/EvAlcine" unique_id=170539596 instance=ExtResource("23_dpu00")]
-flag = "AlcineFollow>=4||day>0"
+flag = "Event/AlcineFollow>=4||day>0"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Event/EvAlcine" unique_id=1432633189]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -873,7 +873,7 @@ facing = SubResource("Resource_u8txd")
 no_shadow = true
 
 [node name="HideOnFlag" parent="Event/EvAlcineBelow" unique_id=206159318 instance=ExtResource("23_dpu00")]
-flag = "day>0||AlcineFollow>=1"
+flag = "day>0 || Event/AlcineFollow>=1"
 
 [node name="Glow" type="PointLight2D" parent="Event/EvAlcineBelow" unique_id=587548711]
 color = Color(0.498039, 0.768627, 0.768627, 1)
@@ -891,25 +891,34 @@ animation = &"IdleRight"
 
 [node name="EvAlcineFollow1" parent="Event" unique_id=1297631556 instance=ExtResource("36_2q7ov")]
 position = Vector2(1250, -635)
-flag = "day=0+AlcineFollow<1"
-use_name_as_flag = false
+flag = "day = 0
++ Event/AlcineFollow = 0"
 flag_should_be = true
-event_name = "AlcineFollow1"
+use_name_as_flag = false
+ShowTextbox = true
+text_file = "story_0"
+text_cue = "was_that_a"
 
 [node name="EvAlcineFollow2" parent="Event" unique_id=554411234 instance=ExtResource("36_2q7ov")]
 position = Vector2(1271, -934)
-flag = "day=0+AlcineFollow=1"
-use_name_as_flag = false
+flag = "day=0
++ Event/AlcineFollow = 1"
 flag_should_be = true
-PlayEvent = true
-event_name = "AlcineFollow2"
+use_name_as_flag = false
+take_control = false
+return_control = false
+ShowTextbox = true
+text_file = "story_0"
+text_cue = "hey_wait"
+use_passive_textbox = true
 
 [node name="EvAlcineFollow3" parent="Event" unique_id=73391420 instance=ExtResource("36_2q7ov")]
 z_index = 1
 position = Vector2(1573, -1073)
-flag = "day=0+AlcineFollow=2"
-use_name_as_flag = false
+flag = "day=0 +
+Event/AlcineFollow = 2"
 flag_should_be = true
+use_name_as_flag = false
 return_control = false
 ShowTextbox = true
 text_file = "story_0"
@@ -917,6 +926,7 @@ text_cue = "approach"
 
 [node name="EvAmbWoodsBridge" parent="Event" unique_id=200704634 instance=ExtResource("36_2q7ov")]
 position = Vector2(1956, -1318)
+trigger_size = Vector2i(73, 50)
 add_the_flag = true
 take_control = false
 return_control = false
@@ -1000,7 +1010,6 @@ event_name = "first_battle"
 position = Vector2(1535, -35)
 rotation = -0.53980017
 scale = Vector2(2.0800018, 2.0800018)
-add_the_flag = true
 ShowTextbox = true
 text_file = "story_0"
 text_cue = "getting_dark"
@@ -1246,8 +1255,10 @@ gizmo_extents = 100.0
 [node name="EnteredAmberelm2" parent="." unique_id=413285406 instance=ExtResource("36_2q7ov")]
 z_index = 1
 position = Vector2(1956, -1758)
+trigger_size = Vector2i(76, 50)
 flag = "EnterAmberelm"
 return_control = false
+PlayEvent = true
 event_name = "enter_amberelm"
 
 [node name="RegionEnemy" type="NavigationRegion2D" parent="." unique_id=213061388]

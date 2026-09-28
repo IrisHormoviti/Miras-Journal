@@ -89,7 +89,7 @@ Asteria.Neutral: Yeah...
 [hide]
 $> Transition.fade_in()
 After saying good night to asteria, I head back home to bed.
-$> add_flag("SL/Asteria", 1)
+$> add_flag("SocialLink/Asteria", 1)
 $> progress_by_time(1)
 $> time_transition()
 => END
@@ -113,20 +113,19 @@ else:
 => END
 
 ~ rank2
-do travel_to("Pyrson", Vector2(53, -183), 2)
-do no_player()
-do spawn("Mira:MiraOV", Vector2(64, -183), "R")
-do spawn("Asteria:AsteriaOV2", Vector2(53, -210), "R")
+$> travel_to("Pyrson", Vector2(53, -183), 2)
+$> no_player()
+$> spawn("Mira:MiraOV", Vector2(64, -183), Direction.RIGHT)
+$> spawn("Asteria:AsteriaOV2", Vector2(53, -210), Direction.RIGHT)
 Mira.Neutral: You weren't kidding... What was the last time this place was cleaned?
 Asteria.Neutral: Could be 2 or 3 years ago, who keeps track?
 Mira.Neutral: ...
 [hide]
-do transition()
-do lower_layer()
+$> Transition.fade_in()
 We start putting stuff to the side to clean the floor.
 I pick some wooden toys that were on the floor.
 [hide]
-do detransition()
+$> Transition.fade_out()
 Mira.Neutral: Ooh this is cute, it's like a little train! Were these yours?
 Asteria.Neutral: Y-Yes...
 Asteria.Neutral: Although I've never seen a "train" like this in reality.
@@ -156,32 +155,29 @@ Asteria.Neutral: Right. Back then Pyrson wasn't what it is now, there were only 
 	Asteria.Neutral: You're asking me? This is the only place I know.
 	Asteria.Neutral: I can say that food was pretty scarce when I was little, but we have fairly big fields now-days.
 [hide]
-do transition()
-do lower_layer()
+$> Transition.fade_in()
 We spent a few hours organizing the room
 Asteria.Neutral: Right, I'll go bring the cleaning supplies.
 [hide]
-do detransition()
+$> Transition.fade_out()
 Whole thing happens here
 Asteria.Neutral: I'm back!
 Mira.Neutral: Asteria! Those things on the self over there fell by themselves!
 Asteria.Neutral: Huh... Oh! Don't worry about it I'll put them back up.
 She's acting like this is normal...
 [hide]
-do transition()
-do lower_layer()
+$> Transition.fade_in()
 We spend a little more time cleaning
 [hide]
-do detransition()
+$> Transition.fade_out()
 Asteria.Neutral: I think we're about done here, thank you for all the help today!
 Mira.Neutral: Don't mention it!
 Mira.Neutral: It's getting a bit late, I think I'll be going now.
 Asteria.Neutral: 'Night.
 [hide]
-do transition()
-do lower_layer()
+$> Transition.fade_in()
 I return to my room.
-do add_flag("sl_asteria_2")
-do progress_by_time(2)
-do time_transition()
+$> add_flag("SocialLink/Asteria", 2)
+$> progress_by_time(2)
+$> time_transition()
 => END

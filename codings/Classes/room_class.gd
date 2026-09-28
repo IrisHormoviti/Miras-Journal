@@ -133,9 +133,9 @@ func setup_camera_limits() -> void:
 func setup_other_index_params() -> void:
 	if camera_index != null:
 		if camera_index.flame == 1:
-			if not Event.f("FlameActive"): Global.player.activate_flame()
+			if not Event.f("Player/Flame"): Global.player.activate_flame()
 		elif camera_index.flame == -1:
-			Event.remove_flag("FlameActive")
+			Event.remove_flag("Player/Flame")
 
 		Global.player.collision_layer = camera_index.layers
 		Global.player.collision_mask = camera_index.layers

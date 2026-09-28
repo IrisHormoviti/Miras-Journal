@@ -2,5 +2,5 @@
 
 [ext_resource type="Script" uid="uid://b05nwmod2wbs2" path="res://codings/Components/hide_on_flag.gd" id="1_2p54b"]
 
-[node name="HideOnFlag" type="Node2D" unique_id=206159318]
+[node name="HideOnFlag" type="Node" unique_id=1066357396]
 script = ExtResource("1_2p54b")

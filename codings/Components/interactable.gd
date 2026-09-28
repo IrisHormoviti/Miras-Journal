@@ -221,7 +221,7 @@ func vein_check() -> void:
 		label_text = "Open"
 		get_parent().get_node("Sprite").hide()
 
-	if Event.check_flag("DisableVeinet"):
+	if Event.check_flag("Meta/Veinet/Disable"):
 		label_text = "Inspect"
 
 
@@ -402,7 +402,7 @@ func _on_button_pressed() -> void:
 	t = create_tween().set_parallel(true).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_LINEAR)
 	t.tween_property(pack, "scale", Vector2(0.4, 0.4), 0.1).from(Vector2(0.36, 0.36))
 	await Event.wait(0.1, false)
-	if needs_bag and not Event.f("HasBag"):
+	if needs_bag and Event.f("Player/NoBag"):
 		Global.toast("A bag is needed to store that.")
 		Event.give_control()
 		return
@@ -449,7 +449,7 @@ func _on_button_pressed() -> void:
 
 		"veinet":
 			await Event.take_control(false, false, true)
-			if Event.check_flag("DisableVeinet"):
+			if Event.check_flag("Meta/Veinet/Disable"):
 				await Textbox.open("interact_abad", "vein_point_idk")
 			elif Event.check_flag(get_parent().name):
 				Global.veinet_map(get_parent().name.replace("VP", ""))

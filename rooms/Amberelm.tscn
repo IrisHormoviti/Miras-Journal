@@ -638,8 +638,8 @@ animation = &"WalkUp"
 z_index = 6
 position = Vector2(-1, 225)
 flag = "day=0+time=1"
-use_name_as_flag = false
 flag_should_be = true
+use_name_as_flag = false
 ShowTextbox = true
 text_file = "interact_abad"
 text_cue = "amberelm_rest_first"
@@ -662,9 +662,6 @@ show_on_flag = &"day=0+time=1"
 z_index = 5
 position = Vector2(224, 407)
 trigger_size = Vector2i(80, 50)
-flag = "EnteredAmberelm3"
-use_name_as_flag = false
-add_the_flag = true
 return_control = false
 PlayEvent = true
 event_name = "enter_amberelm_2"
@@ -685,7 +682,6 @@ position = Vector2(2567, -121)
 trigger_size = Vector2i(50, 130)
 flag = "day:1+time<5+!AlcineAlone"
 flag_should_be = true
-add_the_flag = true
 return_control = false
 text_file = "story_1"
 text_cue = "destroyed_guardian_event"
@@ -694,8 +690,8 @@ text_cue = "destroyed_guardian_event"
 position = Vector2(2388, -146)
 trigger_size = Vector2i(50, 33)
 flag = "AlcineAlone"
-use_name_as_flag = false
 flag_should_be = true
+use_name_as_flag = false
 return_control = false
 event_name = "amberelm_reunion"
 
@@ -908,7 +904,7 @@ given_item = "GreenFragment"
 
 [node name="VPEntrance" parent="." unique_id=597176728 instance=ExtResource("35_yh834")]
 z_index = 3
-position = Vector2(0, 408)
+position = Vector2(9, 398)
 
 [node name="JumpPoint" parent="." unique_id=2144299483 instance=ExtResource("36_yh834")]
 position = Vector2(204, 690)
@@ -962,7 +958,7 @@ y_sort_enabled = true
 use_parent_material = true
 position = Vector2(1066, 459)
 trigger_size = Vector2i(50, 80)
-flag = "day=0+!ColorTutorial"
+flag = "day=0"
 flag_should_be = true
 return_control = false
 ShowTextbox = true

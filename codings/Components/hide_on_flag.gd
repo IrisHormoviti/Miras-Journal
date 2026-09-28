@@ -1,4 +1,4 @@
-extends Node2D
+extends Node
 
 @export_multiline() var flag: String = ""
 @export var also_hide_on_reserved_dates := false

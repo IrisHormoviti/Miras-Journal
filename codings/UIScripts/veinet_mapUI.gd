@@ -99,7 +99,7 @@ func location_selected() -> void:
 
 	foc = prev_foc
 	Audio.confirm_sound()
-	Event.remove_flag("FlameActive")
+	Event.remove_flag("Player/Flame")
 	Event.remove_flag("FreeTravelOnce")
 	var map_point := $Map.get_node_or_null(str(foc.name))
 

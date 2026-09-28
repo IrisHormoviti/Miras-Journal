@@ -38,3 +38,6 @@ position = Vector2(1, 50)
 scale = Vector2(0.366667, 0.366667)
 texture = ExtResource("3_aymlr")
 script = ExtResource("4_nlliy")
+
+[connection signal="action" from="TopInteractable" to="." method="climb_down"]
+[connection signal="action" from="BottomInteractable" to="." method="climb_up"]

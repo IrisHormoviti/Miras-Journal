@@ -1,15 +1,15 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://c55gdnnotjbwe"]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://d2xyfmd6r3atu"]
 
 [ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_5vsh8"]
 
 [resource]
 script = ExtResource("1_5vsh8")
 title = "Alcine Meet"
+room = "TempleWoods"
 room_name = "Temple Woods"
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
 "Aura": 15,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -24,13 +24,11 @@ members = Array[Dictionary]([{
 "OV": "",
 "SkillLevel": 1,
 "SkillPoints": 0,
-"Weapon": "Arms?",
-"WeaponPower": 14,
+"WeaponName": "ArmWhip",
 "codename": &"Alcine"
 }, {
 "AbilitiesList": Array[String](["PhantomGuard", "Tighten", "RedShift"]),
 "Aura": 47,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -45,13 +43,11 @@ members = Array[Dictionary]([{
 "OV": "",
 "SkillLevel": 7,
 "SkillPoints": 16,
-"Weapon": "Possessed Scarf",
-"WeaponPower": 16,
+"WeaponName": "PocessedScarf",
 "codename": &"Asteria"
 }, {
 "AbilitiesList": Array[String](["Guard", "Attention", "StaticSaber"]),
 "Aura": 24,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -66,13 +62,11 @@ members = Array[Dictionary]([{
 "OV": "",
 "SkillLevel": 14,
 "SkillPoints": 21,
-"Weapon": "Gold-trimmed Katana",
-"WeaponPower": 30,
+"WeaponName": "GoldPlatedKatana",
 "codename": &"Daze"
 }, {
 "AbilitiesList": Array[String]([]),
 "Aura": 90,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
@@ -87,13 +81,11 @@ members = Array[Dictionary]([{
 "OV": "res://art/OV/Erinn/ErinnOV.tres",
 "SkillLevel": 1,
 "SkillPoints": 0,
-"Weapon": "",
-"WeaponPower": 24,
+"WeaponName": "DefaultWeapon",
 "codename": &"Erinn"
 }, {
 "AbilitiesList": Array[String](["Guard", "FlameSpark"]),
 "Aura": 20,
-"CantAttack": false,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": true,
@@ -108,15 +100,14 @@ members = Array[Dictionary]([{
 "OV": "Bag",
 "SkillLevel": 1,
 "SkillPoints": 5,
-"Weapon": "Lightweight Axe",
-"WeaponPower": 15,
+"WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-player_position = Vector2(1244, -597.33386)
+player_position = Vector2(1246.386, -576.703)
 camera_index = 1
 start_time = 1775821000.966906
-saved_time = 1775821158.413109
-play_time = 10733.0
+saved_time = 1790634007.828984
+play_time = 10762.0
 flags = Dictionary[StringName, int]({
 &"BreakableVines0": 1,
 &"DisableMenus": 0,
@@ -128,9 +119,13 @@ flags = Dictionary[StringName, int]({
 &"HasBag": 1,
 &"HideDate": 1,
 &"PickedUpAxe": 1,
+&"Player/Flame": 1,
 &"Started": 1,
+&"TempleWoods/Item/LifeLave1": 1,
+&"TempleWoods/Tripwire/EvFlameActive": 1,
 &"TutorialBag": 1,
 &"day": 0,
 &"time": 5
 })
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat"])
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "LifeLave:Con"])
+version = 8

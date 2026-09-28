@@ -233,10 +233,10 @@ func get_valid_targets(ab: Ability) -> Array[Actor]:
 			targets.append(Char)
 
 		Ability.T.ONE_ALLY, Ability.T.AOE_ALLIES:
-			targets.append_array(Bt.get_ally_faction(Char))
+			targets.append_array(Bt.get_ally_faction(Char, not ab.CanTargetDead))
 
 		Ability.T.ONE_ENEMY, Ability.T.AOE_ENEMIES:
-			targets.append_array(Bt.get_oposing_faction())
+			targets.append_array(Bt.get_oposing_faction(Char, not ab.CanTargetDead))
 
 		Ability.T.ANY:
 			targets.append_array(Bt.TurnOrder)

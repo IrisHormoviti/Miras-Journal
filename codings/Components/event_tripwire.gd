@@ -13,11 +13,11 @@ extends Area2D
 			coll.shape.size = x
 @export_category("Flags")
 ## Flag expression in order for this event to trigger
-@export var flag: String
-## The name of the node will be used as the flag expression if flag isn't set
-@export var use_name_as_flag: bool = true
+@export_multiline() var flag: String
 ## What should the flag expression equal to in order for this event to trigger?
 @export var flag_should_be: bool
+## The name of the node will be used as the flag in addition to the specified flag
+@export var use_name_as_flag: bool = true
 ## If FlagIsname is on, it will be added as the flag regardless of what is set in the flag
 @export var add_the_flag: bool = false
 @export_category("Player Control")
@@ -72,6 +72,7 @@ func _validate_property(property: Dictionary) -> void:
 			property.hint_string = ",".join(files_filtered)
 
 		"text_cue":
+			if text_file == "": return
 			var text_res: DialogueResource = load("res://database/Text/"+text_file+".dialogue")
 
 			if text_res:
@@ -89,16 +90,28 @@ func get_name_flag() -> String:
 	return Global.room.codename() + "/Tripwire/" + name
 
 
-func _on_body_entered(body: Node2D) -> void:
-	if flag.is_empty() and use_name_as_flag:
-		flag = name
+func condition() -> bool:
+	if not flag.is_empty():
+		if Event.f(flag) != flag_should_be:
+			return false
 
-	if (Event.f(flag) == flag_should_be or flag == "") and body == Global.player and (not use_name_as_flag or !Event.check_flag(name)):
+	if Event.check_flag(get_name_flag()):
+		return false
+
+	return true
+
+
+func _on_body_entered(body: Node2D) -> void:
+	if not body is Mira: return
+
+	if condition():
 		print("Tripwire: ", name)
+
+		if use_name_as_flag:
+			Event.add_flag(get_name_flag())
+
 		if add_the_flag:
-			if use_name_as_flag:
-				Event.add_flag(name)
-			else:
+			if not flag.is_empty():
 				Event.add_flag(flag)
 
 		if slow_down:

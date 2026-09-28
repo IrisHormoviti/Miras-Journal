@@ -26,7 +26,7 @@ func _check_party() -> void:
 
 func confirm_time_passage(title: String, description: String, to_time: Event.TOD) -> bool:
 	Global.check.emit()
-	Event.add_flag("UI/DisableMenus", false)
+	Event.add_flag("UI/Disable", false)
 	Global.controllable = false
 	get_tree().paused = true
 	Hud.show_all()

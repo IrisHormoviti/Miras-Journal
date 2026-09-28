@@ -306,7 +306,7 @@ func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Direct
 ##If autostop is true, it will stop when hitting a wall.
 ##look_dir is the direction the NPC will face after reaching the destination.
 ##accuracy detarmines how close to the destination the NPC should get.
-func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Direction = null, accuracy: int = 8) -> void:
+func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Direction = null, accuracy: int = 10) -> void:
 	if pos is String:
 		pos = Event.get_marker_pos(pos)
 
@@ -321,7 +321,7 @@ func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Direc
 
 	state = S.MOVE
 
-	while round(global_position / accuracy) != round(pos / accuracy):
+	while ceil(global_position / accuracy) != ceil(pos / accuracy):
 		if not is_instance_valid(self) or is_queued_for_deletion():
 			return
 
@@ -388,8 +388,8 @@ func collision(tog: bool = $CollisionShape2D.disabled) -> void:
 	$CollisionShape2D.set_deferred("disabled", not tog)
 
 
-func chain_moves(moves: Array[Vector2]) -> void:
-	for i in moves:
+func chain_moves(moves: Array) -> void:
+	for i: Vector2 in moves:
 		await move_by(i * 24)
 
 

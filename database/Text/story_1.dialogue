@@ -84,7 +84,7 @@ Daze.Neutral: I hope you learned something.
 Mira.Angry: Can you please not treat me like child?
 Mira.Angry: I know plenty about magic, I've studied these things thoroughly!
 Mira.Angry: You just wanted to show off [i]how much better you are[/i]!
-$>> npc("F1").move_by(Vector2.DOWN*6)
+$>> npc("F1").move_by_tiles(Vector2.DOWN*6)
 Mira.Neutral: Let's just just hurry up, I want to see {{alcine}}.
 Daze.Neutral: *sigh*
 [hide]
@@ -149,7 +149,7 @@ Daze.Neutral: So this is the {{alcine}} you were talking about.
 $>> player.bubble("Question")
 Alcine.Neutral: Mwwoo?
 Mira.Neutral: Oh {{alcine}}, this is Daze. He saved us from that big rock monster!
-$> player.move_by(Vector2.RIGHT)
+$> player.move_dir(Direction.RIGHT)
 Alcine.Upset: Sheww...
 $>> Mira.bubble("Question")
 Mira.Neutral: Huh?
@@ -263,7 +263,7 @@ $> Alcine.look_to(Direction.RIGHT)
 $>> Daze.go_to(Vector2(-111, -1036), false, false, Vector2(0, -1))
 $> wait(0.5)
 $>> Alcine.go_to(Vector2(-124, -1020), false, false, Vector2(0, -1))
-$> Mira.move_by(Vector2(1, 0))
+$> Mira.move_dir(Direction.DOWN)
 $> wait(2)
 $> Mira.look_to(Direction.UP)
 $>> Daze.go_to(Vector2(-90, -1036), false, false)
@@ -271,10 +271,10 @@ $> wait(2)
 $> Mira.go_to(Vector2(-276, -1010), false)
 $> Mira.look_to(Direction.UP)
 $> Passive.open("story_1", "something_in_here")
-$> Daze.move_by(Vector2(-1, 0))
+$> Daze.move_dir(Direction.UP)
 $> Daze.look_to(Direction.UP)
 $> Mira.bubble("Ellipsis")
-$> Daze.move_by(Vector2(1, 0))
+$> Daze.move_dir(Direction.DOWN)
 $> Daze.look_to(Direction.UP)
 $> wait(2)
 $> add_flag("Bunker1Open")
@@ -557,7 +557,7 @@ Mira.OpenMouth: Come on, spill it!
 Asteria.Neutral: I'm not the only one trapped here...
 [hide]
 $> player.bubble("Surprise")
-$> player.move_by(Vector2(12, 0), false)
+$> player.move_by(Vector2(12, 0))
 Mira: Y-You mean...
 Asteria: I thought you knew.
 $> Asteria.look_to(Direction.UP)
@@ -567,7 +567,7 @@ Asteria: They distort and... [wait=0.5]break apart. [br][wait=0.5]Perishing soon
 Daze.Neutral: And you're certain of this? Surely there is a way.
 $> Asteria.look_to(Direction.DOWN)
 Asteria.Neutral: I've seen it happen myself...
-$> player.move_by(Vector2(-24, -12), false)
+$> player.move_by(Vector2(-24, -12))
 Mira: You mean I can't...
 $>> player.set_anim("EvCoverFace")
 Mira: I'm never going... to see...
@@ -680,10 +680,10 @@ Mira.Upset: I'm not...
 $> npc("Maple").bubble("Surprise")
 He stares at the bandage on my arm.
 Maple.Neutral: Wait, I know just the thing!
-$> Mira.move_by(Vector2(-24, -12), false)
+$> Mira.move_by(Vector2(-24, -12))
 $> Mira.set_anim("EvAngryWave")
 Mira.Shocked: GET AWAY YOU...!
-$> npc("Maple").move_by(Vector2(-24, 0), false)
+$> npc("Maple").move_by(Vector2(-24, 0))
 [hide]
 $> ui_sound("heal")
 $> wait(1)

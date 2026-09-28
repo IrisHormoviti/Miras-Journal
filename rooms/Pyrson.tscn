@@ -480,8 +480,7 @@ autoplay = "IdleDown"
 offset = Vector2(0, -10)
 
 [node name="HideOnFlag" parent="NPCs/AsteriaOutsideHouse" unique_id=206159318 instance=ExtResource("12_nlfpl")]
-position = Vector2(-88, -445)
-flag = "SL/Asteria=2
+flag = "SocialLink/Asteria=2
 +time>=4"
 also_hide_on_reserved_dates = true
 hide_if = false
@@ -515,8 +514,10 @@ frame_progress = 0.546041
 offset = Vector2(0, -10)
 
 [node name="HideOnFlag" parent="NPCs/AsteriaPlaza" unique_id=1776988185 instance=ExtResource("12_nlfpl")]
-position = Vector2(-88, -445)
-flag = "(SL/Asteria=0+EvSwitchCastLines2)
+flag = "(
+	SocialLink/Asteria=0
+	+ EvSwitchCastLines2
+)
 +time>=4
 +day>=3"
 also_hide_on_reserved_dates = true
@@ -548,7 +549,7 @@ hide_this_node = true
 bubble_always = true
 
 [node name="HideOnFlag" parent="NPCs/Maple" unique_id=1780838806 instance=ExtResource("12_nlfpl")]
-flag = "SL/Maple=0"
+flag = "SocialLink/Maple=0"
 also_hide_on_reserved_dates = true
 
 [node name="Chairs" type="Node" parent="." unique_id=729285830]
