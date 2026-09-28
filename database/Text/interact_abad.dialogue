@@ -28,16 +28,16 @@ else:
 => END!
 
 ~ symbol
-if flag_int("LookedAtTempleSymbol") == 0:
+if get_flag("LookedAtTempleSymbol") == 0:
 	$> flag_progress("LookedAtTempleSymbol", 1)
 	There is a symbol engraved on the ground.
 	Looks like some sort of bird... with a clover head?
 	...
 	I just noticed that it's not perfectly symmetrical, which makes looking at it increasingly painful.
-elif flag_int("LookedAtTempleSymbol") == 1: 
+elif get_flag("LookedAtTempleSymbol") == 1: 
 	$> flag_progress("LookedAtTempleSymbol", 2)
 	The pain grows.
-elif flag_int("LookedAtTempleSymbol") == 2:
+elif get_flag("LookedAtTempleSymbol") == 2:
 	$> flag_progress("LookedAtTempleSymbol", 3)
 	This place seems like an old abandoned temple, so this must be some sort of religious symbol.
 	I don't recall ever seeing something like it though.

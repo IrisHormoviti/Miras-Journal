@@ -4,4 +4,3 @@
 
 [node name="HideOnFlag" type="Node2D" unique_id=206159318]
 script = ExtResource("1_2p54b")
-flag = "SGDoor1"

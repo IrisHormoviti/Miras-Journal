@@ -927,7 +927,7 @@ func cmd(cmd_text := "") -> void:
 			if not "=" in text:
 				Global.toast(
 					"Flag \"" + text + "\" set to "
-					+ str(Event.flag_int(text)),
+					+ str(Event.get_flag(text)),
 				)
 		%DebugTextEdit.hide()
 		Global.controllable = true
@@ -1062,7 +1062,7 @@ func talk() -> void:
 		Audio.buzzer_sound()
 		return
 
-	var key: String = "d" + str(Event.day) + "_" + str(Event.flag_int(Party.current[focus].codename + "Talk"))
+	var key: String = "d" + str(Event.day) + "_" + str(Event.get_flag(Party.current[focus].codename + "Talk"))
 
 	if not key in dialog.get_cues():
 		key = "error"

@@ -1495,7 +1495,7 @@ func AsteriaBossFollowup() -> void:
 	await Bt.anim("Ability", asteria)
 	Transition.fade_in_out(Color.WHITE, 0.5, 0, 0)
 	await Event.wait(0.5)
-	if Event.flag_int("AsteriaBoss") < 4:
+	if Event.get_flag("AsteriaBoss") < 4:
 		for i in Bt.Troop:
 			match randi_range(0, 3):
 				0: i.Health += 20

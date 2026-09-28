@@ -540,20 +540,20 @@ What do I ask?
 	Mira.Neutral: Thank you, I was starving...
 - Nothing else to ask
 	Mira.Neutral: I think that all I had to ask. Thanks.
-	if flag_int("DazeQuestions") == 0:
+	if get_flag("DazeQuestions") == 0:
 		Daze.Neutral: What is all? You didn't ask anything!
 		Mira.Neutral: Oh I didn't, did I?
 		Mira.Neutral: Sorry, I forgot what I wanted to ask.
 		Daze.Neutral: ...
-	if flag_int("DazeQuestions") == 1:
+	if get_flag("DazeQuestions") == 1:
 		Daze.Neutral: That was... one question...
 		Mira.Neutral: Yeah, that's all I needed.
 		Daze.Neutral: Understood...
-	if flag_int("DazeQuestions") == 2:
+	if get_flag("DazeQuestions") == 2:
 		Daze.Neutral: That was just two question...
 		Mira.Neutral: I guess I didn't have as much on my mind as I expected, hehe.
 	=> daze_questions_done
-$> add_flag("DazeQuestions", flag_int("DazeQuestions") + 1)
+$> add_flag("DazeQuestions", get_flag("DazeQuestions") + 1)
 => daze_questions
 
 ~ get_journal
@@ -584,7 +584,7 @@ Daze.Neutral: Just stay here and rest while I'm away, alright?
 Mira.Neutral: Alright.
 if Party.get_member("Daze").FirstName != "Daze":
 	Mira.Neutral: Oh by the way, I didn't ask. What's your name?
-	if flag_int("DazeQuestions") < 3:
+	if get_flag("DazeQuestions") < 3:
 		Daze.Neutral: Oh, so you did have more things to ask.
 	Daze.Neutral: It's Daze.
 	$> Party.get_member("Daze").FirstName = "Daze"

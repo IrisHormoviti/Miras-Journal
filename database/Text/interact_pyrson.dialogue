@@ -4,7 +4,6 @@ import "res://database/Text/reserved_date.dialogue" as reserved_date
 #> progress_by_time(1)
 if date_is_reserved():
 	=>< {{get_reserved_date_dialog()}}
-	$>> give_control()
 elif time_of_day == 1:
 	I just got up... should I go back to bed?
 	if confirm_time_passage("Rest", "Will make me feel less tired."):
@@ -18,8 +17,6 @@ elif time_of_day == 5:
 	if confirm_time_passage("Sleep", "Sleep until next the morning."):
 		$> Event.progress_by_time(1)
 		$> Event.time_transition()
-	else:
-		$>> give_control()
 else:
 	if add_flag("eepy", 1):
 		I do feel pretty tired... Should I take a quick nap?
@@ -30,8 +27,6 @@ else:
 		$> Event.progress_by_time(1)
 		$> Event.time_transition()
 		$> remove_flag("eepy")
-	else:
-		$>> give_control()
 => END
 
 ~ gather_pyrson

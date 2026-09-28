@@ -109,7 +109,7 @@ func _on_body_entered(body: Node2D) -> void:
 		if take_control:
 			await Event.take_control(false, true, true)
 
-		if not kick_direction.is_vector(Vector2.ZERO):
+		if kick_direction:
 			kick()
 
 		if event_name != "":

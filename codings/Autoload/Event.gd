@@ -272,6 +272,7 @@ func check_flag(flag: StringName, value := 1) -> bool:
 func f(flag: StringName) -> bool:
 	# Replace spaces with underscores, a flag cannot contain spaces
 	flag = flag.replace(" ", "_")
+	flag = flag.replace("\n", "")
 
 	# "true" and "false" when left by themselves will always return that
 	if flag == "true":
@@ -317,25 +318,25 @@ func f(flag: StringName) -> bool:
 	if ">=" in flag:
 		var split := flag.split(">=")
 		return f(
-			flag.replace(split[0] + ">=" + split[1], str(flag_int(split[0]) >= flag_int(split[1]))),
+			flag.replace(split[0] + ">=" + split[1], str(get_flag(split[0]) >= get_flag(split[1]))),
 		)
 	# For greater expression
 	if ">" in flag:
 		var split := flag.split(">")
 		return f(
-			flag.replace(split[0] + ">" + split[1], str(flag_int(split[0]) > flag_int(split[1]))),
+			flag.replace(split[0] + ">" + split[1], str(get_flag(split[0]) > get_flag(split[1]))),
 		)
 	# For less or equal expression
 	if "<=" in flag:
 		var split := flag.split("<=")
 		return f(
-			flag.replace(split[0] + "<=" + split[1], str(flag_int(split[0]) <= flag_int(split[1]))),
+			flag.replace(split[0] + "<=" + split[1], str(get_flag(split[0]) <= get_flag(split[1]))),
 		)
 	# For lesser expression
 	if "<" in flag:
 		var split := flag.split("<")
 		return f(
-			flag.replace(split[0] + "<" + split[1], str(flag_int(split[0]) < flag_int(split[1]))),
+			flag.replace(split[0] + "<" + split[1], str(get_flag(split[0]) < get_flag(split[1]))),
 		)
 	# For not equals expression
 	if "!=" in flag:
@@ -343,7 +344,7 @@ func f(flag: StringName) -> bool:
 		return f(
 			flag.replace(
 				split[0] + "!=" + split[1],
-				str(flag_int(split[0]) != flag_int(split[1])),
+				str(get_flag(split[0]) != get_flag(split[1])),
 			),
 		)
 	# For equals expression
@@ -352,7 +353,7 @@ func f(flag: StringName) -> bool:
 		return f(
 			flag.replace(
 				split[0] + "=" + split[1],
-				str(flag_int(split[0]) == flag_int(split[1])),
+				str(get_flag(split[0]) == get_flag(split[1])),
 			),
 		)
 
@@ -431,6 +432,12 @@ func take_control(keep_ui := false, keep_followers := false, idle := false) -> v
 			Global.player.set_anim()
 
 
+func enable_followers() -> void:
+	for i in Global.room.followers:
+		i.dont_follow = false
+		i.state = NPC.S.CONTROLLED
+
+
 func give_control(camera_follow := false, bring_followers := true, reset_zoom := true) -> void:
 	if Global.player == null:
 		return
@@ -466,7 +473,7 @@ func give_control(camera_follow := false, bring_followers := true, reset_zoom :=
 
 
 ## Return the int value of a flag, or returns a nuber if given just a number
-func flag_int(string: String) -> int:
+func get_flag(string: String) -> int:
 	if string.is_valid_int():
 		return int(string)
 
@@ -481,12 +488,12 @@ func flag_progress(stri: String, to := 1) -> void:
 	if to == 0:
 		remove_flag(stri)
 	else:
-		flags.set(stri, max(flag_int(stri), to))
+		flags.set(stri, max(get_flag(stri), to))
 
 
 ## Check if the flag is equal or greater than the given value
 func f_past(string: String, has_passed := 9) -> bool:
-	if flag_int(string) >= has_passed:
+	if get_flag(string) >= has_passed:
 		return true
 	else:
 		return false
@@ -714,9 +721,10 @@ func start_time_events(location: String) -> void:
 	else:
 		match location:
 			"Pyrson":
-				if Global.room.is_dungeon:
-					await sequence("return_home_pyrson")
-				else:
+				#if Global.room.is_dungeon:
+					#await sequence("return_home_pyrson")
+
+				#else:
 					await sequence("wake_home")
 
 			"Dungeon":
@@ -750,7 +758,7 @@ func condition(con: String) -> int:
 ## Change any parameters from the time change
 func setup_time_changes(from: int, to: int) -> void:
 	if f_past("eepy", 1):
-		var eepy := flag_int("eepy")
+		var eepy := get_flag("eepy")
 		add_flag("eepy", eepy + to - from)
 		if eepy >= 2 or time_of_day == TOD.MORNING:
 			remove_flag("eepy")

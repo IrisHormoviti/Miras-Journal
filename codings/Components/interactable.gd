@@ -460,7 +460,7 @@ func _on_button_pressed() -> void:
 			if Event.check_flag("DisableVeinet"):
 				await Textbox.open("interact_abad", "vein_point_idk")
 			elif Event.check_flag(get_parent().name):
-				Event.veinet_map(get_parent().name.replace("VP", ""))
+				Global.veinet_map(get_parent().name.replace("VP", ""))
 			else:
 				Event.add_flag(get_parent().name, true)
 				vein_check()

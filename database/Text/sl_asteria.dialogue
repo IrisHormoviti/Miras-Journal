@@ -1,5 +1,8 @@
-~ prepare
-do Textbox.open("rank"+str(Event.condition("sl_maple"))+"_prepare")
+match get_flag("sl_asteria"):
+	when 0:
+		=> rank1_prepare
+	when 1: 
+		=> rank2_prepare
 => END
 
 ~ rank1_prepare

@@ -9,7 +9,7 @@ var is_ready: bool = false
 var index: int = 0
 var camera_index: CameraIndex
 var cam := Camera2D.new()
-var followers: Array[CharacterBody2D] = []
+var followers: Array[Follower] = []
 var stairs: Array[Stair]
 var markers: Array[Marker2D]
 var layers: Array[TileMapLayer]
@@ -220,7 +220,7 @@ func _physics_process(delta: float) -> void:
 		$SubRoomBg.position = cam.position
 
 
-func go_to_subroom(subroom: String, fast := false) -> Vector2:
+func go_to_subroom(subroom: String) -> Vector2:
 	var search_nodes := get_children()
 
 	if has_node(^"Transfers"):
@@ -229,16 +229,21 @@ func go_to_subroom(subroom: String, fast := false) -> Vector2:
 	for i in search_nodes:
 		if not is_instance_valid(i): continue
 		if i is SubRoom and i.name == subroom:
-			if fast:
-				i.transition(0)
-			else:
-				await i.transition(0)
-
+			i.transition(0)
 			return i.cam_pos
 		elif i is TransferZone and i.name == "Transfer" + subroom:
 			return i.come_from()
 
 	return Event.get_marker_pos(subroom)
+
+
+func transition_to_subroom(subroom: String) -> void:
+	var search_nodes := get_children()
+
+	for i in search_nodes:
+		if not is_instance_valid(i): continue
+		if i is SubRoom and i.name == subroom:
+			await i.transition(0)
 
 
 func get_layers() -> Array[TileMapLayer]:

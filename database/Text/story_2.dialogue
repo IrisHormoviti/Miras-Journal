@@ -7,12 +7,12 @@ But I guess this is my home for the time being...
 [hide]
 {{alcine}} is resting peacfully in the side of the room.
 [hide]
-do wait(2)
+$> wait(2)
 *Knock Knock*
-set Event.npc("RoomMira").position = Vector2(90, 412)
-do Event.npc("RoomMira").set_anim("SitRight")
+$> RoomMira.position = Vector2(90, 412)
+$> RoomMira.set_anim("SitRight")
 Mira: Come in.
-do spawn("Daze", Vector2(179, 438), "L")
+$> spawn("Daze", Vector2(179, 438), Direction.LEFT)
 The door creaks open.
 Daze.Neutral: Hey...
 Daze.Neutral: How are you doing?
@@ -35,53 +35,56 @@ Daze.Neutral: ...
 Daze quickly glance around before looking back at me.
 Daze.Neutral: What if I told you I already have a lead?
 [hide]
-do npc("RoomMira").bubble("Surprise")
+$> RoomMira.bubble("Surprise")
 Daze.Neutral: Look, let's talk about this later in the tavern. I'll be waiting there. Okay?
 => END
 
 ~ nov3_tavern
-do Party.set_to(["Mira", "Alcine"])
-do spawn("Daze", Vector2(551, 1046), "D")
-do spawn("Asteria", Vector2(589, 1094), "L")
-do! zoom(4)
-do! camera_move(Vector2(570, 1080))
-do npc("P").collision(false)
-do! npc("P").go_to(Vector2(513, 1071))
-do wait(1)
-set npc("F1").BodyState = NPC.IDLE
-do! npc("F1").go_to(Vector2(520, 1056))
-do wait(1)
+$> Party.set_to(["Mira", "Alcine"])
+$> spawn("Daze", Vector2(551, 1054), Direction.DOWN)
+$> spawn("Asteria", Vector2(589, 1094), Direction.LEFT)
+$>> zoom(4)
+$>> camera_move(Vector2(570, 1080))
+$> player.collision(false)
+$>> player.go_to(Vector2(513, 1071))
+$> wait(1)
+$> npc("F1").BodyState = NPC.IDLE
+$>> npc("F1").go_to(Vector2(520, 1056))
+$> wait(1)
 Mira.Neutral: I'm here.
 Mira.Neutral: Oh, Asteria
 Asteria.Neutral: ...
-do npc("P").set_anim("SitRight", false, true)
-do jump_to_global(npc("P"), Vector2(516, 1090))
+$> player.set_anim("SitRight", false, true)
+$> jump_to_global(player, Vector2(516, 1090))
 Mira.Upset: ...I'm so sorry for yesterday.
-Asteria.Neutral: It's fine... your reaction was understandable.
-Mira.Curious: What're you two up to?
-Asteria.Neutral: Mot much, he was just saying we should wait for you. Apparently it's about something important.
+Asteria.Neutral: It's fine... I can understand...
+Mira.Curious: What're two up to?
+Asteria.Neutral: Mot much. He said we should wait for you to talk about something.
 Asteria.Neutral: Right now we're just wondering what to order.
 Daze.Neutral: It's surprising just how much variety they have while being self sustaining!
 Asteria.Neutral: Right, I don't know where we would be without Esto and the others.
 I look at the menu, checking if there's something that catches my eye.
 .[wait=0.5].[wait=0.5].
-do! npc("P").bubble("Surprise")
+$>> player.bubble("Surprise")
 Mira.Angry: You call this variety!? There's nothing here but vegetables!
 Asteria.Neutral: Huh? What were you looking for?
 [hide]
-do npc("P").bubble("Ellipsis")
+$>> player.bubble("Ellipsis")
 Daze.Neutral: I presume you were looking for... meat?
-do! npc("P").bubble("Sweat")
+$>> player.bubble("Sweat")
 Mira.Upset: [small]Yeah...[/small]
 Daze.Neutral: It must be dangerous most people to wander out of the village for hunting, with monsters lurking eveywhere.
-Daze.Neutral: So, growing crops here is much easier and safer. Right?
-Asteria.Curious: The idea of eating animals just sounds disgusting to me...
-Disgusting?! [p]...Well I guess it might seem that way to someone who's never had meat.
+Daze.Neutral: So, growing crops here is much easier and safer.
+Daze.Neutral: Right?[p][wait=1]Versea?
+Asteria.Curious: The idea of eating animals just sounds disgusting...
+Mira.Surprised: Disgusting?! 
+...Well I guess it might seem that way to someone who's never tried.
 Or maybe it's just a Frayse thing?
 Mira.Neutral: *sigh* [wait=1][p]Well, do you suggest anything then?
 [hide]
-do transition()
-do detransition()
+$> Transition.wipe(Direction.RIGHT)
+$> wait(1)
+$> Transition.unwipe()
 Asteria.Curious: So, what was it you wanted to talk about anyways?
 Daze.Neutral: Ms. Versea, you said something intriguing yesterday.
 Daze.Neutral: You've been here for all this time and have never seen that bunker open, correct?
@@ -96,15 +99,17 @@ Daze.Neutral: I don't know for sure, I wanted to get your opinions on this first
 What was different about me compared to everyone else who's tried entering?
 - You haven't been here long
 	Mira.Curious: Maybe it's because I haven't been in the realm long enough.
-	Mira.Neutral: There could be something different about people who have been exposed to [i]these[/i] kinds of places...
+	Mira.Neutral: There could be something different about people who have been exposed to [i]places like this[/i]...
 	Daze.Neutral: Hm, but then it should have worked for me too, right?
-	Mira.Neutral: But 2 days ago you said you've been-
-	Daze.Neutral: I didn't mean I've been to other isolated realms like this.
-	Mira.Angry: Then what DID you mean? Stop being so cryptic!
+	Mira.Neutral: Huh?[p]But I thought you're well familiar with these realms!
+	Daze.Neutral: Yeah, theoretically.
+	Daze.Neutral: It doesn't mean I've ever actually been inside one.
 	[hide]
-	do npc("Daze").bubble("Sweat")
-	Daze.Neutral: I don't think that's relevant at this moment. But I will assure you I haven't been in a place like this before.
-	Nice question dodging Daze. He always tries to avoid talking about his past.
+	$> player.bubble("Sweat")
+	Mira.Neutral: I swear you told me you're very familiar with the situation...
+	Daze.Neutral: I don't think that's relevant at this moment-
+	Daze.Neutral: But I will assure you I haven't been in a place like this before.
+	He always tries to avoid talking about his past...[p]It's not subtle at all.
 	Asteria.Neutral: So what then?
 	=> tavern_options
 - You had something they didn't
@@ -117,7 +122,7 @@ What was different about me compared to everyone else who's tried entering?
 	Daze.Neutral: That's... from the Guardian!
 	Asteria.Neutral: Are you talking about one of the three-eyed ones!?
 	Mira.Neutral: Yeah, it did have three-
-	do! npc("Asteria").bubble("Surprise")
+	$>> Asteria.bubble("Surprise")
 	Asteria.Angry: YOU TWO WENT AGAINST ONE OF THOSE!!!???
 	Mira.OpenMouth: Oh yeah I almost died to one, and Daze cut it in half.
 	Asteria.Neutral: [small]I have no words for you two.
@@ -127,30 +132,32 @@ What was different about me compared to everyone else who's tried entering?
 	Asteria.Neutral: It sounds stupid...
 	Mira.Neutral: Maybe it's this orb it was trying to guard! The Guardian Orb!!!
 	Asteria.Neutral: *Sigh...*
-	do add_flag("TavernTheory", 2)
+	$> add_flag("TavernTheory", 2)
 - You're a Cyrenian
 	Mira.Curious: Could it be because I'm a Cyrenian?
 	Daze.Neutral: You're saying it's designed specifically to be opened [i]only[/i] by Cyrenians?
 	Daze.Neutral: Have Cyrenians ever had any involment with this place?
-	do! npc("Asteria").bubble("Question")
+	$>> npc("Asteria").bubble("Question")
 	Asteria.Neutral: What's.. a Cyrenian?
 	Mira.Neutral: Oh.[wait=0.5] Right, I guess it's not that surprising. [wait=1]\nThere aren't many of us left.
-	Mira.Neutral: It's... my kind.[wait=1] Large triangular ears, thick fur coats, small posture, et cetera, et cetera.
-	Asteria.Neutral: Right... thanks for letting me know. \nThen I don't I've ever seen your people around here...
-	do! npc("Asteria").bubble("Sweat")
+	Mira.Neutral: It's... my kind.
+	Mira.Smile: Large triangular ears, thick fur coats, small posture, et cetera, et cetera.
+	Asteria.Neutral: Right... 
+	Asteria.Neutral: Then... I don't I've ever seen your people around here.
+	$>> npc("Asteria").bubble("Sweat")
 	Asteria.Neutral: B-But don't count on me for this! I mean I didn't even know of your... species until... now...
 	Mira.Neutral: That means... this is a plausible explaination!
-	do add_flag("TavernTheory", 1)
+	$> add_flag("TavernTheory", 1)
 - You pushed it in a specific way
 	Mira.Neutral: Maybe I pushed it in a very particular way that triggered it?
 	Daze.Neutral: What's that specific way?
 	[hide]
-	do npc("P").bubble("Ellipsis")
+	$> player.bubble("Ellipsis")
 	Mira.Neutral: I have no idea.
 	Mira.Neutral: I just pushed it as far as I know, but maybe I accidentally pushed it in the secret way?
 	[hide]
-	do! npc("Daze").bubble("Ellipsis")
-	do npc("Asteria").bubble("Ellipsis")
+	$>> Daze.bubble("Ellipsis")
+	$> Asteria.bubble("Ellipsis")
 	Daze.Neutral: Somehow I doubt that's the answer.
 	=> tavern_options
 Daze.Neutral: This could explain it...
@@ -161,44 +168,49 @@ Asteria.Neutral: That place is infested, it's basically a monster nest!
 Daze.Neutral: Nothing I haven't dealt with before, especially with your help it shouldn't be a problem.
 Daze.Neutral: Perhaps those bunkers might lead us to those Keepers you mentioned.
 Asteria.Curious: I can take you there if you wish, but...
-do! npc("P").bubble("Excited")
+$>> player.bubble("Excited")
 Mira.Smile: We're going!
 [hide]
-do npc("Asteria").bubble("Sweat")
+do Asteria.bubble("Sweat")
 Mira.Smile: Alcine, do you want to come too?
 Alcine.Laugh: Whimm!
-Daze.Neutral: It's a plan! We'll meet at the gate by sunset then!
+Daze.Neutral: It's a plan! We'll meet at the gate by sundown then!
 [hide]
-do transition()
-do detransition()
+$> Transition.wipe(Direction.RIGHT)
+$> wait(1)
+$> Transition.unwipe()
 Placeholder description: Esto, the owner of the place is next to them.
 Daze.Neutral: It was delicious, Thanks a ton once again Esto... sir.
 Mira.Upset: Eh, it was okay...
 Mira.Upset: Um, how much does this all cost? I'm kind of strapped for money.
 Esto: Oh, don't worry about that! We don't do that here.
-do! npc("P").bubble("Question")
+$>> player.bubble("Question")
 Mira.Surprised: Huh? OH right, do you guys use like a different currency or-
 Asteria.Neutral: Esto's policy is that anyone can get one meal per day.
 Asteria.Neutral: That is... Unless he gets mad at you, then you get zero.
-Esto: Ehehehe, you blaming me for that now?
+Esto: Ehehehe, you're still blaming me for that one now?
 [hide]
-do npc("Asteria").bubble("Sweat")
+$> Asteria.bubble("Sweat")
 Asteria.Neutral: Regardless, we don't really do things for payment, it's mostly for the good of everyone.
 Asteria.Neutral: We sometimes pay it forward by doing them favors or trading goods.
 Mira.Worried: That's a lot of work for no reward...
 Esto: My reward is seeing the village not passing from hunger!
 Esto: That's more than enough for me.
-I feel so entitled... He's been feeding everyone for free, and all I did was complain about not getting what I wanted.
+[hide]
+$> wait(1)
+I feel so entitled... 
+He's been feeding everyone for free, and all I did was complain about not getting what I wanted.
 I should show more gratitude.
 Mira.Upset: Well... 
 Mira.Smile: Thank you.
 [hide]
-do transition()
-do Party.set_to(["Mira"])
-After finishing our meal we disbanded, as we would regroup by the gate later. For now I'll go back to my room.
+$> Transition.fade_in()
+$> Party.set_to(["Mira"])
+After finishing our meal we disbanded, as we would regroup by the gate later. 
+For now, I'll go back to my room.
 $> to_day = 3
 $> to_time = 3
-do! time_transition()
+$>> time_transition()
 => END
 
 ~ nov3_afternoon
@@ -208,7 +220,12 @@ Or it could just be a complete dead-end.
 I hope Daze's hypothesis is right... it seems like our only hope right now.
 As long as we have something to strive for, it'll all be fine...
 ...
-I guess it's time to leave now, the others should be waiting up at the gate.
+[hide]
+$> RoomMira.move_dir(Direction.RIGHT)
+$> Item.add_item("LightweightAxe", "Key")
+$> Party.get_member("Mira").Weapon = Item.get_item("LightweightAxe", "Key")
+Since my arm is all better, I guess I can use this again.
+It's time to leave now, the others should be waiting up at the gate.
 => END!
 
 ~ nov3_exit
@@ -219,7 +236,8 @@ Daze.Neutral: Is everyone ready?
 	Mira.Neutral: I'm ready, let's go!
 	Daze.Neutral: Someone's excited...
 	Asteria.Neutral: I'll lead the way, just follow me!
-	do! sequence("nov3_enterSG")
+	[hide]
+	=> nov3_sg_enter
 - Just a minute
 	Mira.Neutral: Just a minute, I need to do something.
 	Asteria.Neutral: Alright, hurry it up!
@@ -228,9 +246,26 @@ Daze.Neutral: Is everyone ready?
 => END
 
 ~ nov3_sg_enter
+$> Transition.close_in()
+$> travel_to("ShardGardens", Vector2(26, 84), 0, null, false)
+$> heal_party()
+$> Party.set_to(['Mira', 'Alcine', 'Asteria', 'Daze'])
+$> camera_unlock()
+$> Transition.unwipe()
+$> location_name("Shard Gardens")
+$> camera_move(Vector2(663, 241), 0)
+$>> camera_move(Vector2(190, 84), 6)
+$> wait(4)
+$> player.collision(false)
+$> enable_followers()
+$> player.move_by(Vector2(144, 0))
 Asteria.Neutral: Here we are. The place should be somewhere up ahead.
 Mira.Neutral: Whoah, everything's so shiny!
 Asteria.Neutral: Don't go near the shiny stuff! Those tiny crystal shards hurt!
+[hide]
+$> give_control(true)
+$> wait(2)
+$>> Passive.open("story_2", "very_shiny")
 => END
 
 ~ very_shiny
@@ -242,9 +277,9 @@ Alcine.Tired: Wooom...
 => END
 
 ~ cast_lines_sg
-do player.look_to("U")
+do player.look_to(Direction.UP)
 do player.camera_follow(false)
-set Camera.position = Vector2(-158, -18)
+$> Camera.position = Vector2(-158, -18)
 do wait(1)
 Mira.Neutral: Look, there are a lot of cast lines scattered around here.
 Mira.Neutral: Is this some sort of spell?
@@ -300,7 +335,7 @@ else:
 
 ~ sg_find_bunker
 do player.camera_follow(false)
-set Camera.position += Vector2(0, -120)
+$> Camera.position += Vector2(0, -120)
 if Party.has_member_index(3):
 	Asteria.Neutral: This is it.
 	Mira.Neutral: What's the deal with all the crystals?
@@ -312,7 +347,7 @@ if Party.has_member_index(3):
 else:
 	This must be the bunker.
 	I should come back here with the others another time, this seems quite dangerous
-	do npc("P").move_dir("D")
+	do player.move_dir(Direction.DOWN)
 	do remove_flag("EvSGfindBunker")
 do player.camera_follow(true)
 => END
@@ -321,10 +356,10 @@ do player.camera_follow(true)
 All of the cast lines are gathering into the big crystal here.
 I don't know what will happen if I touch this... Should I do it?
 - Touch it
-	do! sequence("lazulite_boss")
+	$>> sequence("lazulite_boss")
 - Do not
-	do npc("P").move_dir("D")
-	do! give_control()
+	$> player.move_dir(Direction.DOWN)
+	$>> give_control()
 => END
 
 ~ lazulite_heart_intro
@@ -333,31 +368,31 @@ Daze.Neutral: A Guardian...
 Asteria.Neutral: Hey! Why are you using Mira's thing!?
 Mira.Neutral: Heck yeah!
 [hide][next]
-do! Bt.pop_num(Party.Leader, "1")
+$>> Bt.pop_num(Party.Leader, "1")
 Mira.Neutral: Ow.
 Mira.Neutral: A little help here?
 => END
 
 ~ lazulite_heart_1
-do Bt.move(Party.Leader, Vector2(-20,-40), 0.3)
-do! Bt.focus_cam(Party.Leader)
+$> Bt.move(Party.Leader, Vector2(-20,-40), 0.3)
+$>> Bt.focus_cam(Party.Leader)
 Mira.Neutral: Thanks {{alcine}}!
-do! Bt.entrance_anim(Party.Leader)
-set Bt.no_misses = false
+$>> Bt.entrance_anim(Party.Leader)
+$> Bt.no_misses = false
 => END!
 
 ~ lazulite_heart_2
 if Party.Member1.has_state("KnockedOut"):
-	do! Party.Member1.remove_state("KnockedOut")
-	do! Party.Member1.add_health("10")
-	do! Party.Member1.add_aura("5")
+	$>> Party.Member1.remove_state("KnockedOut")
+	$>> Party.Member1.add_health("10")
+	$>> Party.Member1.add_aura("5")
 Alcine.Neutral: ...!?
 Mira.Neutral: What's wrong?
 Asteria.Neutral: So they can feel it too...
 Daze.Neutral: ?
-do toast(alcine+ " hesitates.")
-set Party.Member1.NextAction = "Attack"
-set Party.Member1.NextMove = Ability.nothing()
+$> toast(alcine+ " hesitates.")
+$> Party.Member1.NextAction = "Attack"
+$> Party.Member1.NextMove = Ability.nothing()
 => END!
 
 ~ lazulite_heart_3
@@ -388,29 +423,28 @@ Asteria.Neutral: Ok fine, I guess we're calling it Lazulite Heart then....
 => END
 
 ~ enter_bunker_2
-if Event.f("Bunker2Open"):
+if Event.check_flag("Bunker2Open"):
 	Daze.Neutral: You should've tried touching it without the orb...
 	Mira.Neutral: Sorry, didn't think this through-
 	Asteria.Neutral: Don't worry much about it, there are more doors like this.
 else:
-	do player.camera_follow(false)
-	set Global.Camera.position -= Vector2(0, 50)
+	$> camera_move(Vector2(0, 50))
 	Mira.Neutral: So we can go in now?
 	I reach my hand to the machine
 	Daze.Neutral: LEVENOR, DON'T-[next]
 	[hide][next]
-	do Event.add_flag("Bunker2Open")
-	do check_party.emit()
-	do screen_shake(2, 20, 0.4)
-	do screen_shake(10, 5, 0.2)
-	do Event.wait(2)
-	do player.camera_follow(true)
+	$> Event.add_flag("Bunker2Open")
+	$> check.emit()
+	$> screen_shake(2, 20, 0.4)
+	$> screen_shake(10, 5, 0.2)
+	$> Event.wait(2)
+	$> camera_move(player.position)
 	Mira.Shocked: E- End of content!?
 	Daze.Neutral: Seems this is as far as we're going today.
 	Asteria.Neutral: Thank you so much for playing!
 	Alcine.Laugh: Wheeeaaa!
-	do Loader.save()
-	do! Event.sequence("demo_credits")
+	$> Loader.save()
+	$>> Event.sequence("demo_credits")
 => END
 	Daze.Neutral: 'Grats, now we can't test out any of our theories...
 	Mira.Neutral: Whoops.

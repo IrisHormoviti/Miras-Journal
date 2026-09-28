@@ -498,7 +498,7 @@ animations = [{
 [sub_resource type="Resource" id="Resource_xtlyj"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("15_ohs4u"), ExtResource("17_lmpvr"), ExtResource("15_ohs4u")])
-ScenePosition = Vector2(650, 465)
+ScenePosition = Vector2(657, 439)
 EscPosition = Vector2i(26, 12)
 metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
@@ -1333,7 +1333,7 @@ offset = Vector2(0.0496826, -5.866)
 position = Vector2(2, -215)
 
 [node name="ScenePosition" type="Marker2D" parent="EnemySG1" unique_id=1030115642]
-position = Vector2(13, -42)
+position = Vector2(20, -68)
 
 [node name="EnemySG10" parent="." unique_id=559783401 instance=ExtResource("4_ujeyr")]
 position = Vector2(-304, -44)
@@ -1750,6 +1750,7 @@ navigation_layers = 2
 metadata/_edit_group_ = true
 
 [node name="ShardHazards" type="Node2D" parent="." unique_id=886986562]
+use_parent_material = true
 
 [node name="Shard1" parent="ShardHazards" unique_id=2005192995 instance=ExtResource("26_yhh0x")]
 z_index = -1
@@ -1901,7 +1902,7 @@ frame_progress = 0.142851
 [node name="Shard5" parent="ShardHazards" unique_id=1216933484 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
-position = Vector2(682, 323)
+position = Vector2(713, 323)
 trigger_size = Vector2i(20, 20)
 take_control = false
 return_control = false
@@ -1940,7 +1941,11 @@ return_control = false
 event_name = "hurt_1"
 
 [node name="CollisionShape2D" parent="ShardHazards/Shard7" index="0" unique_id=624211629]
+use_parent_material = true
 shape = SubResource("RectangleShape2D_ggbak")
+
+[node name="Icon" parent="ShardHazards/Shard7" index="1" unique_id=482570356]
+use_parent_material = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard7" unique_id=903898466]
 use_parent_material = true

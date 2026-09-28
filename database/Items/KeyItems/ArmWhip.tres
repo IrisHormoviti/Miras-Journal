@@ -13,7 +13,7 @@ filter_clip = true
 [resource]
 script = ExtResource("2_kt1w0")
 attack = ExtResource("2_f6gvw")
-power = 14
+power = 15
 Name = "Arms?"
 Description = "Their liquid arm can extend and become more solid at any point, making it a potentially lethal weapon."
 ItemType = "Key"

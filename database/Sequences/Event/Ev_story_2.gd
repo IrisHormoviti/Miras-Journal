@@ -32,30 +32,6 @@ func nov3_afternoon() -> void:
 	await Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(102, 440))
 	Global.player.look_to(Direction.RIGHT)
 
-
-func nov3_enterSG() -> void:
-	await Loader.travel_to("ShardGardens", Vector2(26, 84), 0, "", false)
-	Global.heal_party()
-	Party.reset_party()
-	Party.add("Alcine")
-	Party.add("Asteria")
-	Party.add("Daze")
-	Global.player.camera_follow(false)
-	Global.location_name("Shard Gardens")
-	Global.camera.position = Vector2(663, 241)
-	var t := create_tween().set_ease(Tween.EASE_IN_OUT)
-	t.tween_property(Global.camera, "position", Vector2(190, 84), 6)
-	await Event.wait(4)
-	Global.player.collision(false)
-	await Event.take_control(false, true)
-	await Global.player.move_by(Vector2(6, 0))
-	await Textbox.open(name, "nov3_sg_enter")
-	Event.give_control(true)
-	Event.add_flag("Nov3_WentToSG")
-	await Event.wait(2)
-	Passive.open(name, "very_shiny")
-
-
 func sg_bunker_entrance() -> void:
 	if Event.f("DefeatedLazuliteHeart"):
 		await Event.take_control()
