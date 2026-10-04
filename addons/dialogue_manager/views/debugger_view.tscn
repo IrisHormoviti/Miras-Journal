@@ -2,6 +2,10 @@
 
 [ext_resource type="Script" uid="uid://bwbcna2qcjs3c" path="res://addons/dialogue_manager/views/debugger_view.gd" id="1_rkwgn"]
 
+[sub_resource type="DPITexture" id="DPITexture_brc5y"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
+"
+
 [node name="DebuggerView" type="PanelContainer" unique_id=2089218636]
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,12 +19,13 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 1
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Dialogue Manager isn't running."
+text = "Mira's Journal isn't running."
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Content" type="HSplitContainer" parent="." unique_id=655238255]
 unique_name_in_owner = true
+visible = false
 layout_mode = 2
 
 [node name="StateTree" type="Tree" parent="Content" unique_id=1715443994]
@@ -52,6 +57,8 @@ size_flags_horizontal = 3
 [node name="ClearButton" type="Button" parent="Content/LogContainer/LogToolbar" unique_id=202664467]
 unique_name_in_owner = true
 layout_mode = 2
+tooltip_text = "Clear"
+icon = SubResource("DPITexture_brc5y")
 flat = true
 
 [node name="LogOutput" type="RichTextLabel" parent="Content/LogContainer" unique_id=149198174]

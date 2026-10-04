@@ -1071,7 +1071,7 @@ func ItemCure(target: Actor) -> void:
 	Bt.focus_cam(CurrentChar, 0.3)
 	Bt.zoom(5.5)
 	print(Bt.CurrentAbility.Types)
-	if "Healing" in Bt.CurrentAbility.Types:
+	if Ability.TP.HEALING in Bt.CurrentAbility.Types:
 		Bt.heal(CurrentChar, int(Bt.CurrentAbility.Parameter))
 
 	CurrentChar.remove_state(Bt.CurrentAbility.InflictsState)
@@ -1495,7 +1495,7 @@ func AsteriaBossFollowup() -> void:
 	await Bt.anim("Ability", asteria)
 	Transition.fade_in_out(Color.WHITE, 0.5, 0, 0)
 	await Event.wait(0.5)
-	if Event.flag_int("AsteriaBoss") < 4:
+	if Event.get_flag("AsteriaBoss") < 4:
 		for i in Bt.Troop:
 			match randi_range(0, 3):
 				0: i.Health += 20

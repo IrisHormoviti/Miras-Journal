@@ -299,20 +299,19 @@ func flame_out_of_the_way() -> void:
 
 
 func activate_flame(animate := true) -> void:
-	Event.add_flag(&"FlameActive")
-	await Event.wait()
+	Event.add_flag(&"Player/Flame")
 	check_flame(true)
+
 	if animate:
 		local_controllable = false
-		state = S.NONE
-		await set_anim("FlameActive", true, false)
+		await set_anim("FlameActive", true, true)
 		set_anim("IdleRight", false)
 		local_controllable = true
 
 
 func check_flame(force := false) -> void:
 	if not controllable() and not force: return
-	flame_active = Event.check_flag(&"FlameActive")
+	flame_active = Event.check_flag(&"Player/Flame")
 
 	if flame_active:
 		if get_node_or_null("Flame") == null: return
@@ -431,7 +430,7 @@ func controllable() -> bool:
 
 
 func attack() -> void:
-	if not Item.check_item("LightweightAxe") or not Event.check_flag("HasBag"):
+	if not Item.check_item("LightweightAxe") or Event.check_flag("Player/NoBag"):
 		Audio.buzzer_sound()
 		return
 

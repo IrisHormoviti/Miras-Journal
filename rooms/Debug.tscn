@@ -487,7 +487,6 @@ position = Vector2(-191, 60)
 flag = "HasBag"
 text_file = "interactions"
 text_cue = "kick_debug"
-kick_direction = Vector2(1, 0)
 
 [node name="InteractBush" parent="." unique_id=1801924940 instance=ExtResource("6_pmuyc")]
 position = Vector2(60.2736, 36.5526)
@@ -521,7 +520,7 @@ shadow_item_cull_mask = 3
 texture = SubResource("GradientTexture2D_tk2xs")
 script = ExtResource("7_bbmkb")
 
-[node name="ItemDebugPotion" parent="." unique_id=652741038 instance=ExtResource("13_b8v1n")]
+[node name="SmallPotion13" parent="." unique_id=652741038 instance=ExtResource("13_b8v1n")]
 position = Vector2(-61, 59)
 item_name = "SmallPotion"
 
@@ -621,5 +620,3 @@ shape = SubResource("RectangleShape2D_arkuh")
 
 [node name="JumpPoint" parent="." unique_id=2144299483 instance=ExtResource("26_12esp")]
 position = Vector2(61, 37)
-
-[connection signal="action" from="IteractLamp" to="IteractLamp/PointLight2D" method="_on_interactable_action"]

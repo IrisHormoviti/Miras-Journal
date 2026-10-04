@@ -10,12 +10,18 @@ extends Node2D
 		notify_property_list_changed()
 @export_enum("Failed to Load") var item_name := ""
 
+@onready var interactable: Interactable = $Interactable
+@onready var sprite: AnimatedSprite2D = $Sprite
+
 
 func _ready() -> void:
-	$Sprite.frame = randi_range(0, 13)
-	$Interactable.itemtype = item_type
-	$Interactable.item = item_name
-	$Interactable.hide_on_flag = name
+	name = item_name + str(get_index())
+	sprite.frame = randi_range(0, 13)
+	interactable.itemtype = item_type
+	interactable.item = item_name
+
+	if not Engine.is_editor_hint():
+		interactable.hide_on_flag = Global.room.codename() + '/Item/' + name
 
 
 func _validate_property(property: Dictionary) -> void:
@@ -26,11 +32,14 @@ func _validate_property(property: Dictionary) -> void:
 			"Bti": type = "BattleItems"
 			"Mat": type = "Materials"
 			"Key": type = "KeyItems"
+
 		var files := DirAccess.get_files_at("res://database/Items/" + type)
 		var items: Array[String]
 		for i in files:
 			items.append(i.replace(".tres", ""))
+
 		property.hint_string = ",".join(items)
-		if get(property.name) != "" and get(property.name)not in items:
+
+		if get(property.name) != "" and get(property.name) not in items:
 			item_type = ["Con", "Mat", "Bti", "Key"].pick_random()
 			notify_property_list_changed()

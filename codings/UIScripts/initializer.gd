@@ -18,7 +18,7 @@ func _ready() -> void:
 	print("Game Started!")
 	glyph_update()
 	error_hint.text = "Hint: Glyph"
-	Event.add_flag("DisableMenus")
+	Event.add_flag("UI/Disable")
 	#Controller.controller_changed.connect(glyph_update)
 	if FileAccess.file_exists("user://Autosave.tres"):
 		game_exists = true

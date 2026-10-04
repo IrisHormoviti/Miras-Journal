@@ -19,8 +19,8 @@ else:
 => END
 
 ~ skeleton
-if not f("LookedAtSkeleton"):
-	do add_flag("LookedAtSkeleton", true)
+if not check_flag("LookedAtSkeleton"):
+	$> add_flag("LookedAtSkeleton", true)
 	It seems to be... a skeleton. Creepy.
 	From the skull shape it seems human, I think.
 else: 
@@ -28,17 +28,17 @@ else:
 => END!
 
 ~ symbol
-if flag_int("LookedAtTempleSymbol") == 0:
-	do flag_progress("LookedAtTempleSymbol", 1)
+if get_flag("LookedAtTempleSymbol") == 0:
+	$> flag_progress("LookedAtTempleSymbol", 1)
 	There is a symbol engraved on the ground.
 	Looks like some sort of bird... with a clover head?
 	...
 	I just noticed that it's not perfectly symmetrical, which makes looking at it increasingly painful.
-elif flag_int("LookedAtTempleSymbol") == 1: 
-	do flag_progress("LookedAtTempleSymbol", 2)
+elif get_flag("LookedAtTempleSymbol") == 1: 
+	$> flag_progress("LookedAtTempleSymbol", 2)
 	The pain grows.
-elif flag_int("LookedAtTempleSymbol") == 2:
-	do flag_progress("LookedAtTempleSymbol", 3)
+elif get_flag("LookedAtTempleSymbol") == 2:
+	$> flag_progress("LookedAtTempleSymbol", 3)
 	This place seems like an old abandoned temple, so this must be some sort of religious symbol.
 	I don't recall ever seeing something like it though.
 else: 
@@ -47,11 +47,11 @@ else:
 
 ~ statue_legs
 if not f("LookedAtStatue"):
-	do add_flag("LookedAtStatue", true)
+	$> add_flag("LookedAtStatue", true)
 	Looks like a statue.
 	Or, to be more precise, the legs of a statue.
 else:
-	do add_flag("LookedAtStatue", false)
+	$> add_flag("LookedAtStatue", false)
 	I can't tell the species of whoever this satue depicted.
 	But it's probably not Cyrenian or Eyvi judging from the shape.
 
@@ -69,7 +69,7 @@ else:
 	There's cyrenian writing on this sign.
 	It says...[wait=0.5] "Saving"...[wait=0.5] "spot"?
 	Oh![wait=0.5][p]It's "Storage Area".
-	do add_flag("AmberelmSignStorage")
+	$> add_flag("AmberelmSignStorage")
 => END
 
 ~ broken_bridge
@@ -86,18 +86,18 @@ I should be able to get to the other side with enough speed.
 => END
 
 ~ the_sky
-do Global.Player.camera_follow(false)
-do Global.Player.look_to(Vector2(0, -1))
-set Global.get_cam().position -= Vector2(0, 24)
-do Event.wait(0.5)
+$> Global.Player.camera_follow(false)
+$> Global.Player.look_to(Vector2(0, -1))
+$> Global.get_cam().position -= Vector2(0, 24)
+$> Event.wait(0.5)
 if Event.f("TheSkyAmberelm"):
 	Mira.Neutral: ...
 else:
 	Mira.Neutral: The sky here is as strange as ever.
 	Mira.Neutral: Looks like we're near the sea, but it fades into those strange lines.
 	Mira.Neutral: It must be so far from my home...
-	do Event.add_flag("TheSkyAmberelm", true)
-do Global.Player.camera_follow(true)
+	$> Event.add_flag("TheSkyAmberelm", true)
+$> Global.Player.camera_follow(true)
 => END
 
 ~ wrong_way
@@ -112,11 +112,11 @@ if Party.size() == 1:
 		Should I sit here for a bit?
 elif Party.has_member("Mira"):
 	Mira.Neutral: [[Wanna rest here for a bit?|Should we take a break?|Let's take a break.|Seems like a good place to rest.]]
-do Event.progress_by_time(1)
+$> Event.progress_by_time(1)
 if confirm_time_passage("Rest", "Fully restore health."):
 	[hide]
-	do heal_party()
-	do! Event.time_transition()
+	$> heal_party()
+	$>> Event.time_transition()
 => END
 
 ~ rest_camp
@@ -127,10 +127,10 @@ It's the tent.
 if date_is_reserved():
 	=>< {{get_reserved_date_dialog()}}
 else:
-	do progress_by_time(1)
+	$> progress_by_time(1)
 	if Hud.confirm_time_passage("Rest", "Stay in the camp for a while. Restores all Health."):
-		do heal_party()
-		do! time_transition()
+		$> heal_party()
+		$>> time_transition()
 => END
 
 ~ WL_void
@@ -148,13 +148,13 @@ if Party.has_member_index("Mira") and Party.has_member_index("Daze"):
 	It's a lot like being on top of a tall building.
 	The urge to just walk into it, even though I know I shouldn't.
 	Mira.Neutral: Yeah...  let's walk the other way.
-	do Event.add_flag("EvWLVoidMira")
+	$> Event.add_flag("EvWLVoidMira")
 => END
 
 ~ daze_camp
-if Day == 1
+if day == 1
 	if f_past("AlcineIsTheLeaderReal", 3):
-		Mira.Neutral: {{alcine()}} should be the leader anyways.
+		Mira.Neutral: {{alcine}} should be the leader anyways.
 		Daze.Neutral: I have a feeling I would be expelled from the team immediatly.
 	elif f_past("AlcineIsTheLeaderReal", 1):
 		Daze.Neutral: Who said I'm the leader in the first place?
@@ -165,7 +165,7 @@ if Day == 1
 		Mira.Neutral: [i]The Three Lost Souls, bravely adventuring through the mysterious ruins and forests..![/i]
 		Mira.Neutral: ...Yeah, I dunno.
 		if f_past("AlcineIsTheLeaderReal", 2):
-			do add_flag("AlcineIsTheLeaderReal", 3)
+			$> add_flag("AlcineIsTheLeaderReal", 3)
 	else:
 		Mira.Neutral: Hey Daze, how old are you again?
 		Daze.Neutral: 18, why?
@@ -178,8 +178,8 @@ if Day == 1
 		Daze.Neutral: Though I don't think you're getting anywhere with that broken arm of yours.
 		Mira.Neutral: Exactly! A leader can just stay behind and give commands!
 		Daze.Neutral: Or... get ambushed from behind.
-		do add_flag("AlcineIsTheLeaderReal", 1)
-elif Day == 2:
+		$> add_flag("AlcineIsTheLeaderReal", 1)
+elif day == 2:
 	Daze.Neutral: Shelter in a place like this, huh?
 	Daze.Neutral: Well, I'm glad we won't have to share a tent anymore, no offense.
 	Mira.Neutral: H-huh..?
@@ -191,37 +191,37 @@ elif Day == 2:
 => END
 
 ~ alcine_camp
-if Day == 1:
+if day == 1:
 	if f_past("AlcineIsTheLeaderReal", 2):
 		Mira.Neutral: Lead the way!
 		Alcine.Neutral: Whim!
 	elif f_past("AlcineIsTheLeaderReal", 1):
-		Mira.Neutral: Psst, {{alcine()}}! How old are you?
+		Mira.Neutral: Psst, {{alcine}}! How old are you?
 		[hide]
-		do npc("AlcineCamp").bubble("Question")
-		{{alcine()}} seems unsure. Maybe more confused.
+		$> npc("AlcineCamp").bubble("Question")
+		{{alcine}} seems unsure. Maybe more confused.
 		Mira.Neutral: Not surprised, you could be a thousand years old for all I know.
 		Mira.Neutral: Maybe you should be the leader!
 		[hide]
-		do npc("AlcineCamp").bubble("Ellipsis")
-		do npc("AlcineCamp").bubble("Excited")
-		{{alcine()}} thinks about it for a moment, then poses heroically at me.
+		$> npc("AlcineCamp").bubble("Ellipsis")
+		$> npc("AlcineCamp").bubble("Excited")
+		{{alcine}} thinks about it for a moment, then poses heroically at me.
 		Mira.Neutral: Hehe, that's the spirit!
-		do add_flag("AlcineIsTheLeaderReal", 2)
+		$> add_flag("AlcineIsTheLeaderReal", 2)
 	else:
 		Mira.Neutral: Why are you so scared of him..?
 		Alcine.Neutral: Shewoom!!
 		Mira.Neutral: I promise he doesn't bite...
-elif Day == 2:
-	Mira.Neutral: Hey {{alcine()}}, what do you think of her?
+elif day == 2:
+	Mira.Neutral: Hey {{alcine}}, what $> you think of her?
 	Alcine.Neutral: Meeemmmm...
-	do! npc("AlcineCamp").bubble("Excited")
+	$>> npc("AlcineCamp").bubble("Excited")
 	Alcine.Happy: Shaaa!
 	Mira.Neutral: You like her? That's good.
 => END
 
 ~ asteria_camp
-if Day == 2:
+if day == 2:
 	Asteria.Neutral: Forgot what I told you to do?
 	Asteria.Neutral: You need to stab the source of those purple particles.
 	Mira.Neutral: What will that do?

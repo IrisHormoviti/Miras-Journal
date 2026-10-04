@@ -5,7 +5,7 @@ func jump_playtest() -> void:
 	await Textbox.open("testbush", "jump_playtest")
 	Event.day = 3
 	Event.to_time = Event.TOD.AFTERNOON
-	Event.remove_flag("HideDate")
+	Event.remove_flag("UI/HideDate")
 	Event.time_transition()
 
 

@@ -31,11 +31,15 @@ func _ready() -> void:
 	if has_node("Sprite"):
 		$Sprite.play(default_anim)
 
-	if Event.check_flag(name):
+	if not not_actually_breakable and Event.check_flag(get_name_flag()):
 		set_break()
 
 	if has_node("Pack"):
 		$Pack.hide()
+
+
+func get_name_flag() -> String:
+	return Global.room.codename() + "/Breakable/" + name
 
 
 func _on_area_break_area_entered(_area: Area2D) -> void:
@@ -43,7 +47,7 @@ func _on_area_break_area_entered(_area: Area2D) -> void:
 		return
 
 	set_break()
-	Event.add_flag(name, true)
+	Event.add_flag(get_name_flag(), true)
 	if given_item != "":
 		if broken_anim != "":
 			if has_node("Sprite"):

@@ -10,7 +10,7 @@ func daze_enemy_1() -> void:
 		Event.npc("EnemyFlowent1").look_to(Direction.LEFT)
 		await Event.wait(2)
 		Event.npc("F1").speed = 150
-		await Event.npc("F1").go_to(Event.npc("EnemyFlowent1").position, false, false, Vector2.LEFT, 10)
+		await Event.npc("F1").go_to(Event.npc("EnemyFlowent1").position, false, false, Direction.LEFT, 10)
 		Global.intro_effect(Event.npc("EnemyFlowent1"))
 		Loader.attacker = Event.npc("EnemyFlowent1")
 		Battle.start("DazeEnemyTutorial", 1)
@@ -28,7 +28,7 @@ func daze_enemy_2() -> void:
 
 func where_is_alcine_1() -> void:
 	await Loader.transition(Direction.LEFT)
-	Event.remove_flag("HasBag")
+	Event.add_flag("Player/NoBag")
 	Event.add_flag("AlcineAlone")
 	Party.reset_party()
 	Party.Leader = Party.get_member("Alcine")
@@ -62,12 +62,12 @@ func amberelm_reunion() -> void:
 	await Event.wait(0.3)
 	Global.player.chain_moves([Vector2.LEFT * 2, Vector2.DOWN, Vector2.LEFT * 2])
 	await Event.wait(1)
-	await Event.npc("Mira").move_dir(Vector2.DOWN)
+	await Event.npc("Mira").move_by(Vector2.DOWN)
 	Event.npc("Mira").look_to(Direction.RIGHT)
 	await Event.npc("Mira").bubble("Surprise")
 	await Textbox.open(name, "amberelm_reunion")
 	await Loader.transition(Direction.RIGHT)
-	Event.add_flag("HasBag")
+	Event.remove_flag("Player/NoBag")
 	Event.remove_flag("AlcineAlone")
 	Party.set_to(["Mira"])
 	Event.to_day = 1
@@ -88,9 +88,9 @@ func nov2_morning() -> void:
 	await Event.time_transition()
 	#await Loader.travel_to("WitheredLeaves", Vector2(775, -211), 0, -1, Direction.DOWN, false)
 	#Party.set_to(["Alcine"])
-	#Event.remove_flag("HasBag")
+	#Event.remove_flag("Player/NoBag")
 	#Event.add_flag("AlcineAlone")
-	#Event.remove_flag("HideDate")
+	#Event.remove_flag("UI/HideDate")
 	#await Loader.travel_to("WitheredLeaves", Vector2(775, -211))
 
 
@@ -101,9 +101,9 @@ func nov2_daytime() -> void:
 	Transition.fade_out()
 	await Textbox.open(name, "nov2_daytime")
 	Party.set_to(["Mira", "Alcine", "Daze"])
-	Event.add_flag("HasBag")
+	Event.remove_flag("Player/NoBag")
 	Event.remove_flag("AlcineAlone")
-	Event.remove_flag("HideDate")
+	Event.remove_flag("UI/HideDate")
 	await Loader.travel_to("WitheredLeaves", Vector2(775, -211), 0, Direction.DOWN)
 	Event.npc("F1").position.x += 24
 	Event.npc("F2").position.y -= 24
@@ -140,11 +140,11 @@ func asteria_boss() -> void:
 	await Battle.start("AsteriaBoss")
 	Event.npc("Asteria").hide()
 	await Global.battle_end
-	if Loader.battle_result == 1:
+	if Battle.battle_result == 1:
 		Event.npc("Asteria").show()
 		Event.add_flag("AsteriaBoss", 5)
 		Event.take_control()
-		Event.npc("F1").move_dir(Vector2(1, 0))
+		Event.npc("F1").move_by(Vector2(1, 0))
 		await Textbox.open(name, "asteria_boss_after")
 		asteria_joins()
 
@@ -185,5 +185,5 @@ func enter_pyrson() -> void:
 	Event.give_control(true)
 	Event.npc("Asteria").speed = 120
 	await Event.npc("Asteria").go_to(Vector2(372, 227), false)
-	await Event.npc("Asteria").move_dir(Vector2.UP)
+	await Event.npc("Asteria").move_by(Vector2.UP)
 	Event.npc("Asteria").queue_free()

@@ -1,6 +1,7 @@
-extends Node2D
+extends Node
 
-@export var flag: String = ""
+@export_multiline() var flag: String = ""
+@export var also_hide_on_reserved_dates := false
 @export var hide_if: bool = true
 @export var use_sprite := false
 @export var free_instead := false
@@ -12,10 +13,21 @@ func _ready() -> void:
 	Global.check.connect(check)
 
 
+func condition() -> bool:
+	if also_hide_on_reserved_dates and Event.date_is_reserved():
+		return true
+
+	if Event.f(flag) == hide_if:
+		return true
+
+	return false
+
+
 func check() -> void:
 	if get_node_or_null("Sprite") != null: use_sprite = true
 	if flag == "": return
-	if Event.f(flag) == hide_if:
+
+	if condition():
 		if use_sprite:
 			if $Sprite.animation != "hide": $Sprite.play("hide")
 		elif free_instead:
@@ -28,9 +40,6 @@ func check() -> void:
 	else:
 		if use_sprite:
 			if $Sprite.animation != "default": $Sprite.play("default")
-
-		#else:
-			#get_parent().show()
 
 		for i in get_parent().get_children():
 			if i is CollisionShape2D: i.set_deferred("disabled", false)

@@ -25,13 +25,15 @@ func hurt_1() -> void:
 			Event.add_flag("ShardsLowHP")
 			await Textbox.open("interact_abad", "shards_low_hp")
 			Event.give_control()
+
 		Party.Leader.Health += 1
+
 	Global.check.emit()
 
 
 func wake_home() -> void:
 	Party.reset_party()
-	await Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(106, 414))
+	await Loader.travel_to("Pyrson;HomeBuilding-MyRoom")
 	Global.player.look_to(Direction.RIGHT)
 	Event.give_control()
 

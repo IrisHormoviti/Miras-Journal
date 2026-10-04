@@ -67,7 +67,13 @@ static func fade_in(color := Color.BLACK, in_time := 0.3) -> Transition:
 	return transition
 
 
-static func fade_in_out(color: Color = Color.BLACK, in_time := 0.3, out_time := 0.3, wait_time := 0.0) -> void:
+static func fade_in_out(
+	color: Color = Color.BLACK,
+	in_time := 0.3,
+	out_time := 0.3,
+	wait_time := 0.0
+) -> void:
+
 	const transition_name := "fade"
 	const exit_transition_name := "fade"
 
@@ -152,6 +158,7 @@ static func add_wipe_transition(transition_name: String, exit_transition_name :=
 
 ## End any wipe transitions started with add_wipe_transition()
 static func unwipe() -> void:
+	fade_out()
 	for transition in active_transitions:
 		if transition and (
 			transition.exit_animation.begins_with("wipe") or

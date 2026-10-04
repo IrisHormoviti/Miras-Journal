@@ -226,7 +226,7 @@ func calc_dmg(power: float, is_magic: bool, E: Actor = null) -> int:
 			print("Attack stat: ", E.Attack, " * ", E.AttackMultiplier, " = ", atk_stat)
 
 	print("(Power(%.2f) * AttackerStat(%.2f)) / ((Defence(%.2f * %.2f)) + 0.3)" % [power, atk_stat, Defence, DefenceMultiplier])
-	return int(max(((power * atk_stat) / ((Defence * 2 * DefenceMultiplier) + 0.3)), 1))
+	return int(max(((power * atk_stat) / ((Defence * 1.5 * DefenceMultiplier) + 0.3)), 1))
 
 
 func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar, effect := true) -> State:

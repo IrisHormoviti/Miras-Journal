@@ -1,20 +1,20 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://d2xyfmd6r3atu"]
+[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://dpiv7n8yanp1l"]
 
-[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_5vsh8"]
+[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_0nodr"]
 
 [resource]
-script = ExtResource("1_5vsh8")
-title = "Alcine Meet"
-room = "TempleWoods"
-room_name = "Temple Woods"
+script = ExtResource("1_0nodr")
+title = "Shard Grd Enter"
+room = "Pyrson"
+room_name = "Pyrson"
 members = Array[Dictionary]([{
-"AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
+"AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 15,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
 "ComplimentaryList": Dictionary[String, int]({}),
-"Controllable": false,
+"Controllable": true,
 "FirstName": "Alcine",
 "Health": 60,
 "IgnoreStates": false,
@@ -22,8 +22,8 @@ members = Array[Dictionary]([{
 "MaxAura": 15,
 "MaxHP": 60,
 "OV": "",
-"SkillLevel": 1,
-"SkillPoints": 0,
+"SkillLevel": 2,
+"SkillPoints": 10,
 "WeaponName": "ArmWhip",
 "codename": &"Alcine"
 }, {
@@ -61,7 +61,7 @@ members = Array[Dictionary]([{
 "MaxHP": 130,
 "OV": "",
 "SkillLevel": 14,
-"SkillPoints": 21,
+"SkillPoints": 54,
 "WeaponName": "GoldPlatedKatana",
 "codename": &"Daze"
 }, {
@@ -84,12 +84,14 @@ members = Array[Dictionary]([{
 "WeaponName": "DefaultWeapon",
 "codename": &"Erinn"
 }, {
-"AbilitiesList": Array[String](["Guard", "FlameSpark"]),
+"AbilitiesList": Array[String](["Guard", "FlameSpark", "HeatWave"]),
 "Aura": 20,
 "CantDie": false,
 "CantDodge": false,
-"ClutchDmg": true,
-"ComplimentaryList": Dictionary[String, int]({}),
+"ClutchDmg": false,
+"ComplimentaryList": Dictionary[String, int]({
+"FluidBlast": 1
+}),
 "Controllable": true,
 "FirstName": "Mira",
 "Health": 100,
@@ -98,34 +100,64 @@ members = Array[Dictionary]([{
 "MaxAura": 20,
 "MaxHP": 100,
 "OV": "Bag",
-"SkillLevel": 1,
-"SkillPoints": 5,
+"SkillLevel": 2,
+"SkillPoints": 28,
 "WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-player_position = Vector2(1246.386, -576.703)
-camera_index = 1
-start_time = 1775821000.966906
-saved_time = 1790634007.828984
-play_time = 10762.0
+player_position = Vector2(152.40498, 154.22302)
+complimentaries = Array[String](["FluidBlast"])
+start_time = 1774043227.769998
+saved_time = 1790618807.833394
+play_time = 1825.0
+diary = Dictionary[int, PackedStringArray]({
+2: PackedStringArray("boo"),
+5: PackedStringArray("boo", "bee")
+})
 flags = Dictionary[StringName, int]({
+&"AlcineFollow": 4,
+&"AlcineFollow4": 4,
+&"AlcineIsTheLeaderReal": 1,
+&"AsteriaBoss": 5,
+&"BeatStoneGuardian": 1,
 &"BreakableVines0": 1,
-&"DisableMenus": 0,
-&"DisableVeinet": 1,
+&"Bunker1Open": 1,
+&"CrateAmb1": 1,
+&"DashTutorial0": 1,
+&"DazeQuestions": 0,
+&"EnterAmberelm": 1,
+&"EnteredAmberelm3": 1,
+&"EvAmbWoodsBridge": 1,
+&"EvDazeEnemy2": 1,
+&"EvDazeEnemy4": 1,
+&"EvDestroyedGuardian": 1,
 &"EvFirstBattle": 1,
 &"EvFlameActive": 1,
+&"EvLostSpiritRed": 1,
+&"EvMetalicGate": 1,
+&"EvNov2TownHall": 1,
+&"EvRestAmberelm": 1,
+&"EvStoneGuardianCheckBody": 1,
 &"FirstBattle": 3,
-&"FlameActive": 1,
 &"HasBag": 1,
-&"HideDate": 1,
+&"ItemRustySword1": 1,
+&"ItemSharpRock2": 1,
+&"Nov3_WentToSG": 1,
 &"PickedUpAxe": 1,
-&"Player/Flame": 1,
+&"PyrsonHome": 1,
 &"Started": 1,
-&"TempleWoods/Item/LifeLave1": 1,
-&"TempleWoods/Tripwire/EvFlameActive": 1,
+&"StoneGuardianFinisher": 1,
+&"TavernTheory": 1,
 &"TutorialBag": 1,
-&"day": 0,
-&"time": 5
+&"VPOldCamp": 1,
+&"VPPlains": 1,
+&"VeinetDisabled": 1,
+&"WLDoor1a": 1,
+&"WLDoor1b": 1,
+&"WLLeftSideOpen": 1,
+&"day": 3,
+&"eepy1": 1,
+&"time": 3
 })
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "LifeLave:Con"])
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "RustySword:Bti", "RustySword:Bti", "SharpRock:Bti", "LightweightAxe:Key"])
 version = 8

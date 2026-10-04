@@ -16,7 +16,7 @@ var ui_visible: bool = false:
 
 		# Run show_all or hide_all when this variable changes
 		if not Battle.in_battle:
-			if value and not Event.check_flag("DisableMenus") and not disabled:
+			if value and not Event.check_flag("UI/Disable") and not disabled:
 				if Global.settings.AutoHideHUD != 1:
 					show_all()
 			else:
@@ -176,7 +176,7 @@ func hide_all(animate := true) -> void:
 
 
 func _check_party() -> void:
-	if Event.check_flag("DisableMenus"):
+	if Event.check_flag("UI/Disable"):
 		disabled = true
 
 	check_member(Party.Leader, Partybox.get_node("Leader"), 0)
@@ -850,7 +850,7 @@ func confirm_time_passage(title: String, description: String, to_time: Event.TOD
 
 
 func cmd(cmd_text := "") -> void:
-	Event.add_flag("DisableMenus", false)
+	Event.add_flag("UI/Disable", false)
 	Hud.disabled = false
 	show_all()
 	if not %DebugTextEdit.visible:
@@ -927,7 +927,7 @@ func cmd(cmd_text := "") -> void:
 			if not "=" in text:
 				Global.toast(
 					"Flag \"" + text + "\" set to "
-					+ str(Event.flag_int(text)),
+					+ str(Event.get_flag(text)),
 				)
 		%DebugTextEdit.hide()
 		Global.controllable = true
@@ -952,7 +952,7 @@ func party_menu() -> void:
 
 
 func main_menu() -> void:
-	if not Battle.in_battle and Global.controllable and is_instance_valid(Global.player) and not Global.player.dashing and not Event.check_flag("DisableMenus"):
+	if not Battle.in_battle and Global.controllable and is_instance_valid(Global.player) and not Global.player.dashing and not Event.check_flag("UI/Disable"):
 		if Global.player.move_frames > -10:
 			await Event.wait(0.3, false)
 			if Global.controllable:
@@ -960,7 +960,7 @@ func main_menu() -> void:
 
 			return
 
-		if Event.check_flag("HasBag"):
+		if not Event.check_flag("Player/NoBag"):
 			Audio.ui_sound("Menu")
 			Global.player.bag_anim()
 			Global.controllable = false
@@ -1062,7 +1062,7 @@ func talk() -> void:
 		Audio.buzzer_sound()
 		return
 
-	var key: String = "d" + str(Event.day) + "_" + str(Event.flag_int(Party.current[focus].codename + "Talk"))
+	var key: String = "d" + str(Event.day) + "_" + str(Event.get_flag(Party.current[focus].codename + "Talk"))
 
 	if not key in dialog.get_cues():
 		key = "error"

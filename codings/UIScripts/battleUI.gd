@@ -100,7 +100,7 @@ func _on_battle_get_control() -> void:
 	if disable_attack: $Attack.disabled = true
 	if disable_ability: $Ability.disabled = true
 	if disable_command: $Command.disabled = true
-	if disable_item or not Event.check_flag("HasBag"): $Item.disabled = true
+	if disable_item or Event.check_flag("Player/NoBag"): $Item.disabled = true
 
 	$BaseRing/Ring2.texture.gradient.set_color(0, CurrentChar.MainColor)
 	if CurrentChar.CharacterBoxProfile != null:

@@ -66,7 +66,7 @@ func proceed() -> void:
 	Global.player.camera_follow(false)
 	await Event.take_control(true, true)
 	Global.player.collision(false)
-	Global.player.move_dir(direction.vector * 48)
+	Global.player.move_by_tiles(direction.vector * 2)
 	Global.player.sprite.frame = frame
 	#print(name, " to ", room, " with camera index ", ToCamera)
 

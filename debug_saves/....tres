@@ -1,14 +1,14 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://d2xyfmd6r3atu"]
+[gd_resource type="Resource" script_class="SaveFile" format=3]
 
-[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_5vsh8"]
+[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_6lngb"]
 
 [resource]
-script = ExtResource("1_5vsh8")
-title = "Alcine Meet"
-room = "TempleWoods"
-room_name = "Temple Woods"
+script = ExtResource("1_6lngb")
+title = "..."
+room = "WitheredLeaves"
+room_name = "Withered Leaves"
 members = Array[Dictionary]([{
-"AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
+"AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
 "Aura": 15,
 "CantDie": false,
 "CantDodge": false,
@@ -19,11 +19,11 @@ members = Array[Dictionary]([{
 "Health": 60,
 "IgnoreStates": false,
 "LastName": "",
-"MaxAura": 15,
+"MaxAura": 25,
 "MaxHP": 60,
 "OV": "",
-"SkillLevel": 1,
-"SkillPoints": 0,
+"SkillLevel": 3,
+"SkillPoints": 5,
 "WeaponName": "ArmWhip",
 "codename": &"Alcine"
 }, {
@@ -61,7 +61,7 @@ members = Array[Dictionary]([{
 "MaxHP": 130,
 "OV": "",
 "SkillLevel": 14,
-"SkillPoints": 21,
+"SkillPoints": 26,
 "WeaponName": "GoldPlatedKatana",
 "codename": &"Daze"
 }, {
@@ -84,7 +84,7 @@ members = Array[Dictionary]([{
 "WeaponName": "DefaultWeapon",
 "codename": &"Erinn"
 }, {
-"AbilitiesList": Array[String](["Guard", "FlameSpark"]),
+"AbilitiesList": Array[String](["Guard", "FlameSpark", "HeatWave"]),
 "Aura": 20,
 "CantDie": false,
 "CantDodge": false,
@@ -96,36 +96,53 @@ members = Array[Dictionary]([{
 "IgnoreStates": false,
 "LastName": "Levenor",
 "MaxAura": 20,
-"MaxHP": 100,
-"OV": "Bag",
-"SkillLevel": 1,
+"MaxHP": 120,
+"OV": "",
+"SkillLevel": 3,
 "SkillPoints": 5,
 "WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-player_position = Vector2(1246.386, -576.703)
-camera_index = 1
-start_time = 1775821000.966906
-saved_time = 1790634007.828984
-play_time = 10762.0
+player_position = Vector2(888.8328, -155.41696)
+start_time = 1759087800.664549
+saved_time = 1790459114.643807
+play_time = 10576.0
 flags = Dictionary[StringName, int]({
-&"BreakableVines0": 1,
+&"": 1,
+&"AlcineFollow": 4,
+&"AlcineFollow4": 4,
+&"AsteriaBoss": 5,
+&"BeatStoneGuardian": 1,
+&"BreakablePurpleOre0": 1,
+&"BreakableVines1": 1,
+&"Bunker1Open": 1,
+&"DashTutorial0": 1,
+&"DazeQuestions": 0,
+&"DebugBattle": 1,
 &"DisableMenus": 0,
-&"DisableVeinet": 1,
-&"EvFirstBattle": 1,
-&"EvFlameActive": 1,
-&"FirstBattle": 3,
-&"FlameActive": 1,
+&"EnterAmberelm": 1,
+&"EnteredAmberelm3": 1,
+&"EvAmbWoodsBridge": 1,
+&"EvDazeEnemy1": 1,
+&"EvDazeEnemy2": 1,
+&"EvDazeEnemy4": 1,
+&"EvDestroyedGuardian": 1,
+&"EvMetalicGate": 1,
+&"EvRestAmberelm": 1,
 &"HasBag": 1,
-&"HideDate": 1,
+&"InCamp": 1,
+&"Incamp": 1,
+&"ItemRustySword1": 1,
+&"ItemSharpRock1": 1,
+&"ItemStrangeFruit1": 1,
 &"PickedUpAxe": 1,
-&"Player/Flame": 1,
 &"Started": 1,
-&"TempleWoods/Item/LifeLave1": 1,
-&"TempleWoods/Tripwire/EvFlameActive": 1,
+&"TWflame": 1,
 &"TutorialBag": 1,
-&"day": 0,
-&"time": 5
+&"VeinetDisabled": 1,
+&"WLLeftSideOpen": 1,
+&"day": 2,
+&"time": 4
 })
-inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "LifeLave:Con"])
+inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
 version = 8

@@ -144,8 +144,8 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	Event.flags = data.flags.duplicate()
 	Event.diary = data.diary
 	print_rich("[color=green]Flags loaded: ", Event.flags)
-	Event.day = Event.flag_int("day")
-	Event.time_of_day = Event.flag_int("time") as Event.TOD
+	Event.day = Event.get_flag("day")
+	Event.time_of_day = Event.get_flag("time") as Event.TOD
 	get_tree().paused = true
 
 	var temp_members: Array[Actor]
@@ -210,7 +210,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	await Event.wait()
 
 	if is_instance_valid(Global.player):
-		Global.player.look_to(Vector2.DOWN)
+		Global.player.look_to(Direction.DOWN)
 
 		if (chased or Battle.in_battle) and is_instance_valid(Battle.attacker):
 			print_rich("[color=green]Too close to an enemy, auto escape")
@@ -293,7 +293,7 @@ func travel_to(
 	if status == ResourceLoader.THREAD_LOAD_LOADED:
 		await travel_done(controllable, camera_ind)
 	else:
-		Transition.load_icon()
+		if trans: Transition.load_icon()
 		loading_scene = true
 		await thread_loaded
 		if status == ResourceLoader.THREAD_LOAD_LOADED:
@@ -331,15 +331,14 @@ func travel_done(controllable := false, index: int = 0) -> void:
 	Global.check.emit()
 
 	Global.camera.position_smoothing_enabled = false
-	Global.camera.position = traveled_pos
 
 	if remembered_scene.size() > 1:
-		var new_pos: Vector2 = await Global.room.go_to_subroom(remembered_scene[1], true)
+		var new_pos: Vector2 = Global.room.go_to_subroom(remembered_scene[1])
 		print(new_pos)
 		if new_pos != Vector2.ZERO and traveled_pos == Vector2.ZERO:
 			traveled_pos = new_pos
 
-	if is_instance_valid(Global.player):
+	if Global.player:
 		if traveled_pos != Vector2.ZERO:
 			Global.player.collision(false)
 			Global.player.global_position = traveled_pos
@@ -349,6 +348,8 @@ func travel_done(controllable := false, index: int = 0) -> void:
 
 		if controllable and look_dir != null:
 			Global.player.look_to(look_dir)
+
+	Global.camera.position = traveled_pos
 
 	#Global.camera.position_smoothing_enabled = true
 	get_tree().paused = false

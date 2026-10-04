@@ -9,7 +9,7 @@ var is_ready: bool = false
 var index: int = 0
 var camera_index: CameraIndex
 var cam := Camera2D.new()
-var followers: Array[CharacterBody2D] = []
+var followers: Array[Follower] = []
 var stairs: Array[Stair]
 var markers: Array[Marker2D]
 var layers: Array[TileMapLayer]
@@ -133,9 +133,9 @@ func setup_camera_limits() -> void:
 func setup_other_index_params() -> void:
 	if camera_index != null:
 		if camera_index.flame == 1:
-			if not Event.f("FlameActive"): Global.player.activate_flame()
+			if not Event.f("Player/Flame"): Global.player.activate_flame()
 		elif camera_index.flame == -1:
-			Event.remove_flag("FlameActive")
+			Event.remove_flag("Player/Flame")
 
 		Global.player.collision_layer = camera_index.layers
 		Global.player.collision_mask = camera_index.layers
@@ -220,7 +220,7 @@ func _physics_process(delta: float) -> void:
 		$SubRoomBg.position = cam.position
 
 
-func go_to_subroom(subroom: String, fast := false) -> Vector2:
+func go_to_subroom(subroom: String) -> Vector2:
 	var search_nodes := get_children()
 
 	if has_node(^"Transfers"):
@@ -229,16 +229,21 @@ func go_to_subroom(subroom: String, fast := false) -> Vector2:
 	for i in search_nodes:
 		if not is_instance_valid(i): continue
 		if i is SubRoom and i.name == subroom:
-			if fast:
-				i.transition(0)
-			else:
-				await i.transition(0)
-
+			i.transition(0)
 			return i.cam_pos
 		elif i is TransferZone and i.name == "Transfer" + subroom:
 			return i.come_from()
 
 	return Event.get_marker_pos(subroom)
+
+
+func transition_to_subroom(subroom: String) -> void:
+	var search_nodes := get_children()
+
+	for i in search_nodes:
+		if not is_instance_valid(i): continue
+		if i is SubRoom and i.name == subroom:
+			await i.transition(0)
 
 
 func get_layers() -> Array[TileMapLayer]:

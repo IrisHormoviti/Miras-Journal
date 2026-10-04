@@ -194,7 +194,7 @@ Event select
 	$> to_day = 0
 	$> to_time = TOD.NIGHT
 	do Event.add_flag("HasBag")
-	do Event.add_flag("FlameActive")
+	do Event.add_flag("Player/Flame")
 	do travel_to("TempleWoods", Vector2(1272, -966), 2)
 - Maple Meet Scene
 	set Day = 2

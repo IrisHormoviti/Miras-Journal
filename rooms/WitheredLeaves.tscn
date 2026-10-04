@@ -399,14 +399,9 @@ Energy = Array[float]([0.8, 0.2, 0.5, 0.8, 1.0])
 z_index = 0
 position = Vector2(824, -251)
 facing = SubResource("Resource_8pygo")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="AlcineCamp" unique_id=245814845]
 use_parent_material = true
-position = Vector2(0, -6)
 sprite_frames = ExtResource("25_xe12t")
 animation = &"IdleDown"
 
@@ -421,19 +416,15 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "alcine_camp"
 bubble_always = true
+bubble_height = 10
 
 [node name="DazeCamp" parent="." unique_id=1420936725 instance=ExtResource("5_6fdth")]
 z_index = 0
 position = Vector2(698, -221)
 facing = SubResource("Resource_hngf4")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DazeCamp" unique_id=1318976911]
 use_parent_material = true
-position = Vector2(0, -6)
 sprite_frames = ExtResource("6_3p2gw")
 animation = &"IdleRight"
 
@@ -447,19 +438,15 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "daze_camp"
 bubble_always = true
+bubble_height = 20
 
 [node name="AsteriaCamp" parent="." unique_id=267053427 instance=ExtResource("5_6fdth")]
 z_index = 0
 position = Vector2(732, -229)
 facing = SubResource("Resource_4ctaf")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="AsteriaCamp" unique_id=611286719]
 use_parent_material = true
-position = Vector2(0, -6)
 sprite_frames = ExtResource("9_ug3t0")
 animation = &"IdleDown"
 
@@ -473,6 +460,7 @@ file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "asteria_camp"
 bubble_always = true
+bubble_height = 20
 
 [node name="DoorLocked1" type="StaticBody2D" parent="." unique_id=1707909631]
 position = Vector2(-742, 321)
@@ -900,8 +888,8 @@ jump_am_v = 1
 time = 6.0
 height = 1.0
 
-[node name="ItemDefault1" parent="." unique_id=1701809483 instance=ExtResource("34_lk1yj")]
+[node name="40" parent="." unique_id=1701809483 instance=ExtResource("34_lk1yj")]
 position = Vector2(-129, 193)
 
-[node name="ItemDefault2" parent="." unique_id=41732287 instance=ExtResource("34_lk1yj")]
+[node name="41" parent="." unique_id=41732287 instance=ExtResource("34_lk1yj")]
 position = Vector2(-272, -178)

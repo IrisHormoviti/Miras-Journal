@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://5j8ao51a8t4p" path="res://codings/Components/lamp.gd" id="10_4xvqm"]
 [ext_resource type="Script" uid="uid://01da3iwdlren" path="res://codings/Interactions/tod_light.gd" id="12_7noep"]
 [ext_resource type="SpriteFrames" uid="uid://doam5hhftuw4e" path="res://art/OV/Mira/MiraOV.tres" id="12_ejpht"]
+[ext_resource type="PackedScene" uid="uid://b0pk66kwtm38a" path="res://rooms/components/HideOnFlag.tscn" id="12_nlfpl"]
 [ext_resource type="PackedScene" uid="uid://dp3b7p474e3t7" path="res://rooms/components/StairsH.tscn" id="14_y8h7v"]
 [ext_resource type="Script" uid="uid://bk204ee71jvcx" path="res://codings/Components/slope.gd" id="15_3swys"]
 [ext_resource type="PackedScene" uid="uid://cr3hn08s615pf" path="res://rooms/components/NPC.tscn" id="16_s1pqb"]
@@ -24,7 +25,6 @@
 [ext_resource type="SpriteFrames" uid="uid://cb76smqxxpbjr" path="res://art/OV/Linde/LindeOV.tres" id="20_taf6h"]
 [ext_resource type="PackedScene" uid="uid://tcn5wh8gstsu" path="res://rooms/components/Ladder.tscn" id="20_xjbvj"]
 [ext_resource type="SpriteFrames" uid="uid://b4rkebw16wimp" path="res://art/OV/Asteria/AsteriaOV2.tres" id="21_4lmea"]
-[ext_resource type="Script" uid="uid://gfinmw5y4txi" path="res://codings/Classes/NPC.gd" id="21_p415d"]
 [ext_resource type="SpriteFrames" uid="uid://b4iv6g76q0x8r" path="res://art/OV/Daze/DazeOV.tres" id="22_ejpht"]
 [ext_resource type="SpriteFrames" uid="uid://djjv4h63ww5or" path="res://art/OV/Asteria/AsteriaOV.tres" id="23_taf6h"]
 [ext_resource type="SpriteFrames" uid="uid://diybsgyevylva" path="res://art/OV/Alcine/AlcineOV.tres" id="24_4lmea"]
@@ -70,6 +70,7 @@ fill_to = Vector2(1, 1)
 
 [sub_resource type="Resource" id="Resource_nlfpl"]
 script = ExtResource("9_nlfpl")
+way = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_taf6h"]
 size = Vector2(10, 11)
@@ -85,12 +86,15 @@ size = Vector2(41, 14)
 
 [sub_resource type="Resource" id="Resource_n1bc5"]
 script = ExtResource("9_nlfpl")
+way = 2
 
 [sub_resource type="Resource" id="Resource_7edst"]
 script = ExtResource("9_nlfpl")
+way = 2
 
 [sub_resource type="Resource" id="Resource_4a3rh"]
 script = ExtResource("9_nlfpl")
+way = 2
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_nlfpl"]
 size = Vector2(96, 12)
@@ -488,7 +492,6 @@ event_condition = "sl_maple"
 hide_parent = true
 free_on_hide = true
 bubble_always = true
-
 [node name="JumpPoints" type="Node" parent="." unique_id=483877055]
 
 [node name="JumpPoint2" parent="JumpPoints" unique_id=356783486 instance=ExtResource("18_26sn0")]
@@ -533,6 +536,110 @@ jump_am = 3
 jump_am_v = 1
 to_z = 0
 to_layers = 3
+
+[node name="NPCs" type="Node2D" parent="." unique_id=780534404]
+use_parent_material = true
+
+[node name="AsteriaOutsideHouse" parent="NPCs" unique_id=1218397049 instance=ExtResource("16_s1pqb")]
+z_index = 0
+position = Vector2(412, 221)
+facing = SubResource("Resource_nlfpl")
+
+[node name="TalkPrompt" parent="NPCs/AsteriaOutsideHouse" unique_id=776850733 instance=ExtResource("9_w0u03")]
+position = Vector2(-1, -3)
+label_text = "Talk"
+action_type = "social_link"
+file = "sl_asteria"
+dialogue_file = "sl_asteria"
+dialogue_cue = ""
+to_time_relative = 2
+bubble_always = true
+bubble_height = 15
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="NPCs/AsteriaOutsideHouse" unique_id=1649321420]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_taf6h")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="NPCs/AsteriaOutsideHouse" unique_id=15157718]
+use_parent_material = true
+position = Vector2(0, 1)
+sprite_frames = ExtResource("21_4lmea")
+animation = &"IdleDown"
+autoplay = "IdleDown"
+offset = Vector2(0, -10)
+
+[node name="HideOnFlag" parent="NPCs/AsteriaOutsideHouse" unique_id=206159318 instance=ExtResource("12_nlfpl")]
+flag = "SocialLink/Asteria=2
++time>=4"
+also_hide_on_reserved_dates = true
+hide_if = false
+free_instead = true
+
+[node name="AsteriaPlaza" parent="NPCs" unique_id=1605547350 instance=ExtResource("16_s1pqb")]
+position = Vector2(500, 666)
+facing = SubResource("Resource_2ig8e")
+
+[node name="TalkPrompt" parent="NPCs/AsteriaPlaza" unique_id=523109857 instance=ExtResource("9_w0u03")]
+position = Vector2(-1, -3)
+label_text = "Talk"
+file = "sl_asteria"
+dialogue_file = "sl_asteria"
+dialogue_cue = ""
+to_time = -1
+to_time_relative = 2
+bubble_always = true
+bubble_height = 15
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="NPCs/AsteriaPlaza" unique_id=2126308859]
+position = Vector2(-1, 0)
+shape = SubResource("RectangleShape2D_taf6h")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="NPCs/AsteriaPlaza" unique_id=1696025331]
+use_parent_material = true
+position = Vector2(0, 1)
+sprite_frames = ExtResource("21_4lmea")
+animation = &"IdleRight"
+frame_progress = 0.546041
+offset = Vector2(0, -10)
+
+[node name="HideOnFlag" parent="NPCs/AsteriaPlaza" unique_id=1776988185 instance=ExtResource("12_nlfpl")]
+flag = "(
+	SocialLink/Asteria=0
+	+ EvSwitchCastLines2
+)
++time>=4
++day>=3"
+also_hide_on_reserved_dates = true
+hide_if = false
+free_instead = true
+
+[node name="Maple" parent="NPCs" unique_id=1141217796 instance=ExtResource("16_s1pqb")]
+z_index = 4
+position = Vector2(715, 505)
+facing = SubResource("Resource_4ygg4")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="NPCs/Maple" unique_id=1495585592]
+use_parent_material = true
+position = Vector2(0, 3)
+sprite_frames = ExtResource("17_585ds")
+animation = &"IdleDown"
+autoplay = "IdleDown"
+frame_progress = 0.137967
+offset = Vector2(0, -16)
+
+[node name="TalkPrompt" parent="NPCs/Maple" unique_id=2087883881 instance=ExtResource("9_w0u03")]
+position = Vector2(1.14441e-05, 1)
+label_text = "Talk"
+file = "sl_maple"
+dialogue_file = "sl_maple"
+to_time = -1
+to_time_relative = 2
+hide_this_node = true
+bubble_always = true
+
+[node name="HideOnFlag" parent="NPCs/Maple" unique_id=1780838806 instance=ExtResource("12_nlfpl")]
+flag = "SocialLink/Maple=0"
+also_hide_on_reserved_dates = true
 
 [node name="Chairs" type="Node" parent="." unique_id=729285830]
 
@@ -607,45 +714,30 @@ debug_color = Color(0.48847455, 0.45475614, 0.9483307, 0.41960785)
 texture_filter = 1
 metadata/_edit_group_ = true
 
-[node name="AlcineExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1280122638]
-position = Vector2(103, 157)
-script = ExtResource("21_p415d")
+[node name="AlcineExit" parent="Events/ExitScene" unique_id=344934070 instance=ExtResource("16_s1pqb")]
 facing = SubResource("Resource_n1bc5")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
-metadata/_custom_type_script = "uid://gfinmw5y4txi"
+dont_use_collision = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/AlcineExit" unique_id=43704205]
+position = Vector2(103, 157)
 sprite_frames = ExtResource("24_4lmea")
 animation = &"IdleDown"
 
-[node name="AsteriaExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1923902325]
-position = Vector2(74, 146)
-script = ExtResource("21_p415d")
+[node name="AsteriaExit" parent="Events/ExitScene" unique_id=2145210878 instance=ExtResource("16_s1pqb")]
 facing = SubResource("Resource_7edst")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
-metadata/_custom_type_script = "uid://gfinmw5y4txi"
+dont_use_collision = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/AsteriaExit" unique_id=1668565077]
+position = Vector2(74, 146)
 sprite_frames = ExtResource("23_taf6h")
 animation = &"IdleDown"
 
-[node name="DazeExit" type="CharacterBody2D" parent="Events/ExitScene" unique_id=1204737540]
-position = Vector2(114, 125)
-script = ExtResource("21_p415d")
+[node name="DazeExit" parent="Events/ExitScene" unique_id=782771303 instance=ExtResource("16_s1pqb")]
 facing = SubResource("Resource_4a3rh")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
-metadata/_custom_type_script = "uid://gfinmw5y4txi"
+dont_use_collision = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/DazeExit" unique_id=829220786]
+position = Vector2(114, 125)
 sprite_frames = ExtResource("22_ejpht")
 animation = &"IdleDown"
 
@@ -934,7 +1026,7 @@ texture = SubResource("GradientTexture2D_52siy")
 script = ExtResource("10_4xvqm")
 flag = "LampInMirasRoom"
 
-[node name="RoomMira" parent="HomeBuilding-MyRoom" unique_id=344934070 instance=ExtResource("16_s1pqb")]
+[node name="RoomMira" parent="HomeBuilding-MyRoom" unique_id=1542336393 instance=ExtResource("16_s1pqb")]
 position = Vector2(-98, 368)
 facing = SubResource("Resource_sk1io")
 dont_use_collision = true
@@ -1006,7 +1098,6 @@ dialogue_file = "sl_linde"
 dialogue_cue = ""
 to_time = -1
 to_time_relative = 2
-event_condition = "sl_linde"
 hide_parent = true
 free_on_hide = true
 bubble_always = true
@@ -1048,7 +1139,6 @@ dialogue_file = "sl_linde"
 dialogue_cue = ""
 to_time = -1
 to_time_relative = 1
-event_condition = "sl_linde"
 hide_on_flag = &"LindeDoor"
 hide_parent = true
 free_on_hide = true
@@ -1150,12 +1240,10 @@ position = Vector2(0, 839)
 down_index = NodePath("../Index1")
 up_index = NodePath("../Index0")
 
-[connection signal="action" from="HomeBuilding/Lamp3" to="HomeBuilding/Lamp3/PointLight2D" method="_on_interactable_action"]
 [connection signal="body_entered" from="HomeBuilding/RoomDoor" to="HomeBuilding/RoomDoor" method="_on_body_entered"]
 [connection signal="body_exited" from="HomeBuilding/RoomDoor" to="HomeBuilding/RoomDoor" method="_on_body_exited"]
 [connection signal="body_entered" from="HomeBuilding-UpperFloor/RoomDoor" to="HomeBuilding-UpperFloor/RoomDoor" method="_on_body_entered"]
 [connection signal="body_exited" from="HomeBuilding-UpperFloor/RoomDoor" to="HomeBuilding-UpperFloor/RoomDoor" method="_on_body_exited"]
-[connection signal="action" from="HomeBuilding-MyRoom/Lamp2" to="HomeBuilding-MyRoom/Lamp2/PointLight2D" method="_on_interactable_action"]
 [connection signal="body_entered" from="HomeBuildingDoor" to="HomeBuildingDoor" method="_on_body_entered"]
 [connection signal="body_exited" from="HomeBuildingDoor" to="HomeBuildingDoor" method="_on_body_exited"]
 [connection signal="body_entered" from="LindeDoor" to="LindeDoor" method="_on_body_entered"]

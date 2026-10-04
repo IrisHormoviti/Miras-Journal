@@ -192,9 +192,9 @@ func _on_finder_body_entered(body: Node2D) -> void:
 		direction = Vector2.ZERO
 		$Bubble.play("Surprise")
 		Battle.attacker = self
-		look_to(Direction.snap_vector(to_local(Global.player.global_position)))
+		look_to(Direction.from(to_local(Global.player.global_position)))
 		await Event.wait(0.8)
-		look_to(Direction.snap_vector(to_local(Global.player.global_position)))
+		look_to(Direction.from(to_local(Global.player.global_position)))
 		speed = chase_speed
 		set_dir_marker(to_local(Global.player.global_position))
 		await Event.wait()

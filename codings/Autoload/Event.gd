@@ -14,10 +14,15 @@ enum TOD {DARKHOUR = 0, MORNING = 1, DAYTIME = 2, AFTERNOON = 3, EVENING = 4, NI
 var npc_list: Dictionary[String, NPC]
 ## object_list identified with object identifier script
 var object_list: Dictionary[String, Node2D]
-## Various values for remembering game states
-var flags: Dictionary[StringName, int]
 ## diary entries for the journal
 var diary: Dictionary[int, PackedStringArray]
+
+## Various values for remembering game states
+## Flag directories:
+## Meta, UI, Event, SocialLink
+## (RoomName) /Item, /Breakable, /Interact, /Tripwire
+## "day" and "time" are top level
+var flags: Dictionary[StringName, int]
 
 var day: int:
 	set(x):
@@ -66,16 +71,6 @@ func npc(id: String) -> NPC:
 
 func obj(id: String) -> Node2D:
 	return object_list.get(id)
-
-
-##Move an [NPC] relative to their current coords
-func move_dir(dir: Vector2 = Global.get_direction(), chara: String = "P") -> void:
-	await npc(chara).move_dir(dir)
-
-
-##Move an [NPC] to the specified coords
-func move_to(pos: Vector2 = Global.get_direction(), chara: String = "P") -> void:
-	await npc(chara).go_to(pos)
 
 
 ## Wait a specified amount of time or one frame by default
@@ -280,102 +275,68 @@ func check_flag(flag: StringName, value := 1) -> bool:
 ## [code]day: (Number)[/code] Check if the current day is the given number.[br]
 ## [code]time: (Number)[/code] Check if the current time of day is the given number.[br]
 func f(flag: StringName) -> bool:
-	# Replace spaces with underscores, a flag cannot contain spaces
-	flag = flag.replace(" ", "_")
+	var expr: String = flag
 
-	# "true" and "false" when left by themselves will always return that
-	if flag == "true":
-		return true
+	# Normalize operators and clear whitespace
+	expr = expr.replace("+", "&&").replace(" and ", "&&")
+	expr = expr.replace(" or ", "||").replace("not ", "!")
+	expr = expr.replace(":", "=")
+	expr = expr.replace(" ", "").replace("\n", "").replace("\t", "")
 
-	if flag == "false":
-		return false
+	# Handle parentheses iteratively
+	while "(" in expr:
+		var open_idx := expr.rfind("(")
+		var close_idx := expr.find(")", open_idx)
 
-	# ":" is an alias for "="
+		if close_idx == -1:
+			break
 
-	if ":" in flag:
-		return f(flag.replace(":", "="))
+		var sub_val := f(expr.substr(open_idx + 1, close_idx - open_idx - 1))
+		expr = expr.left(open_idx) + str(sub_val) + expr.substr(close_idx + 1)
 
-	# For AND expression
-	if "+" in flag:
-		# Recursively call this function for each expression,
-		# and return false if any of them is false
-		var split := flag.split("+")
-
-		for i in split:
-			if not f(i):
-				return false
-
-		return true
-
-	# For OR expression
-	if "||" in flag:
-		# Recursively call this function for each expression,
-		# and return true if any of them is true
-		var split := flag.split("||")
-
-		for i in split:
-			if f(i):
+	# Handle OR operator
+	if "||" in expr:
+		for part in expr.split("||"):
+			if f(part):
 				return true
 
 		return false
 
-	# For comparasion expressions
-	# Splits the expression in two, split[0] for the left and split[1] for the right,
-	# then replaces the expression with a string of its result (true or false).
+	# Handle AND operator
+	if "&&" in expr:
+		for part in expr.split("&&"):
+			if not f(part):
+				return false
 
-	# For greater or equal expression
-	if ">=" in flag:
-		var split := flag.split(">=")
-		return f(
-			flag.replace(split[0] + ">=" + split[1], str(flag_int(split[0]) >= flag_int(split[1]))),
-		)
-	# For greater expression
-	if ">" in flag:
-		var split := flag.split(">")
-		return f(
-			flag.replace(split[0] + ">" + split[1], str(flag_int(split[0]) > flag_int(split[1]))),
-		)
-	# For less or equal expression
-	if "<=" in flag:
-		var split := flag.split("<=")
-		return f(
-			flag.replace(split[0] + "<=" + split[1], str(flag_int(split[0]) <= flag_int(split[1]))),
-		)
-	# For lesser expression
-	if "<" in flag:
-		var split := flag.split("<")
-		return f(
-			flag.replace(split[0] + "<" + split[1], str(flag_int(split[0]) < flag_int(split[1]))),
-		)
-	# For not equals expression
-	if "!=" in flag:
-		var split := flag.split("=")
-		return f(
-			flag.replace(
-				split[0] + "!=" + split[1],
-				str(flag_int(split[0]) != flag_int(split[1])),
-			),
-		)
-	# For equals expression
-	if "=" in flag:
-		var split := flag.split("=")
-		return f(
-			flag.replace(
-				split[0] + "=" + split[1],
-				str(flag_int(split[0]) == flag_int(split[1])),
-			),
-		)
-
-	# For NOT Expression
-	# Will only run when the flag is by itself, and simply flips the result
-	if flag.begins_with("!"):
-		return not f(flag.replace("!", ""))
-
-	# If just a flag is left, just return if this flag exists and is greater than 0
-	if flags.has(flag) and flags.get(flag) == 1:
 		return true
-	else:
+
+	# Handle comparison operators
+	for op in [">=", "<=", "!=", ">", "<", "="] as PackedStringArray:
+		if op in expr:
+			var parts := expr.split(op)
+			var left: int = get_flag(parts[0])
+			var right: int = get_flag(parts[1])
+
+			match op:
+				">=": return left >= right
+				"<=": return left <= right
+				"!=": return left != right
+				">": return left > right
+				"<": return left < right
+				"=": return left == right
+
+	# Handle NOT operator
+	if expr.begins_with("!"):
+		return not f(expr.substr(1))
+
+	# Base cases
+	if expr == "true":
+		return true
+
+	if expr == "false":
 		return false
+
+	return flags.get(expr, 0) == 1
 
 
 ## Set a flag with [code]do add_flag("Example", 1)[/code]. The second parameter is optional, and is 1 by default.
@@ -441,6 +402,12 @@ func take_control(keep_ui := false, keep_followers := false, idle := false) -> v
 			Global.player.set_anim()
 
 
+func enable_followers() -> void:
+	for i in Global.room.followers:
+		i.dont_follow = false
+		i.state = NPC.S.CONTROLLED
+
+
 func give_control(camera_follow := false, bring_followers := true, reset_zoom := true) -> void:
 	if Global.player == null:
 		return
@@ -476,7 +443,7 @@ func give_control(camera_follow := false, bring_followers := true, reset_zoom :=
 
 
 ## Return the int value of a flag, or returns a nuber if given just a number
-func flag_int(string: String) -> int:
+func get_flag(string: String) -> int:
 	if string.is_valid_int():
 		return int(string)
 
@@ -491,12 +458,12 @@ func flag_progress(stri: String, to := 1) -> void:
 	if to == 0:
 		remove_flag(stri)
 	else:
-		flags.set(stri, max(flag_int(stri), to))
+		flags.set(stri, max(get_flag(stri), to))
 
 
 ## Check if the flag is equal or greater than the given value
 func f_past(string: String, has_passed := 9) -> bool:
-	if flag_int(string) >= has_passed:
+	if get_flag(string) >= has_passed:
 		return true
 	else:
 		return false
@@ -724,9 +691,10 @@ func start_time_events(location: String) -> void:
 	else:
 		match location:
 			"Pyrson":
-				if Global.room.is_dungeon:
-					await sequence("return_home_pyrson")
-				else:
+				#if Global.room.is_dungeon:
+					#await sequence("return_home_pyrson")
+
+				#else:
 					await sequence("wake_home")
 
 			"Dungeon":
@@ -760,7 +728,7 @@ func condition(con: String) -> int:
 ## Change any parameters from the time change
 func setup_time_changes(from: int, to: int) -> void:
 	if f_past("eepy", 1):
-		var eepy := flag_int("eepy")
+		var eepy := get_flag("eepy")
 		add_flag("eepy", eepy + to - from)
 		if eepy >= 2 or time_of_day == TOD.MORNING:
 			remove_flag("eepy")

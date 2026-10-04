@@ -1234,7 +1234,7 @@ func game_over(target: Actor = null) -> void:
 		get_tree().paused = false
 		await Event.wait(1, false)
 
-	Loader.white_fadeout(0, 1, 2)
+	Transition.fade_in_out(Color.WHITE, 1, 0, 2)
 	await Event.wait(3, false)
 
 	print_rich("[color=cornflower-blue]Game over")
@@ -1530,7 +1530,7 @@ static func post_battle() -> void:
 	if is_instance_valid(Global.player):
 		Global.player.show()
 		Global.player.get_node("DirectionMarker/Finder/Shape").set_deferred("disabled", false)
-		if Event.f(&"FlameActive"):
+		if Event.f(&"Player/Flame"):
 			Global.player.activate_flame()
 
 	if sequence.return_control:
@@ -1947,11 +1947,17 @@ func random_target(ab: Ability) -> Actor:
 			return CurrentChar
 
 		Ability.T.ONE_ENEMY:
-			return get_oposing_faction(CurrentChar).pick_random()
+			var faction := get_oposing_faction(CurrentChar, !ab.CanTargetDead)
+
+			if faction.is_empty(): return null
+			else: return faction.pick_random()
 
 		Ability.T.ONE_ALLY:
 			print_rich("[color=cornflower-blue]a")
-			return get_ally_faction(CurrentChar).pick_random()
+			var faction := get_ally_faction(CurrentChar, !ab.CanTargetDead)
+
+			if faction.is_empty(): return null
+			else: return faction.pick_random()
 
 	return null
 

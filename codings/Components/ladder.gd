@@ -60,7 +60,7 @@ func _physics_process(delta: float) -> void:
 
 			active = false
 			Global.player.set_anim("IdleDown")
-			Global.player.look_to(Vector2.DOWN)
+			Global.player.look_to(Direction.DOWN)
 			Global.player.shadow(true)
 			await Event.jump_to_global(Global.player, $End2.global_position, time, height)
 			Event.give_control()

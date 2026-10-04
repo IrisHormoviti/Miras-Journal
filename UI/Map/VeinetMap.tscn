@@ -477,6 +477,9 @@ text = "Entrance
 icon = ExtResource("5_5boh2")
 alignment = 0
 expand_icon = true
+metadata/Room = "Amberelm"
+metadata/IsDungeon = true
+metadata/CamID = 0
 
 [node name="TempleWoods" type="Label" parent="Container/Scroller/LocationList" unique_id=1064790436]
 light_mask = 0

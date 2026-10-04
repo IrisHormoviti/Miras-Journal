@@ -104,6 +104,8 @@ func _ready() -> void:
 
 func setup_shadow() -> void:
 	if sprite:
+		sprite.use_parent_material = true
+
 		if sprite.sprite_frames.has_animation("IdleDown"):
 			sprite.offset.y = - sprite.sprite_frames.get_frame_texture("IdleDown", 0).get_size().y / 2 + 7
 
@@ -247,42 +249,29 @@ func get_tile(layer: int) -> TileData:
 	return Global.room.get_tile(Global.room.local_to_map(global_position), layer)
 
 
-## Move towards a direction x24
-## Input can be a Vector2, String ("U", "R", etc) or Direction
-## A vector input can be bigger than 1 to move further
-func move_dir(dir: Variant, use_coords := true) -> void:
-	var vector: Vector2
+## Move towards a direction by 24 pixels
+func move_dir(dir: Direction) -> void:
+	var vector: Vector2 = dir.vector * 24
+	await move_by(vector)
 
-	if dir is String: vector = Direction.from_letter(dir).vector
-	elif dir is Direction: vector = dir.vector
-	elif dir is Vector2: vector = dir
-	else:
-		push_error("Invalid use of move_dir: ", dir)
-		return
 
-	if use_coords: await go_to(position + vector * 24)
-	else: await go_to(position + vector)
+## Go to a relative position from the current one
+func move_by(vector: Vector2) -> void:
+	await go_to(position + vector)
+
+
+## Go to a relative position from the current one x24
+func move_by_tiles(vector: Vector2) -> void:
+	await go_to(position + vector * 24)
 
 
 ## The characted looks to a new direction and becomes IDLE
-## Input can be a Vector2, String ("U", "R", etc) or Direction
-func look_to(dir: Variant) -> void:
-	var vector: Vector2
-
-	if dir is String: vector = Direction.from_letter(dir).vector
-	elif dir is Direction: vector = dir.vector
-	elif dir is Vector2: vector = dir
-	else:
-		push_error("Invalid use of look_to: ", dir)
-		return
-
-	
+func look_to(dir: Direction) -> void:	
 	state = S.IDLE
-	facing.vector = vector
-	direction = vector
+	facing = dir
 
 
-func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector2 = Vector2.ZERO) -> void:
+func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Direction = null) -> void:
 	if Nav == null: return
 	if self is Mira and Global.controllable: await Event.take_control()
 	#await stop_going()
@@ -308,7 +297,7 @@ func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector
 	position = Vector2i(position)
 	direction = Vector2.ZERO
 	await Event.wait()
-	if look_dir != Vector2.ZERO:
+	if look_dir:
 		look_to(look_dir)
 
 
@@ -317,7 +306,7 @@ func pathfind_to(pos: Vector2, exact := true, autostop := true, look_dir: Vector
 ##If autostop is true, it will stop when hitting a wall.
 ##look_dir is the direction the NPC will face after reaching the destination.
 ##accuracy detarmines how close to the destination the NPC should get.
-func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Variant = Vector2.ZERO, accuracy: int = 8) -> void:
+func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Direction = null, accuracy: int = 10) -> void:
 	if pos is String:
 		pos = Event.get_marker_pos(pos)
 
@@ -332,7 +321,7 @@ func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Varia
 
 	state = S.MOVE
 
-	while round(global_position / accuracy) != round(pos / accuracy):
+	while ceil(global_position / accuracy) != ceil(pos / accuracy):
 		if not is_instance_valid(self) or is_queued_for_deletion():
 			return
 
@@ -344,7 +333,8 @@ func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Varia
 	direction = Vector2.ZERO
 	state = S.IDLE
 
-	if look_dir is String or look_dir != Vector2.ZERO: look_to(look_dir)
+	if look_dir: 
+		look_to(look_dir)
 
 
 func set_anim(anim: String, wait := false, overwrite_state := true) -> void:
@@ -399,8 +389,8 @@ func collision(tog: bool = $CollisionShape2D.disabled) -> void:
 
 
 func chain_moves(moves: Array) -> void:
-	for i:Variant in moves:
-		await move_dir(i)
+	for i: Vector2 in moves:
+		await move_by(i * 24)
 
 
 func chain_positions(moves: Array[Vector2]) -> void:

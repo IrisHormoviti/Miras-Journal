@@ -1,8 +1,3 @@
-~ was_that_a
-It ran away?[wait=0.4] Was that another monster?
-Maybe I should follow it.
-=> END
-
 ~ first_cutscene
 Placeholder description: A cutscenre that isn't made yet should play here.
 Placeholder description: Basically, a monster comes out of the lake and attacks Mira.
@@ -57,7 +52,7 @@ $> Party.Leader.node.hide()
 $> player.show()
 Hm, what's that?
 [hide]
-$> player.move_dir(Vector2(3, 0))
+$> player.move_by_tiles(Vector2(3, 0))
 $> Item.add_item("WhiteSlime", "Mat")
 $> Event.wait(1)
 These slime remnants seems to contain some of that monster's essence.
@@ -67,7 +62,7 @@ I feel like it might prove useful.
 => END
 
 ~ getting_dark
-$> npc("P").set_anim("IdleRight")
+$> player.look_to(Direction.RIGHT)
 ...It's getting a little dark.
 [hide]
 $> player.activate_flame()
@@ -76,8 +71,30 @@ This should help.
 $>>  save()
 => END
 
+~ was_that_a
+$> EvAlcineBelow.show()
+$> player.look_to(Direction.UP)
+$> wait(0.5)
+$> EvAlcineBelow.look_to(Direction.DOWN)
+$> EvAlcineBelow.bubble("Surprise")
+$> EvAlcineBelow.move_by_tiles(Vector2.UP * 5)
+It ran away?[wait=0.4][p]Was that another monster?
+Maybe I should follow it.
+$> add_flag("Event/AlcineFollow", 1)
+=> END
+
 ~ hey_wait
-Mira.OpenMouth: Hey wait![next=2]
+$> add_flag("Event/AlcineFollow", 2)
+$> Pterogon.hide()
+$> Alcine.position = Vector2(1282, -990)
+$> Global.player.can_dash = false
+$> Alcine.go_to(Vector2(1334, -1060))
+$>> Alcine.go_to(Vector2(1681, -1070))
+Mira.OpenMouth: Hey wait! [wait=2]
+$> Alcine.set_anim("Scared")
+$> Alcine.get_node("Sprite").stop()
+$> Global.player.can_dash = true
+$> Loader.save()
 => END
 
 ~ approach
@@ -96,7 +113,7 @@ $> player.get_node("Flame").flicker = false
 $>> tween(player.get_node("Flame"), "energy", 0, 2)
 $>> tween(Alcine.get_node("Glow"), "energy", 0.6, 2)
 $> tween(Alcine.get_node("Glow"), "texture_scale", 3, 2)
-$> remove_flag("FlameActive")
+$> remove_flag("Player/Flame")
 $> wait(0.5)
 Mira.Neutral: Hey little one.
 [hide]
@@ -130,7 +147,7 @@ I take a green fabric from my bag, and tie it around their neck.
 $> Alcine.hop()
 $> Alcine.change_sprite("Alcine")
 $> wait(1)
-$> remove_flag(&"FlameActive")
+$> remove_flag(&"Player/Flame")
 $> player.check_flame(true)
 $> player.set_anim("IdleRight")
 Mira.Smile: Hehe, looks good on you!
@@ -155,7 +172,7 @@ Mira.Neutral: Stay behind me, I'll deal with it!
 [hide]
 $> Battle.attacker = Pterogon
 $> Event.wait(0.1)
-$> Event.flag_progress("AlcineFollow", 3)
+$> Event.flag_progress("Event/AlcineFollow", 3)
 $> Battle.start("AlcineFollow1")
 => END!
 
@@ -181,7 +198,7 @@ Mira.Neutral: If it wasn't for you, I'd be done for.
 Mira.Neutral: We should stick together for now, [wait=0.5]umm...
 Mira.Neutral: Wait, do you have a name?
 [hide]
-$> npc("Alcine").bubble("Question")
+$> Alcine.bubble("Question")
 Mira.Neutral: Right, you can't talk. But I need to call you something...
 Mira.Neutral: Oh I got it! [br]I'll come up with a name and you tell me if you like it, okay?
 => END
@@ -189,7 +206,7 @@ Mira.Neutral: Oh I got it! [br]I'll come up with a name and you tell me if you l
 ~ use_name
 Mira.Neutral: What about "{{alcine}}"?
 Alcine.Neutral: *nod*
-$> npc("P").look_to(Vector2(1, 0))
+$> player.look_to(Direction.RIGHT)
 Mira.Neutral: Alright then {{alcine}}, let's go together from here on.
 $> Party.set_to(["Mira", "Alcine"])
 => END
@@ -202,16 +219,16 @@ Mira.Neutral: Seems like this is our way out of this forest.
 ~ morning
 Mira.Neutral: The sky is getting brighter. [p]Seems like it's early morning.
 [hide]
-$> npc("MiraCut").look_to(Vector2(0, -1))
-$> npc("MiraCut").bubble("Surprise")
+$> MiraCut.look_to(Direction.UP)
+$> MiraCut.bubble("Surprise")
 
-$> npc("AlcineCut").look_to(Vector2(0, -1))
+$> AlcineCut.look_to(Direction.UP)
 Mira.Neutral: Look {{alcine}}!
 [hide]
-$> npc("AlcineCut").chain_moves([Vector2(-1, 0), Vector2(0, -1)])
+$> AlcineCut.chain_moves([Vector2.LEFT, Vector2.UP])
 Mira.Neutral: That looks like a town, doesn't it?
 [hide]
-$> npc("AlcineCut").bubble("Excited")
+$> AlcineCut.bubble("Excited")
 Mira.Neutral: Come on let's go! The people there might be able to help us!
 => END
 
@@ -220,17 +237,17 @@ Mira.Neutral: What... happened here?
 [hide]
 $> player.go_to(Vector2(6, 15), true)
 $> wait(0.3)
-$> player.look_to(Vector2(1, 0))
+$> player.look_to(Direction.RIGHT)
 $> wait(0.3)
-$> player.look_to(Vector2(-1, 0))
+$> player.look_to(Direction.LEFT)
 $> wait(0.3)
-$> player.look_to(Vector2(0, -1))
+$> player.look_to(Direction.UP)
 Mira.Neutral: It's all... in ruins...
 $> take_control()
 [hide]
-$> player.chain_moves([Vector2(-1, 0), Vector2(0, -1)])
+$> player.chain_moves([Vector2.LEFT, Vector2.UP])
 $> wait(0.3)
-$> player.camera_follow(false)
+$> camera_unlock()
 $> player.set_anim("SitRight", false, true)
 $> player.collision(false)
 $> jump_to(player, Vector2(107, 345), 15)
@@ -284,7 +301,7 @@ Placeholder description: {{alcine}} who was resting on Mira also gets up.
 Mira.Neutral: Mmm... Good morning {{alcine}}. Or is it afternoon?
 Alcine.Tired: Meuummm...
 Placeholder description: Mira picks up the paper from yesterday.
-$> npc("Mira").bubble("Surprise")
+$> Mira.bubble("Surprise")
 $> picture("RestAmberelmDrawing")
 Mira.Neutral: Huh? Is that me?
 Alcine.Happy: Mloop!
@@ -344,13 +361,12 @@ Mira.Worried: Oh, sorry {{alcine}}, I was just-
 $> player.bubble("Surprise")
 {{alcine}}! That's it![br]They can naturally use the freeze spells that I can't!
 [hide]
-$>> player.move_dir(Vector2(-3, -1))
+$>> player.move_by_tiles(Vector2(-3, -1))
 $> wait(1)
-$> F1.move_dir(Vector2(-2, 1))
+$> F1.move_by_tiles(Vector2(-2, 1))
 $> F1.look_to(Direction.UP)
 Mira.Smile: Hey...
 [hide]
-$> add_flag("ColorTutorial", 1)
 $> Battle.attacker = MagicWall
 $> Battle.start("ColorTutorial")
 Mira.Smile: Maybe this is an opportunity to learn something!
@@ -437,7 +453,7 @@ Their aura color, and thus affinity for magic, is nearly oposite to mine.
 But... {{alcine}} has kind of inspired me.
 Perhaps I could give liquid magic a try.
 [hide]
-$> add_complimentary("FluidBlast", alcine())
+$> add_complimentary("FluidBlast", alcine)
 $> npc("P").jump_to(get_marker_pos("BenchBeforeGuardian"))
 $> save()
 => END
@@ -472,7 +488,7 @@ Placeholder description: Mira then faints.
 => END
 
 ~ daze_introduction
-do add_to_diary("oct31")
+$> add_to_diary("oct31")
 I open my eyes and see im somewhere else. Is this a tent?
 I get up and look around. My clothes are all ripped and I have a bandage on my left arm.
 Ow, it hurts quite a bit to move it around.
@@ -483,7 +499,7 @@ I'm not that sure what to say, and I just stare silent for a bit.
 After a bit of hesitation I go to sit on the other side of the campfire.
 Mira.Neutral: I have so many questions...
 Daze.Neutral: Ask away.
-$> Event.Flags.set("DazeQuestions", 0)
+$> add_flag("DazeQuestions", 0)
 ~ daze_questions
 What do I ask?
 - Who is he?
@@ -495,7 +511,7 @@ What do I ask?
 	Daze.Neutral: That's a long story... and doesn't really matter.
 	Daze.Neutral: What matters is I was seprated from my comanions while traveling.
 	Huh.
-	do add_to_diary("oct31_dazesus")
+	$> add_to_diary("oct31_dazesus")
 - Where are we?
 	Mira.Neutral: do you have any idea where we are?
 	Daze.Neutral: I'm not so sure... I don't remember exactly how I got here.
@@ -540,27 +556,27 @@ What do I ask?
 	Mira.Neutral: Thank you, I was starving...
 - Nothing else to ask
 	Mira.Neutral: I think that all I had to ask. Thanks.
-	if flag_int("DazeQuestions") == 0:
+	if get_flag("DazeQuestions") == 0:
 		Daze.Neutral: What is all? You didn't ask anything!
 		Mira.Neutral: Oh I didn't, did I?
 		Mira.Neutral: Sorry, I forgot what I wanted to ask.
 		Daze.Neutral: ...
-	if flag_int("DazeQuestions") == 1:
+	if get_flag("DazeQuestions") == 1:
 		Daze.Neutral: That was... one question...
 		Mira.Neutral: Yeah, that's all I needed.
 		Daze.Neutral: Understood...
-	if flag_int("DazeQuestions") == 2:
+	if get_flag("DazeQuestions") == 2:
 		Daze.Neutral: That was just two question...
 		Mira.Neutral: I guess I didn't have as much on my mind as I expected, hehe.
 	=> daze_questions_done
-$> add_flag("DazeQuestions", flag_int("DazeQuestions") + 1)
+$> add_flag("DazeQuestions", get_flag("DazeQuestions") + 1)
 => daze_questions
 
 ~ get_journal
 He picks up a book next to him... wait that's my journal!
 I quickly take it from him.
 [hide]
-do add_item("Journal", &"Key")
+$> add_item("Journal", &"Key")
 Mira.Neutral: Hey! Where did you even find this?!
 Mira.Neutral: You can't just read people's personal Journals!
 Daze.Neutral: I'm sorry. It was the only way I could know who you are, since you were unconscious...
@@ -584,7 +600,7 @@ Daze.Neutral: Just stay here and rest while I'm away, alright?
 Mira.Neutral: Alright.
 if Party.get_member("Daze").FirstName != "Daze":
 	Mira.Neutral: Oh by the way, I didn't ask. What's your name?
-	if flag_int("DazeQuestions") < 3:
+	if get_flag("DazeQuestions") < 3:
 		Daze.Neutral: Oh, so you did have more things to ask.
 	Daze.Neutral: It's Daze.
 	$> Party.get_member("Daze").FirstName = "Daze"

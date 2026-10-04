@@ -4,13 +4,14 @@ var inactive := true
 
 func _ready() -> void:
 	Engine.time_scale = 1
-	Loader.battle_result = -1
-	Loader.battle_end.emit()
-	Battle.in_battle = false
+	Battle.battle_result = -1
+	Global.battle_end.emit()
 	if is_instance_valid(Global.bt):
 		Global.bt.queue_free()
+
 	if is_instance_valid(Global.room):
 		Global.room.queue_free()
+
 	Hud.disabled = true
 	get_viewport().gui_focus_changed.connect(focus)
 	$Options/Retry.grab_focus()
@@ -27,8 +28,7 @@ func retry() -> void:
 	await t.finished
 	$AnimationPlayer.play("Rewind")
 	await Event.wait(0.8)
-	await Loader.transition(null)
-	await Loader.load_game()
+	await Loader.load_game("Autosave", true, false, false)
 	queue_free()
 
 
@@ -43,6 +43,6 @@ func _quit() -> void:
 	Global.quit()
 
 
-func focus(control):
+func focus(control: Control) -> void:
 	if inactive: return
 	Audio.cursor_sound()

@@ -5,6 +5,7 @@
 [resource]
 script = ExtResource("1_46ia7")
 title = "Amberelm Reunion"
+room = "Amberelm"
 room_name = "Amberelm"
 party = Array[StringName]([&"Alcine", &"", &"", &""])
 members = Array[Dictionary]([{

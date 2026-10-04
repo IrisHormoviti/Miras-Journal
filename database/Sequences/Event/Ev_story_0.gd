@@ -10,11 +10,11 @@ func new_game() -> void:
 	Hud.hide_all()
 	# Initial flags
 	Event.flags.clear()
-	Event.add_flag("Started")
-	Event.add_flag("HasBag", false)
-	Event.add_flag("DisableMenus", true)
-	Event.add_flag("HideDate", true)
-	Event.add_flag("DisableVeinet")
+	Event.add_flag("Meta/Started")
+	Event.add_flag("Player/NoBag", true)
+	Event.add_flag("UI/Disable", true)
+	Event.add_flag("UI/HideDate", true)
+	Event.add_flag("Meta/Veinet/Disable")
 	Event.add_flag("time", Event.TOD.NIGHT)
 	Event.add_flag("day", 0)
 	Event.day = 0
@@ -103,7 +103,7 @@ func bag_seq() -> void:
 	var bag_ico: Texture = await Loader.load_res("res://art/Icons/Items.tres") as Texture
 	bag_ico.region = Rect2(90, 90, 18, 18)
 	Item.get_animation(bag_ico, "Flimsy bag", false)
-	Event.add_flag(&"HasBag", true)
+	Event.remove_flag(&"Player/NoBag")
 	Event.give_control()
 	Global.player._check_party()
 
@@ -115,13 +115,10 @@ func axe_seq() -> void:
 
 
 func first_battle() -> void:
-	Global.player.move_dir(Vector2.RIGHT * 2)
-	Loader.travel_to("TempleWoods", Vector2(1220, 461), 1, Direction.RIGHT, false)
-	await Event.wait(0.2)
-	Transition.fade_in()
-	await Event.wait(0.5)
-	Event.take_control()
-	Global.player.camera_follow(false)
+	Global.player.move_by_tiles(Vector2.RIGHT * 2)
+	await Transition.fade_in()
+	await Loader.travel_to("TempleWoods", Vector2(1220, 461), 1, null, false)
+	Event.camera_unlock()
 	Event.camera_move(Vector2(1446, -605), 0)
 	Transition.fade_out()
 	Event.camera_move(Vector2(1486, -300), 5, Tween.EASE_IN_OUT, Tween.TRANS_LINEAR)
@@ -134,39 +131,8 @@ func first_battle() -> void:
 	Transition.fade_in()
 	Battle.start("FirstBattle")
 	Event.add_flag("EvFirstBattle")
-	Event.add_flag("DisableMenus", false)
+	Event.add_flag("UI/Disable", false)
 	Hud.disabled = false
-
-
-func AlcineFollow1() -> void:
-	var Alcine: NPC = Event.npc("EvAlcineBelow")
-	Alcine.show()
-	Alcine.state = NPC.S.IDLE
-	await Event.take_control()
-	Global.player.set_anim("IdleUp")
-	await Event.wait(0.5)
-	Alcine.look_to(Vector2.DOWN)
-	await Alcine.bubble("Surprise")
-	await Alcine.move_dir(Vector2.UP * 5)
-	await Textbox.open("story_0", "was_that_a")
-	Event.flag_progress("AlcineFollow", 1)
-	Event.give_control(true)
-
-
-func AlcineFollow2() -> void:
-	var Alcine: NPC = Event.npc("Alcine")
-	Event.flag_progress("AlcineFollow", 2)
-	Event.obj("Pterogon").hide()
-	Alcine.position = Vector2(1282, -990)
-	Global.player.can_dash = false
-	Passive.open("story_0", "hey_wait")
-	await Alcine.go_to(Vector2(1334, -1060))
-	await Alcine.go_to(Vector2(1681, -1070))
-	Alcine.state = NPC.S.CUSTOM
-	Alcine.set_anim("Scared")
-	Alcine.get_node("Sprite").stop()
-	Global.player.can_dash = true
-	Loader.save()
 
 
 func AlcineFollowHelp() -> void:
@@ -177,7 +143,7 @@ func AlcineFollowHelp() -> void:
 	#Hud.hide_all()
 	var hp: int = max(Global.bt.get_actor("Pterogon").Health, 5)
 	Alcine.z_index = 9
-	Loader.white_fadeout(2, 3, 0.5)
+	Transition.fade_in_out(Color.WHITE, 0.5, 2, 3)
 	await Alcine.jump_to(Vector2(1660, -1068), 7, 0.5)
 	Global.bt.end_battle()
 	await Global.battle_end
@@ -206,23 +172,23 @@ func AlcineFollow4() -> void:
 	Global.room.followers[0].dont_follow = true
 	Global.room.followers[0].hide()
 	Alcine.show()
-	await Alcine.go_to(Vector2(66, -45), true)
+	await Alcine.go_to(Vector2(66, -46), true)
 	await Event.wait(0.3)
-	Alcine.look_to(Vector2.RIGHT)
+	Alcine.look_to(Direction.RIGHT)
 	Global.camera.position = Global.player.position - Vector2(18, 0)
 	Event.take_control()
-	Global.player.look_to(Vector2.LEFT)
+	Global.player.look_to(Direction.LEFT)
 	Global.player.position = Vector2(1619, -1068)
 	await Textbox.open("story_0", "got_through_that")
 	await Global.alcine_naming()
 	await Textbox.open("story_0", "use_name")
-	await Loader.transition(Direction.RIGHT)
-	Event.flag_progress("AlcineFollow", 4)
+	await Transition.wipe(Direction.RIGHT)
+	Event.flag_progress("Event/AlcineFollow", 4)
 	Alcine.hide()
 	Global.camera.zoom = Vector2(4, 4)
 	Hud.disabled = false
 	Hud.ui_visible = true
-	Event.add_flag("FlameActive")
+	Event.add_flag("Player/Flame")
 	Global.room.followers[0].dont_follow = false
 	Transition.unwipe()
 	Hud.shrink()
@@ -233,7 +199,7 @@ func AlcineFollow4() -> void:
 
 
 func enter_amberelm() -> void:
-	Global.player.move_dir(Vector2(0, -2))
+	Global.player.move_by_tiles(Vector2(0, -2))
 	await Loader.travel_to("Amberelm", Vector2.ZERO, 1, Direction.UP, false)
 	var mira: NPC = Event.npc("MiraCut")
 	var alcine: NPC = Event.npc("AlcineCut")
@@ -243,16 +209,16 @@ func enter_amberelm() -> void:
 	alcine.go_to(Vector2(13, 50), true, false)
 	await mira.go_to(Vector2(13, 49), true, false)
 	await Event.wait(0.2)
-	mira.look_to(Vector2.RIGHT)
+	mira.look_to(Direction.RIGHT)
 	await Event.wait(0.2)
-	alcine.look_to(Vector2.RIGHT)
+	alcine.look_to(Direction.RIGHT)
 	await Event.wait(0.3)
 	alcine.speed = 75
 	Event.time_of_day = Event.TOD.MORNING
 	Event.day = 0
 	await Textbox.open(name, "morning")
 	Event.npc("MiraCut").speed = 75
-	Event.npc("MiraCut").move_dir(Vector2.UP * 5)
+	Event.npc("MiraCut").move_by_tiles(Vector2.UP * 5)
 	Event.npc("AlcineCut").chain_moves([Vector2.RIGHT, Vector2.UP * 5])
 	await Event.wait(0.8)
 	Loader.travel_to("Amberelm", Vector2.ZERO, 0, Direction.UP)
@@ -268,7 +234,7 @@ func enter_amberelm_2() -> void:
 	await Event.wait(1)
 	Global.location_name("Amberelm")
 	await Event.wait(5)
-	Loader.gray_out(1, 1)
+	Transition.fade_in(Color.BLACK, 1)
 	await Event.wait(2)
 	Event.give_control(true)
 	Global.player.position = Vector2(222, 429)
@@ -306,8 +272,8 @@ func oct31_night() -> void:
 	await Event.spawn("Daze", Vector2(670, -211), Direction.RIGHT)
 	await Textbox.open(name, "daze_introduction")
 	Item.remove_item("LightweightAxe", &"Key")
-	Event.add_flag("DisableVeinet")
-	Event.remove_flag("HideDate")
+	Event.add_flag("Meta/Veinet/Disable")
+	Event.remove_flag("UI/HideDate")
 	Party.set_to(["Mira"])
 	Party.Leader.ClutchDmg = false
 	await Loader.travel_to("WitheredLeaves", Vector2(775, -211))

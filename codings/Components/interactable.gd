@@ -29,8 +29,6 @@ signal action()
 	"item",
 	"battle",
 	"event",
-	"social_link",
-	#"pass_time",
 	"veinet",
 	"focus_cam",
 	"chair",
@@ -44,6 +42,7 @@ signal action()
 @export var file: String = ""
 @export_enum("testbush") var dialogue_file: String = "testbush"
 @export_enum("start") var dialogue_cue: String = "start"
+
 @export_enum("Con", "Mat", "Bti", "Key") var itemtype := "Con":
 	set(x):
 		itemtype = x
@@ -53,7 +52,6 @@ signal action()
 @export_enum("Failed to Load") var item := ""
 @export var to_time: Event.TOD
 @export var to_time_relative: int
-@export var event_condition := ""
 @export var chair_faces: Array[String] = ["U", "D", "L", "R"]
 @export var return_control := true
 @export var focus_position: Vector2
@@ -79,7 +77,7 @@ signal action()
 @export var bubble_height: int = 0
 @export var offset := 5
 @export var proper_pos := Vector2.ZERO
-@export var proper_face := Vector2.ZERO
+@export var proper_face: Direction = null
 @export var needs_bag := false
 
 var used_properties: Array[String]
@@ -91,7 +89,6 @@ var action_options: Array[String] = [
 		"to_time",
 		"to_time_relative",
 		"return_control",
-		"event_condition",
 		"chair_faces",
 		"dialogue_file",
 		"focus_position",
@@ -170,7 +167,7 @@ func _validate_property(property: Dictionary) -> void:
 					var text_res: DialogueResource = load("res://database/Text/"+dialogue_file+".dialogue")
 
 					if text_res:
-						property.hint_string = ",".join(text_res.get_cues())
+						property.hint_string = "start" + ",".join(text_res.get_cues())
 
 	if property.name == "item":
 		var type: String
@@ -210,7 +207,8 @@ func _ready() -> void:
 
 
 func _exit_tree() -> void:
-	pack.queue_free()
+	if pack:
+		pack.queue_free()
 
 
 func vein_check() -> void:
@@ -223,7 +221,7 @@ func vein_check() -> void:
 		label_text = "Open"
 		get_parent().get_node("Sprite").hide()
 
-	if Event.check_flag("DisableVeinet"):
+	if Event.check_flag("Meta/Veinet/Disable"):
 		label_text = "Inspect"
 
 
@@ -237,9 +235,6 @@ func check() -> void:
 		disappear(true)
 		return
 
-	if event_condition != "" and Event.condition(event_condition) == 0:
-		destroy()
-
 	if not check_flag():
 		destroy()
 
@@ -251,6 +246,8 @@ func check() -> void:
 
 
 func check_flag() -> bool:
+	if Event.check_flag(get_name_flag()): return false
+
 	if not show_on_flag.is_empty() and not Event.f(show_on_flag):
 		return false
 
@@ -405,7 +402,7 @@ func _on_button_pressed() -> void:
 	t = create_tween().set_parallel(true).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_LINEAR)
 	t.tween_property(pack, "scale", Vector2(0.4, 0.4), 0.1).from(Vector2(0.36, 0.36))
 	await Event.wait(0.1, false)
-	if needs_bag and not Event.f("HasBag"):
+	if needs_bag and Event.f("Player/NoBag"):
 		Global.toast("A bag is needed to store that.")
 		Event.give_control()
 		return
@@ -413,8 +410,8 @@ func _on_button_pressed() -> void:
 	if get_tree().root.has_node("Options"):
 		get_tree().root.get_node("Options").queue_free()
 
-	if proper_face == Vector2.ZERO:
-		Global.player.look_to(Direction.snap_vector(to_local(Global.player.position) * -1))
+	if proper_face == null:
+		Global.player.look_to(Direction.from(to_local(Global.player.position) * -1))
 
 	if proper_pos != Vector2.ZERO:
 		await Event.take_control()
@@ -435,7 +432,7 @@ func _on_button_pressed() -> void:
 			await Event.take_control(false, false, true)
 			disappear(true)
 			if dialogue_file.is_empty(): dialogue_file = file
-			await Textbox.open(dialogue_file, dialogue_cue)
+			await Textbox.open(dialogue_file, "" if dialogue_cue == "start" else dialogue_cue)
 
 		"item":
 			Item.add_item(item, itemtype)
@@ -450,17 +447,12 @@ func _on_button_pressed() -> void:
 			Audio.confirm_sound()
 			Event.sequence(file)
 
-		"pass_time":
-			if await Hud.confirm_time_passage(dialogue_cue, item):
-				Audio.confirm_sound()
-				Event.sequence(file)
-
 		"veinet":
 			await Event.take_control(false, false, true)
-			if Event.check_flag("DisableVeinet"):
+			if Event.check_flag("Meta/Veinet/Disable"):
 				await Textbox.open("interact_abad", "vein_point_idk")
 			elif Event.check_flag(get_parent().name):
-				Event.veinet_map(get_parent().name.replace("VP", ""))
+				Global.veinet_map(get_parent().name.replace("VP", ""))
 			else:
 				Event.add_flag(get_parent().name, true)
 				vein_check()
@@ -478,16 +470,6 @@ func _on_button_pressed() -> void:
 			Global.check.emit()
 			await Event.wait(3, false)
 			Global.player.camera_follow(true)
-
-		"social_link":
-			await Event.take_control(false)
-			var rank := Event.condition(event_condition)
-
-			if rank == 0:
-				Global.toast("Something went wrong with the event condition")
-
-			disappear(true)
-			await Textbox.open(dialogue_file, "rank" + str(rank) + "_prepare")
 
 		"chair":
 			await Event.take_control()
@@ -514,13 +496,15 @@ func _on_button_pressed() -> void:
 				sound.pitch_scale = 0.8
 				sound.play()
 
-			Global.player.look_to(Direction.snap_vector(to_local(pos)))
+			Global.player.look_to(Direction.from(to_local(pos)))
 			await Event.jump_to_global(Global.player, pos)
 
 	if add_flag:
 		if hide_on_flag != "":
 			Event.add_flag(hide_on_flag, true)
-		else: Event.add_flag(name, true)
+		else:
+			Event.add_flag(get_name_flag(), true)
+
 	if return_control:
 		Event.give_control(false)
 
@@ -530,6 +514,10 @@ func _on_button_pressed() -> void:
 		else: queue_free()
 	action.emit()
 	check()
+
+
+func get_name_flag() -> String:
+	return Global.room.codename() + "/Interact/" + name
 
 
 func _on_area_entered(area: Area2D) -> void:

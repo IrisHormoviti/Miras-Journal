@@ -1,60 +1,53 @@
 import "res://database/Text/reserved_date.dialogue" as reserved_date
 
 ~ sleep_home
-do progress_by_time(1)
+#> progress_by_time(1)
 if date_is_reserved():
 	=>< {{get_reserved_date_dialog()}}
-	do! give_control()
-elif Event.TimeOfDay == 1:
+elif time_of_day == 1:
 	I just got up... should I go back to bed?
 	if confirm_time_passage("Rest", "Will make me feel less tired."):
-		do Loader.transition("")
-		do Event.progress_by_time(1)
-		do Event.time_transition()
-elif Event.TimeOfDay == 5:
+		$> Event.progress_by_time(1)
+		$> Event.time_transition()
+elif time_of_day == 5:
 	if f_past("eepy", 1):
 		I'm exhausted.
 	else:
 		Bedtime.
 	if confirm_time_passage("Sleep", "Sleep until next the morning."):
-		do Loader.transition("")
-		do Event.progress_by_time(1)
-		do Event.time_transition()
-	else:
-		do! give_control()
+		$> Event.progress_by_time(1)
+		$> Event.time_transition()
 else:
 	if add_flag("eepy", 1):
 		I do feel pretty tired... Should I take a quick nap?
 	else:
 		It's my bed.
 	if confirm_time_passage("Rest", "Will make me feel less tired."):
-		do Loader.transition("")
-		do Event.progress_by_time(1)
-		do Event.time_transition()
-		do remove_flag("eepy")
-	else:
-		do! give_control()
+		$> Loader.transition("")
+		$> Event.progress_by_time(1)
+		$> Event.time_transition()
+		$> remove_flag("eepy")
 => END
 
 ~ gather_pyrson
 do remove_flag("InCamp")
 if f_past("eepy", 1):
 	I don't have the energy to go out right now...
-	do give_control()
+	$> give_control()
 	=> END!
-if Day == 2:
+if day == 2:
 	Seems to be a gate to whatever it was we used to enter.
 	I... should probably not enter it myself right now, I'd get completely lost.
-	do give_control()
+	$> give_control()
 	=> END!
 elif date_is_reserved():
 	=>< {{get_reserved_date_dialog()}}
-	do give_control()
+	$> give_control()
 else:
 	[[Should I gather the others?|Should I bring anyone else?|Let's call the others first.|Time to head out.]]
 	- Gather allies
 		[hide]
-		do transition("L")
+		$> Transition.wipe(Direction.LEFT)
 		do Party.add("Alcine")
 		do Party.add("Asteria")
 		do Party.add("Daze")

@@ -498,7 +498,7 @@ animations = [{
 [sub_resource type="Resource" id="Resource_xtlyj"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("15_ohs4u"), ExtResource("17_lmpvr"), ExtResource("15_ohs4u")])
-ScenePosition = Vector2(650, 465)
+ScenePosition = Vector2(657, 439)
 EscPosition = Vector2i(26, 12)
 metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
@@ -600,6 +600,11 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
 [sub_resource type="Resource" id="Resource_8jaei"]
 script = ExtResource("22_a7h8m")
+
+[sub_resource type="Resource" id="Resource_70ffl"]
+script = ExtResource("22_a7h8m")
+way = 4
+metadata/_custom_type_script = "uid://bhw57f1k8vvrj"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_thjc7"]
 size = Vector2(73, 39.0001)
@@ -998,35 +1003,35 @@ debug_color = Color(0.661949, 0.495265, 0.3822, 0.42)
 
 [node name="Items" type="Node2D" parent="." unique_id=1587437509]
 
-[node name="ItemDefault1" parent="Items" unique_id=1039922182 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion0" parent="Items" unique_id=1039922182 instance=ExtResource("7_kvb7h")]
 position = Vector2(-261, -51)
 item_name = "SmallPotion"
 
-[node name="ItemDefault2" parent="Items" unique_id=1568631333 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion1" parent="Items" unique_id=1568631333 instance=ExtResource("7_kvb7h")]
 position = Vector2(829, 658)
 item_name = "SmallPotion"
 
-[node name="ItemDefault3" parent="Items" unique_id=1998743597 instance=ExtResource("7_kvb7h")]
+[node name="LifeLave2" parent="Items" unique_id=1998743597 instance=ExtResource("7_kvb7h")]
 position = Vector2(456, 894)
 item_name = "LifeLave"
 
-[node name="ItemSG1" parent="Items" unique_id=196992718 instance=ExtResource("7_kvb7h")]
+[node name="StrangeFruit3" parent="Items" unique_id=196992718 instance=ExtResource("7_kvb7h")]
 position = Vector2(-517, 616)
 item_name = "StrangeFruit"
 
-[node name="ItemSG2" parent="Items" unique_id=1300974869 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion4" parent="Items" unique_id=1300974869 instance=ExtResource("7_kvb7h")]
 position = Vector2(-419, -257)
 item_name = "SmallPotion"
 
-[node name="ItemSG3" parent="Items" unique_id=1610980021 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion5" parent="Items" unique_id=1610980021 instance=ExtResource("7_kvb7h")]
 position = Vector2(-187, 489)
 item_name = "SmallPotion"
 
-[node name="ItemSG4" parent="Items" unique_id=914204863 instance=ExtResource("7_kvb7h")]
+[node name="StrangeFruit6" parent="Items" unique_id=914204863 instance=ExtResource("7_kvb7h")]
 position = Vector2(-282, 441)
 item_name = "StrangeFruit"
 
-[node name="ItemSG6" parent="Items" unique_id=994295426 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion7" parent="Items" unique_id=994295426 instance=ExtResource("7_kvb7h")]
 position = Vector2(-91, 512)
 item_name = "SmallPotion"
 
@@ -1328,7 +1333,7 @@ offset = Vector2(0.0496826, -5.866)
 position = Vector2(2, -215)
 
 [node name="ScenePosition" type="Marker2D" parent="EnemySG1" unique_id=1030115642]
-position = Vector2(13, -42)
+position = Vector2(20, -68)
 
 [node name="EnemySG10" parent="." unique_id=559783401 instance=ExtResource("4_ujeyr")]
 position = Vector2(-304, -44)
@@ -1675,7 +1680,7 @@ ShowTextbox = true
 text_file = "interact_abad"
 text_cue = "kick_sgplains"
 AlterMovement = true
-kick_direction = Vector2(1, 0)
+kick_direction = SubResource("Resource_70ffl")
 metadata/_edit_group_ = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="EvKick" unique_id=1541769830]
@@ -1690,7 +1695,7 @@ ShowTextbox = true
 text_file = "story_2"
 text_cue = "sg_find_bunker"
 
-[node name="GroundItem" parent="." unique_id=1792744607 instance=ExtResource("7_kvb7h")]
+[node name="SmallPotion37" parent="." unique_id=1792744607 instance=ExtResource("7_kvb7h")]
 position = Vector2(-255, -160)
 item_name = "SmallPotion"
 
@@ -1745,6 +1750,7 @@ navigation_layers = 2
 metadata/_edit_group_ = true
 
 [node name="ShardHazards" type="Node2D" parent="." unique_id=886986562]
+use_parent_material = true
 
 [node name="Shard1" parent="ShardHazards" unique_id=2005192995 instance=ExtResource("26_yhh0x")]
 z_index = -1
@@ -1896,7 +1902,7 @@ frame_progress = 0.142851
 [node name="Shard5" parent="ShardHazards" unique_id=1216933484 instance=ExtResource("26_yhh0x")]
 z_index = -1
 use_parent_material = true
-position = Vector2(682, 323)
+position = Vector2(713, 323)
 trigger_size = Vector2i(20, 20)
 take_control = false
 return_control = false
@@ -1935,7 +1941,11 @@ return_control = false
 event_name = "hurt_1"
 
 [node name="CollisionShape2D" parent="ShardHazards/Shard7" index="0" unique_id=624211629]
+use_parent_material = true
 shape = SubResource("RectangleShape2D_ggbak")
+
+[node name="Icon" parent="ShardHazards/Shard7" index="1" unique_id=482570356]
+use_parent_material = true
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="ShardHazards/Shard7" unique_id=903898466]
 use_parent_material = true
@@ -2079,8 +2089,6 @@ position = Vector2(438, 59)
 metadata/_edit_group_ = true
 
 [connection signal="body_entered" from="EvKick" to="EvKick" method="_on_body_entered"]
-[connection signal="action" from="SwitchBridge1/SGBridge1" to="DoorLocked1/HideOnFlag" method="check"]
-[connection signal="action" from="SwitchCast1/SGDoor1" to="DoorLocked1/HideOnFlag" method="check"]
 
 [editable path="Breakables/BreakableWallSG5"]
 [editable path="Ladder2"]

@@ -33,7 +33,7 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 @export_multiline var description: String
 @export var Icon: Texture = load("res://art/Icons/Items.tres")
 @export var ActionSequence: StringName = &"Default"
-@export var ActionSequenceGraph: SequenceGraph = null
+#@export var ActionSequenceGraph: SequenceGraph = null
 @export var Types: Array[TP] = [TP.UNSET]
 @export var Group: String = ""
 @export var InflictsState: String = ""
