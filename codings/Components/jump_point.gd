@@ -67,7 +67,7 @@ func _physics_process(_delta: float) -> void:
 		return
 
 	if jump_directions.is_empty():
-		Global.toast("No jump dirs here, fix this!")
+		UI.toast("No jump dirs here, fix this!")
 		return
 
 	var player_face := Global.player.facing.vector

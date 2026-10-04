@@ -4,13 +4,13 @@ signal thread_loaded
 
 const area_spawn_path: NodePath = "/root/GameViewport/SubViewport"
 
-var defeated: Array
+var defeated: Array[String] = []
 var preview: Texture
 var data: SaveFile
 var fader: Control
 
 var status: ResourceLoader.ThreadLoadStatus
-var progress := []
+var progress: Array = []
 var loaded_resource: String
 var loading_scene := false
 var load_failed := false
@@ -59,7 +59,7 @@ func update_load_status(path: String, is_scene_load: bool) -> void:
 
 func save(filename: String = "Autosave", showicon := true) -> void:
 	if not Global.player or not Global.room:
-		Global.error("Cannot save right now")
+		UI.error("Cannot save right now")
 		return
 
 	print_rich("[color=green]Saving to user://" + filename + ".tres")
@@ -67,7 +67,7 @@ func save(filename: String = "Autosave", showicon := true) -> void:
 	if showicon:
 		Transition.save_icon()
 
-	Global.save_settings()
+	SettingsManager.save_settings()
 	Event.add_flag("day", Event.day)
 	Event.add_flag("time", Event.time_of_day as int)
 
@@ -79,7 +79,7 @@ func save(filename: String = "Autosave", showicon := true) -> void:
 	data.play_time = Global.get_playtime()
 	data.player_position = Global.player.global_position
 	data.camera_index = Global.room.index
-	data.complimentaries = Global.complimentaries
+	data.complimentaries = Party.complimentaries
 	data.defeated_enemies = defeated.duplicate()
 
 	for mem in Party.members:
@@ -120,8 +120,8 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 
 	Transition.load_icon()
 	await Transition.close_in()
-	if get_tree().root.has_node("Initializer"):
-		get_tree().root.get_node("Initializer").queue_free()
+	if UI.is_open('Initializer'):
+		UI.get_open("Initializer").dismiss_title()
 
 	if not validate_save(filepath):
 		Transition.unwipe()
@@ -134,7 +134,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	Global.start_time = Time.get_unix_time_from_system()
 	Global.first_start_time = data.start_time
 	Global.save_time = data.play_time
-	Global.complimentaries = data.complimentaries
+	Party.complimentaries = data.complimentaries
 	defeated = data.defeated_enemies.duplicate()
 	Hud.ui_visible = true
 	Hud.disabled = false
@@ -156,7 +156,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 		temp_members.append(mem)
 
 	if temp_members < Party.members:
-		Global.toast("WARNING: This save file may have been created in an older version. Member data was missing.")
+		UI.toast("WARNING: This save file may have been created in an older version. Member data was missing.")
 		for j in Party.members:
 			var exists := false
 
@@ -178,21 +178,21 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 		mem.Aura = min(mem.Aura, mem.MaxAura)
 
 	if !data:
-		Global.error("This save file doen't exist", "WHERE FILE")
+		UI.error("This save file doen't exist", "WHERE FILE")
 
 	if !data.room:
-		Global.error("There's no room set in this savefile", "WHERE TF ARE YOU")
+		UI.error("There's no room set in this savefile", "WHERE TF ARE YOU")
 
 	Item.load_inventory(data.inventory)
 	Item.verify_inventory()
 
 	await travel_to(data.room, data.player_position, data.camera_index, null)
 
-	if $/root.get_node_or_null("MainMenu"):
-		$/root.get_node("MainMenu").queue_free()
+	if UI.is_open("MainMenu"):
+		UI.get_node("MainMenu").queue_free()
 
-	if $/root.get_node_or_null("Options"):
-		$/root.get_node("Options").queue_free()
+	if UI.is_open("Options"):
+		UI.get_node("Options").queue_free()
 
 	Hud.shrink()
 
@@ -212,7 +212,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 		if (Battle.in_battle) and is_instance_valid(Battle.attacker):
 			print_rich("[color=green]Too close to an enemy, auto escape")
 			Global.player.position = Battle.attacker.battle_sequence.EscPosition * 24
-			Global.refresh()
+			Loader.refresh()
 
 	Battle.prevent_battles = false
 
@@ -221,7 +221,7 @@ func load_res(path: String) -> Resource:
 	load_failed = false
 	var frame := Global.process_frame
 
-	if not Global.settings.HighResTextures:
+	if not SettingsManager.settings.high_res_textures:
 		var low_res_path := path.replace(".png", "_low.png")
 
 		if ResourceLoader.exists(low_res_path):
@@ -311,8 +311,8 @@ func travel_done(controllable := false, index: int = 0) -> void:
 
 	Event.npc_list.clear()
 	DialogueManager._registered_contexts.clear()
-	if get_tree().root.has_node("MainMenu"):
-		get_tree().root.get_node("MainMenu").queue_free()
+	if UI.is_open("MainMenu"):
+		UI.get_node("MainMenu").queue_free()
 
 	var area_packed: PackedScene = ResourceLoader.load_threaded_get(remembered_scene[0])
 
@@ -462,13 +462,13 @@ func battle_bars(x: int, time: float = 0.5, easing := Tween.EASE_IN_OUT) -> void
 
 func error_handle(res: ResourceLoader.ThreadLoadStatus) -> void:
 	if res == ResourceLoader.THREAD_LOAD_FAILED:
-		Global.toast("A resource failed to load! \nPress F1 to check the logs.")
+		UI.toast("A resource failed to load! \nPress F1 to check the logs.")
 		load_failed = true
 		loading_thread = false
 
 		if loading_scene:
 			loading_scene = false
-			Global.error("The room failed to load.")
+			UI.error("The room failed to load.")
 
 
 func chase_mode() -> void:
@@ -492,18 +492,19 @@ func validate_save(savefile: String) -> bool:
 					ResourceSaver.save(file, savefile)
 					return true
 				else:
-					Global.warning(
+					UI.warning(
 						"Sorry but the stored save data is from an incompatible version, and cannot be migrated. You might have to start a new game or use the proper version of the game.", "ERROR", ["Okay fine"]
 					)
-					Global.options(1)
+					UI.options(1)
 					return false
 		else:
-			Global.warning("The stored save data could not be loaded. You might have to start a new game.", "ERROR", ["Okay"])
-			Global.options(1)
+			UI.warning("The stored save data could not be loaded. You might have to start a new game.", "ERROR", ["Okay"])
+			UI.options(1)
 			return false
 	else:
 		return false
 
-
-func lower_layer() -> void:
-	can.layer = 3
+func refresh() -> void:
+	await Loader.save()
+	Loader.load_game()
+	print(Input.should_ignore_device(0x28de0, 0x11ff))

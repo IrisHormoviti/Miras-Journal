@@ -86,7 +86,7 @@ func got_complimentary(ability: Ability, from_name: String) -> void:
 
 	await Event.wait(1, false)
 
-	if Global.complimentaries.is_empty():
+	if Party.complimentaries.is_empty():
 		await Event.pop_tutorial("complimentary")
 
 	$ChooseUpgrade/Continue.icon = Controller.get_scheme().ConfirmIcon

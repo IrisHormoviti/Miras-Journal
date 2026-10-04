@@ -11,7 +11,7 @@ func daze_enemy_1() -> void:
 		await Event.wait(2)
 		Event.npc("F1").speed = 150
 		await Event.npc("F1").go_to(Event.npc("EnemyFlowent1").position, false, false, Direction.LEFT, 10)
-		Global.intro_effect(Event.npc("EnemyFlowent1"))
+		UI.intro_effect(Event.npc("EnemyFlowent1"))
 		Loader.attacker = Event.npc("EnemyFlowent1")
 		Battle.start("DazeEnemyTutorial", 1)
 		await Global.battle_end
@@ -174,7 +174,7 @@ func enter_pyrson() -> void:
 	Transition.fade_out()
 	Event.camera_move(Vector2(568, 669))
 	Event.camera_move(Vector2(214, 172), 5)
-	Global.location_name("Pyrson")
+	UI.location_name("Pyrson")
 	await Event.wait(5)
 	Event.spawn("Asteria", Vector2i(214, 182), Direction.RIGHT)
 	await Textbox.open(name, "enter_pyrson")

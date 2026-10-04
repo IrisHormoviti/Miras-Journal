@@ -9,5 +9,5 @@ func _ready() -> void:
 	t.tween_property($Text, "position:y", -$Text.size.y, 25).from(1000)
 	await t.finished
 	await Event.wait(3)
-	Global.title_screen()
+	UI.title_screen()
 	queue_free()

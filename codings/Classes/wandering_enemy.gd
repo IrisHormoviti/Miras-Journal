@@ -210,7 +210,7 @@ func attacked() -> void:
 	Event.jump_to_global(self, to_pos, 25, 1)
 	Global.player.camera_follow(false)
 	Global.camera.position = to_pos
-	Global.intro_effect(self)
+	UI.intro_effect(self)
 	if pin_range:
 		begin_battle()
 	else:
@@ -269,7 +269,7 @@ func _on_catch_area_body_entered(body: Node2D) -> void:
 		Global.player.get_node("Flame").energy = 0
 		Global.player.bump()
 		facing.vector = to_local(Global.player.global_position)
-		Global.intro_effect(Global.player)
+		UI.intro_effect(Global.player)
 		begin_battle(2)
 
 

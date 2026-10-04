@@ -136,3 +136,55 @@ func size() -> int:
 func make_everyone_controllable() -> void:
 	for i in current:
 		if i: i.Controllable = true
+
+
+## Complimentary abilities available
+var complimentaries: Array[String] = []
+
+
+func heal_party() -> void:
+	for i in current:
+		if i: i.full_heal()
+
+	for i in members:
+		i.full_heal()
+
+
+func add_test_state(chara: Actor) -> void:
+	for i in ResourceLoader.list_directory("res://database/States/"):
+		var state: String = i.replace(".tres", "")
+		var ab: Ability = load("res://database/Abilities/Debug/TestState.tres").duplicate()
+		ab.name += state
+		ab.InflictsState = state
+		chara.Abilities.append(ab)
+
+
+func unlock_all_abilities() -> void:
+	for mem in members:
+		for ab in mem.LearnableAbilities:
+			mem.Abilities.append(ab)
+
+
+func give_every_ability() -> void:
+	for i in ResourceLoader.list_directory("res://database/Abilities/"):
+		var ab: Ability = load("res://database/Abilities/" + i).duplicate()
+		Leader.Abilities.append(ab)
+
+
+func add_complimentary(ability: String, from_name: String = "Mira Levenor", popup := true) -> void:
+	if popup:
+		var scenepack: PackedScene = load("res://UI/LevelUp/Levelup.tscn")
+		var scene: Node = scenepack.instantiate()
+		UI.add_child(scene)
+		await Event.wait()
+		scene.get_node("Levelup").got_complimentary(await Query.get_ability(ability), from_name)
+		await scene.get_node("Levelup").closed
+
+	if ability not in complimentaries:
+		complimentaries.append(ability)
+
+
+func use_ability_overworld(ab: Ability, user: Actor) -> void:
+	get_viewport().gui_release_focus()
+	if Ability.TP.HEALING in ab.Types:
+		await Hud.choose_member(ab, user)

@@ -403,12 +403,12 @@ func _on_button_pressed() -> void:
 	t.tween_property(pack, "scale", Vector2(0.4, 0.4), 0.1).from(Vector2(0.36, 0.36))
 	await Event.wait(0.1, false)
 	if needs_bag and Event.f("Player/NoBag"):
-		Global.toast("A bag is needed to store that.")
+		UI.toast("A bag is needed to store that.")
 		Event.give_control()
 		return
 
-	if get_tree().root.has_node("Options"):
-		get_tree().root.get_node("Options").queue_free()
+	if UI.is_open("Options"):
+		UI.get_node("Options").queue_free()
 
 	if proper_face == null:
 		Global.player.look_to(Direction.from(to_local(Global.player.position) * -1))
@@ -418,8 +418,8 @@ func _on_button_pressed() -> void:
 		Global.player.collision(false)
 		await Global.player.go_to(proper_pos, false, true, proper_face)
 
-	if get_tree().root.has_node("MainMenu"):
-		get_tree().root.get_node("MainMenu").close()
+	if UI.is_open("MainMenu"):
+		UI.get_node("MainMenu").close()
 
 	if not (to_time == 0 and to_time_relative == 0):
 		Event.to_time = to_time if to_time_relative == 0 else Event.get_time_progress_from_now(to_time_relative)
@@ -452,7 +452,7 @@ func _on_button_pressed() -> void:
 			if Event.check_flag("Meta/Veinet/Disable"):
 				await Textbox.open("interact_abad", "vein_point_idk")
 			elif Event.check_flag(get_parent().name):
-				Global.veinet_map(get_parent().name.replace("VP", ""))
+				UI.veinet_map(get_parent().name.replace("VP", ""))
 			else:
 				Event.add_flag(get_parent().name, true)
 				vein_check()

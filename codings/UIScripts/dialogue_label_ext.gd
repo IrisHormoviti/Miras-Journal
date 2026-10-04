@@ -11,8 +11,9 @@ func type_out_with_sound(sound: AudioStream, freq: int, vari: float) -> void:
 	soundfreq = freq
 	varience = vari
 	count = soundfreq - 1
-	if get_parent().get_parent().get_parent().name != "Passive":
-		match Global.settings.TextSpeed:
+	var passive_parent := find_parent("Passive")
+	if passive_parent == null and not (owner is Passive):
+		match SettingsManager.settings.text_speed:
 			1: soundfreq *= 2
 			2:
 				soundfreq *= 10

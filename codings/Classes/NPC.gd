@@ -359,7 +359,7 @@ func defeat() -> void:
 
 
 func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("DebugD") and Global.settings.DebugMode:
+	if Input.is_action_just_pressed("DebugD") and SettingsManager.settings.debug_mode:
 		go_to(get_global_mouse_position(), false)
 
 

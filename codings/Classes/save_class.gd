@@ -16,6 +16,7 @@ const VERSION := 8
 ## must be 4 in length, empty strings for empty slots
 @export var party: Array[StringName] = [&"Mira", &"", &"", &""]
 
+
 ## Array of dictionaries containing member data
 ## Refer to the Actor class for the structure of the dictionary
 @export var members: Array[Dictionary]
@@ -30,7 +31,7 @@ const VERSION := 8
 @export var complimentaries: Array[String]
 
 ## IDs of defeated enemies
-@export var defeated_enemies: Array
+@export var defeated_enemies: Array[String]
 
 ## The time the save file was created, in unix time
 @export var start_time: float

@@ -1246,7 +1246,7 @@ func FirstBattle5() -> void:
 	Loader.battle_bars(0)
 	Bt.victory_anim(Party.Leader)
 	await Textbox.open("story_0", "what_this")
-	Global.heal_party()
+	Party.heal_party()
 	Bt.ObtainedItems.clear()
 	Bt.victory(true)
 

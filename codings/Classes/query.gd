@@ -98,7 +98,7 @@ static func calc_num(ab: Ability = Global.bt.CurrentAbility, chara: Actor = null
 
 static func get_complimentaries() -> Array[Ability]:
 	var rtn: Array[Ability]
-	for i in Global.complimentaries:
+	for i in Party.complimentaries:
 		var ability := await get_ability(i)
 
 		if ability != null:

@@ -22,13 +22,13 @@ func _init() -> void:
 func _ready() -> void:
 	if dont_open_yet: return
 
-	if $/root.get_node_or_null("MainMenu") and $/root/MainMenu.stage != "options":
-		$/root/MainMenu._on_back_button_down()
+	if UI.is_open("MainMenu") and UI.get_node("MainMenu").stage != "options":
+		UI.get_node("MainMenu")._on_back_button_down()
 		queue_free()
 		return
 
-	if $/root.get_node_or_null("Options") and $/root/Options != self:
-		$/root/Options._on_back_pressed()
+	if UI.is_open("Options") and UI.get_node("Options") != self:
+		UI.get_node("Options")._on_back_pressed()
 		queue_free()
 		return
 
@@ -76,7 +76,7 @@ func _ready() -> void:
 	t.set_trans(Tween.TRANS_QUART)
 	t.set_ease(Tween.EASE_OUT)
 	t.set_parallel()
-	t.tween_property($Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3.0, 1).from(0.0)
+	t.tween_property($Fader.material, "shader_parameter/lod", int(SettingsManager.settings.blur_effect) * 3.0, 1).from(0.0)
 	t.tween_property($Fader, "modulate", Color(0, 0, 0, 0.4), 1).from(Color(0, 0, 0, 0))
 	if no_main:
 		$Background.position = Vector2(1500, 0)
@@ -109,10 +109,10 @@ func _ready() -> void:
 func fetch_platform_info() -> void:
 	$Background/Info/Version.text += ProjectSettings.get_setting("application/config/version")
 
-	if Global.using_steam:
+	if SteamManager.using_steam:
 		$Background/Info/LoggedIn.texture = await Loader.load_res("res://UI/Misc/Platforms/steam.svg")
 
-	$Background/Info/User.text = Global.settings.PlayerName
+	$Background/Info/User.text = SettingsManager.settings.player_name
 	var platform_icon: Texture
 	match OS.get_name():
 		"Windows": platform_icon = await Loader.load_res("res://UI/Misc/Platforms/windows.svg")
@@ -180,7 +180,7 @@ func _on_back_pressed() -> void:
 
 
 func close(force := false) -> void:
-	Global.save_settings()
+	SettingsManager.save_settings()
 	Global.check.emit()
 	if force:
 		queue_free()
@@ -188,8 +188,8 @@ func close(force := false) -> void:
 
 	if stage == "closing": return
 	if is_instance_valid(Global.player):
-		if $/root.get_node_or_null("MainMenu"):
-			$/root.get_node("MainMenu")._on_back_button_down()
+		if UI.is_open("MainMenu"):
+			UI.get_node("MainMenu")._on_back_button_down()
 		else:
 			Audio.cancel_sound()
 
@@ -227,7 +227,7 @@ func close(force := false) -> void:
 	Global.controllable = was_controllable
 
 	if !is_instance_valid(Global.room):
-		Global.title_screen()
+		UI.title_screen()
 
 	Global.check.emit()
 	queue_free()
@@ -246,7 +246,7 @@ func main() -> void:
 	t.set_parallel()
 	$MainButtons.get_child(mainIndex).grab_focus()
 	t.tween_property($Background, "position", Vector2(560, 0), 0.5)
-	t.tween_property($Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3.0, 1)
+	t.tween_property($Fader.material, "shader_parameter/lod", int(SettingsManager.settings.blur_effect) * 3.0, 1)
 	t.tween_property($Fader, "modulate", Color(0, 0, 0, 0.4), 1)
 	t.tween_property($Timer, "position", Vector2(27, 27), 0.5)
 	t.tween_property($MusicTrack , "modulate:a", 1, 0.5)
@@ -279,7 +279,7 @@ func main() -> void:
 		$GalleryPanel.hide()
 		$MainButtons.get_child(mainIndex).grab_focus()
 
-	Global.save_settings()
+	SettingsManager.save_settings()
 
 
 func game_settings() -> void:
@@ -436,7 +436,7 @@ func _on_quit() -> void:
 		if cant_save:
 			text = "Quit the game?\nYour progress cannot be saved right now, so it might be lost."
 	else: text = "Quit the game?"
-	var awnser := await Global.warning(text, "QUIT", ["Cancel", "Title Screen", "Quit Game"], Color.hex(0xe3936eff))
+	var awnser := await UI.warning(text, "QUIT", ["Cancel", "Title Screen", "Quit Game"], Color.hex(0xe3936eff))
 
 	match awnser:
 		2:
@@ -451,11 +451,11 @@ func _on_quit() -> void:
 				if not cant_save: await Loader.save()
 
 			Audio.stop_music()
-			if get_tree().root.has_node("MainMenu"):
-				get_tree().root.get_node("MainMenu").queue_free()
+			if UI.is_open("MainMenu"):
+				UI.get_node("MainMenu").queue_free()
 
-			if get_tree().root.has_node("Battle"):
-				get_tree().root.get_node("Battle").queue_free()
+			if UI.is_open("Battle"):
+				UI.get_node("Battle").queue_free()
 
 			Hud.hide_all()
 			close()
@@ -506,36 +506,36 @@ func _on_focus_changed(control: Control) -> void:
 
 func load_settings(no_check := false) -> void:
 	if stage == "game_settings" or no_check:
-		%SettingsVbox/AutoHideHUD/MenuBar.selected = Global.settings.AutoHideHUD
-		%SettingsVbox/ControlScheme/MenuBar.selected = Global.settings.ControlSchemeEnum
-		%SettingsVbox/Fullscreen/CheckButton.button_pressed = Global.settings.Fullscreen
+		%SettingsVbox/AutoHideHUD/MenuBar.selected = SettingsManager.settings.auto_hide_hud
+		%SettingsVbox/ControlScheme/MenuBar.selected = SettingsManager.settings.control_scheme_enum
+		%SettingsVbox/Fullscreen/CheckButton.button_pressed = SettingsManager.settings.fullscreen
 
-		%SettingsVbox/Master/Slider.value = Global.settings.MasterVolume
-		%SettingsVbox/SFX/Slider.value = Global.settings.SFXVolume
-		%SettingsVbox/Music/Slider.value = Global.settings.MusicVolume
-		%SettingsVbox/SoundEffects/UI/Slider.value = Global.settings.UIVolume
-		%SettingsVbox/SoundEffects/Footsteps/Slider.value = Global.settings.FootstepsVolume
-		%SettingsVbox/SoundEffects/Voices/Slider.value = Global.settings.VoicesVolume
+		%SettingsVbox/Master/Slider.value = SettingsManager.settings.master_volume
+		%SettingsVbox/SFX/Slider.value = SettingsManager.settings.sfx_volume
+		%SettingsVbox/Music/Slider.value = SettingsManager.settings.music_volume
+		%SettingsVbox/SoundEffects/UI/Slider.value = SettingsManager.settings.ui_volume
+		%SettingsVbox/SoundEffects/Footsteps/Slider.value = SettingsManager.settings.footsteps_volume
+		%SettingsVbox/SoundEffects/Voices/Slider.value = SettingsManager.settings.voices_volume
 
 		%SettingsVbox/BCSadjust/BrtSlider.value = World.environment.adjustment_brightness
 		%SettingsVbox/BCSadjust/ConSlider.value = World.environment.adjustment_contrast
 		%SettingsVbox/BCSadjust/SatSlider.value = World.environment.adjustment_saturation
-		%SettingsVbox/DebugMode/DebugMode.button_pressed = Global.settings.DebugMode
-		%SettingsVbox/Vsync/CheckButton.button_pressed = Global.settings.VSync
-		%SettingsVbox/GlowEffect/CheckButton.button_pressed = Global.settings.GlowEffect
-		%SettingsVbox/HighResTextures/CheckButton.button_pressed = Global.settings.HighResTextures
-		%SettingsVbox/TextSpeed/MenuBar.selected = Global.settings.TextSpeed
-		%SettingsVbox/UpscaledResolution/CheckButton.button_pressed = Global.settings.UpscaledRes
-		%SettingsVbox/ControllerVibration/CheckButton.button_pressed = Global.settings.ControllerVibration
-		%SettingsVbox/BlurEffect/CheckButton.button_pressed = Global.settings.BlurEffect
+		%SettingsVbox/DebugMode/DebugMode.button_pressed = SettingsManager.settings.debug_mode
+		%SettingsVbox/Vsync/CheckButton.button_pressed = SettingsManager.settings.vsync
+		%SettingsVbox/GlowEffect/CheckButton.button_pressed = SettingsManager.settings.glow_effect
+		%SettingsVbox/HighResTextures/CheckButton.button_pressed = SettingsManager.settings.high_res_textures
+		%SettingsVbox/TextSpeed/MenuBar.selected = SettingsManager.settings.text_speed
+		%SettingsVbox/UpscaledResolution/CheckButton.button_pressed = SettingsManager.settings.upscaled_res
+		%SettingsVbox/ControllerVibration/CheckButton.button_pressed = SettingsManager.settings.controller_vibration
+		%SettingsVbox/BlurEffect/CheckButton.button_pressed = SettingsManager.settings.blur_effect
 
-		match Global.settings.FPS:
+		match SettingsManager.settings.fps:
 			0: %SettingsVbox/FPS/MenuBar.selected = 0
 			30: %SettingsVbox/FPS/MenuBar.selected = 1
 			60: %SettingsVbox/FPS/MenuBar.selected = 2
 			144: %SettingsVbox/FPS/MenuBar.selected = 3
 
-		match Global.settings.UpscaleFactor:
+		match SettingsManager.settings.upscale_factor:
 			0.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 0
 			1.0: %SettingsVbox/UpscaleFactor/MenuBar.selected = 1
 			1.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 2
@@ -555,7 +555,7 @@ func load_settings(no_check := false) -> void:
 		%SettingsVbox/ControlPreview/Labs/CancelB.set_deferred("texture", Controller.get_scheme().CancelIcon)
 		%SettingsVbox/ControlPreview/Labs/MenuB.set_deferred("texture", Controller.get_scheme().Menu)
 		%SettingsVbox/ControlPreview/Labs/DashB.set_deferred("texture", Controller.get_scheme().Dash)
-		Global.apply_settings()
+		SettingsManager.apply_settings()
 
 
 func load_save_files() -> void:
@@ -590,7 +590,7 @@ func load_save_files() -> void:
 		draw_file(await Loader.load_res("user://Autosave.tres"), %Files/File0)
 	else:
 		%Files/File0.hide()
-		Global.toast("No Autosave data found.")
+		UI.toast("No Autosave data found.")
 
 	var sorted := %Files.get_children()
 	sorted.sort_custom(file_sort)
@@ -707,7 +707,7 @@ func _on_save_delete() -> void:
 		Audio.confirm_sound()
 		if panel.name == "File0":
 			if cant_save:
-				Global.toast("Press F1 to delete the file manually.")
+				UI.toast("Press F1 to delete the file manually.")
 			else:
 				print("Deleting user://Autosave.tres")
 				DirAccess.remove_absolute("user://Autosave.tres")
@@ -855,7 +855,7 @@ func _new_file() -> void:
 		#Transition.fade_out()
 		%Files.get_child(2).get_node("Button").grab_focus()
 	else:
-		Global.error("\"%s\" contains a weird word or character."%[filename], "SAVE FAILED")
+		UI.error("\"%s\" contains a weird word or character."%[filename], "SAVE FAILED")
 
 	stage = "save_managment"
 
@@ -863,7 +863,7 @@ func _new_file() -> void:
 func _new_game() -> void:
 	stage = "popup"
 
-	if not FileAccess.file_exists("user://Autosave.tres") or await Global.warning("Start a new game? Any Autosave data will be overwritten, so make sure to save it into a new file if you want to keep it.", "NEW GAME", ["Cancel", "Start New Game"]):
+	if not FileAccess.file_exists("user://Autosave.tres") or await UI.warning("Start a new game? Any Autosave data will be overwritten, so make sure to save it into a new file if you want to keep it.", "NEW GAME", ["Cancel", "Start New Game"]):
 		was_controllable = false
 		close(true)
 		Event.sequence("new_game")
@@ -915,7 +915,7 @@ func _manual_entry_select() -> void:
 			break
 
 	if text == "":
-		Global.toast("Entry not found")
+		UI.toast("Entry not found")
 		return
 
 	text = Colorizer.colorize_explicit(text.replace("#" + entry, "[b]" + focus.text + "[/b]"))
@@ -926,7 +926,7 @@ func _manual_entry_select() -> void:
 
 func rename_alcine() -> void:
 	stage = "popup"
-	await Global.alcine_naming()
+	await UI.alcine_naming()
 	gallery()
 	$GalleryPanel/ScrollContainer/VBoxContainer/RenameAlcine.grab_focus()
 	stage = "gallery"
@@ -953,21 +953,21 @@ func _on_credit_scroll(event: InputEvent) -> void:
 func _on_website() -> void:
 	Controller.confirm()
 	OS.shell_open("https://raidev.eu")
-	Global.toast("\"raidev.eu\" was opened in your web browser.")
+	UI.toast("\"raidev.eu\" was opened in your web browser.")
 
 
 func _on_source_code() -> void:
 	Controller.confirm()
 	OS.shell_open("https://github.com/RaiHormo/Miras-Journal")
-	Global.toast("\"github.com\" was opened in your web browser.")
+	UI.toast("\"github.com\" was opened in your web browser.")
 
 
 func _on_reset() -> void:
 	stage = "inactive"
 	Controller.confirm()
-	if await Global.warning("This will erase autosave save data, and restore settings! 
+	if await UI.warning("This will erase autosave save data, and restore settings! 
 The game will then close.\nProceed?"):
-		Global.reset_settings()
+		SettingsManager.reset_settings()
 		var dir := DirAccess.open("user://")
 		dir.remove("Settigns.res")
 		dir.remove("Autosave.tres")
@@ -1017,50 +1017,50 @@ func _on_credits(source: Button) -> void:
 
 func _on_control_scheme(index: int) -> void:
 	Audio.confirm_sound()
-	Global.settings.ControlSchemeAuto = false
-	Global.settings.ControlSchemeEnum = %SettingsVbox/ControlScheme/MenuBar.get_selected_id()
+	SettingsManager.settings.control_scheme_auto = false
+	SettingsManager.settings.control_scheme_enum = %SettingsVbox/ControlScheme/MenuBar.get_selected_id()
 
-	match Global.settings.ControlSchemeEnum:
+	match SettingsManager.settings.control_scheme_enum:
 		0:
-			Global.settings.ControlSchemeAuto = true
+			SettingsManager.settings.control_scheme_auto = true
 
 		1:
-			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Keyboard.tres")
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/Keyboard.tres")
 
 		2:
-			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Nintendo.tres")
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/Nintendo.tres")
 
 		3:
-			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Xbox.tres")
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/Xbox.tres")
 
 		4:
-			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/Generic.tres")
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/Generic.tres")
 
 		5:
-			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/PlayStation.tres")
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/PlayStation.tres")
 
 		6:
-			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/PlayStationOld.tres")
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/PlayStationOld.tres")
 
 		7:
-			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/SteamDeck.tres")
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/SteamDeck.tres")
 
 		8:
-			Global.settings.ControlSchemeOverride = await Loader.load_res("res://UI/Input/None.tres")
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/None.tres")
 
 	load_settings()
 
 
 func _on_fullscreen(tog: bool) -> void:
-	if tog != Global.settings.Fullscreen:
-		Global.fullscreen(tog)
+	if tog != SettingsManager.settings.fullscreen:
+		SettingsManager.fullscreen(tog)
 		confirm()
 
 
 func _on_volume(value: float, origin: Slider) -> void:
 	var bus := origin.get_parent().name
 
-	Global.settings.set(bus+"Volume", value)
+	SettingsManager.settings.set(bus.to_lower() + "_volume", value)
 	if value == origin.min_value:
 		value -= 100
 
@@ -1074,9 +1074,9 @@ func _on_volume(value: float, origin: Slider) -> void:
 func _on_volume_reset() -> void:
 	confirm()
 
-	for i in Global.settings.get_property_list():
-		if "Volume" in i.get("name"):
-			Global.settings.set(i.name, 0)
+	for i in SettingsManager.settings.get_property_list():
+		if "_volume" in i.get("name"):
+			SettingsManager.settings.set(i.name, 0)
 
 	load_settings()
 
@@ -1094,12 +1094,12 @@ func _on_saturation(value: float) -> void:
 
 
 func _on_auto_hide_hud(index: int) -> void:
-	Global.settings.AutoHideHUD = index
+	SettingsManager.settings.auto_hide_hud = index
 	confirm()
 
 
 func _on_text_speed(index: int) -> void:
-	Global.settings.TextSpeed = index
+	SettingsManager.settings.text_speed = index
 	confirm()
 
 
@@ -1127,51 +1127,51 @@ func _on_adjust_image(toggle: bool) -> void:
 
 
 func _debug_mode(toggled_on: bool) -> void:
-	Global.settings.DebugMode = toggled_on
+	SettingsManager.settings.debug_mode = toggled_on
 	confirm()
 
 
 func _fps(index: int) -> void:
-	Global.settings.FPS = %SettingsVbox/FPS/MenuBar.get_selected_id()
+	SettingsManager.settings.fps = %SettingsVbox/FPS/MenuBar.get_selected_id()
 	confirm()
 
 
 func _upscale_factor(index: int) -> void:
 	match index:
-		0: Global.settings.UpscaleFactor = 0.5
-		1: Global.settings.UpscaleFactor = 1
-		2: Global.settings.UpscaleFactor = 1.5
-		3: Global.settings.UpscaleFactor = 2.0
+		0: SettingsManager.settings.upscale_factor = 0.5
+		1: SettingsManager.settings.upscale_factor = 1
+		2: SettingsManager.settings.upscale_factor = 1.5
+		3: SettingsManager.settings.upscale_factor = 2.0
 
 	confirm()
 
 
 func _vsync(toggle: bool) -> void:
-	Global.settings.VSync = toggle
+	SettingsManager.settings.vsync = toggle
 	confirm()
 	load_settings()
 
 
 func _gloweffect(toggle: bool) -> void:
-	Global.settings.GlowEffect = toggle
+	SettingsManager.settings.glow_effect = toggle
 	confirm()
 
 
 func _on_highres_textures(toggle: bool) -> void:
-	Global.settings.HighResTextures = toggle
+	SettingsManager.settings.high_res_textures = toggle
 	confirm()
 
 
 func _on_upscaledres(toggled_on: bool) -> void:
-	Global.settings.UpscaledRes = toggled_on
+	SettingsManager.settings.upscaled_res = toggled_on
 	confirm()
 
 
 func _on_controller_vibration(toggled_on: bool) -> void:
-	Global.settings.ControllerVibration = toggled_on
+	SettingsManager.settings.controller_vibration = toggled_on
 	confirm()
 
 
 func _blur_effect(toggled_on: bool) -> void:
-	Global.settings.BlurEffect = toggled_on
+	SettingsManager.settings.blur_effect = toggled_on
 	confirm()

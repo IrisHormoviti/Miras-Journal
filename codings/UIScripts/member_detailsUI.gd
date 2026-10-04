@@ -9,7 +9,7 @@ func _ready() -> void:
 
 
 func draw_character(chara: Actor, menu := 0) -> void:
-	if Global.complimentaries.is_empty():
+	if Party.complimentaries.is_empty():
 		$AbilityPanel/Complimentary.disabled = true
 		$AbilityPanel/Border1/Scroller/AbilityList/CompTxt.hide()
 	else:
@@ -234,7 +234,7 @@ func _on_ab_focus_entered() -> void:
 
 func _on_complimentary() -> void:
 	inactive = true
-	Global.complimentary_ui(actor)
+	UI.complimentary_ui(actor)
 
 
 func _input(event: InputEvent) -> void:
@@ -247,11 +247,11 @@ func _input(event: InputEvent) -> void:
 				next_char = Party.Leader
 
 			if is_instance_valid(next_char):
-				Global.member_details(next_char, stability_menu)
+				UI.member_details(next_char, stability_menu)
 				queue_free()
 		elif event.is_action_pressed("LeftTrigger"):
 			var next_char := Party.current[Party.current.find(actor) - 1]
 
 			if is_instance_valid(next_char):
-				Global.member_details(next_char, stability_menu)
+				UI.member_details(next_char, stability_menu)
 				queue_free()

@@ -361,7 +361,7 @@ func remove_flag(flag: StringName) -> void:
 
 func pop_tutorial(id: String) -> void:
 	var tutorial: TutorialPopup = (await Loader.load_res("res://UI/Tutorials/TutorialPopup.tscn")).instantiate()
-	get_tree().root.add_child(tutorial)
+	UI.add_child(tutorial)
 	await tutorial.start(id)
 
 
@@ -414,11 +414,11 @@ func give_control(camera_follow := false, bring_followers := true, reset_zoom :=
 
 	print_rich("[color=purple]Giving control")
 
-	if get_tree().root.has_node("Warning"):
-		get_tree().root.get_node("Warning").queue_free()
+	if UI.is_open("Warning"):
+		UI.get_node("Warning").queue_free()
 
-	#if get_tree().root.has_node("MainMenu"):
-	#get_tree().root.get_node("MainMenu").close()
+	#if UI.is_open("MainMenu"):
+	#UI.get_node("MainMenu").close()
 	Global.player.direction = Vector2.ZERO
 	Global.player.collision(true)
 	Hud.ui_visible = true
@@ -617,15 +617,15 @@ func no_player() -> void:
 ## Take the current value of to_day and to_time, and begin a proper transition to that time.
 ## Never run this from a dialogue file without do!
 func time_transition(location := Global.room.codename()) -> void:
-	if get_tree().root.has_node("Textbox"):
-		get_tree().root.get_node("Textbox")._on_close()
+	if UI.is_open("Textbox"):
+		UI.get_node("Textbox")._on_close()
 		#await Event.wait(0.3, false)
 
 	await Event.take_control()
 	await Transition.flip_time(time_of_day, to_time)
 	if day != to_day:
 		day = to_day
-		Global.toast(Query.get_month_name(Query.get_month(day)) + " " + str(day) + " cin16")
+		UI.toast(Query.get_month_name(Query.get_month(day)) + " " + str(day) + " cin16")
 		Loader.defeated.clear()
 
 	set_time(to_time)

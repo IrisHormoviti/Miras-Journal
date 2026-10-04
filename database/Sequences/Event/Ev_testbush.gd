@@ -21,4 +21,4 @@ func waste_time() -> void:
 func demo_credits() -> void:
 	await Event.take_control()
 	var scene: PackedScene = await Loader.load_res("res://UI/Misc/CreditsRoll.tscn")
-	get_tree().root.add_child(scene.instantiate())
+	UI.add_child(scene.instantiate())

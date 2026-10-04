@@ -6,8 +6,8 @@ func use(item_data: ItemData, battle_target: Actor = null) -> void:
 	item = item_data
 
 	if not Battle.in_battle:
-		if get_node_or_null("/root/MainMenu") == null: return
-		$/root/MainMenu.stage = "using_item"
+		if not UI.is_open("MainMenu"): return
+		UI.get_node("MainMenu").stage = "using_item"
 		var prevfoc := get_viewport().gui_get_focus_owner()
 		get_viewport().gui_release_focus()
 		match item.Use:
@@ -23,7 +23,7 @@ func use(item_data: ItemData, battle_target: Actor = null) -> void:
 
 		if prevfoc != null: prevfoc.grab_focus()
 		Engine.time_scale = 1
-		$/root/MainMenu.stage = "item"
+		UI.get_node("MainMenu").stage = "item"
 	elif item.UsedInBattle:
 		if battle_target == null: battle_target = Global.bt.CurrentChar
 		battle_target.NextMove = item.BattleEffect
@@ -39,7 +39,7 @@ func _on_item_manager_return_member(mem: Actor) -> void:
 
 
 func Journal() -> void:
-	var menu: MainMenu = get_tree().root.get_node_or_null("MainMenu")
+	var menu: MainMenu = UI.get_node_or_null("MainMenu")
 
 	if menu:
 		menu.rootIndex = 0

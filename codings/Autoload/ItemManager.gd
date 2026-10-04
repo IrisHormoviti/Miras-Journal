@@ -117,7 +117,7 @@ func add_item(item_input: Variant, type: StringName = &"", animate := true, play
 
 	if item_input is String:
 		if item_input.is_empty():
-			Global.toast("You got absolutely nothing!!!")
+			UI.toast("You got absolutely nothing!!!")
 			return
 		else:
 			to_add = await get_item(item_input, type)
@@ -125,7 +125,7 @@ func add_item(item_input: Variant, type: StringName = &"", animate := true, play
 		to_add = item_input
 
 	if to_add == null:
-		Global.error("THERE'S NO ITEM CALLED " + item_input, "OOPS")
+		UI.error("THERE'S NO ITEM CALLED " + item_input, "OOPS")
 		return
 
 	Inventory.append(to_add)
@@ -144,7 +144,7 @@ func remove_item(item_input: Variant, type: StringName = &"") -> void:
 
 	if type == &"": type = to_remove.ItemType
 	if to_remove == null:
-		Global.error("THERE'S NO ITEM CALLED " + item_input, "OOPS")
+		UI.error("THERE'S NO ITEM CALLED " + item_input, "OOPS")
 
 	print_rich("[color=cyan]Item ", to_remove.Name, " removed")
 
@@ -196,7 +196,7 @@ func get_item(filename: String, item_type: StringName = &"") -> ItemData:
 		path = item_paths.get(item_type).path_join(filename)+".tres"
 
 	if path.is_empty():
-		Global.error("Invalid item: ", filename)
+		UI.error("Invalid item: ", filename)
 		return null
 
 	var loaded_item: ItemData = await Loader.load_res(path)

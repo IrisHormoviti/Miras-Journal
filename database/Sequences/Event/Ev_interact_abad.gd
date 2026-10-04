@@ -40,7 +40,7 @@ func wake_home() -> void:
 
 func return_home_pyrson() -> void:
 	Party.reset_party()
-	Global.heal_party()
+	Party.heal_party()
 	await Loader.travel_to("Pyrson", Vector2(97, 157))
 	await Textbox.open("interact_pyrson", "return_home_pyrson")
 	Event.give_control()

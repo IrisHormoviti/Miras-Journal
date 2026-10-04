@@ -17,7 +17,7 @@ var ui_visible: bool = false:
 		# Run show_all or hide_all when this variable changes
 		if not Battle.in_battle:
 			if value and not Event.check_flag("UI/Disable") and not disabled:
-				if Global.settings.AutoHideHUD != 1:
+				if SettingsManager.settings.auto_hide_hud != 1:
 					show_all()
 			else:
 				hide_all()
@@ -98,13 +98,13 @@ func _physics_process(_delta: float) -> void:
 
 	if not Battle.in_battle:
 		if is_instance_valid(Global.player) and Global.controllable and Global.player.move_frames > 0:
-			if Global.settings.AutoHideHUD == 0:
+			if SettingsManager.settings.auto_hide_hud == 0:
 				if idle_timer.time_left == 0:
 					show_all()
 
 				idle_timer.start(3)
 
-			if Global.settings.AutoHideHUD == 1:
+			if SettingsManager.settings.auto_hide_hud == 1:
 				hide_all()
 				idle_timer.start(3)
 
@@ -114,7 +114,7 @@ func show_all(except_date := false, animate := true) -> void:
 	if disabled:
 		return
 
-	if Global.player and Global.settings.AutoHideHUD == 1 and Global.player.move_frames > 0:
+	if Global.player and SettingsManager.settings.auto_hide_hud == 1 and Global.player.move_frames > 0:
 		return
 
 	_ui_visible_state = true
@@ -254,7 +254,7 @@ func darken(toggle := true) -> void:
 
 	if toggle:
 		fader.show()
-		t.tween_property(fader.get_node("Blur").material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3, 0.3)
+		t.tween_property(fader.get_node("Blur").material, "shader_parameter/lod", int(SettingsManager.settings.blur_effect) * 3, 0.3)
 		t.tween_property(fader, "color", Color(0, 0, 0, 0.5), 0.3)
 		await t.finished
 	else:
@@ -281,7 +281,7 @@ func expand(open_ui := 0) -> void:
 	if ui_visible == false:
 		await show_all(true)
 
-	if get_tree().root.has_node("Options"):
+	if UI.is_open("Options"):
 		return
 
 	if open_ui != 2:
@@ -784,7 +784,7 @@ func choose_member(artifact: Resource, user: Actor = Party.Leader) -> void:
 
 		%Cursor/ItemPreview.text = (artifact.Name+ " x" + str(Item.count(artifact)))
 		%Cursor/ItemPreview.icon = artifact.Icon
-		$/root/MainMenu.stage = "choose_member"
+		UI.get_node("MainMenu").stage = "choose_member"
 	elif artifact is Ability:
 		%Cursor/ItemPreview.text = artifact.name
 		%Cursor/ItemPreview.icon = artifact.Icon
@@ -806,7 +806,7 @@ func choose_member(artifact: Resource, user: Actor = Party.Leader) -> void:
 	back_button.icon = Controller.get_scheme().CancelIcon
 	t.tween_property(back_button, "position:x", 20, 0.3)
 	t.tween_property(cursor, "modulate", Color(1, 1, 1, 1), 0.4)
-	t.tween_property(fader.get_node("Blur").material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 3, 0.4)
+	t.tween_property(fader.get_node("Blur").material, "shader_parameter/lod", int(SettingsManager.settings.blur_effect) * 3, 0.4)
 	t.tween_property(fader, "color", Color(0, 0, 0, 0.5), 0.4)
 	%Cursor/ItemPreview/AnimationPlayer.play(&"hover")
 	%Cursor/ItemPreview.show()
@@ -820,19 +820,19 @@ func _on_item_preview_pressed() -> void:
 	if member_choosing_artifact is ItemData:
 		if Item.count(member_choosing_artifact) != 0:
 			if Party.current[focus].Health >= Party.current[focus].MaxHP:
-				Global.toast("HP is already maxed out")
+				UI.toast("HP is already maxed out")
 				Audio.buzzer_sound()
 
 			Item.emit_signal("return_member", (Party.current[focus]))
 		else:
 			Audio.buzzer_sound()
-			Global.toast("No more of this item is left")
+			UI.toast("No more of this item is left")
 
 		%Cursor/ItemPreview.text = (member_choosing_artifact.Name + " x" + str(Item.count(member_choosing_artifact)))
 
 	if member_choosing_artifact is Ability:
 		if Party.current[focus].Health >= Party.current[focus].MaxHP:
-			Global.toast("HP is already maxed out")
+			UI.toast("HP is already maxed out")
 			Audio.buzzer_sound()
 		else:
 			Event.heal_in_overworld(Party.current[focus], member_choosing_artifact)
@@ -875,7 +875,7 @@ func cmd(cmd_text := "") -> void:
 				Event.time_of_day = text.to_int() as Event.TOD
 			elif cmd_text.begins_with("/comp"):
 				var text := cmd_text.replace("/comp ", "")
-				Global.add_complimentary(text)
+				Party.add_complimentary(text)
 			elif cmd_text.begins_with("/enrestore"):
 				Loader.defeated.clear()
 			elif cmd_text.begins_with("/giant"):
@@ -892,14 +892,14 @@ func cmd(cmd_text := "") -> void:
 					if i != null:
 						i.level_up_to(int(text))
 
-				Global.heal_party()
+				Party.heal_party()
 				Global.check.emit()
 			elif cmd_text.begins_with("/item"):
 				var text: String = cmd_text.replace("/item ", "")
 				var split := text.split(":")
 
 				#if split.size() < 2:
-					#Global.toast("Item type needed")
+					#UI.toast("Item type needed")
 					#return
 
 				Item.add_item(split[0], split[1] if split.size() > 1 else "")
@@ -908,7 +908,7 @@ func cmd(cmd_text := "") -> void:
 				var split := text.split(":")
 
 				if split.size() < 2:
-					Global.toast("Item type needed")
+					UI.toast("Item type needed")
 					return
 
 				Item.remove_item(split[0], split[1])
@@ -925,7 +925,7 @@ func cmd(cmd_text := "") -> void:
 			var text := cmd_text
 			Event.add_flag(text, !Event.check_flag(text))
 			if not "=" in text:
-				Global.toast(
+				UI.toast(
 					"Flag \"" + text + "\" set to "
 					+ str(Event.get_flag(text)),
 				)
@@ -967,14 +967,14 @@ func main_menu() -> void:
 			get_tree().paused = true
 			var menu: PackedScene = await Loader.load_res("res://UI/MainMenu/MainMenu.tscn")
 
-			if get_tree().root.get_node_or_null("Options") == null:
-				get_tree().root.add_child(menu.instantiate())
+			if UI.is_open("Options") == false:
+				UI.add_child(menu.instantiate())
 			else:
-				get_tree().root.get_node_or_null("Options").free()
+				UI.get_node_or_null("Options").free()
 				Event.give_control()
-				Global.options()
+				UI.options()
 		else:
-			Global.options()
+			UI.options()
 	elif Global.controllable:
 		Audio.buzzer_sound()
 
@@ -997,7 +997,7 @@ func cycle_states(chara: Actor, rect: TextureRect, reclude := true) -> void:
 
 func details() -> void:
 	if expanded and not submenu_opened:
-		await Global.member_details(Party.current[focus])
+		await UI.member_details(Party.current[focus])
 		submenu_opened = true
 		await Event.wait(0.2, false)
 		%Pages.hide()
@@ -1008,7 +1008,7 @@ func details() -> void:
 
 func abilities() -> void:
 	if expanded and not submenu_opened:
-		await Global.member_details(Party.current[focus], 1)
+		await UI.member_details(Party.current[focus], 1)
 		submenu_opened = true
 		await Event.wait(0.2, false)
 		%Pages.hide()
@@ -1019,7 +1019,7 @@ func abilities() -> void:
 
 func back() -> void:
 	if member_choosing and expanded and not (
-		get_tree().root.has_node("MainMenu") and get_tree().root.get_node("MainMenu").stage == "choose_member"
+		UI.is_open("MainMenu") and UI.get_node("MainMenu").stage == "choose_member"
 	):
 		%Cursor/ItemPreview.hide()
 		%Cursor/ItemPreview/AnimationPlayer.stop()
@@ -1037,9 +1037,9 @@ func back() -> void:
 			await Event.wait(0.1, false)
 			Global.controllable = was_controllable
 
-			if get_tree().root.has_node("MainMenu"):
-				get_tree().root.get_node("MainMenu").stage = "root"
-				get_tree().root.get_node("MainMenu").move_root()
+			if UI.is_open("MainMenu"):
+				UI.get_node("MainMenu").stage = "root"
+				UI.get_node("MainMenu").move_root()
 
 
 func close_submenu() -> void:
@@ -1083,7 +1083,7 @@ func preform_levelups() -> void:
 	for i in levelup_chain:
 		var mem: Actor = Party.get_member(i.split(":", false)[0])
 		var scene: Node = scenepack.instantiate()
-		get_tree().root.add_child(scene)
+		UI.add_child(scene)
 		await Event.wait()
 		scene.get_node("Levelup").levelup(mem)
 		await scene.get_node("Levelup").closed
@@ -1094,10 +1094,10 @@ func preform_levelups() -> void:
 
 func _on_idle_timer_timeout() -> void:
 	if Global.controllable and not Battle.in_battle:
-		if Global.settings.AutoHideHUD == 0:
+		if SettingsManager.settings.auto_hide_hud == 0:
 			hide_all()
 
-		if Global.settings.AutoHideHUD == 1:
+		if SettingsManager.settings.auto_hide_hud == 1:
 			show_all()
 
 

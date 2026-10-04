@@ -5,8 +5,8 @@ func new_game() -> void:
 	Global.first_start_time = Time.get_unix_time_from_system()
 
 	# Hide any UI
-	if get_tree().root.has_node("/root/Textbox"): $"/root/Textbox"._on_close()
-	if get_tree().root.has_node("/root/Initializer"): $"/root/Initializer".queue_free()
+	if UI.is_open("Textbox"): UI.get_node("Textbox")._on_close()
+	if UI.is_open("Initializer"): UI.get_node("Initializer").queue_free()
 	Hud.hide_all()
 	# Initial flags
 	Event.flags.clear()
@@ -37,7 +37,7 @@ func new_game() -> void:
 	get_tree().paused = false
 	# Skip intro shortcut
 	if Input.is_action_pressed("Dash"):
-		Global.refresh()
+		Loader.refresh()
 		return
 
 	Global.player.set_anim("OnFloor", false, true)
@@ -62,12 +62,12 @@ func new_game() -> void:
 	t.tween_property(getup, "modulate", Color.WHITE, 0.2).from(Color.TRANSPARENT)
 	t.tween_property(getup, "size", Vector2(120, 33), 0.2).from(Vector2(41, 33))
 	t.tween_property(options, "position", Vector2(15, 583), 0.3).set_delay(1.5)
-	while not getup.button_pressed or get_tree().root.has_node("Options"):
+	while not getup.button_pressed or UI.is_open("Options"):
 		if not is_instance_valid(getup): return
 		options.icon = Controller.get_scheme().Start
 
-		if options.button_pressed and not get_tree().root.has_node("Options"):
-			await Global.options()
+		if options.button_pressed and not UI.is_open("Options"):
+			await UI.options()
 			options.button_pressed = false
 
 		await Event.wait()
@@ -123,7 +123,7 @@ func first_battle() -> void:
 	Transition.fade_out()
 	Event.camera_move(Vector2(1486, -300), 5, Tween.EASE_IN_OUT, Tween.TRANS_LINEAR)
 	await Event.wait(0.5)
-	Global.location_name("Temple Woods")
+	UI.location_name("Temple Woods")
 	await Event.wait(4.5)
 	Event.camera_move(Vector2(1558, 318), 0)
 	Global.player.hide()
@@ -180,7 +180,7 @@ func AlcineFollow4() -> void:
 	Global.player.look_to(Direction.LEFT)
 	Global.player.position = Vector2(1619, -1068)
 	await Textbox.open("story_0", "got_through_that")
-	await Global.alcine_naming()
+	await UI.alcine_naming()
 	await Textbox.open("story_0", "use_name")
 	await Transition.wipe(Direction.RIGHT)
 	Event.flag_progress("Event/AlcineFollow", 4)
@@ -232,7 +232,7 @@ func enter_amberelm_2() -> void:
 	Global.player.set_anim("IdleUp")
 	t.tween_property(Global.camera, "position", Vector2(150, 252), 7)
 	await Event.wait(1)
-	Global.location_name("Amberelm")
+	UI.location_name("Amberelm")
 	await Event.wait(5)
 	Transition.fade_in(Color.BLACK, 1)
 	await Event.wait(2)

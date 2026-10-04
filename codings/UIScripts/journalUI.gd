@@ -137,7 +137,7 @@ func root() -> void:
 	t.tween_property($RootMenu, "position:x", 254, 0.6).from(400)
 	$Select.show()
 
-	t.tween_property(get_tree().root.get_node("MainMenu"), "offset:x", 0, 0.5)
+	t.tween_property(UI.get_node("MainMenu"), "offset:x", 0, 0.5)
 	t.tween_property(Global.camera, "offset:x", 100, 0.5)
 
 
@@ -155,7 +155,7 @@ func diary() -> void:
 	t.tween_property($Close, "position:x", 320, 0.5).set_ease(Tween.EASE_OUT)
 	t.tween_property($List, "position:x", 0, 0.5).from(-300)
 
-	t.tween_property(get_tree().root.get_node("MainMenu"), "offset:x", -165, 0.5)
+	t.tween_property(UI.get_node("MainMenu"), "offset:x", -165, 0.5)
 	t.tween_property(Global.camera, "offset:x", 150, 0.5)
 
 	$List/List.get_children()[-1].grab_focus()
@@ -332,7 +332,7 @@ func turn_page_L() -> void:
 
 
 func close() -> void:
-	get_tree().root.get_node("MainMenu")._root()
+	UI.get_node("MainMenu")._root()
 	queue_free()
 
 

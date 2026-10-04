@@ -24,8 +24,8 @@ static var is_open := false
 static func open(file: String, cue: String = "0", extra_game_states: Array = []) -> void:
 	print_rich("[color=orange]Passive: ", file, " - ", cue)
 
-	if Engine.get_main_loop().root.has_node("Passive"):
-		Engine.get_main_loop().root.get_node("Passive")._on_close()
+	if UI.is_open("Passive"):
+		UI.get_node("Passive")._on_close()
 		await Event.wait(0.3)
 		open(file, cue, extra_game_states)
 		return
@@ -33,7 +33,7 @@ static func open(file: String, cue: String = "0", extra_game_states: Array = [])
 	is_open = true
 	var passive: PackedScene = await Loader.load_res("res://UI/Textbox/Passive.tscn")
 	var box: Node = passive.instantiate()
-	Engine.get_main_loop().root.add_child(box)
+	UI.add_child(box)
 	box.start(
 		await Loader.load_res("res://database/Text/" + file + ".dialogue") as DialogueResource,
 		cue,

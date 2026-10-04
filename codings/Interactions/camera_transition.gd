@@ -34,4 +34,4 @@ func _on_body_entered(body: Node2D) -> void:
 		#Event.give_control(false)
 		#if to_local(Global.Player.position).y < 0 or Global.Player in get_overlapping_bodies() or $"../SubRoomBg".modulate == Color.WHITE:
 			#Global.Player.position.y = global_position.y + 24
-			#Global.refresh()
+			#Loader.refresh()

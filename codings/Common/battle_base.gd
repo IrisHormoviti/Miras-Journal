@@ -89,7 +89,7 @@ static func start(stg: Variant, advantage := 0) -> void:
 	elif stg is BattleSequence:
 		sequence = stg
 	else:
-		Global.toast("The battle sequence isn't set here, you probably should fix this.")
+		UI.toast("The battle sequence isn't set here, you probably should fix this.")
 		await Event.wait(0.3)
 		Event.give_control()
 		Hud.show_all()
@@ -759,7 +759,7 @@ func battle_msg(id: String, insert := "MISSING", insert2 := "MISSING2") -> Strin
 	text = text.replace("[tar_they]", target.get_pronoun("they"))
 	text = text.replace("[tar_them]", target.get_pronoun("them"))
 	text = text.replace("[tar_their]", target.get_pronoun("their"))
-	Global.toast(text)
+	UI.toast(text)
 	return text
 
 
@@ -1240,7 +1240,7 @@ func game_over(target: Actor = null) -> void:
 	print_rich("[color=cornflower-blue]Game over")
 
 	if sequence.DefeatSequence == "":
-		Global.game_over()
+		UI.game_over()
 	else: act.call(sequence.DefeatSequence)
 
 

@@ -162,9 +162,9 @@ func _on_back_pressed() -> void:
 		$AbilityPanel.hide()
 		$Equipped.get_child(active_slot).grab_focus()
 	else:
-		if get_tree().root.has_node("MemberDetails"):
-			get_tree().root.get_node("MemberDetails").fetch_abilities(chara)
-			get_tree().root.get_node("MemberDetails/AbilityPanel/Border1/Scroller/AbilityList").get_child(1).grab_focus()
+		if UI.is_open("MemberDetails"):
+			UI.get_node("MemberDetails").fetch_abilities(chara)
+			UI.get_node("MemberDetails/AbilityPanel/Border1/Scroller/AbilityList").get_child(1).grab_focus()
 		Audio.cancel_sound()
 
 		var t := create_tween().set_parallel().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
@@ -178,7 +178,7 @@ func _on_back_pressed() -> void:
 		t.tween_property($Sines, "scale", Vector2(1.5, 1.5), 0.3)
 		t.tween_property($Background, "modulate", Color.TRANSPARENT, 0.3)
 		await t.finished
-		get_tree().root.get_node("MemberDetails").inactive = false
+		UI.get_node("MemberDetails").inactive = false
 		queue_free()
 
 

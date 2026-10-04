@@ -25,7 +25,7 @@ static func open(file: String, cue: String = "0", fade_bg := false, extra_game_s
 	var Textbox2: PackedScene = await Loader.load_res("res://UI/Textbox/Textbox2.tscn")
 	var box: Textbox = Textbox2.instantiate()
 	var text: DialogueResource = await Loader.load_res("res://database/Text/" + file + ".dialogue")
-	Engine.get_main_loop().root.add_child(box)
+	UI.add_child(box)
 	if is_instance_valid(box):
 		box.start(text, cue, extra_game_states)
 
@@ -108,7 +108,7 @@ func _ready() -> void:
 
 	if Input.is_action_pressed("Dash"): skip = true
 
-	match Global.settings.TextSpeed:
+	match SettingsManager.settings.text_speed:
 		1:
 			dialogue_label.seconds_per_step = 0.01
 			dialogue_label.seconds_per_pause_step = 0.1

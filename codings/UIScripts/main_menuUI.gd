@@ -83,8 +83,8 @@ func _ready() -> void:
 	if duplicated:
 		Cam.position = Global.camera.get_screen_center_position()
 		t.tween_property(player, "global_position", Global.camera.get_screen_center_position(), 0.5)
-		t.tween_property(Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 2.5, 0.5).from(0.0)
-	else: t.tween_property(Fader.material, "shader_parameter/lod", int(Global.settings.BlurEffect) * 1.0, 0.5).from(0.0)
+		t.tween_property(Fader.material, "shader_parameter/lod", int(SettingsManager.settings.blur_effect) * 2.5, 0.5).from(0.0)
+	else: t.tween_property(Fader.material, "shader_parameter/lod", int(SettingsManager.settings.blur_effect) * 1.0, 0.5).from(0.0)
 	get_inventory()
 	$Confirm.icon = Controller.get_scheme().ConfirmIcon
 	$Back.icon = Controller.get_scheme().CancelIcon
@@ -392,7 +392,7 @@ func _journal() -> void:
 	var journalui: CanvasLayer = (await Loader.load_res("res://UI/Journal/JournalUI.tscn")).instantiate()
 	$Confirm.hide()
 	$Back.hide()
-	get_tree().root.add_child(journalui)
+	UI.add_child(journalui)
 	Hud.hide_all()
 
 
@@ -468,7 +468,7 @@ func _options() -> void:
 
 	stage = "options"
 	Hud.ui_visible = false
-	get_tree().root.add_child((await Loader.load_res("res://UI/Options/Options.tscn")).instantiate())
+	UI.add_child((await Loader.load_res("res://UI/Options/Options.tscn")).instantiate())
 	Audio.confirm_sound()
 	t = create_tween()
 	t.set_parallel()
@@ -506,11 +506,11 @@ func _on_back_button_down() -> void:
 
 		"journal":
 			_root()
-			if get_tree().root.get_node_or_null("JournalUI") != null:
-				get_tree().root.get_node("JournalUI").queue_free()
+			if UI.is_open("JournalUI"):
+				UI.get_node("JournalUI").queue_free()
 
 		"options":
-			if get_tree().root.get_node_or_null("Options") == null or get_tree().root.get_node("Options").stage == "main":
+			if not UI.is_open("Options") or UI.get_node("Options").stage == "main":
 				stage = "root"
 				_root()
 				await get_tree().create_timer(0.5).timeout

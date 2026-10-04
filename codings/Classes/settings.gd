@@ -1,31 +1,31 @@
 extends Resource
 class_name Setting
 
-@export var PlayerName: String = "Local"
+@export var player_name: String = "Local"
 @export_category("Gameplay")
-@export var AutoHideHUD: int = 0
-@export var TextSpeed: int = 0
+@export var auto_hide_hud: int = 0
+@export var text_speed: int = 0
 @export_category("Input")
-@export var ControlSchemeAuto: bool = true
-@export var ControlSchemeEnum: int = 0
-@export var ControlSchemeOverride: ControlScheme = null
-@export var ControllerVibration := true
-@export var LastUsedDevice: String = "Keyboard"
+@export var control_scheme_auto: bool = true
+@export var control_scheme_enum: int = 0
+@export var control_scheme_override: ControlScheme = null
+@export var controller_vibration := true
+@export var last_used_device: String = "Keyboard"
 @export_category("Display")
-@export var Fullscreen := false
-@export var UpscaledRes := true
-@export var UpscaleFactor: float = 1.0
-@export var HighResTextures := false
-@export var FPS: int = 0
-@export var VSync: bool = true
-@export var GlowEffect: bool = true
-@export var BlurEffect: bool = true
+@export var fullscreen := false
+@export var upscaled_res := true
+@export var upscale_factor: float = 1.0
+@export var high_res_textures := false
+@export var fps: int = 0
+@export var vsync: bool = true
+@export var glow_effect: bool = true
+@export var blur_effect: bool = true
 @export_category("Audio")
-@export var MasterVolume: float = 0
-@export var MusicVolume: float = 0
-@export var SFXVolume: float = 0
-@export var UIVolume: float = 0
-@export var VoicesVolume: float = 0
-@export var FootstepsVolume: float = 0
+@export var master_volume: float = 0.0
+@export var music_volume: float = 0.0
+@export var sfx_volume: float = 0.0
+@export var ui_volume: float = 0.0
+@export var voices_volume: float = 0.0
+@export var footsteps_volume: float = 0.0
 @export_category("System")
-@export var DebugMode: bool = false
+@export var debug_mode: bool = false

@@ -29,7 +29,7 @@ func _ready() -> void:
 	options = preload("res://UI/Options/Options.tscn").instantiate()
 	options.load_save_files.call_deferred()
 	options.dont_open_yet = true
-	get_tree().root.add_child.call_deferred(options)
+	UI.add_child.call_deferred(options)
 
 	error_hint.text = "Hint: File check"
 	title_screen.show()
@@ -59,13 +59,13 @@ func focus() -> void:
 
 func _on_load_pressed() -> void:
 	if inactive: return
-	if get_tree().root.has_node("Options"):
+	if UI.is_open("Options"):
 		options.dont_open_yet = false
 		options.set_no_main()
 		options.save_managment()
 		options._ready.call_deferred()
 	else:
-		Global.options(1)
+		UI.options(1)
 
 
 func _input(event: InputEvent) -> void:
@@ -74,11 +74,11 @@ func _input(event: InputEvent) -> void:
 
 func _on_options_pressed() -> void:
 	if inactive: return
-	if get_tree().root.has_node("Options"):
+	if UI.is_open("Options"):
 		options.dont_open_yet = false
 		options._ready()
 	else:
-		Global.options()
+		UI.options()
 
 	#dismiss_title()
 
@@ -106,7 +106,7 @@ func you_can_now_play_as(chara: String) -> void:
 		if i.get("codename") == chara: i.set("Controllable", true)
 
 	ResourceSaver.save(data, "user://Autosave.tres")
-	Global.warning("You can now play as [img height=64]res://art/Icons/Party/" + chara + ".png[/img] " + chara + ".", "CONGRATS", ["A"])
+	UI.warning("You can now play as [img height=64]res://art/Icons/Party/" + chara + ".png[/img] " + chara + ".", "CONGRATS", ["A"])
 
 # Deprecated
 
@@ -126,7 +126,7 @@ func you_can_now_play_as(chara: String) -> void:
 #
 #func _on_new_pressed() -> void:
 	#Audio.confirm_sound()
-	#if not game_exists or await Global.warning("Start a new game? Any Autosave data will be overwritten, so make sure to save it into a new file if you want to keep it.", "NEW GAME", ["Cancel", "Start New Game"]):
+	#if not game_exists or await UI.warning("Start a new game? Any Autosave data will be overwritten, so make sure to save it into a new file if you want to keep it.", "NEW GAME", ["Cancel", "Start New Game"]):
 		#dismiss_title()
 		#Event.sequence("new_game")
 

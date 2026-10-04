@@ -180,9 +180,9 @@ func control_process() -> void:
 		if Input.is_action_just_pressed("OVAttack") and controllable():
 			attack()
 
-	if Global.settings.DebugMode:
+	if SettingsManager.settings.debug_mode:
 		if Input.is_action_just_pressed("DebugF"):
-			Global.toast("Collision set to " + str($CollisionShape2D.disabled))
+			UI.toast("Collision set to " + str($CollisionShape2D.disabled))
 			$CollisionShape2D.disabled = not $CollisionShape2D.disabled
 
 

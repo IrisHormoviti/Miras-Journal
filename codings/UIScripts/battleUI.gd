@@ -167,7 +167,7 @@ func _input(event: InputEvent) -> void:
 					ability.emit()
 
 				if Input.is_action_just_pressed("Manual"):
-					Global.options(3)
+					UI.options(3)
 
 			&"target":
 				if Input.is_action_just_pressed(Controller.cancel()):
@@ -714,7 +714,7 @@ func _on_battle_next_turn() -> void:
 
 func _on_targeted() -> void:
 	if analyzing:
-		Global.member_details(CurrentChar.NextTarget)
+		UI.member_details(CurrentChar.NextTarget)
 		stage = "analyze"
 		PrevStage = "analyze"
 	elif CurrentChar.NextAction == Actor.BtAction.ITEM_GIVE:
@@ -1091,4 +1091,4 @@ func _analyze() -> void:
 
 func _on_options_pressed() -> void:
 	if stage == "root":
-		Global.options()
+		UI.options()

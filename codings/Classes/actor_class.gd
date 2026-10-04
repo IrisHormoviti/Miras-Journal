@@ -258,7 +258,7 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar
 			prev_state.turns = -1
 			Global.bt.battle_msg("state_extended", FirstName, state.name)
 
-		#else: Global.toast(FirstName+" is already "+state.name)
+		#else: UI.toast(FirstName+" is already "+state.name)
 		return prev_state
 
 	if turns != -1:

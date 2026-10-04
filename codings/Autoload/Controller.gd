@@ -27,14 +27,14 @@ func _ready() -> void:
 
 
 func get_scheme() -> ControlScheme:
-	if !Global.settings: return get_scheme_from_string("None")
-	if not Global.settings.ControlSchemeAuto:
-		return Global.settings.ControlSchemeOverride
+	if !SettingsManager.settings: return get_scheme_from_string("None")
+	if not SettingsManager.settings.control_scheme_auto:
+		return SettingsManager.settings.control_scheme_override
 
 	if device == "":
-		device = Global.settings.LastUsedDevice
+		device = SettingsManager.settings.last_used_device
 
-	Global.settings.LastUsedDevice = device
+	SettingsManager.settings.last_used_device = device
 
 	return get_scheme_from_string(get_scheme_from_device())
 
@@ -92,15 +92,15 @@ func _input(event: InputEvent) -> void:
 	if prev_dev != device:
 		if prev_dev != "":
 			controller_changed.emit()
-			Global.toast("Using " + device)
+			UI.toast("Using " + device)
 
 		handle_remaps()
 
 	last_input = Global.process_frame
 	var is_fullscreen := get_window().mode == Window.MODE_FULLSCREEN
 
-	if Global.settings and is_fullscreen != Global.settings.Fullscreen:
-		Global.fullscreen(is_fullscreen)
+	if SettingsManager.settings and is_fullscreen != SettingsManager.settings.fullscreen:
+		SettingsManager.fullscreen(is_fullscreen)
 
 	check_menu_buttons(event)
 
@@ -134,20 +134,20 @@ func confirm() -> String:
 
 
 func rumble(strong: float, weak: float, duration: float, delay: float = 0) -> void:
-	if Global.settings and Global.settings.ControllerVibration:
+	if SettingsManager.settings and SettingsManager.settings.controller_vibration:
 		if delay > 0: await Event.wait(delay, false)
 		Input.start_joy_vibration(0, strong, weak, duration)
 
 
 func check_menu_buttons(event: InputEvent) -> void:
 	if Input.is_action_just_pressed("Fullscreen"):
-		Global.fullscreen()
+		SettingsManager.fullscreen()
 
 	if Input.is_action_just_pressed("SaveDir"):
 		OS.shell_open(OS.get_user_data_dir())
 
 	if Input.is_action_just_pressed("Refresh"):
-		Global.refresh()
+		Loader.refresh()
 
 	if Global.controllable and not Hud.expanded:
 		var can_open_menu := false
@@ -157,15 +157,15 @@ func check_menu_buttons(event: InputEvent) -> void:
 
 		if can_open_menu:
 			if Input.is_action_just_pressed("Options"):
-				Global.options(0)
+				UI.options(0)
 			elif Input.is_action_just_pressed("SaveManagment"):
-				Global.options(1)
+				UI.options(1)
 			elif Input.is_action_just_pressed("Manual"):
-				Global.options(3)
+				UI.options(3)
 			elif Input.is_action_just_pressed("MainMenu"):
 				Hud.main_menu()
 
-	if Global.settings and Global.settings.DebugMode:
+	if SettingsManager.settings and SettingsManager.settings.debug_mode:
 		var text_edit_visible: bool = Hud.get_node("%DebugTextEdit").visible
 
 		if Input.is_action_just_pressed("DebugFlag"):
@@ -182,7 +182,7 @@ func check_menu_buttons(event: InputEvent) -> void:
 			elif Input.is_action_just_pressed("DebugT"):
 				Passive.open("testbush", "greetings")
 			elif Input.is_action_just_pressed("DebugP"):
-				Global.toast("Controllable set to " + str(!Global.controllable))
+				UI.toast("Controllable set to " + str(!Global.controllable))
 				if Global.controllable:
 					Event.take_control()
 				else:
