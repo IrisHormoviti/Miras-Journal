@@ -148,19 +148,18 @@ func _physics_process(delta: float) -> void:
 	match state:
 		S.MOVE, S.CHASE:
 			velocity = direction * speed
-			move_and_collide(velocity * delta)
+			move_and_slide()
 
 		S.IDLE:
-			direction = Vector2.ZERO
-			#position = round(position)
-			move_and_collide(Vector2.ZERO)
+			velocity = Vector2.ZERO
+			move_and_slide()
 
 		S.CONTROLLED:
 			control_process()
 
 		S.CUSTOM:
 			velocity = direction * speed
-			move_and_collide(velocity * delta)
+			move_and_slide()
 
 		S.NONE: return
 

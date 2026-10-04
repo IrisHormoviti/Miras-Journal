@@ -1,5 +1,5 @@
 extends Node
-## This Autoload handles the movment of [NPC] nodes and 
+## This Autoload handles the movment of [NPC] nodes and
 ## provides useful functions for scripting cutscenes
 
 signal time_changed

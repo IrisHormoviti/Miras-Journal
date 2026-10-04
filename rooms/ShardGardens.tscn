@@ -505,6 +505,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 [sub_resource type="Resource" id="Resource_xjnw0"]
 script = ExtResource("22_a7h8m")
 
+[sub_resource type="Curve2D" id="Curve2D_EnemySG1"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -9, 14, 0, 0, 0, 0, 88, -50, 0, 0, 0, 0, -53, -49, 0, 0, 0, 0, -9, 14)
+}
+point_count = 4
+
 [sub_resource type="Resource" id="Resource_yoqct"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("16_a3r2p"), ExtResource("17_lmpvr"), ExtResource("16_a3r2p")])
@@ -516,6 +522,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 [sub_resource type="Resource" id="Resource_lj216"]
 script = ExtResource("22_a7h8m")
 
+[sub_resource type="Curve2D" id="Curve2D_EnemySG1_1"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -126, -21, 0, 0, 0, 0, -71, 5, 0, 0, 0, 0, 14, 3)
+}
+point_count = 3
+
 [sub_resource type="Resource" id="Resource_a7h8m"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("15_3lgvi"), ExtResource("16_a3r2p"), ExtResource("15_3lgvi")])
@@ -526,6 +538,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 [sub_resource type="Resource" id="Resource_wk642"]
 script = ExtResource("22_a7h8m")
 
+[sub_resource type="Curve2D" id="Curve2D_EnemySG2"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -26, 41, 0, 0, 0, 0, 76, 3.00002, 0, 0, 0, 0, -45.0123, -53.9897, 0, 0, 0, 0, -26, 41)
+}
+point_count = 4
+
 [sub_resource type="Resource" id="Resource_ggbak"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("20_ohs4u"), ExtResource("17_lmpvr"), ExtResource("20_ohs4u")])
@@ -535,6 +553,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
 [sub_resource type="Resource" id="Resource_d6l2x"]
 script = ExtResource("22_a7h8m")
+
+[sub_resource type="Curve2D" id="Curve2D_EnemySG3"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -20, 5, 0, 0, 0, 0, 99, 8.00002)
+}
+point_count = 2
 
 [sub_resource type="Resource" id="Resource_lmpvr"]
 script = ExtResource("17_a3r2p")
@@ -547,6 +571,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 [sub_resource type="Resource" id="Resource_ex6dr"]
 script = ExtResource("22_a7h8m")
 
+[sub_resource type="Curve2D" id="Curve2D_EnemySG4"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, -55, 0, 0, 0, 0, -1, 32)
+}
+point_count = 2
+
 [sub_resource type="Resource" id="Resource_qvrxi"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("20_ohs4u"), ExtResource("16_a3r2p"), ExtResource("15_3lgvi")])
@@ -556,6 +586,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
 [sub_resource type="Resource" id="Resource_d3jwk"]
 script = ExtResource("22_a7h8m")
+
+[sub_resource type="Curve2D" id="Curve2D_EnemySG5"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 29, 36, 0, 0, 0, 0, 46, -21, 0, 0, 0, 0, -18, -16)
+}
+point_count = 3
 
 [sub_resource type="Resource" id="Resource_wvntm"]
 script = ExtResource("17_a3r2p")
@@ -568,6 +604,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 [sub_resource type="Resource" id="Resource_xjok2"]
 script = ExtResource("22_a7h8m")
 
+[sub_resource type="Curve2D" id="Curve2D_EnemySG6"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -23, -20, 0, 0, 0, 0, 35, 7.99999, 0, 0, 0, 0, -7, 4.99999)
+}
+point_count = 3
+
 [sub_resource type="Resource" id="Resource_n6psl"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("20_ohs4u"), ExtResource("15_3lgvi"), ExtResource("20_ohs4u")])
@@ -578,6 +620,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
 [sub_resource type="Resource" id="Resource_k1go5"]
 script = ExtResource("22_a7h8m")
+
+[sub_resource type="Curve2D" id="Curve2D_EnemySG7"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -60, 3, 0, 0, 0, 0, -12, 3)
+}
+point_count = 2
 
 [sub_resource type="Resource" id="Resource_41yyw"]
 script = ExtResource("17_a3r2p")
@@ -590,6 +638,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 [sub_resource type="Resource" id="Resource_e642t"]
 script = ExtResource("22_a7h8m")
 
+[sub_resource type="Curve2D" id="Curve2D_EnemySG8"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, -60, 3, 0, 0, 0, 0, -12, 3)
+}
+point_count = 2
+
 [sub_resource type="Resource" id="Resource_pvsn2"]
 script = ExtResource("17_a3r2p")
 Enemies = Array[ExtResource("15_rqges")]([ExtResource("20_ohs4u"), ExtResource("20_ohs4u"), ExtResource("15_3lgvi"), ExtResource("20_ohs4u")])
@@ -600,6 +654,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
 [sub_resource type="Resource" id="Resource_8jaei"]
 script = ExtResource("22_a7h8m")
+
+[sub_resource type="Curve2D" id="Curve2D_EnemySG9"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 28, -46, 0, 0, 0, 0, -11, -8, 0, 0, 0, 0, -5, 42)
+}
+point_count = 3
 
 [sub_resource type="Resource" id="Resource_70ffl"]
 script = ExtResource("22_a7h8m")
@@ -1309,16 +1369,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_xjnw0")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG1" unique_id=2138604952]
-
-[node name="0" type="Marker2D" parent="EnemySG1/HomePoints" unique_id=572721706]
-position = Vector2(-9, 14)
-
-[node name="1" type="Marker2D" parent="EnemySG1/HomePoints" unique_id=90945983]
-position = Vector2(88, -50)
-
-[node name="2" type="Marker2D" parent="EnemySG1/HomePoints" unique_id=624298980]
-position = Vector2(-53, -49)
+[node name="PatrolPath" type="Path2D" parent="EnemySG1" unique_id=1247692164]
+curve = SubResource("Curve2D_EnemySG1")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG1" unique_id=1733271811]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1342,16 +1394,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_lj216")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG10" unique_id=2003674837]
-
-[node name="0" type="Marker2D" parent="EnemySG10/HomePoints" unique_id=1301800789]
-position = Vector2(-126, -21)
-
-[node name="1" type="Marker2D" parent="EnemySG10/HomePoints" unique_id=279024589]
-position = Vector2(-71, 5)
-
-[node name="2" type="Marker2D" parent="EnemySG10/HomePoints" unique_id=1223011149]
-position = Vector2(14, 3)
+[node name="PatrolPath" type="Path2D" parent="EnemySG10" unique_id=1106471777]
+curve = SubResource("Curve2D_EnemySG1_1")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG10" unique_id=473969649]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1376,16 +1420,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_wk642")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG2" unique_id=181928769]
-
-[node name="0" type="Marker2D" parent="EnemySG2/HomePoints" unique_id=310300715]
-position = Vector2(-26, 41)
-
-[node name="1" type="Marker2D" parent="EnemySG2/HomePoints" unique_id=859448453]
-position = Vector2(76, 3.00002)
-
-[node name="2" type="Marker2D" parent="EnemySG2/HomePoints" unique_id=430470522]
-position = Vector2(-45.0123, -53.9897)
+[node name="PatrolPath" type="Path2D" parent="EnemySG2" unique_id=468796356]
+curve = SubResource("Curve2D_EnemySG2")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG2" unique_id=1327106738]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1410,13 +1446,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_d6l2x")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG3" unique_id=764794876]
-
-[node name="0" type="Marker2D" parent="EnemySG3/HomePoints" unique_id=809985281]
-position = Vector2(-20, 5)
-
-[node name="1" type="Marker2D" parent="EnemySG3/HomePoints" unique_id=928335750]
-position = Vector2(99, 8.00002)
+[node name="PatrolPath" type="Path2D" parent="EnemySG3" unique_id=968439496]
+curve = SubResource("Curve2D_EnemySG3")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG3" unique_id=578195149]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1441,13 +1472,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_ex6dr")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG4" unique_id=961417351]
-
-[node name="0" type="Marker2D" parent="EnemySG4/HomePoints" unique_id=945046700]
-position = Vector2(0, -55)
-
-[node name="1" type="Marker2D" parent="EnemySG4/HomePoints" unique_id=1983047707]
-position = Vector2(-1, 32)
+[node name="PatrolPath" type="Path2D" parent="EnemySG4" unique_id=712919719]
+curve = SubResource("Curve2D_EnemySG4")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG4" unique_id=1126029438]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1472,16 +1498,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_d3jwk")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG5" unique_id=1292102762]
-
-[node name="0" type="Marker2D" parent="EnemySG5/HomePoints" unique_id=406353629]
-position = Vector2(29, 36)
-
-[node name="1" type="Marker2D" parent="EnemySG5/HomePoints" unique_id=1276760970]
-position = Vector2(46, -21)
-
-[node name="2" type="Marker2D" parent="EnemySG5/HomePoints" unique_id=327210839]
-position = Vector2(-18, -16)
+[node name="PatrolPath" type="Path2D" parent="EnemySG5" unique_id=281996914]
+curve = SubResource("Curve2D_EnemySG5")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG5" unique_id=1514968151]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1505,16 +1523,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_xjok2")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG6" unique_id=258531717]
-
-[node name="0" type="Marker2D" parent="EnemySG6/HomePoints" unique_id=391485646]
-position = Vector2(-23, -20)
-
-[node name="1" type="Marker2D" parent="EnemySG6/HomePoints" unique_id=1432106282]
-position = Vector2(35, 7.99999)
-
-[node name="2" type="Marker2D" parent="EnemySG6/HomePoints" unique_id=333642423]
-position = Vector2(-7, 4.99999)
+[node name="PatrolPath" type="Path2D" parent="EnemySG6" unique_id=1744297167]
+curve = SubResource("Curve2D_EnemySG6")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG6" unique_id=1621623520]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1538,13 +1548,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_k1go5")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG7" unique_id=1253908807]
-
-[node name="0" type="Marker2D" parent="EnemySG7/HomePoints" unique_id=669312897]
-position = Vector2(-60, 3)
-
-[node name="1" type="Marker2D" parent="EnemySG7/HomePoints" unique_id=746051876]
-position = Vector2(-12, 3)
+[node name="PatrolPath" type="Path2D" parent="EnemySG7" unique_id=532236774]
+curve = SubResource("Curve2D_EnemySG7")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG7" unique_id=151957043]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1570,13 +1575,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_e642t")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG8" unique_id=1417479069]
-
-[node name="0" type="Marker2D" parent="EnemySG8/HomePoints" unique_id=206376493]
-position = Vector2(-60, 3)
-
-[node name="1" type="Marker2D" parent="EnemySG8/HomePoints" unique_id=1375582888]
-position = Vector2(-12, 3)
+[node name="PatrolPath" type="Path2D" parent="EnemySG8" unique_id=219444081]
+curve = SubResource("Curve2D_EnemySG8")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG8" unique_id=1010058958]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -1600,16 +1600,8 @@ chase_speed = 90
 speed = 90
 facing = SubResource("Resource_8jaei")
 
-[node name="HomePoints" type="Node2D" parent="EnemySG9" unique_id=1013045367]
-
-[node name="0" type="Marker2D" parent="EnemySG9/HomePoints" unique_id=615276283]
-position = Vector2(28, -46)
-
-[node name="1" type="Marker2D" parent="EnemySG9/HomePoints" unique_id=1108374893]
-position = Vector2(-11, -8)
-
-[node name="2" type="Marker2D" parent="EnemySG9/HomePoints" unique_id=351339277]
-position = Vector2(-5, 42)
+[node name="PatrolPath" type="Path2D" parent="EnemySG9" unique_id=383121118]
+curve = SubResource("Curve2D_EnemySG9")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemySG9" unique_id=1695720291]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"

@@ -159,6 +159,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 [sub_resource type="Resource" id="Resource_70ffl"]
 script = ExtResource("17_q80mj")
 
+[sub_resource type="Curve2D" id="Curve2D_EnemyIro"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 63, -59, 0, 0, 0, 0, -75, 56, 0, 0, 0, 0, 57, 66, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
+
 [sub_resource type="Resource" id="Resource_gb67y"]
 script = ExtResource("14_fac0c")
 Enemies = Array[ExtResource("11_djhcr")]([ExtResource("12_ylfhl"), ExtResource("16_0o4df")])
@@ -171,6 +177,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 [sub_resource type="Resource" id="Resource_wi37m"]
 script = ExtResource("17_q80mj")
 
+[sub_resource type="Curve2D" id="Curve2D_EnemyIro_1"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -56, -27, 0, 0, 0, 0, 56, 7, 0, 0, 0, 0, 0, 0)
+}
+point_count = 4
+
 [sub_resource type="Resource" id="Resource_icl6y"]
 script = ExtResource("14_fac0c")
 Enemies = Array[ExtResource("11_djhcr")]([ExtResource("17_dejne"), ExtResource("17_fac0c")])
@@ -180,6 +192,12 @@ metadata/_custom_type_script = "uid://blx6fs34ughqo"
 
 [sub_resource type="Resource" id="Resource_o5qnj"]
 script = ExtResource("17_q80mj")
+
+[sub_resource type="Curve2D" id="Curve2D_EnemyIro_2"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 57, 25, 0, 0, 0, 0, -80, 12, 0, 0, 0, 0, -16, 46, 0, 0, 0, 0, 0, 0)
+}
+point_count = 5
 
 [sub_resource type="Resource" id="Resource_h0vpq"]
 script = ExtResource("17_q80mj")
@@ -492,18 +510,8 @@ collision_mask = 512
 battle_sequence = SubResource("Resource_dejne")
 facing = SubResource("Resource_70ffl")
 
-[node name="HomePoints" type="Node2D" parent="EnemyIronHook1" unique_id=676713038]
-
-[node name="0" type="Marker2D" parent="EnemyIronHook1/HomePoints" unique_id=1847258092]
-
-[node name="1" type="Marker2D" parent="EnemyIronHook1/HomePoints" unique_id=1762637458]
-position = Vector2(63, -59)
-
-[node name="2" type="Marker2D" parent="EnemyIronHook1/HomePoints" unique_id=1839563124]
-position = Vector2(-75, 56)
-
-[node name="3" type="Marker2D" parent="EnemyIronHook1/HomePoints" unique_id=1740136822]
-position = Vector2(57, 66)
+[node name="PatrolPath" type="Path2D" parent="EnemyIronHook1" unique_id=1032458474]
+curve = SubResource("Curve2D_EnemyIro")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemyIronHook1" unique_id=1497426772]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -528,15 +536,8 @@ collision_mask = 512
 battle_sequence = SubResource("Resource_gb67y")
 facing = SubResource("Resource_wi37m")
 
-[node name="HomePoints" type="Node2D" parent="EnemyIronHook2" unique_id=713731077]
-
-[node name="0" type="Marker2D" parent="EnemyIronHook2/HomePoints" unique_id=585337624]
-
-[node name="1" type="Marker2D" parent="EnemyIronHook2/HomePoints" unique_id=789512560]
-position = Vector2(-56, -27)
-
-[node name="2" type="Marker2D" parent="EnemyIronHook2/HomePoints" unique_id=508704877]
-position = Vector2(56, 7)
+[node name="PatrolPath" type="Path2D" parent="EnemyIronHook2" unique_id=791123032]
+curve = SubResource("Curve2D_EnemyIro_1")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemyIronHook2" unique_id=211402375]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"
@@ -561,18 +562,8 @@ collision_mask = 512
 battle_sequence = SubResource("Resource_icl6y")
 facing = SubResource("Resource_o5qnj")
 
-[node name="HomePoints" type="Node2D" parent="EnemyIronHook3" unique_id=1659952057]
-
-[node name="0" type="Marker2D" parent="EnemyIronHook3/HomePoints" unique_id=2016811136]
-
-[node name="1" type="Marker2D" parent="EnemyIronHook3/HomePoints" unique_id=1119094384]
-position = Vector2(57, 25)
-
-[node name="2" type="Marker2D" parent="EnemyIronHook3/HomePoints" unique_id=653328374]
-position = Vector2(-80, 12)
-
-[node name="3" type="Marker2D" parent="EnemyIronHook3/HomePoints" unique_id=417579933]
-position = Vector2(-16, 46)
+[node name="PatrolPath" type="Path2D" parent="EnemyIronHook3" unique_id=1025268555]
+curve = SubResource("Curve2D_EnemyIro_2")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="EnemyIronHook3" unique_id=210023305]
 editor_description = "YXNlcHJpdGVfd2l6YXJkX2NvbmZpZwpzb3VyY2V8PXJlczovL2FydC9PVi9DcmF3bGluZ1NsdWRnZU9WLmFzZXByaXRlCmxheWVyfD0Kb3BfZXhwfD10cnVlCm9fZm9sZGVyfD1yZXM6Ly9hcnQvc2hlZXRzCm9fbmFtZXw9Cm9ubHlfdmlzaWJsZXw9ZmFsc2UKb19leF9wfD0K"

@@ -16,8 +16,6 @@ var loading_scene := false
 var load_failed := false
 var loading_thread := false
 
-var chased := false
-
 var remembered_scene: Array[String] = []
 var remembered_direction: Direction
 var remembered_camera_zoom: Vector2 = Vector2(4, 4)
@@ -132,7 +130,6 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 
 	Battle.prevent_battles = true
 	Event.textbox_kill()
-	chased = false
 	data = await load_res(filepath)
 	Global.start_time = Time.get_unix_time_from_system()
 	Global.first_start_time = data.start_time
@@ -212,7 +209,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	if is_instance_valid(Global.player):
 		Global.player.look_to(Direction.DOWN)
 
-		if (chased or Battle.in_battle) and is_instance_valid(Battle.attacker):
+		if (Battle.in_battle) and is_instance_valid(Battle.attacker):
 			print_rich("[color=green]Too close to an enemy, auto escape")
 			Global.player.position = Battle.attacker.battle_sequence.EscPosition * 24
 			Global.refresh()
@@ -303,7 +300,6 @@ func travel_to(
 func travel_done(controllable := false, index: int = 0) -> void:
 	Global.controllable = false
 	get_tree().paused = true
-	chased = false
 
 	var look_dir: Direction = remembered_direction
 
@@ -477,7 +473,6 @@ func error_handle(res: ResourceLoader.ThreadLoadStatus) -> void:
 
 func chase_mode() -> void:
 	remembered_camera_zoom = Global.camera.zoom
-	chased = true
 
 
 func validate_save(savefile: String) -> bool:
