@@ -17,7 +17,6 @@ first cutscene doodles at least
 bug fixes:
 fix escape bug
 fix followers in battle
-fix bug in nov 1 camp loop
 
 far future shit:
 implement alcine goofing cutscene art

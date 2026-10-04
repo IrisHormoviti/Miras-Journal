@@ -405,10 +405,6 @@ script = ExtResource("12_7noep")
 z_index = 0
 position = Vector2(412, 221)
 facing = SubResource("Resource_nlfpl")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="TalkPrompt" parent="NPCs/AsteriaOutsideHouse" unique_id=776850733 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
@@ -438,10 +434,6 @@ offset = Vector2(0, -10)
 [node name="AsteriaPlaza" parent="NPCs" unique_id=1605547350 instance=ExtResource("16_s1pqb")]
 position = Vector2(500, 666)
 facing = SubResource("Resource_2ig8e")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="TalkPrompt" parent="NPCs/AsteriaPlaza" unique_id=523109857 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
@@ -473,10 +465,6 @@ offset = Vector2(0, -10)
 z_index = 4
 position = Vector2(715, 505)
 facing = SubResource("Resource_4ygg4")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="Sprite" type="AnimatedSprite2D" parent="NPCs/Maple" unique_id=1495585592]
 use_parent_material = true
@@ -949,10 +937,6 @@ flag = "LampInMirasRoom"
 [node name="RoomMira" parent="HomeBuilding-MyRoom" unique_id=344934070 instance=ExtResource("16_s1pqb")]
 position = Vector2(-98, 368)
 facing = SubResource("Resource_sk1io")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 dont_use_collision = true
 no_shadow = true
 
@@ -1012,10 +996,6 @@ tile_set = ExtResource("27_u6p7b")
 z_index = 0
 position = Vector2(-175, 555)
 facing = SubResource("Resource_c15y1")
-step_frames = Dictionary[String, PackedInt32Array]({
-"Loop": PackedInt32Array(0, 1),
-"Walk": PackedInt32Array(0, 2)
-})
 
 [node name="TalkPrompt" parent="LindeHouse/Linde" unique_id=2045856511 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)

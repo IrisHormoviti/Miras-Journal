@@ -5,5 +5,5 @@
 [resource]
 script = ExtResource("1")
 PlayerName = "Iris"
-MasterVolume = -19.0
+MusicVolume = -16.0
 DebugMode = true
