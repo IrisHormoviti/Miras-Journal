@@ -248,6 +248,9 @@ func picture(img: String) -> void:
 
 
 func picture_clear() -> void:
+	if get_tree().root.has_node("Picture"):
+		get_tree().root.get_node("Picture").queue_free()
+
 	if Textbox.is_open:
 		Textbox.current.picture = null
 	elif Passive.is_open:
@@ -809,4 +812,17 @@ func loop_video(video_name: String) -> void:
 
 
 func stop_video() -> void:
-	active_video.queue_free()
+	if active_video:
+		active_video.queue_free()
+
+
+func full_screen_picture(picture_name: String) -> void:
+	picture_clear()
+	var filepath := "res://art/Pictures".path_join(picture_name) + ".png"
+	var pic: Texture = await Loader.load_res(filepath)
+	var rect := TextureRect.new()
+	rect.name = "Picture"
+	rect.expand_mode = TextureRect.EXPAND_IGNORE_SIZE
+	rect.set_anchors_preset(Control.PRESET_FULL_RECT)
+	rect.texture = pic
+	get_tree().root.add_child(rect)

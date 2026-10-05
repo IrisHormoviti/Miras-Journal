@@ -1,6 +1,10 @@
 extends Node
 
 
+func _ready() -> void:
+	process_mode = Node.PROCESS_MODE_ALWAYS
+
+
 ## Returns true if a UI with the given node name is currently open
 func is_open(ui_name: String) -> bool:
 	return has_node(ui_name) or get_tree().root.has_node(ui_name)

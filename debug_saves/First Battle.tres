@@ -1,22 +1,22 @@
-[gd_resource type="Resource" script_class="SaveFile" format=3 uid="uid://cu22ker4pu6hh"]
+[gd_resource type="Resource" script_class="SaveFile" format=3]
 
-[ext_resource type="Script" uid="uid://bd11i2cbodmmv" path="res://codings/Classes/save_class.gd" id="1_80hds"]
+[ext_resource type="Script" path="res://codings/Classes/save_class.gd" id="1_80hds"]
 
 [resource]
 script = ExtResource("1_80hds")
 title = "First Battle"
-room = "res://rooms/TempleWoods.tscn"
+room = "TempleWoods"
 room_name = "Temple Woods"
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
-"Aura": 20,
+"Aura": 15,
 "CantDie": false,
 "CantDodge": false,
 "ClutchDmg": false,
 "ComplimentaryList": Dictionary[String, int]({}),
 "Controllable": false,
 "FirstName": "Alcine",
-"Health": 90,
+"Health": 60,
 "IgnoreStates": false,
 "LastName": "",
 "MaxAura": 15,
@@ -35,7 +35,7 @@ members = Array[Dictionary]([{
 "ComplimentaryList": Dictionary[String, int]({}),
 "Controllable": false,
 "FirstName": "Asteria",
-"Health": 99,
+"Health": 90,
 "IgnoreStates": false,
 "LastName": "Versea",
 "MaxAura": 47,
@@ -81,7 +81,7 @@ members = Array[Dictionary]([{
 "OV": "res://art/OV/Erinn/ErinnOV.tres",
 "SkillLevel": 1,
 "SkillPoints": 0,
-"WeaponName": "",
+"WeaponName": "DefaultWeapon",
 "codename": &"Erinn"
 }, {
 "AbilitiesList": Array[String](["Guard", "FlameSpark"]),
@@ -103,10 +103,10 @@ members = Array[Dictionary]([{
 "WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-player_position = Vector2(668.9987, 501)
+player_position = Vector2(688.9242, 501)
 start_time = 1787949504.270411
-saved_time = 1787949697.596124
-play_time = 430.0
+saved_time = 1791228612.004245
+play_time = 436.0
 diary = Dictionary[int, PackedStringArray]({
 2: PackedStringArray("boo"),
 5: PackedStringArray("boo", "bee")
@@ -119,7 +119,9 @@ flags = Dictionary[StringName, int]({
 &"HideDate": 1,
 &"PickedUpAxe": 1,
 &"Started": 1,
+&"TempleWoods/Breakable/BreakableVines0": 1,
 &"day": 0,
 &"time": 5
 })
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key"])
+version = 8

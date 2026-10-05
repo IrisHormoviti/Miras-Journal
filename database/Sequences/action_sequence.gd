@@ -1124,7 +1124,7 @@ func FirstBattle1() -> void:
 	Bt.no_misses = true
 	Bt.no_crits = true
 	Global.player.position = Vector2(1470, 400)
-	await Event.wait(2, false)
+	await Event.wait(1, false)
 	Global.camera.enabled = false
 	Bt.Troop[0].node.position.x = 50
 	Bt.focus_cam(Bt.Troop[0], 0.1, 0)
@@ -1238,6 +1238,7 @@ func FirstBattle5() -> void:
 	Party.Leader.node.get_node("Glow").hide()
 	Loader.battle_bars(0)
 	Bt.victory_anim(Party.Leader)
+	Bt.victory_music()
 	await Textbox.open("story_0", "what_this")
 	Party.heal_party()
 	Bt.ObtainedItems.clear()

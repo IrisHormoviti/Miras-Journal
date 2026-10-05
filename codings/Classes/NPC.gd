@@ -387,9 +387,9 @@ func collision(tog: bool = $CollisionShape2D.disabled) -> void:
 	$CollisionShape2D.set_deferred("disabled", not tog)
 
 
-func chain_moves(moves: Array) -> void:
+func chain_moves(moves: Array[Vector2]) -> void:
 	for i: Vector2 in moves:
-		await move_by(i * 24)
+		await move_by_tiles(i)
 
 
 func chain_positions(moves: Array[Vector2]) -> void:

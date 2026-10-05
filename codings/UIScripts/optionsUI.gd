@@ -162,6 +162,8 @@ func _input(event: InputEvent) -> void:
 
 
 func _on_back_pressed() -> void:
+	if stage == "closing" or stage == "inactive": return
+
 	Audio.cancel_sound()
 	match stage:
 		"main":
@@ -187,6 +189,7 @@ func close(force := false) -> void:
 		return
 
 	if stage == "closing": return
+
 	if is_instance_valid(Global.player):
 		if UI.is_open("MainMenu"):
 			UI.get_node("MainMenu")._on_back_button_down()
@@ -199,7 +202,6 @@ func close(force := false) -> void:
 	t.set_ease(Tween.EASE_IN)
 	t.set_parallel()
 	for button in $MainButtons.get_children():
-		print(stage)
 		if stage == "main":
 			t.tween_property(button, "position:x", 700, 0.3).as_relative()
 		else:

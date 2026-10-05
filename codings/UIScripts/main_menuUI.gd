@@ -117,7 +117,6 @@ var input_frame: int
 
 
 func _input(event: InputEvent) -> void:
-	if Controller.last_input == Global.process_frame: return
 	$Confirm.icon = Controller.get_scheme().ConfirmIcon
 	$Back.icon = Controller.get_scheme().CancelIcon
 	$Party.icon = Controller.get_scheme().Select

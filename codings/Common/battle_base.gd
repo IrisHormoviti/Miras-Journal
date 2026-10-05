@@ -1630,13 +1630,7 @@ func victory(ignore_seq := false) -> void:
 
 	$Canvas.layer = 1
 	battle_result = Result.VICTORY
-	
-	if sequence.Music.victory_track != null:
-		Audio.crossfade_music(sequence.Music.victory_track)
-	elif sequence.Music.victory > 0:
-		Audio.change_music_from_to(sequence.Music.track, sequence.Music.victory)
-	else:
-		Audio.fade_out_music(3)
+	victory_music()
 
 	for i in Party.current:
 		victory_anim(i)
@@ -1694,6 +1688,16 @@ func victory(ignore_seq := false) -> void:
 			Global.camera.enabled = true
 			cam.enabled = false
 			Global.camera.zoom = cam.zoom
+
+
+func victory_music() -> void:
+	if not Audio.bgm_player.playing: return
+	if sequence.Music.victory_track != null:
+		Audio.crossfade_music(sequence.Music.victory_track)
+	elif sequence.Music.victory > 0:
+		Audio.change_music_from_to(sequence.Music.track, sequence.Music.victory)
+	else:
+		Audio.fade_out_music(3)
 
 
 func victory_show_items() -> void:

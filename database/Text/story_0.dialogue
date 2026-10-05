@@ -12,46 +12,67 @@ $>> UI.location_name("Temple Woods")
 $> wait(4.5)
 $> camera_move(Vector2(1458, 400), 0)
 $> camera_move(Vector2(1429, 450), 2, Ease.OUT)
+if Input.is_action_pressed("Dash"):
+	$> UI.toast("Skipping cutscene...")
+	=> first_cutscene_skip
 $> Transition.fade_in()
 $> wait(1)
 $> Transition.fade_out(0)
 $> play_video("FirstCutscene-1")
 $> loop_video("FirstCutscene-2a")
 $> wait(1)
-Today I woke up in this unfamiliar forest.
-I can't remember what day it is...[br]How I got here...
-It's such a weird feeling... this fog in my mind,[wait=1] like I just woke up from a dream.
+I what even is today's date?
+I'm in some kind of forest...
+I can't remember what I was doing before, what lead me here...
+My minds is all hazy, like I just woke up from a long dream.
+And when I look up...
 [hide]
 $> play_video("FirstCutscene-2b")
-The sky looks so strange.
-It's unfamiliar.[wait=1][br]I know place must be pretty far from my home.
-My home...
+Is this even real? 
+Some kind of illusion?
+The sky has all these weird lines going across.
 [hide]
-$> play_video("FirstCutscene-3")
+$> play_video("FirstCutscene-3a")
+$> wait(1)
+Maybe following the direction of this river will help me find my way.
+...
+I can't really feel movment in any one direction.
+Is this a lake?
+[hide]
+$> play_video("FirstCutscene-3b")
 $> no_nametag()
 $> next_box("Mira")
-*Sigh*
+Ew, it's all goopy!
 $> next_box("Mira")
-This is definitely not drinkable...
+There's no way this is drinkable.
 [hide]
 $> play_video("FirstCutscene-4")
 $> wait(1)
+What should I do now?
+My head is still all fuzzy.
 Is there anything I can remember?
-Who am I?[br]I should remember that much at least...
 [hide]
 $> play_video("FirstCutscene-5a")
-Mira Levenor.
-A 19 year old Cyrenian from a little village called Neortoria.
-Should I write that down too? [br]Before I forget?
+$> wait(1)
+I can remember my name.
 [hide]
 $> play_video("FirstCutscene-5b")
-It's not like anyone will see this.
-It's not like anyone will come and save me.
+$> wait(1)
+Maybe I should write it down before I forget that too...
+$> wait(1)
 [hide]
+$> full_screen_picture("MiraSignature")
+$> wait(3)
+$> picture_clear()
 $> play_video("FirstCutscene-5c")
-Mira: I'll just die alone from thirst in here...
+$> next_box("Mira")
+I really am hopeless.
+$> next_box("Mira")
+I'll just die alone from thirst in here...
+$> wait(2)
 [hide]
 $> play_video("FirstCutscene-6")
+~ first_cutscene_skip
 $> Event.add_flag("Event/FirstBattle")
 $> Event.remove_flag("UI/Disable")
 $> Hud.disabled = false
@@ -60,16 +81,16 @@ $> stop_video()
 => END
 
 ~ sstay_back
-Mira.Neutral: S-[wait=0.2]stay back...!
+Mira.Worried: S-[wait=0.2]stay back...!
 => END
 
 ~ gahh
-Mira.Neutral: GAHH![wait=1] Get of me!
+Mira.Surprised: GAHH![wait=1][br]Get off me!
 => END
 
 ~ my_aura
 Mira.Neutral: These wings... This is my Aura.
-Mira.Neutral: That's it! I can use [outline_size=12][outline_color=#6c3e18][color=#ff6b50]Heat magic[/color][/outline_color][/outline_size] against it![next=5]
+Mira.Smile:  That's it! I can use [outline_size=12][outline_color=#6c3e18][color=#ff6b50]Heat magic[/color][/outline_color][/outline_size] against it![next=5]
 => END
 
 ~ what_this
@@ -78,15 +99,20 @@ $> player.position = Party.Leader.node.global_position
 $> player.look_to(Direction.RIGHT)
 $> Party.Leader.node.hide()
 $> player.show()
+$>> player.bubble("Question")
 Hm, what's that?
 [hide]
-$> player.move_by_tiles(Vector2(3, 0))
+$> take_control()
+$> player.move_by_tiles(Vector2.RIGHT*3)
 $> Item.add_item("WhiteSlime", "Mat")
-$> Event.wait(1)
-These slime remnants seems to contain some of that monster's essence.
+These slime remnants seem to contain some of that monster's essence.
+Who knows, that might prove useful.
+[hide]
+$> take_control()
+$> player.move_by_tiles(Vector2.LEFT*2)
 $> player.look_to(Direction.RIGHT)
+I should probably get moving... it's not safe here.
 $> Party.Leader.node.global_position = Global.player.position
-I feel like it might prove useful.
 => END
 
 ~ getting_dark

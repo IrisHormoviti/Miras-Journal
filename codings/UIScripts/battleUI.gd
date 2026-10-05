@@ -853,7 +853,7 @@ func turn_order() -> void:
 	t = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_CUBIC).set_parallel()
 	t.tween_property(Bt.get_node("Canvas/TurnOrder/Options"), "position:y", 0, 0.2)
 	t.tween_property(Bt.get_node("Canvas/TurnOrderPop"), "modulate", Color.WHITE, 0.3)
-	t.tween_property(Bt.get_node("Canvas/TurnOrderPop"), "position", Vector2(52, 40), 0.3)
+	t.tween_property(Bt.get_node("Canvas/TurnOrderPop"), "positionx", 52, 0.3)
 
 	while (Input.is_action_pressed("PartyMenu") or Bt.get_node("Canvas/TurnOrder").button_pressed):
 		Bt.turn_ui_check()
@@ -862,7 +862,7 @@ func turn_order() -> void:
 	t = create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC).set_parallel()
 	t.tween_property(Bt.get_node("Canvas/TurnOrder/Options"), "position:y", -60, 0.2)
 	t.tween_property(Bt.get_node("Canvas/TurnOrderPop"), "modulate", Color.TRANSPARENT, 0.3)
-	t.tween_property(Bt.get_node("Canvas/TurnOrderPop"), "position", Vector2(-468, 40), 0.3)
+	t.tween_property(Bt.get_node("Canvas/TurnOrderPop"), "position:x", -468, 0.3)
 
 
 func _on_escape() -> void:

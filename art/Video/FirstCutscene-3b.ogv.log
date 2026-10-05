@@ -1,0 +1,19 @@
+/usr/bin/ffmpeg -hide_banner -y -y -r 6 -start_number 0 -start_number_range 1 -i /home/iris/Projects/Miras-Journal/art/Video/frame%04d.png -vf scale=w=1280:h=800:flags=bicubic -b 5000k /home/iris/Projects/Miras-Journal/art/Video/FirstCutscene-3b.ogv
+=====================================================
+Input #0, image2, from '/home/iris/Projects/Miras-Journal/art/Video/frame%04d.png':
+  Duration: 00:00:00.84, start: 0.000000, bitrate: N/A
+  Stream #0:0: Video: png, rgba(pc, gbr/unknown/unknown), 1680x1050 [SAR 3937:3937 DAR 8:5], 25 fps, 25 tbr, 25 tbn
+Please use -b:a or -b:v, -b is ambiguous
+Stream mapping:
+  Stream #0:0 -> #0:0 (png (native) -> theora (libtheora))
+Press [q] to stop, [?] for help
+Output #0, ogv, to '/home/iris/Projects/Miras-Journal/art/Video/FirstCutscene-3b.ogv':
+  Metadata:
+    encoder         : Lavf63.1.102
+  Stream #0:0: Video: theora, yuv444p(tv, progressive), 1280x800 [SAR 1:1 DAR 8:5], q=2-31, 5000 kb/s, 6 fps, 6 tbn
+    Metadata:
+      encoder         : Lavc63.1.102 libtheora
+    Side data:
+      ICC Profile: (9080 bytes)
+[out#0/ogv @ 0x563e62fadc80] video:353KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:3KiB muxing overhead: 1.401411%
+frame=   21 fps=0.0 q=-0.0 Lsize=     358KiB time=00:00:03.50 bitrate= 838.8kbits/s speed=7.25x elapsed=0:00:00.48    

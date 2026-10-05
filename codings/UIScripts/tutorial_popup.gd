@@ -187,6 +187,11 @@ func await_next() -> void:
 	Audio.confirm_sound()
 
 
+func _input(event: InputEvent) -> void:
+	if Input.is_action_just_pressed("DialogNext"):
+		$Border2/Control/Next.pressed.emit()
+
+
 func close() -> void:
 	var t := create_tween()
 	t.set_parallel()
