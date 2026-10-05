@@ -12,10 +12,9 @@ maplethorpe sprites for all directions
 maplethorpe social links in general
 daze introduction cutscene
 enemies in bunker
-first cutscene doodles at least
 
 bug fixes:
--
+Options not saving
 
 far future shit:
 implement alcine goofing cutscene art
