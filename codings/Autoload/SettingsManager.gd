@@ -13,14 +13,14 @@ func _ready() -> void:
 
 func init_settings() -> void:
 	if not ResourceLoader.exists(settings_path):
-		print_rich("[color=orange]No settings found, initializing...")
+		print_rich("[color=dark_magenta]No settings found, initializing...")
 		reset_settings()
 		await Event.wait()
 
 	settings = ResourceLoader.load(settings_path)
 
 	if not is_instance_valid(settings):
-		print_rich("[color=orange]settings file is invalid, settings will be restored to default")
+		print_rich("[color=dark_magenta]settings file is invalid, settings will be restored to default")
 		reset_settings()
 		await Event.wait()
 		settings = load(settings_path)
@@ -67,7 +67,7 @@ func apply_settings() -> void:
 
 func save_settings() -> void:
 	ResourceSaver.save(settings, settings_path)
-	print_rich("[color=orange]settings saved")
+	print_rich("[color=dark_magenta]settings saved")
 
 
 func reset_settings() -> void:
@@ -86,11 +86,11 @@ func customize_default_settings() -> void:
 		if OS.get_environment("STEAMDECK") == "1" or steam.isSteamRunningOnSteamDeck():
 			settings.control_scheme_enum = 7
 			settings.control_scheme_override = load("res://UI/Input/SteamDeck.tres")
-			print_rich("[color=orange]Running on Steam Deck, setting control scheme")
+			print_rich("[color=dark_magenta]Running on Steam Deck, setting control scheme")
 
 		if steam.isSteamInBigPictureMode():
 			fullscreen(true)
-			print_rich("[color=orange]Running on Big Picture, enabling fullscreen")
+			print_rich("[color=dark_magenta]Running on Big Picture, enabling fullscreen")
 
 	if OS.to_string() == "macOS":
 		settings.upscaled_res = false

@@ -1121,7 +1121,6 @@ func FlyAway(chara: Actor) -> void:
 
 #region Battle events
 func FirstBattle1() -> void:
-	while not is_instance_valid(Global.player): await Event.wait()
 	Bt.no_misses = true
 	Bt.no_crits = true
 	Global.player.position = Vector2(1470, 400)
@@ -1132,15 +1131,11 @@ func FirstBattle1() -> void:
 	Bt.zoom(6)
 	Bt.Action = true
 	Battle.in_battle = true
-	Loader.get_node("Can").layer = 3
-	await Textbox.open("story_0", "first_cutscene")
 	Loader.battle_bars(4)
 	Global.player.hide()
 	await Event.wait(0.5, false)
 	Transition.fade_out()
 	await Event.wait(0.3, false)
-	#Hud.battle_state(true)
-	#$"../EnemyUI"._on_battle_ui_target_foc(Bt.Troop[0])
 	Loader.battle_bars(3)
 	Bt.get_actor("Mira").node.animation = "Entrance"
 	Bt.get_actor("Mira").node.frame = 2
@@ -1154,8 +1149,6 @@ func FirstBattle1() -> void:
 	Bt.ui.disable_ability = true
 	Bt.ui.disable_command = true
 	Bt.ui.disable_item = true
-	#$"../EnemyUI".all_enemy_ui()
-	#$"../EnemyUI/AllEnemies".show()
 	Event.flag_progress("FirstBattle", 3)
 	Bt.get_actor("Mira").DontIdle = true
 	Bt.end_turn()

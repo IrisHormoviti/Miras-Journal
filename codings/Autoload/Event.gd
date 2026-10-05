@@ -40,6 +40,18 @@ var to_day: int
 
 @onready var sequences: Node = $Sequences
 
+## Remap for tween enums as a workaround for dialoguemanager
+enum Ease {
+	IN_OUT = Tween.EASE_IN_OUT,
+	IN = Tween.EASE_IN,
+	OUT = Tween.EASE_OUT,
+	OUT_IN = Tween.EASE_OUT_IN
+}
+enum Trans {
+	LINEAR = Tween.TRANS_LINEAR,
+	QUAD = Tween.TRANS_QUAD,
+}
+
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_PAUSABLE
@@ -223,9 +235,9 @@ func fade_txt_background(alpha := 0.8) -> void:
 
 func next_box(profile: String) -> void:
 	if Textbox.is_open:
-		Textbox.current.set_next_box(profile)
+		Textbox.set_next_box(profile)
 	elif Passive.is_open:
-		Passive.current.set_next_box(profile)
+		Passive.set_next_box(profile)
 
 
 func picture(img: String) -> void:
@@ -762,3 +774,39 @@ func add_to_diary(what: String, in_day: int = day) -> void:
 		diary.get(in_day).append(what)
 	else:
 		diary.set(in_day, [what])
+
+var active_video: VideoStreamPlayer
+
+
+func create_video_player(video_name: String) -> VideoStreamPlayer:
+	var filepath := "res://art/Video".path_join(video_name) + ".ogv"
+	var video: VideoStream = await Loader.load_res(filepath)
+
+	var player := VideoStreamPlayer.new()
+	player.stream = video
+	get_tree().root.add_child(player)
+
+	player.play()
+
+	if is_instance_valid(active_video):
+		active_video.z_index = 10
+		await wait()
+		active_video.queue_free()
+
+	active_video = player
+
+	return player
+
+
+func play_video(video_name: String) -> void:
+	var player := await create_video_player(video_name)
+	await player.finished
+
+
+func loop_video(video_name: String) -> void:
+	var player := await create_video_player(video_name)
+	player.loop = true
+
+
+func stop_video() -> void:
+	active_video.queue_free()

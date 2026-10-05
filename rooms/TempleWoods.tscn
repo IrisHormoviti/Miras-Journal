@@ -280,7 +280,7 @@ fill = 1
 fill_from = Vector2(0.494787, 0.514692)
 fill_to = Vector2(0.835294, 0.135294)
 
-[sub_resource type="Resource" id="Resource_va2q4"]
+[sub_resource type="Resource" id="Resource_67djc"]
 script = ExtResource("28_e7y1u")
 
 [sub_resource type="Gradient" id="Gradient_s6doo"]
@@ -295,7 +295,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 fill_to = Vector2(0.84188, 0.863248)
 
-[sub_resource type="Resource" id="Resource_u8txd"]
+[sub_resource type="Resource" id="Resource_j7l3s"]
 script = ExtResource("28_e7y1u")
 way = 4
 metadata/_custom_type_script = "uid://bhw57f1k8vvrj"
@@ -333,7 +333,7 @@ Enemies = Array[ExtResource("33_5uh3c")]([ExtResource("34_jqey6"), ExtResource("
 ScenePosition = Vector2(1420, 223)
 EscPosition = Vector2i(54, 18)
 
-[sub_resource type="Resource" id="Resource_f3j3j"]
+[sub_resource type="Resource" id="Resource_8gb5v"]
 script = ExtResource("28_e7y1u")
 
 [sub_resource type="Curve2D" id="Curve2D_EnemyCra"]
@@ -348,14 +348,14 @@ Enemies = Array[ExtResource("33_5uh3c")]([ExtResource("41_0ocri"), ExtResource("
 ScenePosition = Vector2(1195, -356)
 EscPosition = Vector2i(59, -16)
 
-[sub_resource type="Resource" id="Resource_lbvu1"]
+[sub_resource type="Resource" id="Resource_5x7wo"]
 script = ExtResource("28_e7y1u")
 
 [sub_resource type="Curve2D" id="Curve2D_EnemyCra_1"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.95202, 127.727, 0, 0, 0, 0, -48.0736, 15.7394, 0, 0, 0, 0, 123.93, 32.7002, 0, 0, 0, 0, 37.9374, 63.7198, 0, 0, 0, 0, 65.9084, -63.2866, 0, 0, 0, 0, 100.893, -132.295)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4.95202, 127.727, 0, 0, 0, 0, -48.0736, 15.7394, 0, 0, 0, 0, 123.93, 32.7002, 0, 0, 0, 0, 37.9374, 63.7198, 0, 0, 0, 0, 65.9084, -63.2866, 0, 0, 0, 0, 100.893, -132.295, 0, 0, 0, 0, 0, 0)
 }
-point_count = 7
+point_count = 8
 
 [sub_resource type="Resource" id="Resource_5uh3c"]
 script = ExtResource("38_5ac7r")
@@ -363,7 +363,7 @@ Enemies = Array[ExtResource("33_5uh3c")]([ExtResource("34_jqey6"), ExtResource("
 ScenePosition = Vector2(1609, 228)
 EscPosition = Vector2i(63, 9)
 
-[sub_resource type="Resource" id="Resource_su8cc"]
+[sub_resource type="Resource" id="Resource_5ac7r"]
 script = ExtResource("28_e7y1u")
 
 [sub_resource type="Curve2D" id="Curve2D_EnemyCra_2"]
@@ -378,14 +378,14 @@ Enemies = Array[ExtResource("33_5uh3c")]([ExtResource("41_67djc"), ExtResource("
 ScenePosition = Vector2(1200, -338)
 EscPosition = Vector2i(58, -17)
 
-[sub_resource type="Resource" id="Resource_67djc"]
+[sub_resource type="Resource" id="Resource_m3fxd"]
 script = ExtResource("28_e7y1u")
 
 [sub_resource type="Curve2D" id="Curve2D_EnemyCra_3"]
 _data = {
-"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65.0242, 105.985, 0, 0, 0, 0, 62.9979, -9.01439, 0, 0, 0, 0, -45.0123, -53.9897)
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 65.0242, 105.985, 0, 0, 0, 0, 62.9979, -9.01439, 0, 0, 0, 0, -45.0123, -53.9897, 0, 0, 0, 0, 0, 0)
 }
-point_count = 4
+point_count = 5
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_ovn4b"]
 vertices = PackedVector2Array(1526, 350, 1522, 350, 1522, 346, 1526, 346, 1598, 274, 1598, 278, 1526, 278, 1522, 274, 1522, 302, 1526, 302, 1237.3438, -525.78906, 1178.4688, -540.09375, 1237.2969, -574.1172, 1259.25, -572.8828, 1256.5078, -529.84375, 1156.1016, -384.22656, 1137.4531, -393.82813, 1158.5703, -400.21094, 1177.9219, -359.6172, 1384.9219, -599.14844, 1438.7266, -590.0469, 1447.2188, -580.53906, 1432.2422, -580, 1397.3828, -580, 1138.1328, -330.2578, 1153.9609, -310.47656, 1326.6406, -588.3828, 1382.9688, -578.1875, 1356.0938, -577.21094, 1350.6328, -574.14844, 1340.3516, -572.8672, 1310.6875, -555.5703, 1340.1563, -568.25, 1332.7422, -564.0703, 1327.5234, -423.1797, 1285.3906, -512.53906, 1333.8828, -511.09375, 1333.8906, -428.47656, 1333.6563, -422.89063, 1215.6406, -215.88281, 1192.8281, -176.53125, 1180.2578, -189.10156, 1181.0078, -199.71094, 1250.6797, -260.96875, 1176.1563, -230.03125, 1222.3594, -364.0703, 1272.0391, -296.5703, 1310, -298, 1310, -288.39063, 1324.7109, -398, 1332.6328, -398, 1331.8984, -380.32813, 1324.3828, -369.6797, 1332.2813, -369.6797, 1324.3828, -344.35938, 1333.2422, -342.5703, 1333.8672, -324.72656, 1325.1484, -298, 1252.3906, -468.8203, 1229.8828, -483.1328, 1242.0234, -428.60938, 1232.25, -416.8828, 1168.1719, -254.45313, 1144.25, -276.4375, 1167.2188, -236.27344, 1502, 158, 1502, 202, 1498, 182.92188, 1498, 158, 1497.5313, 154, 1510.75, 158, 1742, 256.72656, 1738, 268.6328, 1738, 230, 1742, 202, 1310, 278, 1310, 285.79688, 1299, 268.09375, 1306, 250, 1219.4922, 246.35938, 1196.8281, 193, 1244.8516, 190.59375, 1262, 218, 1262, 250, 1694, 274, 1736.2031, 274, 1688.7891, 415.04688, 1666, 346, 1666, 278, 1718, 202, 1694, 230, 1546, 202, 1546, 163.99219, 1574, 167.64063, 1574, 202, 1454, 158, 1478, 154, 1384.2188, 158.64063, 1433.2031, 156.63281, 1454, 184.67969, 1478, 230, 1478, 278, 1454, 278, 1306, 218, 1330, 178, 1550, 394, 1550, 415.52344, 1507.5703, 413.0703, 1502, 394, 1405.5, 386.3203, 1502, 370, 1430, 370, 1618, 415.54688, 1618, 398, 1642, 230, 1618, 202, 1618, 178, 1653.4922, 178, 1718, 186.39063, 1594, 398, 1594, 394, 1618, 394, 1618, 346, 1642, 278, 1454, 302, 1430, 302, 1354, 278, 1354, 350, 1330, 350, 1330, 346, 1354, 346, 1281.9219, 170.09375, 1286, 170.6875, 1286, 178, 1477.5078, 147.9375, 1478, 148.09375, 1330, 169.35156, 1243.0078, 292.40625, 1230.6172, 284.35938, 1354, 373.2578)
@@ -882,7 +882,7 @@ motion_mode = 1
 script = ExtResource("19_dpu00")
 ID = "Alcine"
 speed = 100
-facing = SubResource("Resource_va2q4")
+facing = SubResource("Resource_67djc")
 default_state = 6
 step_frames = Dictionary[String, PackedInt32Array]({
 "Loop": PackedInt32Array(0, 1),
@@ -918,7 +918,7 @@ offset = Vector2(0, -5)
 
 [node name="EvAlcineBelow" parent="Event" unique_id=344934070 instance=ExtResource("23_va2q4")]
 position = Vector2(1258, -652)
-facing = SubResource("Resource_u8txd")
+facing = SubResource("Resource_j7l3s")
 no_shadow = true
 
 [node name="HideOnFlag" parent="Event/EvAlcineBelow" unique_id=206159318 instance=ExtResource("23_dpu00")]
@@ -1052,8 +1052,9 @@ tutorial_name = "dash"
 position = Vector2(729, 512)
 trigger_size = Vector2i(50, 90)
 return_control = false
-PlayEvent = true
-event_name = "first_battle"
+ShowTextbox = true
+text_file = "story_0"
+text_cue = "first_cutscene"
 
 [node name="EvFlameActive" parent="Event" unique_id=1901921073 instance=ExtResource("36_2q7ov")]
 position = Vector2(1535, -35)
@@ -1146,8 +1147,7 @@ proper_pos = Vector2(1410, -444)
 [node name="EnemyCrawlingSludge1" parent="." unique_id=80482356 instance=ExtResource("10_rx6j2")]
 position = Vector2(1365, 223)
 battle_sequence = SubResource("Resource_0xy4g")
-max_chase_distance = null
-facing = SubResource("Resource_f3j3j")
+facing = SubResource("Resource_8gb5v")
 
 [node name="PatrolPath" type="Path2D" parent="EnemyCrawlingSludge1" unique_id=1344804064]
 curve = SubResource("Curve2D_EnemyCra")
@@ -1171,8 +1171,7 @@ gizmo_extents = 100.0
 [node name="EnemyCrawlingSludge2" parent="." unique_id=1918852949 instance=ExtResource("10_rx6j2")]
 position = Vector2(1189, -338)
 battle_sequence = SubResource("Resource_0ocri")
-max_chase_distance = null
-facing = SubResource("Resource_lbvu1")
+facing = SubResource("Resource_5x7wo")
 
 [node name="PatrolPath" type="Path2D" parent="EnemyCrawlingSludge2" unique_id=904594201]
 curve = SubResource("Curve2D_EnemyCra_1")
@@ -1196,8 +1195,7 @@ gizmo_extents = 100.0
 [node name="EnemyCrawlingSludge3" parent="." unique_id=1347610146 instance=ExtResource("10_rx6j2")]
 position = Vector2(1638, 369)
 battle_sequence = SubResource("Resource_5uh3c")
-max_chase_distance = null
-facing = SubResource("Resource_su8cc")
+facing = SubResource("Resource_5ac7r")
 
 [node name="PatrolPath" type="Path2D" parent="EnemyCrawlingSludge3" unique_id=931838687]
 curve = SubResource("Curve2D_EnemyCra_2")
@@ -1222,8 +1220,7 @@ gizmo_extents = 100.0
 [node name="EnemyCrawlingSludge4" parent="." unique_id=28278289 instance=ExtResource("10_rx6j2")]
 position = Vector2(1258, -491)
 battle_sequence = SubResource("Resource_jqey6")
-max_chase_distance = null
-facing = SubResource("Resource_67djc")
+facing = SubResource("Resource_m3fxd")
 
 [node name="PatrolPath" type="Path2D" parent="EnemyCrawlingSludge4" unique_id=1088388956]
 curve = SubResource("Curve2D_EnemyCra_3")

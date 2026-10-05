@@ -7,7 +7,7 @@ var redraw_portrait_next_time := true
 static var current: Passive = null:
 	get():
 		if current == null:
-			for i: Node in Engine.get_main_loop().root.get_children():
+			for i: Node in UI.get_children():
 				if i is Passive:
 					current = i
 					return i
@@ -266,7 +266,7 @@ func portrait_clear() -> void:
 	has_portrait = false
 
 
-func set_next_box(profile: String) -> void:
+static func set_next_box(profile: String) -> void:
 	current.next_box = profile
 
 

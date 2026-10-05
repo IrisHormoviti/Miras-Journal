@@ -1,34 +1,62 @@
 ~ first_cutscene
-Placeholder description: A cutscenre that isn't made yet should play here.
-Placeholder description: Basically, a monster comes out of the lake and attacks Mira.
-=> END
-Placeholder description: Whenever a box like this appears, pretend you're seeing whatever is described on screen.
-Placeholder description: You see a paw walSk through the grass.
-Placeholder description: The camera pans upwards to reveal a girl with an orange tunic and gray fur walking.
-Placeholder description: She stops and looks forward.
-Placeholder description: The camera cuts to a view of a forest next to a lake, and a tree in the middle.
-Placeholder description: The girl sits under the tree, leaving her bag next to her.
-Placeholder description: She opens the bag and takes a piece of paper. Then unfolds it.
-Placeholder description: Weird scribbles are on it. She turns it around and there's an empty page.
-Placeholder description: She opens a pen case in her bag and takes one pen.
-I don't even know what the date is.
-Today I woke up in the middle of this strange forest.
-I can't recall how I got here or what I'm doing here, my memory is a fog.
-Well, maybe that's not completly accurate, I can remember who I am at least.
-Mira Levenor, 19 year old Cyrenian who lives in Neortoria.
-I have to write that down in case I forget that too.
-Placeholder description: The camera pans up to the sky showing it's strange blurry color mix and lines across it.
-This place must be pretty far from my home, the sky looks very strange.
-Placeholder description: The camera cuts to the lake as Mira tries to take some water.
-Mira: (Sigh)
-Placeholder description: The water drops slowly from her arm like slime.
-Mira: This is definitely not drinkable...
-Placeholder description: The camera cuts to mira below the tree hugging her legs
-Mira: What can I even do?
-Placeholder description: As she sits there a tentacle looking thing reaches towards her.
-Mira: GAH!
-Placeholder description: Mira grabs the axe from her bag and slices the tentacle, which bursts with slime.
-Placeholder description: A monster emerges from the lake, as Mira takes a fighting stance.
+$>> Global.player.move_by_tiles(Vector2.RIGHT * 2)
+$> Transition.fade_in()
+$> travel_to("TempleWoods", Vector2(1220, 461), 1, null, false)
+$> player.hide()
+$> camera_unlock()
+$> camera_move(Vector2(1446, -605), 0)
+$>> Transition.fade_out()
+$>> camera_move(Vector2(1486, -300), 5, Ease.IN_OUT, Trans.LINEAR)
+$>> wait(0.5)
+$>> UI.location_name("Temple Woods")
+$> wait(4.5)
+$> camera_move(Vector2(1458, 400), 0)
+$> camera_move(Vector2(1429, 450), 2, Ease.OUT)
+$> Transition.fade_in()
+$> wait(1)
+$> Transition.fade_out(0)
+$> play_video("FirstCutscene-1")
+$> loop_video("FirstCutscene-2a")
+$> wait(1)
+Today I woke up in this unfamiliar forest.
+I can't remember what day it is...[br]How I got here...
+It's such a weird feeling... this fog in my mind,[wait=1] like I just woke up from a dream.
+[hide]
+$> play_video("FirstCutscene-2b")
+The sky looks so strange.
+It's unfamiliar.[wait=1][br]I know place must be pretty far from my home.
+My home...
+[hide]
+$> play_video("FirstCutscene-3")
+$> no_nametag()
+$> next_box("Mira")
+*Sigh*
+$> next_box("Mira")
+This is definitely not drinkable...
+[hide]
+$> play_video("FirstCutscene-4")
+$> wait(1)
+Is there anything I can remember?
+Who am I?[br]I should remember that much at least...
+[hide]
+$> play_video("FirstCutscene-5a")
+Mira Levenor.
+A 19 year old Cyrenian from a little village called Neortoria.
+Should I write that down too? [br]Before I forget?
+[hide]
+$> play_video("FirstCutscene-5b")
+It's not like anyone will see this.
+It's not like anyone will come and save me.
+[hide]
+$> play_video("FirstCutscene-5c")
+Mira: I'll just die alone from thirst in here...
+[hide]
+$> play_video("FirstCutscene-6")
+$> Event.add_flag("Event/FirstBattle")
+$> Event.remove_flag("UI/Disable")
+$> Hud.disabled = false
+$> Battle.start("FirstBattle")
+$> stop_video()
 => END
 
 ~ sstay_back

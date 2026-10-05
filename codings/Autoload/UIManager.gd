@@ -35,7 +35,7 @@ func title_screen() -> void:
 	if not is_open("Initializer"):
 		var init: Node = (await Loader.load_res("uid://ds1hwdmholrjy")).instantiate()
 		add_child(init)
-	else: get_node("Initializer").focus()
+	else: get_open("Initializer").focus()
 
 
 func member_details(chara: Actor, menu := 0) -> void:

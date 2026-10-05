@@ -5,7 +5,7 @@ static var is_open := false
 static var current: Textbox = null:
 	get():
 		if current == null:
-			for i: Node in Engine.get_main_loop().root.get_children():
+			for i: Node in UI.get_children():
 				if i is Textbox:
 					current = i
 					return i
@@ -32,7 +32,6 @@ static func open(file: String, cue: String = "0", fade_bg := false, extra_game_s
 	if fade_bg:
 		fade_txt_background()
 
-	Loader.lower_layer()
 	await Event.textbox_close
 	is_open = false
 
@@ -445,7 +444,7 @@ func _input(event: InputEvent) -> void:
 			Engine.time_scale = 4
 
 			if (
-				hold_frames > hold_time and
+				hold_frames > hold_time and dialogue_line and
 				dialogue_line.responses.is_empty()
 			):
 				var action := InputEventAction.new()
@@ -556,12 +555,12 @@ func animate_responces() -> void:
 		await Event.wait(0.1, false)
 
 
-func set_next_box(profile: String) -> void:
+static func set_next_box(profile: String) -> void:
 	current.next_box = profile
 
 
 func set_picture(img: String) -> void:
-	current.picture = await Loader.load_res("res://art/Pictures/" + img + ".png")
+	picture = await Loader.load_res("res://art/Pictures/" + img + ".png")
 
 
 func portrait(img: String, redraw := true) -> void:

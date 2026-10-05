@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://dp3b7p474e3t7"]
 
-[ext_resource type="Script" uid="uid://dcmcg8uht6d7h" path="res://codings/Components/stairs_up_down.gd" id="1_pa66c"]
+[ext_resource type="Script" uid="uid://dcmcg8uht6d7h" path="res://codings/Components/stairs.gd" id="1_pa66c"]
 [ext_resource type="Texture2D" uid="uid://bcuvfsvc7gqox" path="res://art/Icons/Editor/stairs.png" id="2_bo6ag"]
 [ext_resource type="Script" uid="uid://cqt3rk0rxvrpk" path="res://codings/Components/editor_only.gd" id="3_bqib2"]
 

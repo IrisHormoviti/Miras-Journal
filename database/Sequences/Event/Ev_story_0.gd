@@ -114,27 +114,6 @@ func axe_seq() -> void:
 	Loader.save()
 
 
-func first_battle() -> void:
-	Global.player.move_by_tiles(Vector2.RIGHT * 2)
-	await Transition.fade_in()
-	await Loader.travel_to("TempleWoods", Vector2(1220, 461), 1, null, false)
-	Event.camera_unlock()
-	Event.camera_move(Vector2(1446, -605), 0)
-	Transition.fade_out()
-	Event.camera_move(Vector2(1486, -300), 5, Tween.EASE_IN_OUT, Tween.TRANS_LINEAR)
-	await Event.wait(0.5)
-	UI.location_name("Temple Woods")
-	await Event.wait(4.5)
-	Event.camera_move(Vector2(1558, 318), 0)
-	Global.player.hide()
-	await Event.camera_move(Vector2(1429, 450), 4, Tween.EASE_OUT)
-	Transition.fade_in()
-	Battle.start("FirstBattle")
-	Event.add_flag("EvFirstBattle")
-	Event.add_flag("UI/Disable", false)
-	Hud.disabled = false
-
-
 func AlcineFollowHelp() -> void:
 	var Alcine: NPC = Event.npc("Alcine")
 	Alcine.set_anim("IdleRight")

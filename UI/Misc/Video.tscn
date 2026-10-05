@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://ciagk71hs8nx2"]
+
+[ext_resource type="VideoStream" uid="uid://bepb8uf5rxkia" path="res://art/Video/FirstCutscene-1.ogv" id="1_f2wsc"]
+
+[node name="Video" type="VideoStreamPlayer" unique_id=1495667750]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stream = ExtResource("1_f2wsc")
+autoplay = true
