@@ -21,7 +21,7 @@ $> Transition.fade_out(0)
 $> play_video("FirstCutscene-1")
 $> loop_video("FirstCutscene-2a")
 $> wait(1)
-I what even is today's date?
+What even is today's date? I don't know.
 I'm in some kind of forest...
 I can't remember what I was doing before, what lead me here...
 My minds is all hazy, like I just woke up from a long dream.
@@ -48,22 +48,21 @@ There's no way this is drinkable.
 [hide]
 $> play_video("FirstCutscene-4")
 $> wait(1)
-What should I do now?
 My head is still all fuzzy.
-Is there anything I can remember?
-[hide]
-$> play_video("FirstCutscene-5a")
-$> wait(1)
-I can remember my name.
-[hide]
-$> play_video("FirstCutscene-5b")
-$> wait(1)
-Maybe I should write it down before I forget that too...
-$> wait(1)
 [hide]
 $> full_screen_picture("MiraSignature")
 $> wait(3)
 $> picture_clear()
+$> play_video("FirstCutscene-5a")
+$> wait(1)
+Good thing I wrote my name, before I forgot that too...
+[hide]
+$> play_video("FirstCutscene-5b")
+$> wait(1)
+What should I do now?
+Is there even anything I can do?
+$> wait(1)
+[hide]
 $> play_video("FirstCutscene-5c")
 $> next_box("Mira")
 I really am hopeless.

@@ -8,7 +8,7 @@ title = "First Battle"
 room = "TempleWoods"
 room_name = "Temple Woods"
 members = Array[Dictionary]([{
-"AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
+"AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyNail"]),
 "Aura": 15,
 "CantDie": false,
 "CantDodge": false,
@@ -103,23 +103,22 @@ members = Array[Dictionary]([{
 "WeaponName": "LightweightAxe",
 "codename": &"Mira"
 }])
-player_position = Vector2(688.9242, 501)
-start_time = 1787949504.270411
-saved_time = 1791228612.004245
-play_time = 436.0
+player_position = Vector2(668.92395, 504.15726)
+start_time = 1791231819.920431
+saved_time = 1791231845.89795
+play_time = 1241.0
 diary = Dictionary[int, PackedStringArray]({
 2: PackedStringArray("boo"),
 5: PackedStringArray("boo", "bee")
 })
 flags = Dictionary[StringName, int]({
-&"DisableMenus": 1,
-&"DisableVeinet": 1,
-&"EvDashTutorial": 1,
-&"HasBag": 1,
-&"HideDate": 1,
-&"PickedUpAxe": 1,
-&"Started": 1,
+&"Meta/Started": 1,
+&"Meta/Veinet/Disable": 1,
 &"TempleWoods/Breakable/BreakableVines0": 1,
+&"TempleWoods/Interact/PickUp": 1,
+&"TempleWoods/Tripwire/EvDashTutorial": 1,
+&"UI/Disable": 1,
+&"UI/HideDate": 1,
 &"day": 0,
 &"time": 5
 })
