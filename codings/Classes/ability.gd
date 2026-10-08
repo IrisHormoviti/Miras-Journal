@@ -3,28 +3,36 @@ class_name Ability
 
 ## Ability type
 enum TP {
-	UNSET = 0,
-	CHEAP_ATTACK = 1,
-	BIG_ATTACK = 2,
-	DEFENSIVE = 3,
-	CURSE = 4,
-	HEALING = 5,
-	SUMMON = 6,
-	AGGRO = 7,
-	ATK_BUFF = 8,
-	MAG_BUFF = 9,
-	DEF_BUFF = 10,
-	ATK_NERF = 11,
-	MAG_NERF = 12,
-	DEF_NERF = 13,
-	SPEED_CHANGE = 14,
-	FOLLOW_UP = 15,
-	COLOR_CHANGE = 16,
-	STATE_RECOVERY = 17,
+	UNSET = 0, ## No type
+	CHEAP_ATTACK = 1, ## Attack you can spam
+	BIG_ATTACK = 2, ## Attack that uses a lot of resources
+	DEFENSIVE = 3, ## Counter, defence, stuff like that
+	CURSE = 4, ## Gives a bad state
+	HEALING = 5, ## Recovers health
+	SUMMON = 6, ## Summons an ally
+	AGGRO = 7, ## Makes an enemy attack this actor
+	ATK_BUFF = 8, ## Attack up
+	MAG_BUFF = 9, ## Magic up
+	DEF_BUFF = 10, ## Defence up
+	ATK_NERF = 11, ## Attack down
+	MAG_NERF = 12, ## Magic down
+	DEF_NERF = 13, ## Defence down
+	SPEED_CHANGE = 14, ## Modifies speed to the actors favor
+	FOLLOW_UP = 15, ## Can be used only after a followup
+	COLOR_CHANGE = 16, ## Changes colors
+	STATE_RECOVERY = 17, ## Heals a state
 }
 
 ## Damage type
-enum D {NONE = 0, WEAK = 1, MEDIUM = 2, HEAVY = 3, SEVERE = 4, CUSTOM = 5, WEAPON = 6}
+enum D {
+	NONE = 0, ## This abilitiy does no damage
+	WEAK = 12, ## 12
+	MEDIUM = 24, ## 24
+	HEAVY = 48, ## 48
+	SEVERE = 96, ## 96
+	CUSTOM = -2, ## Specify in parameter
+	WEAPON = -1 ## Uses weapon stats
+}
 
 ##0: Target range
 enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, ANY = 5}

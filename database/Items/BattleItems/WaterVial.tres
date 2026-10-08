@@ -1,0 +1,33 @@
+[gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://y47pobp1y18b"]
+
+[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_2qys7"]
+[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="2_dhttc"]
+[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="3_r3ic8"]
+
+[sub_resource type="Resource" id="Resource_2qys7"]
+script = ExtResource("1_2qys7")
+name = "Weapon"
+ActionSequence = &"ItemThrow"
+InflictsState = "Soaked"
+Damage = 1
+Target = 1
+WheelColor = Color(0.09985284, 0.3245714, 1, 1)
+Callout = false
+DmgVarience = true
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dhttc"]
+atlas = ExtResource("2_dhttc")
+region = Rect2(108, 72, 18, 18)
+filter_clip = true
+
+[resource]
+script = ExtResource("3_r3ic8")
+Name = "Water Vial"
+Description = "A small bottle of dirty water.
+Weak Liquid damage, soaks the target"
+ItemType = "Bti"
+Icon = SubResource("AtlasTexture_dhttc")
+QuantityMeansUses = true
+AmountOnAdd = 2
+UsedInBattle = true
+BattleEffect = SubResource("Resource_2qys7")

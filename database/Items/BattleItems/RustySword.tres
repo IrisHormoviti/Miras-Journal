@@ -8,10 +8,12 @@
 script = ExtResource("2_t7t58")
 name = "Weapon"
 ActionSequence = &"ItemThrow"
-Damage = 3
+Types = Array[int]([2])
+Damage = 4
 Target = 1
 Callout = false
-CritChance = 0.2
+CritChance = 0.3
+RecoverAura = true
 DmgVarience = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_asmxh"]
@@ -23,10 +25,10 @@ filter_clip = true
 script = ExtResource("1_jpavj")
 Name = "Rusty Sword"
 Description = "An old rusty sword found in an abandoned building.
-It could be used 3 times before it breaks."
+Still seems sharp, but it won't last"
 ItemType = "Bti"
 Icon = SubResource("AtlasTexture_asmxh")
 QuantityMeansUses = true
-AmountOnAdd = 3
+AmountOnAdd = 7
 UsedInBattle = true
 BattleEffect = SubResource("Resource_as5re")

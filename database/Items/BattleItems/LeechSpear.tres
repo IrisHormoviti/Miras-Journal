@@ -23,6 +23,7 @@ filter_clip = true
 
 [resource]
 script = ExtResource("2_2utmj")
+Name = "Leech Spear"
 Description = "Deals slight damage and Leeches the target"
 ItemType = "Bti"
 Icon = SubResource("AtlasTexture_2utmj")

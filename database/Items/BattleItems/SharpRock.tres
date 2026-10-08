@@ -8,8 +8,9 @@
 script = ExtResource("1_m0d2q")
 name = "Weapon"
 ActionSequence = &"ItemThrow"
-Damage = 1
+Damage = 2
 Target = 1
+WheelColor = Color(0.88663924, 0, 0.39451027, 1)
 Callout = false
 CritChance = 0.2
 DmgVarience = true
