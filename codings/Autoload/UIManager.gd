@@ -16,6 +16,14 @@ func get_open(ui_name: String) -> Node:
 	else: return null
 
 
+func kill(ui_name: String) -> bool:
+	if is_open(ui_name):
+		get_open(ui_name).queue_free()
+		return true
+
+	return false
+
+
 func options(submenu := 0) -> void:
 	if is_open("Options"): return
 	var control := Global.controllable

@@ -5,8 +5,8 @@ func new_game() -> void:
 	Global.first_start_time = Time.get_unix_time_from_system()
 
 	# Hide any UI
-	if UI.is_open("Textbox"): UI.get_open("Textbox")._on_close()
-	if UI.is_open("Initializer"): UI.get_open("Initializer").queue_free()
+	UI.kill("Textbox")
+	UI.kill("Initializer")
 	Hud.hide_all()
 	# Initial flags
 	Event.flags.clear()
@@ -15,8 +15,6 @@ func new_game() -> void:
 	Event.add_flag("UI/Disable", true)
 	Event.add_flag("UI/HideDate", true)
 	Event.add_flag("Meta/Veinet/Disable")
-	Event.add_flag("time", Event.TOD.NIGHT)
-	Event.add_flag("day", 0)
 	Event.day = 0
 	Event.time_of_day = Event.TOD.NIGHT
 	# Initial Items
@@ -26,7 +24,6 @@ func new_game() -> void:
 	Item.add_item("FoldedPaper", &"Key", false)
 	Loader.defeated.clear()
 	# Reset party
-	Party.reset_party()
 	Party.reset_all_members()
 	Party._init()
 	Global.check.emit()

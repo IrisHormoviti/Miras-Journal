@@ -12,18 +12,18 @@ func _ready() -> void:
 
 
 func init_settings() -> void:
-	if not ResourceLoader.exists(settings_path):
+	if not FileAccess.file_exists(settings_path):
 		print_rich("[color=dark_magenta]No settings found, initializing...")
 		reset_settings()
 		await Event.wait()
 
-	settings = ResourceLoader.load(settings_path)
+	settings = ResourceLoader.load(settings_path, "", ResourceLoader.CACHE_MODE_IGNORE)
 
 	if not is_instance_valid(settings):
 		print_rich("[color=dark_magenta]settings file is invalid, settings will be restored to default")
 		reset_settings()
 		await Event.wait()
-		settings = load(settings_path)
+		settings = ResourceLoader.load(settings_path, "", ResourceLoader.CACHE_MODE_IGNORE)
 
 	if not is_instance_valid(settings):
 		OS.alert("Something is wrong with the settings file or user folder")

@@ -48,7 +48,7 @@ func _ready() -> void:
 
 	$MainButtons/SaveManagment.grab_focus()
 
-	if not ResourceLoader.exists("user://Autosave.tres") or not is_instance_valid(Global.room):
+	if not FileAccess.file_exists("user://Autosave.tres") or not is_instance_valid(Global.room):
 		cant_save = true
 		$MainButtons/SaveManagment.text = "Start the Game"
 
@@ -588,7 +588,7 @@ func load_save_files() -> void:
 				newpanel.hide()
 				draw_file.call_deferred(data, newpanel)
 
-	if ResourceLoader.exists("user://Autosave.tres"):
+	if FileAccess.file_exists("user://Autosave.tres"):
 		draw_file(await Loader.load_res("user://Autosave.tres"), %Files/File0)
 	else:
 		%Files/File0.hide()
@@ -971,7 +971,8 @@ func _on_reset() -> void:
 The game will then close.\nProceed?"):
 		SettingsManager.reset_settings()
 		var dir := DirAccess.open("user://")
-		dir.remove("Settigns.res")
+		dir.remove("Settings.res")
+		dir.remove("Settings.tres")
 		dir.remove("Autosave.tres")
 		Global.quit(false)
 	else:

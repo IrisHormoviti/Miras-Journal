@@ -1,21 +1,23 @@
-~ prepare
-do Textbox.open("rank"+str(Event.condition("sl_linde"))+"_prepare")
+match get_flag("sl_linde"):
+	when 0:
+		=> rank1
 => END
 
-~ rank1_prepare
+~ linde_door
+if f("sl_asteria_1"):
+	This is the building Asteria was talking about.
+	if confirm_time_passage("Open door" ,"Try the thing asteria told me and get in."):
+		*knock[wait=1] knock*
+		do add_flag("Event/LindeDoor")
+		The door is open
+else:
+	The door is locked.
+
+~ rank1
 if f("LindeDoor"):
 	you know dispel now
 	do Party.Leader.Abilities.append(load("res://database/Abilities/Dispel.tres"))
 	do add_flag("sl_linde_1")
 	do Event.progress_by_time(1)
 	do Event.time_transition()
-else:
-	if f("sl_asteria_1"):
-		This is the building Asteria was talking about.
-		if confirm_time_passage("Open door" ,"Try the thing asteria told me and get in."):
-			*knoc[wait=1]k knock*
-			do add_flag("LindeDoor")
-			the door is open
-	else:
-		The door is locked.
 => END

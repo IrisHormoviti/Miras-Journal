@@ -20,7 +20,7 @@ var cam_follow: bool
 
 func _ready() -> void:
 	hide()
-	if not ResourceLoader.exists("user://Autosave.tres"): await Loader.save()
+	if not FileAccess.file_exists("user://Autosave.tres"): await Loader.save()
 	if Event.f(&"Player/NoBag") or Event.f("UI/Disable"):
 		Audio.buzzer_sound()
 		queue_free()
