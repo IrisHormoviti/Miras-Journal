@@ -5,8 +5,8 @@ func new_game() -> void:
 	Global.first_start_time = Time.get_unix_time_from_system()
 
 	# Hide any UI
-	if UI.is_open("Textbox"): UI.get_node("Textbox")._on_close()
-	if UI.is_open("Initializer"): UI.get_node("Initializer").queue_free()
+	if UI.is_open("Textbox"): UI.get_open("Textbox")._on_close()
+	if UI.is_open("Initializer"): UI.get_open("Initializer").queue_free()
 	Hud.hide_all()
 	# Initial flags
 	Event.flags.clear()

@@ -73,7 +73,7 @@ func quit(save_first := true) -> void:
 
 		await Transition.close_in()
 		if Engine.has_singleton("Steam") and SteamManager.using_steam:
-			Steam.steamShutdown()
+			Engine.get_singleton("Steam").steamShutdown()
 
 		SettingsManager.save_settings()
 

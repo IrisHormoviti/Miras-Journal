@@ -28,11 +28,14 @@ Current Build
 ---
 You can [download pre-compiled versions of this repo here](https://codeberg.org/godotsteam/godotsteam/releases).
 
-**Version 4.22.1 Changes**
+**Version 4.23 Changes**
 
-- Added: link to GodotSteam site in in-editor docs, ***thanks to RTalaro***
-- Fixed: missing ! in singleton check in MultiplayerPeer close function
-
+- Added: API warning message hook function, enabled through Project Settings or calling related functions
+- Changed: auto-init and embed_callbacks can both be run together; thanks to ***Saalvage***
+- Changed: reworked initialization and auto-initialization processes
+- Changed: SteamProjectSettings now a class with properties and functions
+- Fixed: Godot version prior to 4.7 failing to compile due to missing or renamed core files; thanks to ***fales***
+- Fixed: issue where GDExtension crashes on pre-Godot 4.6 versions; thanks to ***fales***
 
 [You can read more change-logs here](https://godotsteam.com/changelog/godot4/).
 
