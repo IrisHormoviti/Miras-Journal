@@ -4,23 +4,23 @@ import "res://database/Text/reserved_date.dialogue" as reserved_date
 if Party.has_member("Daze"):
 	Mira.Neutral: Any idea what these are?
 	Daze.Neutral: I'm not quite sure... [p]They seem to be around everywhere.
-elif check_flag("VeinPointIDK", 1):
+elif check_flag("Event/VeinPointIDK", 1):
 	It keeps grabbing my attenion...
 	I still don't know what it is.
-	$> add_flag("VeinPointIDK", 2)
-elif check_flag("VeinPointIDK", 2):
+	$> add_flag("Event/VeinPointIDK", 2)
+elif check_flag("Event/VeinPointIDK", 2):
 	Must be like...[wait=1][br]Super important.
 	Too bad I don't know the importance of it yet.
-	$> add_flag("VeinPointIDK", 3)
+	$> add_flag("Event/VeinPointIDK", 3)
 else:
 	Particles seem to be coming out of this crack in the ground.
 	I'm not sure what this is.
-	$> add_flag("VeinPointIDK", 1)
+	$> add_flag("Event/VeinPointIDK", 1)
 => END
 
 ~ skeleton
-if not check_flag("LookedAtSkeleton"):
-	$> add_flag("LookedAtSkeleton", true)
+if not check_flag("TempleWoods/LookedAtSkeleton"):
+	$> add_flag("TempleWoods/LookedAtSkeleton", true)
 	It seems to be... a skeleton. Creepy.
 	From the skull shape it seems human, I think.
 else: 
@@ -28,17 +28,17 @@ else:
 => END!
 
 ~ symbol
-if get_flag("LookedAtTempleSymbol") == 0:
-	$> flag_progress("LookedAtTempleSymbol", 1)
+if get_flag("TempleWoods/LookedAtTempleSymbol") == 0:
+	$> flag_progress("TempleWoods/LookedAtTempleSymbol", 1)
 	There is a symbol engraved on the ground.
 	Looks like some sort of bird... with a clover head?
 	...
 	I just noticed that it's not perfectly symmetrical, which makes looking at it increasingly painful.
-elif get_flag("LookedAtTempleSymbol") == 1: 
-	$> flag_progress("LookedAtTempleSymbol", 2)
+elif get_flag("TempleWoods/LookedAtTempleSymbol") == 1: 
+	$> flag_progress("TempleWoods/LookedAtTempleSymbol", 2)
 	The pain grows.
-elif get_flag("LookedAtTempleSymbol") == 2:
-	$> flag_progress("LookedAtTempleSymbol", 3)
+elif get_flag("TempleWoods/LookedAtTempleSymbol") == 2:
+	$> flag_progress("TempleWoods/LookedAtTempleSymbol", 3)
 	This place seems like an old abandoned temple, so this must be some sort of religious symbol.
 	I don't recall ever seeing something like it though.
 else: 
@@ -46,12 +46,12 @@ else:
 => END
 
 ~ statue_legs
-if not f("LookedAtStatue"):
-	$> add_flag("LookedAtStatue", true)
+if not check_flag("TempleWoods/LookedAtStatue"):
+	$> add_flag("TempleWoods/LookedAtStatue", true)
 	Looks like a statue.
 	Or, to be more precise, the legs of a statue.
 else:
-	$> add_flag("LookedAtStatue", false)
+	$> add_flag("TempleWoods/LookedAtStatue", false)
 	I can't tell the species of whoever this satue depicted.
 	But it's probably not Cyrenian or Eyvi judging from the shape.
 
@@ -63,13 +63,13 @@ It's a broken sign with Cyrenian writing on it.
 => END
 
 ~ amberelm_sign_storage
-if check_flag("AmberelmSignStorage"):
+if check_flag("Amberelm/AmberelmSignStorage"):
 	"Storage Area"
 else:
 	There's cyrenian writing on this sign.
 	It says...[wait=0.5] "Saving"...[wait=0.5] "spot"?
 	Oh![wait=0.5][p]It's "Storage Area".
-	$> add_flag("AmberelmSignStorage")
+	$> add_flag("Amberelm/AmberelmSignStorage")
 => END
 
 ~ broken_bridge
@@ -90,13 +90,13 @@ $> player.camera_follow(false)
 $> player.look_to(Vector2(0, -1))
 $> camera.position -= Vector2(0, 24)
 $> Event.wait(0.5)
-if Event.f("TheSkyAmberelm"):
+if check_flag("Amberelm/TheSkyAmberelm"):
 	Mira.Neutral: ...
 else:
 	Mira.Neutral: The sky here is as strange as ever.
 	Mira.Neutral: Looks like we're near the sea, but it fades into those strange lines.
 	Mira.Neutral: It must be so far from my home...
-	$> Event.add_flag("TheSkyAmberelm", true)
+	$> Event.add_flag("Amberelm/TheSkyAmberelm", true)
 $> player.camera_follow(true)
 => END
 
@@ -116,7 +116,7 @@ if confirm_time_passage("Rest", "Fully restore health."):
 => END
 
 ~ rest_camp
-if f("AlcineAlone"):
+if check_flag("Event/AlcineAlone"):
 	Alcine.Neutral: Shwooo?
 	=> END
 It's the tent.
@@ -145,16 +145,16 @@ if Party.has_member_index("Mira") and Party.has_member_index("Daze"):
 	It's a lot like being on top of a tall building.
 	The urge to just walk into it, even though I know I shouldn't.
 	Mira.Neutral: Yeah...  let's walk the other way.
-	$> Event.add_flag("EvWLVoidMira")
+	$> Event.add_flag("Event/WLVoidMira")
 $> give_control()
 => END
 
 ~ daze_camp
 if day == 1
-	if f_past("AlcineIsTheLeaderReal", 3):
+	if f_past("Event/AlcineIsTheLeaderReal", 3):
 		Mira.Neutral: {{alcine}} should be the leader anyways.
 		Daze.Neutral: I have a feeling I would be expelled from the team immediatly.
-	elif f_past("AlcineIsTheLeaderReal", 1):
+	elif f_past("Event/AlcineIsTheLeaderReal", 1):
 		Daze.Neutral: Who said I'm the leader in the first place?
 		Mira.Neutral: Nobody!
 		Mira.Neutral: Which is why I elect myself as the leader!!
@@ -162,8 +162,8 @@ if day == 1
 		Daze.Neutral: What exactly are you leading again?
 		Mira.Neutral: [i]The Three Lost Souls, bravely adventuring through the mysterious ruins and forests..![/i]
 		Mira.Neutral: ...Yeah, I dunno.
-		if f_past("AlcineIsTheLeaderReal", 2):
-			$> add_flag("AlcineIsTheLeaderReal", 3)
+		if f_past("Event/AlcineIsTheLeaderReal", 2):
+			$> add_flag("Event/AlcineIsTheLeaderReal", 3)
 	else:
 		Mira.Neutral: Hey Daze, how old are you again?
 		Daze.Neutral: 18, why?
@@ -176,7 +176,7 @@ if day == 1
 		Daze.Neutral: Though I don't think you're getting anywhere with that broken arm of yours.
 		Mira.Neutral: Exactly! A leader can just stay behind and give commands!
 		Daze.Neutral: Or... get ambushed from behind.
-		$> add_flag("AlcineIsTheLeaderReal", 1)
+		$> add_flag("Event/AlcineIsTheLeaderReal", 1)
 elif day == 2:
 	Daze.Neutral: Shelter in a place like this, huh?
 	Daze.Neutral: Well, I'm glad we won't have to share a tent anymore, no offense.
@@ -190,10 +190,10 @@ elif day == 2:
 
 ~ alcine_camp
 if day == 1:
-	if f_past("AlcineIsTheLeaderReal", 2):
+	if f_past("Event/AlcineIsTheLeaderReal", 2):
 		Mira.Neutral: Lead the way!
 		Alcine.Neutral: Whim!
-	elif f_past("AlcineIsTheLeaderReal", 1):
+	elif f_past("Event/AlcineIsTheLeaderReal", 1):
 		Mira.Neutral: Psst, {{alcine}}! How old are you?
 		[hide]
 		$> AlcineCamp.bubble("Question")
@@ -205,7 +205,7 @@ if day == 1:
 		$> AlcineCamp.bubble("Excited")
 		{{alcine}} thinks about it for a moment, then poses heroically at me.
 		Mira.Neutral: Hehe, that's the spirit!
-		$> add_flag("AlcineIsTheLeaderReal", 2)
+		$> add_flag("Event/AlcineIsTheLeaderReal", 2)
 	else:
 		Mira.Neutral: Why are you so scared of him..?
 		Alcine.Neutral: Shewoom!!
@@ -240,7 +240,7 @@ I will not pass without a bag.
 => END
 
 ~ kick_sgplains
-if f("VPPlains"):
+if check_flag("VeinPoint/Plains"):
 	if Party.has_member("Asteria"):
 		Asteria.Neutral: You wanna return to the village Mira?
 		Asteria.Neutral: That's the long way back, we should use the veins instead.
@@ -275,9 +275,9 @@ $> Party.Leader.Health -= 1
 $>> Audio.ui_sound("Crunch")
 $>> Hud.hit_partybox(0, 4, 3)
 if Party.Leader.Health < 10:
-	if not f("ShardsLowHP") and Party.has_member("Asteria"):
+	if not check_flag("Event/ShardsLowHP") and Party.has_member("Asteria"):
 		$> take_control(false, true, true)
-		$> add_flag("ShardsLowHP")
+		$> add_flag("Event/ShardsLowHP")
 		Asteria.Neutral: Mira? Are you okay?
 		Mira.Neutral: Hm?
 		Asteria.Neutral: You have been stepping in a lot of these shards! I can give you my sandals if you want.

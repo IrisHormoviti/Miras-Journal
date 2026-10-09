@@ -1505,7 +1505,7 @@ static func post_battle() -> void:
 	if is_instance_valid(Global.player):
 		Global.player.show()
 		Global.player.get_node("DirectionMarker/Finder/Shape").set_deferred("disabled", false)
-		if Event.f(&"Player/Flame"):
+		if Event.check_flag("Player/Flame"):
 			Global.player.activate_flame()
 
 	if sequence.return_control:

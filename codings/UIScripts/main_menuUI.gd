@@ -21,7 +21,7 @@ var cam_follow: bool
 func _ready() -> void:
 	hide()
 	if not FileAccess.file_exists("user://Autosave.tres"): await Loader.save()
-	if Event.f(&"Player/NoBag") or Event.f("UI/Disable"):
+	if Event.check_flag("Player/NoBag") or Event.check_flag("UI/Disable"):
 		Audio.buzzer_sound()
 		queue_free()
 		get_tree().paused = false

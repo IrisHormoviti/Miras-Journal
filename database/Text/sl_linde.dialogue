@@ -14,7 +14,7 @@ else:
 	The door is locked.
 
 ~ rank1
-if f("Event/LindeDoor"):
+if check_flag("Event/LindeDoor"):
 	you know dispel now
 	$> Party.Leader.Abilities.append(load("res://database/Abilities/Dispel.tres"))
 	$> add_flag("SocialLink/Linde", 1)

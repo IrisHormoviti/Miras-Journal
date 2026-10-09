@@ -2,7 +2,7 @@ extends Room
 
 
 func default() -> void:
-	if not Event.add_flag("ArenaRound", 1):
+	if not Event.add_flag("Event/ArenaRound", 1):
 		Global.reset_all_members()
 	Party.reset_party()
 	await Event.wait(0.1)
@@ -15,7 +15,7 @@ func default() -> void:
 
 
 func start_round(i: int) -> void:
-	if Event.add_flag("ArenaRound", i): return
+	if Event.add_flag("Event/ArenaRound", i): return
 	for j in Party.current:
 		if j:
 			j.add_health(int(j.MaxHP / 3))
@@ -25,4 +25,4 @@ func start_round(i: int) -> void:
 	await Battle.start("ArenaBattles/Round" + str(i))
 	Loader.save("Arena")
 	await Global.battle_end
-	Event.flag_progress("ArenaRound", i)
+	Event.flag_progress("Event/ArenaRound", i)

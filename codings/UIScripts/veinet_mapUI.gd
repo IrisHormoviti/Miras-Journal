@@ -12,7 +12,7 @@ func _ready() -> void:
 	get_viewport().gui_focus_changed.connect(focus_change)
 
 	for i in $Container/Scroller/LocationList.get_children():
-		if not Event.f("VP" + i.name):
+		if not Event.f("VeinPoint/" + i.name):
 			if i is Button: i.hide()
 
 	$Container/Scroller/LocationList/Gate.show()
@@ -79,7 +79,7 @@ func location_selected() -> void:
 	var progress_time := false
 	var prev_foc := foc
 
-	if foc.get_meta("IsDungeon", true) != in_dungeon and not Event.f("FreeTravelOnce"):
+	if foc.get_meta("IsDungeon", true) != in_dungeon and not Event.check_flag("Event/FreeTravelOnce"):
 		var message: String
 		if in_dungeon:
 			message = "Exit the dungeon and rest at home."
@@ -95,12 +95,11 @@ func location_selected() -> void:
 		elif in_dungeon:
 			Event.progress_by_time(2)
 			progress_time = true
-			Event.add_flag("eepy1")
 
 	foc = prev_foc
 	Audio.confirm_sound()
 	Event.remove_flag("Player/Flame")
-	Event.remove_flag("FreeTravelOnce")
+	Event.remove_flag("Event/FreeTravelOnce")
 	var map_point := $Map.get_node_or_null(str(foc.name))
 
 	if map_point == null: OS.alert("You forgot to add the map point idiot"); return

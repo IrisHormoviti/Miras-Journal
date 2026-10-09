@@ -122,7 +122,6 @@ offset = Vector2(0.5, 0.5)
 label_text = "Search"
 action_type = "item"
 add_flag = true
-hide_on_flag = &"ItemDefault1"
 hide_parent = true
 offset = 10
 needs_bag = true

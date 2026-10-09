@@ -20,6 +20,6 @@ Target = 1
 WheelColor = Color(0.878431, 0.45098, 0.854902, 1)
 Callout = false
 SucessChance = 0.95
-CritChance = 0.3
+CritChance = 0.15
 RecoverAura = true
 DmgVarience = true

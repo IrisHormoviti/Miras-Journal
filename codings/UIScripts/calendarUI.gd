@@ -10,7 +10,7 @@ func _ready() -> void:
 
 
 func _check_party() -> void:
-	if Event.f("UI/HideDate"):
+	if Event.check_flag("UI/HideDate"):
 		$Date/Day.add_theme_font_size_override("font_size", 140)
 		$Date/Month.text = "Date"
 		$Date/Day.text = "Unknown"

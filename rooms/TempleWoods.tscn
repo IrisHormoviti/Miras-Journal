@@ -1033,7 +1033,7 @@ dialogue_file = "story_0"
 dialogue_cue = "bag_seq"
 return_control = false
 show_on_flag = &"day=0"
-hide_on_flag = &"HasBag"
+hide_on_flag = &"!Player/NoBag"
 hide_this_node = true
 hide_parent = true
 free_on_hide = true
@@ -1242,7 +1242,7 @@ gizmo_extents = 100.0
 z_index = 1
 position = Vector2(1956, -1758)
 trigger_size = Vector2i(76, 50)
-flag = "EnterAmberelm"
+flag = "Event/EnterAmberelm"
 return_control = false
 ShowTextbox = true
 textbox_mode = "Headless"

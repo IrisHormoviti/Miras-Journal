@@ -552,7 +552,7 @@ I'm not that sure what to say, and I just stare silent for a bit.
 After a bit of hesitation I go to sit on the other side of the campfire.
 Mira.Neutral: I have so many questions...
 Daze.Neutral: Ask away.
-$> add_flag("DazeQuestions", 0)
+$> add_flag("Event/DazeQuestions", 0)
 ~ daze_questions
 What do I ask?
 - Who is he?
@@ -609,20 +609,20 @@ What do I ask?
 	Mira.Neutral: Thank you, I was starving...
 - Nothing else to ask
 	Mira.Neutral: I think that all I had to ask. Thanks.
-	if get_flag("DazeQuestions") == 0:
+	if get_flag("Event/DazeQuestions") == 0:
 		Daze.Neutral: What is all? You didn't ask anything!
 		Mira.Neutral: Oh I didn't, did I?
 		Mira.Neutral: Sorry, I forgot what I wanted to ask.
 		Daze.Neutral: ...
-	if get_flag("DazeQuestions") == 1:
+	if get_flag("Event/DazeQuestions") == 1:
 		Daze.Neutral: That was... one question...
 		Mira.Neutral: Yeah, that's all I needed.
 		Daze.Neutral: Understood...
-	if get_flag("DazeQuestions") == 2:
+	if get_flag("Event/DazeQuestions") == 2:
 		Daze.Neutral: That was just two question...
 		Mira.Neutral: I guess I didn't have as much on my mind as I expected, hehe.
 	=> daze_questions_done
-$> add_flag("DazeQuestions", get_flag("DazeQuestions") + 1)
+$> add_flag("Event/DazeQuestions", get_flag("Event/DazeQuestions") + 1)
 => daze_questions
 
 ~ get_journal
@@ -653,7 +653,7 @@ Daze.Neutral: Just stay here and rest while I'm away, alright?
 Mira.Neutral: Alright.
 if Party.get_member("Daze").FirstName != "Daze":
 	Mira.Neutral: Oh by the way, I didn't ask. What's your name?
-	if get_flag("DazeQuestions") < 3:
+	if get_flag("Event/DazeQuestions") < 3:
 		Daze.Neutral: Oh, so you did have more things to ask.
 	Daze.Neutral: It's Daze.
 	$> Party.get_member("Daze").FirstName = "Daze"
@@ -764,7 +764,7 @@ $> MiraCut.move_by_tiles(Vector2.UP * 5)
 $> AlcineCut.chain_moves([Vector2.RIGHT, Vector2.UP * 5])
 $> wait(0.8)
 $>> travel_to("Amberelm", Vector2.ZERO, 0, Direction.UP)
-$> add_flag("EnterAmberelm")
+$> add_flag("Event/EnterAmberelm")
 => END
 
 ~ enter_amberelm_2
@@ -799,14 +799,14 @@ if Battle.battle_result == 1:
 	$>> Transition.fade_out()
 	$> to_day = 0
 	$> to_time = 5
-	$> add_flag("BeatStoneGuardian")
+	$> add_flag("Event/BeatStoneGuardian")
 	$>> time_transition()
 => END
 
 ~ oct31_night
 $> Item.remove_item("LightweightAxe", &"Key")
 $> Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
-$> add_flag("BeatStoneGuardian")
+$> add_flag("Event/BeatStoneGuardian")
 $> travel_to("WitheredLeaves", Vector2(750, -211), 0, "none", false)
 $> no_player()
 $> spawn("Mira", Vector2(770, -211), Direction.LEFT)

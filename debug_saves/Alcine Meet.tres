@@ -109,23 +109,17 @@ start_time = 1775821000.966906
 saved_time = 1790634007.828984
 play_time = 10762.0
 flags = Dictionary[StringName, int]({
-&"BreakableVines0": 1,
-&"DisableMenus": 0,
-&"DisableVeinet": 1,
-&"EvFirstBattle": 1,
-&"EvFlameActive": 1,
-&"FirstBattle": 3,
-&"FlameActive": 1,
-&"HasBag": 1,
-&"HideDate": 1,
-&"PickedUpAxe": 1,
-&"Player/Flame": 1,
-&"Started": 1,
-&"TempleWoods/Item/LifeLave1": 1,
-&"TempleWoods/Tripwire/EvFlameActive": 1,
-&"TutorialBag": 1,
-&"day": 0,
-&"time": 5
+	&"Event/FirstBattle": 3,
+	&"Meta/Started": 1,
+	&"Meta/Veinet/Disable": 1,
+	&"Player/Flame": 1,
+	&"TempleWoods/Breakable/BreakableVines0": 1,
+	&"TempleWoods/Item/LifeLave1": 1,
+	&"TempleWoods/Tripwire/EvFirstBattle": 1,
+	&"TempleWoods/Tripwire/EvFlameActive": 1,
+	&"UI/DisableMenus": 0,
+	&"UI/HideDate": 1,
+	&"day": 0,
 })
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "LifeLave:Con"])
 version = 8

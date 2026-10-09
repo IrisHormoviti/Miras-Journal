@@ -193,7 +193,7 @@ Event select
 	$> Event.flags.clear()
 	$> to_day = 0
 	$> to_time = TOD.NIGHT
-	$> Event.add_flag("HasBag")
+	$> Event.remove_flag("Player/NoBag")
 	$> Event.add_flag("Player/Flame")
 	$> travel_to("TempleWoods", Vector2(1272, -966), 2)
 - Maple Meet Scene

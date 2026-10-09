@@ -735,11 +735,11 @@ func get_date_identifier(of_day := day, time := time_of_day) -> String:
 
 ## Change any parameters from the time change
 func setup_time_changes(from: int, to: int) -> void:
-	if f_past("eepy", 1):
-		var eepy := get_flag("eepy")
-		add_flag("eepy", eepy + to - from)
+	if f_past("Player/eepy", 1):
+		var eepy := get_flag("Player/eepy")
+		add_flag("Player/eepy", eepy + to - from)
 		if eepy >= 2 or time_of_day == TOD.MORNING:
-			remove_flag("eepy")
+			remove_flag("Player/eepy")
 
 
 ## Checks if the current date is in reserved_date.dialogue

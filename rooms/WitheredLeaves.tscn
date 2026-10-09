@@ -436,7 +436,7 @@ sprite_frames = ExtResource("25_xe12t")
 animation = &"IdleDown"
 
 [node name="HideOnFlag" parent="AlcineCamp" unique_id=1010873179 instance=ExtResource("19_3p2gw")]
-flag = "InCamp"
+flag = "WitheredLeaves/InCamp"
 hide_if = false
 
 [node name="Interactable" parent="AlcineCamp" unique_id=1591526370 instance=ExtResource("4_d8pup")]
@@ -459,7 +459,7 @@ sprite_frames = ExtResource("6_3p2gw")
 animation = &"IdleRight"
 
 [node name="HideOnFlag" parent="DazeCamp" unique_id=1080351910 instance=ExtResource("19_3p2gw")]
-flag = "InCamp"
+flag = "WitheredLeaves/InCamp"
 hide_if = false
 
 [node name="Interactable" parent="DazeCamp" unique_id=2120091847 instance=ExtResource("4_d8pup")]
@@ -481,7 +481,7 @@ sprite_frames = ExtResource("9_ug3t0")
 animation = &"IdleDown"
 
 [node name="HideOnFlag" parent="AsteriaCamp" unique_id=1586491588 instance=ExtResource("19_3p2gw")]
-flag = "InCamp+AsteriaBoss=5"
+flag = "WitheredLeaves/InCamp+Event/AsteriaBoss=5"
 hide_if = false
 
 [node name="Interactable" parent="AsteriaCamp" unique_id=2033615367 instance=ExtResource("4_d8pup")]
@@ -503,7 +503,7 @@ shape = SubResource("RectangleShape2D_ha88r")
 
 [node name="HideOnFlag" type="Node2D" parent="DoorLocked1" unique_id=420060779]
 script = ExtResource("20_nxfet")
-flag = "WLDoor1a+WLDoor1b"
+flag = "WitheredLeaves/WLDoor1a+WitheredLeaves/WLDoor1b"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1/HideOnFlag" unique_id=250466873]
 texture_filter = 1
@@ -521,7 +521,7 @@ shape = SubResource("RectangleShape2D_nxfet")
 
 [node name="HideOnFlag" type="Node2D" parent="DoorLocked2" unique_id=637321918]
 script = ExtResource("20_nxfet")
-flag = "WLDoor1a"
+flag = "WitheredLeaves/WLDoor1a"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2/HideOnFlag" unique_id=1222588454]
 texture_filter = 1
@@ -539,7 +539,7 @@ shape = SubResource("RectangleShape2D_nxfet")
 
 [node name="HideOnFlag" type="Node2D" parent="DoorLocked3" unique_id=1905243525]
 script = ExtResource("20_nxfet")
-flag = "WLLeftSideOpen"
+flag = "WitheredLeaves/WLLeftSideOpen"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3/HideOnFlag" unique_id=2135567216]
 texture_filter = 1
@@ -779,13 +779,13 @@ energy = 0.5
 texture = SubResource("GradientTexture2D_5vs6x")
 
 [node name="HideOnFlag" parent="SwitchCast1" unique_id=1987711373 instance=ExtResource("19_3p2gw")]
-flag = "WLDoor1b"
+flag = "WitheredLeaves/WLDoor1b"
 
 [node name="WLAlcineSwitch1" parent="SwitchCast1" unique_id=244300434 instance=ExtResource("4_d8pup")]
 action_type = "focus_cam"
 focus_position = Vector2(-745, 318)
 add_flag = true
-hide_on_flag = &"WLDoor1b"
+hide_on_flag = &"WitheredLeaves/WLDoor1b"
 
 [node name="SwitchCast2" type="AnimatedSprite2D" parent="." unique_id=1499783082]
 texture_filter = 1
@@ -801,13 +801,13 @@ energy = 0.5
 texture = SubResource("GradientTexture2D_5vs6x")
 
 [node name="HideOnFlag" parent="SwitchCast2" unique_id=639486861 instance=ExtResource("19_3p2gw")]
-flag = "WLDoor1a"
+flag = "WitheredLeaves/WLDoor1a"
 
 [node name="WLDoor1a" parent="SwitchCast2" unique_id=191020952 instance=ExtResource("4_d8pup")]
 action_type = "focus_cam"
 focus_position = Vector2(-675, 413)
 add_flag = true
-hide_on_flag = &"WLDoor1a"
+hide_on_flag = &"WitheredLeaves/WLDoor1a"
 
 [node name="TransferToAmberelm" parent="." unique_id=1439515348 instance=ExtResource("3_lemrk")]
 position = Vector2(-1278, -106)
@@ -830,7 +830,7 @@ action_type = "text"
 dialogue_file = "story_1"
 dialogue_cue = "WL_bunker_switch"
 return_control = false
-hide_on_flag = &"Bunker1Open"
+hide_on_flag = &"WitheredLeaves/Bunker1Open"
 
 [node name="DoorLocked4" type="StaticBody2D" parent="." unique_id=520288389]
 position = Vector2(-204, -1057)
@@ -844,7 +844,7 @@ shape = SubResource("RectangleShape2D_fci10")
 [node name="HideOnFlag" type="Node2D" parent="DoorLocked4" unique_id=5416825]
 position = Vector2(0, -34)
 script = ExtResource("20_nxfet")
-flag = "Bunker1Open"
+flag = "WitheredLeaves/Bunker1Open"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked4/HideOnFlag" unique_id=49035216]
 texture_filter = 1
@@ -856,7 +856,7 @@ label_text = "Force Open"
 file = "interact_abad"
 dialogue_file = "interact_abad"
 dialogue_cue = "bunker_gate_budge"
-hide_on_flag = &"Bunker1Open"
+hide_on_flag = &"WitheredLeaves/Bunker1Open"
 
 [node name="TransferBunker" parent="." unique_id=50807784 instance=ExtResource("3_lemrk")]
 z_index = 1
@@ -877,7 +877,7 @@ dialogue_file = "story_1"
 dialogue_cue = "vp_tutorial"
 return_control = false
 show_on_flag = &"day>1+time>3"
-hide_on_flag = &"VPOldCamp||!AsteriaBoss=5"
+hide_on_flag = &"VeinPoint/OldCamp||!Event/AsteriaBoss=5"
 free_on_hide = true
 
 [node name="JumpPoint" parent="." unique_id=2144299483 instance=ExtResource("22_5vs6x")]

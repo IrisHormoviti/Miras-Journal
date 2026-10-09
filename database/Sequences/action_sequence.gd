@@ -1149,7 +1149,7 @@ func FirstBattle1() -> void:
 	Bt.ui.disable_ability = true
 	Bt.ui.disable_command = true
 	Bt.ui.disable_item = true
-	Event.flag_progress("FirstBattle", 3)
+	Event.flag_progress("Event/FirstBattle", 3)
 	Bt.get_actor("Mira").DontIdle = true
 	Bt.end_turn()
 
@@ -1247,7 +1247,7 @@ func FirstBattle5() -> void:
 
 func AlcineWoods1() -> void:
 	if Bt.get_actor("Mira").Health == 0: return
-	Event.flag_progress("AlcineFollow4", 4)
+	Event.flag_progress("Event/AlcineFollow", 4)
 	Bt.lock_turn = true
 	Bt.Action = true
 	await Passive.open("story_0", "going_nowhere")
@@ -1281,7 +1281,7 @@ func ArenaGameOver() -> void:
 
 
 func StoneGuardianLoop() -> void:
-	if Bt.CurrentChar.codename == "Guardian" and Bt.Turn % 2 == 0 and not Event.f("StoneGuardianFinisher"):
+	if Bt.CurrentChar.codename == "Guardian" and Bt.Turn % 2 == 0 and not Event.check_flag("Event/StoneGuardianFinisher"):
 		if CurrentChar.BattleLog.back().ability.filename == "Gather":
 			Bt.ignore_end_turn = true
 			Bt.CurrentAbility = load("res://database/Abilities/RockThrow.tres")
@@ -1291,15 +1291,15 @@ func StoneGuardianLoop() -> void:
 			Bt.ignore_end_turn = true
 			Bt.callout(load("res://database/Abilities/AnythingGoes.tres"))
 			await AnythingGoes(Bt.get_actor("Guardian"))
-			if not Event.check_flag("StoneGuardianComment"):
+			if not Event.check_flag("Event/StoneGuardianComment"):
 				await Event.wait(1)
 				await Passive.open("story_0", "anything_goes_comment")
-				Event.add_flag("StoneGuardianComment")
+				Event.add_flag("Event/StoneGuardianComment")
 
 			Bt.ignore_end_turn = false
 
-	if Bt.get_actor("Alcine").Health == 0 and Bt.CurrentChar.codename == "Mira" and Event.f("StoneGuardianFinisher"):
-		Event.add_flag("BeatStoneGuardian")
+	if Bt.get_actor("Alcine").Health == 0 and Bt.CurrentChar.codename == "Mira" and Event.check_flag("Event/StoneGuardianFinisher"):
+		Event.add_flag("Event/BeatStoneGuardian")
 
 
 func StoneGuardian1() -> void:
@@ -1319,8 +1319,8 @@ func StoneGuardian1() -> void:
 	Bt.entrance_anim(Party.Member1)
 	await Event.wait(0.2)
 	await Bt.focus_cam(Party.Leader)
-	Event.remove_flag("StoneGuardianFinisher")
-	Event.remove_flag("BeatStoneGuardian")
+	Event.remove_flag("Event/StoneGuardianFinisher")
+	Event.remove_flag("Event/BeatStoneGuardian")
 	Bt.end_turn()
 
 
@@ -1355,7 +1355,7 @@ func StoneGuardian2(target: Actor = CurrentChar) -> void:
 	else:
 		alcine.get_state("KnockedOut").turns = -1
 
-	Event.add_flag("StoneGuardianFinisher")
+	Event.add_flag("Event/StoneGuardianFinisher")
 	Bt.ignore_end_turn = false
 	Bt.follow_up_next = false
 	Bt.TurnInd = TurnOrder.find(guardian) - 1
@@ -1420,7 +1420,7 @@ func StoneGuardian3() -> void:
 	Party.set_to(["Mira"])
 	Bt.victory(true)
 	await Global.battle_end
-	Event.add_flag("BeatStoneGuardian")
+	Event.add_flag("Event/BeatStoneGuardian")
 
 
 func ColorTutorialEnter() -> void:
@@ -1437,14 +1437,14 @@ func AsteriaBoss2() -> void:
 	Bt.position_sprites()
 	for i in Bt.Troop: Bt.sprite_init(i)
 	Bt.get_actor("Asteria").add_health(90)
-	Event.add_flag("AsteriaBoss", 2)
+	Event.add_flag("Event/AsteriaBoss", 2)
 
 
 func AsteriaBoss3() -> void:
 	var asteria := Bt.get_actor("Asteria")
 	Bt.focus_cam(asteria)
 	Bt.zoom(6)
-	if not Event.f_past("AsteriaBoss", 4):
+	if not Event.f_past("Event/AsteriaBoss", 4):
 		await Bt.cut_in("Asteria")
 		await Bt.anim("Ability", asteria)
 		Transition.fade_in_out(Color.WHITE, 0.5, 0)
@@ -1459,17 +1459,17 @@ func AsteriaBoss3() -> void:
 					1: Bt.stat_change("Mag", 2, i)
 					2: Bt.stat_change("Def", 2, i)
 					3: Bt.stat_change("Atk", 2, i)
-		elif Event.f_past("AsteriaBoss", 3):
+		elif Event.f_past("Event/AsteriaBoss", 3):
 			await Textbox.open("story_1", "asteria_boss_4")
-			Event.add_flag("AsteriaBoss", 4)
+			Event.add_flag("Event/AsteriaBoss", 4)
 			asteria.Health = asteria.MaxHP
 			Bt.stat_change("Atk", 2, asteria, -1)
 			Bt.stat_change("Mag", 2, asteria, -1)
 			Bt.stat_change("Def", 2, asteria, -1)
 			await Event.wait(3)
-		elif Event.f_past("AsteriaBoss", 2):
+		elif Event.f_past("Event/AsteriaBoss", 2):
 			await Textbox.open("story_1", "asteria_boss_3")
-			Event.add_flag("AsteriaBoss", 3)
+			Event.add_flag("Event/AsteriaBoss", 3)
 			asteria.Health = asteria.MaxHP
 
 		Transition.fade_in_out(Color.WHITE, 0.5, 0, 0)
@@ -1477,7 +1477,7 @@ func AsteriaBoss3() -> void:
 		Bt.lock_turn = true
 		Bt.anim("", asteria)
 		await Passive.open("story_1", "asteria_boss_5")
-		Event.add_flag("AsteriaBoss", 5)
+		Event.add_flag("Event/AsteriaBoss", 5)
 		Bt.victory()
 
 
@@ -1489,7 +1489,7 @@ func AsteriaBossFollowup() -> void:
 	await Bt.anim("Ability", asteria)
 	Transition.fade_in_out(Color.WHITE, 0.5, 0, 0)
 	await Event.wait(0.5)
-	if Event.get_flag("AsteriaBoss") < 4:
+	if Event.get_flag("Event/AsteriaBoss") < 4:
 		for i in Bt.Troop:
 			match randi_range(0, 3):
 				0: i.Health += 20

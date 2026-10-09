@@ -112,15 +112,14 @@ diary = Dictionary[int, PackedStringArray]({
 5: PackedStringArray("boo", "bee")
 })
 flags = Dictionary[StringName, int]({
-&"Meta/Started": 1,
-&"Meta/Veinet/Disable": 1,
-&"TempleWoods/Breakable/BreakableVines0": 1,
-&"TempleWoods/Interact/PickUp": 1,
-&"TempleWoods/Tripwire/EvDashTutorial": 1,
-&"UI/Disable": 1,
-&"UI/HideDate": 1,
-&"day": 0,
-&"time": 5
+	&"Meta/Started": 1,
+	&"Meta/Veinet/Disable": 1,
+	&"TempleWoods/Breakable/BreakableVines0": 1,
+	&"TempleWoods/Interact/PickUp": 1,
+	&"TempleWoods/Tripwire/EvDashTutorial": 1,
+	&"UI/Disable": 1,
+	&"UI/HideDate": 1,
+	&"day": 0,
 })
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key"])
 version = 8

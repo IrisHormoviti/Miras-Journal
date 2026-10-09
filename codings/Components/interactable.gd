@@ -212,7 +212,7 @@ func _exit_tree() -> void:
 
 
 func vein_check() -> void:
-	if Event.check_flag(get_parent().name):
+	if Event.check_flag("VeinPoint/" + get_parent().name.replace("VP", "")):
 		get_parent().get_node("Particle").emitting = false
 		label_text = "Enter"
 		get_parent().get_node("Sprite").show()
@@ -402,7 +402,7 @@ func _on_button_pressed() -> void:
 	t = create_tween().set_parallel(true).set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_LINEAR)
 	t.tween_property(pack, "scale", Vector2(0.4, 0.4), 0.1).from(Vector2(0.36, 0.36))
 	await Event.wait(0.1, false)
-	if needs_bag and Event.f("Player/NoBag"):
+	if needs_bag and Event.check_flag("Player/NoBag"):
 		UI.toast("A bag is needed to store that.")
 		Event.give_control()
 		return
@@ -451,10 +451,10 @@ func _on_button_pressed() -> void:
 			await Event.take_control(false, false, true)
 			if Event.check_flag("Meta/Veinet/Disable"):
 				await Textbox.open("interact_abad", "vein_point_idk")
-			elif Event.check_flag(get_parent().name):
+			elif Event.check_flag("VeinPoint/" + get_parent().name.replace("VP", "")):
 				UI.veinet_map(get_parent().name.replace("VP", ""))
 			else:
-				Event.add_flag(get_parent().name, true)
+				Event.add_flag("VeinPoint/" + get_parent().name.replace("VP", ""), true)
 				vein_check()
 				disappear()
 				await Event.wait(0.3)

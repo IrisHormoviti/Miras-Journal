@@ -660,7 +660,7 @@ text_cue = "enter_amberelm_2"
 [node name="EvStoneGuardian" parent="." unique_id=28897104 instance=ExtResource("30_djhcr")]
 position = Vector2(2460, -120)
 trigger_size = Vector2i(50, 140)
-flag = "BeatStoneGuardian"
+flag = "Event/BeatStoneGuardian"
 use_name_as_flag = false
 return_control = false
 ShowTextbox = true
@@ -671,7 +671,7 @@ text_cue = "amberelm_guardian"
 [node name="EvStoneGuardianCheckBody" parent="." unique_id=1297631556 instance=ExtResource("30_djhcr")]
 position = Vector2(2567, -121)
 trigger_size = Vector2i(50, 130)
-flag = "day:1+time<5+!AlcineAlone"
+flag = "day:1+time<5+!Event/AlcineAlone"
 flag_should_be = true
 return_control = false
 text_file = "story_1"
@@ -680,7 +680,7 @@ text_cue = "destroyed_guardian_event"
 [node name="EvStoneGuardian2" parent="." unique_id=2071850113 instance=ExtResource("30_djhcr")]
 position = Vector2(2388, -146)
 trigger_size = Vector2i(50, 33)
-flag = "AlcineAlone"
+flag = "Event/AlcineAlone"
 flag_should_be = true
 use_name_as_flag = false
 return_control = false
@@ -878,7 +878,7 @@ position = Vector2(-24, 8)
 shape = SubResource("RectangleShape2D_0o4df")
 
 [node name="HideOnFlag" parent="EvDestroyedGuardian" unique_id=2143966977 instance=ExtResource("31_ylfhl")]
-flag = "BeatStoneGuardian"
+flag = "Event/BeatStoneGuardian"
 hide_if = false
 free_instead = true
 

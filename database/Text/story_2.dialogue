@@ -1,7 +1,7 @@
 ~ nov3_morning
 $> Item.add_item("LightweightAxe", &"Key", false, false)
 $> Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/LightweightAxe.tres")
-$> add_flag("LampInMirasRoom", false)
+$> add_flag("Pyrson/LampInMirasRoom", false)
 $> travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(98, 424), 0, "", false)
 $> no_player()
 $> RoomMira.state = NPC.S.CUSTOM
@@ -146,7 +146,7 @@ What was different about me compared to everyone else who's tried entering?
 	Asteria.Neutral: It sounds stupid...
 	Mira.Neutral: Maybe it's this orb it was trying to guard! The Guardian Orb!!!
 	Asteria.Neutral: *Sigh...*
-	$> add_flag("TavernTheory", 2)
+	$> add_flag("Event/TavernTheory", 2)
 - You're a Cyrenian
 	Mira.Curious: Could it be because I'm a Cyrenian?
 	Daze.Neutral: You're saying it's designed specifically to be opened [i]only[/i] by Cyrenians?
@@ -161,7 +161,7 @@ What was different about me compared to everyone else who's tried entering?
 	$>> Asteria.bubble("Sweat")
 	Asteria.Neutral: B-But don't count on me for this! I mean I didn't even know of your... species until... now...
 	Mira.Neutral: That means... this is a plausible explaination!
-	$> add_flag("TavernTheory", 1)
+	$> add_flag("Event/TavernTheory", 1)
 - You pushed it in a specific way
 	Mira.Neutral: Maybe I pushed it in a very particular way that triggered it?
 	Daze.Neutral: What's that specific way?
@@ -252,7 +252,7 @@ $> player.look_to(Direction.RIGHT)
 => END
 
 ~ sg_bunker_entrance
-if f("DefeatedLazuliteHeart"):
+if check_flag("Event/DefeatedLazuliteHeart"):
 	=> enter_bunker_2
 elif Party.has_member_index(3):
 	=> lazulite_warning
@@ -267,7 +267,7 @@ $> wait_for_battle()
 $>> Transition.fade_out()
 $> Textbox.open("story_2", "lazulite_heart_after")
 $> Transition.fade_in_out(Color.WHITE, 0.5, 0.3, 0.5)
-$> add_flag("DefeatedLazuliteHeart")
+$> add_flag("Event/DefeatedLazuliteHeart")
 $> progress_by_time(1)
 $>> time_transition()
 => END
@@ -337,7 +337,7 @@ Alcine seems to be bothered by something.
 => END
 
 ~ blocked_cast_lines
-if not f("EvSwitchCastLines2"):
+if not check_flag("Event/SwitchCastLines2"):
 	Alcine.Neutral: Waooo!
 	Daze.Neutral: These lines gather towards the center.
 	Asteria.Neutral: Doesn't this look like the thing that broke the crystals last time?
@@ -365,12 +365,12 @@ if not f("EvSwitchCastLines2"):
 	Daze.Neutral: I think we could all use some rest, no?
 	$> player.camera_follow(true)
 	Asteria.Neutral: There was a Vein nearby, let's head there. 
-	$> add_flag("EvSwitchCastLines2")
+	$> add_flag("Event/SwitchCastLines2")
 	Placeholder description: This is the last part of the game developed right now
 else:
 	if Party.Leader.has_ability("Dispel"):
 		Placeholder description: The gate is unlocked, there's no dialog for this yet.
-		$> add_flag("SGDoor2")
+		$> add_flag("ShardGardens/SGDoor2")
 	else:
 		Asteria.Neutral: Mira! We can't make any progress here unless we despell this.
 		Mira.Neutral: I know, I know.
@@ -392,7 +392,7 @@ else:
 	This must be the bunker.
 	I should come back here with the others another time, this seems quite dangerous
 	$> player.move_dir(Direction.DOWN)
-	$> remove_flag("EvSGfindBunker")
+	$> remove_flag("Event/SGfindBunker")
 $> player.camera_follow(true)
 => END
 
@@ -467,7 +467,7 @@ Asteria.Neutral: Ok fine, I guess we're calling it Lazulite Heart then....
 => END
 
 ~ enter_bunker_2
-if Event.check_flag("Bunker2Open"):
+if Event.check_flag("ShardGardens/Bunker2Open"):
 	Daze.Neutral: You should've tried touching it without the orb...
 	Mira.Neutral: Sorry, didn't think this through-
 	Asteria.Neutral: Don't worry much about it, there are more doors like this.
@@ -477,7 +477,7 @@ else:
 	I reach my hand to the machine
 	Daze.Neutral: LEVENOR, DON'T-[next]
 	[hide][next]
-	$> Event.add_flag("Bunker2Open")
+	$> Event.add_flag("ShardGardens/Bunker2Open")
 	$> check.emit()
 	$> screen_shake(2, 20, 0.4)
 	$> screen_shake(10, 5, 0.2)

@@ -1302,7 +1302,7 @@ shape = SubResource("RectangleShape2D_sd3du")
 
 [node name="HideOnFlag" type="Node2D" parent="DoorBridge1" unique_id=566038083]
 script = ExtResource("21_mwckp")
-flag = "SGBridge1"
+flag = "ShardGardens/Interact/SGBridge1"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorBridge1/HideOnFlag" unique_id=500236612]
 texture_filter = 1
@@ -1320,7 +1320,7 @@ shape = SubResource("RectangleShape2D_sd3du")
 
 [node name="HideOnFlag" type="Node2D" parent="DoorLocked1" unique_id=1561510618]
 script = ExtResource("21_mwckp")
-flag = "SGDoor1"
+flag = "ShardGardens/Interact/SGDoor1"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1/HideOnFlag" unique_id=362467646]
 texture_filter = 1
@@ -1337,7 +1337,7 @@ shape = SubResource("RectangleShape2D_sd3du")
 
 [node name="HideOnFlag" type="Node2D" parent="DoorLocked2" unique_id=374533572]
 script = ExtResource("21_mwckp")
-flag = "SGDoor2"
+flag = "ShardGardens/SGDoor2"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2/HideOnFlag" unique_id=896449868]
 texture_filter = 1
@@ -1356,7 +1356,7 @@ shape = SubResource("RectangleShape2D_wvntm")
 [node name="HideOnFlag" type="Node2D" parent="DoorLocked3" unique_id=383735080]
 position = Vector2(-1, -35)
 script = ExtResource("21_mwckp")
-flag = "Bunker2Open"
+flag = "ShardGardens/Bunker2Open"
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3/HideOnFlag" unique_id=281615667]
 texture_filter = 1
@@ -1626,9 +1626,9 @@ add_the_flag = true
 take_control = false
 return_control = false
 ShowTextbox = true
+textbox_mode = "Passive"
 text_file = "interact_abad"
 text_cue = "blocked_path_sg1"
-textbox_mode = "Passive"
 
 [node name="EvBlockedPath2" parent="." unique_id=113802291 instance=ExtResource("26_yhh0x")]
 position = Vector2(-216, -293)
@@ -1637,9 +1637,9 @@ add_the_flag = true
 take_control = false
 return_control = false
 ShowTextbox = true
+textbox_mode = "Passive"
 text_file = "interact_abad"
 text_cue = "blocked_path_sg2"
-textbox_mode = "Passive"
 
 [node name="EvBunkerPanel" parent="." unique_id=124207418 instance=ExtResource("20_pu5uh")]
 position = Vector2(396, -1377)
@@ -2029,14 +2029,13 @@ energy = 0.5
 texture = SubResource("GradientTexture2D_tdwg2")
 
 [node name="HideOnFlag" parent="SwitchBridge1" unique_id=206159318 instance=ExtResource("29_5l4ys")]
-flag = "SGBridge1"
+flag = "ShardGardens/Interact/SGBridge1"
 
 [node name="SGBridge1" parent="SwitchBridge1" unique_id=690503422 instance=ExtResource("20_pu5uh")]
 label_text = "Switch"
 action_type = "focus_cam"
 focus_position = Vector2(-180, -910)
 add_flag = true
-hide_on_flag = &"SGBridge1"
 
 [node name="SwitchCast1" type="AnimatedSprite2D" parent="." unique_id=286155623]
 texture_filter = 1
@@ -2057,7 +2056,6 @@ texture = SubResource("GradientTexture2D_tdwg2")
 action_type = "focus_cam"
 focus_position = Vector2(-335, 589)
 add_flag = true
-hide_on_flag = &"SGDoor1"
 
 [node name="SwitchCastLines2" type="Sprite2D" parent="." unique_id=477013644]
 texture_filter = 1

@@ -315,7 +315,7 @@ subroom = "BossEntry"
 
 [node name="EvTripwire0" parent="." unique_id=1509055698 instance=ExtResource("8_jy425")]
 position = Vector2(-406, 305)
-flag = "AsteriaBoss=5"
+flag = "Event/AsteriaBoss=5"
 use_name_as_flag = false
 ShowTextbox = true
 text_file = "story_1"

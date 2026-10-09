@@ -471,7 +471,7 @@ offset = Vector2(0, -10)
 [node name="HideOnFlag" parent="NPCs/AsteriaPlaza" unique_id=1776988185 instance=ExtResource("12_nlfpl")]
 flag = "(
 	SocialLink/Asteria=0
-	+ EvSwitchCastLines2
+	+ Event/SwitchCastLines2
 )
 +time>=4
 +day>=3"
@@ -713,7 +713,7 @@ shape = SubResource("RectangleShape2D_nlfpl")
 
 [node name="HideOnFlag" type="Node2D" parent="LowerPyrsonLock" unique_id=324882027]
 script = ExtResource("31_vm6kc")
-flag = "LowerPyrsonUnlocked"
+flag = "Pyrson/LowerPyrsonUnlocked"
 
 [node name="Sprite2D" type="Sprite2D" parent="LowerPyrsonLock" unique_id=1294940948]
 use_parent_material = true
@@ -937,7 +937,7 @@ shadow_filter_smooth = 11.0
 shadow_item_cull_mask = 3
 texture = SubResource("GradientTexture2D_52siy")
 script = ExtResource("10_4xvqm")
-flag = "LampInMirasRoom"
+flag = "Pyrson/LampInMirasRoom"
 
 [node name="RoomMira" parent="HomeBuilding-MyRoom" unique_id=1542336393 instance=ExtResource("16_s1pqb")]
 position = Vector2(-98, 368)

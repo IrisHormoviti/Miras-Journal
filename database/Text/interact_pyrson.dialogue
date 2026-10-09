@@ -9,7 +9,7 @@ elif time_of_day == 1:
 		$> Event.progress_by_time(1)
 		$> Event.time_transition()
 elif time_of_day == 5:
-	if f_past("eepy", 1):
+	if f_past("Player/eepy", 1):
 		I'm exhausted.
 	else:
 		Bedtime.
@@ -17,7 +17,7 @@ elif time_of_day == 5:
 		$> Event.progress_by_time(1)
 		$> Event.time_transition()
 else:
-	if add_flag("eepy", 1):
+	if add_flag("Player/eepy", 1):
 		I do feel pretty tired... Should I take a quick nap?
 	else:
 		It's my bed.
@@ -25,12 +25,12 @@ else:
 		$> Transition.wipe()
 		$> Event.progress_by_time(1)
 		$> Event.time_transition()
-		$> remove_flag("eepy")
+		$> remove_flag("Player/eepy")
 => END
 
 ~ gather_pyrson
-$> remove_flag("InCamp")
-if f_past("eepy", 1):
+$> remove_flag("WitheredLeaves/InCamp")
+if f_past("Player/eepy", 1):
 	I don't have the energy to go out right now...
 	$> give_control()
 	=> END!

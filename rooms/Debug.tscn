@@ -484,7 +484,8 @@ return_control = false
 
 [node name="EvKick" parent="." unique_id=1509469914 instance=ExtResource("16_35d7e")]
 position = Vector2(-191, 60)
-flag = "HasBag"
+flag = "Player/NoBag"
+flag_should_be = true
 text_file = "interact_abad"
 text_cue = "kick_debug"
 

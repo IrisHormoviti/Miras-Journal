@@ -146,7 +146,7 @@ Mira: Mhm.
 Mira: Still no traces of {{alcine}} though... Where did they wander off to?
 $> Transition.wipe(Direction.LEFT)
 $> add_flag("Player/NoBag")
-$> add_flag("AlcineAlone")
+$> add_flag("Event/AlcineAlone")
 $> Party.reset_party()
 $> Party.Leader = Party.get_member("Alcine")
 $> Party.Leader.Controllable = true
@@ -158,7 +158,7 @@ $> save()
 ~ destroyed_guardian
 if Party.Leader.codename == "Alcine":
 	Alcine.Upset: Shwoooom...
-elif check_flag("EvDestroyedGuardian"):
+elif check_flag("Event/DestroyedGuardian"):
 	The remains of the Stone Guardian.
 	Daze cut it completely clean.
 elif Event.day == 0:
@@ -197,7 +197,7 @@ Mira.Neutral: Huh?
 Daze.Neutral: Did I do something wrong?
 $> Transition.wipe(Direction.RIGHT)
 $> remove_flag("Player/NoBag")
-$> remove_flag("AlcineAlone")
+$> remove_flag("Event/AlcineAlone")
 $> Party.set_to(["Mira"])
 $> to_day = 1
 $> to_time = 5
@@ -205,8 +205,8 @@ $> time_transition()
 => END
 
 ~ nov1_night
-$> add_flag("InCamp")
-$> add_flag("HasBag")
+$> add_flag("WitheredLeaves/InCamp")
+$> remove_flag("Player/NoBag")
 $> travel_to("WitheredLeaves", Vector2(777, -218))
 We setup a camp again, now reunited with {{alcine}}.
 {{alcine}}... does't seem to be very fond of him though.
@@ -225,7 +225,7 @@ $>> Transition.fade_out()
 $>> no_player()
 While sleeping I feel like I can barely breathe, like something liquid is surrounding me...
 I jump up. Then I see {{alcine}} fall off my face.
-if f_past("AlcineIsTheLeaderReal", 2):
+if f_past("Event/AlcineIsTheLeaderReal", 2):
 	Mira: Hey {{alcine}}, I don't think sitting on your allies' face is part of leadership...
 else: 
 	Mira: Oh, morning {{alcine}}...
@@ -246,8 +246,8 @@ I wake up, just to find I'm somewhere else.
 I'm being cheered on by people I do and don't know.
 Someone in front of me... my greatest enemy.
 I charge in with all my might.
-$> remove_flag("InCamp")
-$> add_flag("WLLeftSideOpen")
+$> remove_flag("WitheredLeaves/InCamp")
+$> add_flag("WitheredLeaves/WLLeftSideOpen")
 $> to_day = 2
 $> to_time = 2
 $> time_transition()
@@ -265,7 +265,7 @@ That was a dream?
 I need to stop sleeping all morning.
 $> Party.set_to(["Mira", "Alcine", "Daze"])
 $> remove_flag("Player/NoBag")
-$> remove_flag("AlcineAlone")
+$> remove_flag("Event/AlcineAlone")
 $> remove_flag("UI/HideDate")
 $> Loader.travel_to("WitheredLeaves", Vector2(775, -211), 0, Direction.DOWN)
 $> F1.position = F1.position + Vector2(24, 0)
@@ -359,7 +359,7 @@ $> Mira.bubble("Ellipsis")
 $> Daze.move_dir(Direction.DOWN)
 $> Daze.look_to(Direction.UP)
 $> wait(2)
-$> add_flag("Bunker1Open")
+$> add_flag("WitheredLeaves/Bunker1Open")
 $> check.emit()
 $> screen_shake()
 $> wait(0.5)
@@ -420,7 +420,7 @@ $> Battle.start("AsteriaBoss")
 $> wait_for_battle()
 if Battle.battle_result == 1:
 	$> Asteria.show()
-	$> add_flag("AsteriaBoss", 5)
+	$> add_flag("Event/AsteriaBoss", 5)
 	$> take_control()
 	$>> F1.move_by(Vector2(1, 0))
 	=> asteria_boss_after
@@ -471,7 +471,7 @@ Asteria.Neutral: I've known this place my whole life, nobody has ever been able 
 => asteria_joins
 
 ~ asteria_joins
-$> add_flag("InCamp")
+$> add_flag("WitheredLeaves/InCamp")
 $> Party.set_to(["Mira"])
 if time_of_day != 4:
 	$> to_day = 2
@@ -509,7 +509,7 @@ Mira: Yeah, I think I've seen something like it around. What is it?
 Asteria: Stab it as hard as you can.
 Mira: Huh? Okay...
 $> give_control(true)
-$> add_flag("VeinetDisabled")
+$> add_flag("Meta/Veinet/Disable")
 $> save()
 => END
 
@@ -531,8 +531,8 @@ This must be what she was reffering to.
 	Asteria: I'll take us to the village now. Ready? 
 	Mira: Which way do we... WHAAA-
 	As asteria moves, we're all dragged around and go really fast.
-	$> add_flag("VPOldCamp")
-	$> remove_flag("DisableVeinet")
+	$> add_flag("VeinPoint/OldCamp")
+	$> remove_flag("Meta/Veinet/Disable")
 	=> enter_pyrson
 - Not yet
 	$> give_control()
@@ -540,7 +540,7 @@ This must be what she was reffering to.
 
 ~ enter_pyrson
 $> Loader.travel_to("Pyrson", Vector2(0, 0), 0, Direction.RIGHT, false)
-$> remove_flag("InCamp")
+$> remove_flag("WitheredLeaves/InCamp")
 $>> player.hide()
 $>> player.camera_follow(false)
 $>> Transition.fade_out()
@@ -603,7 +603,7 @@ Feni.Neutral: Certainly. There should be a few unused rooms at Marcus'.
 Feni.Neutral: Can you take 'em there, dear?
 Asteria.Neutral: Right, follow me.
 [hide]
-$> add_flag("EvNov2TownHall")
+$> add_flag("Event/Nov2TownHall")
 $> travel_to("Pyrson", Vector2(275, 606), 0, Direction.DOWN, false)
 $> no_player()
 $> spawn("Asteria", Vector2(400, 606), Direction.LEFT, 0)
@@ -621,7 +621,7 @@ $>> Daze.look_to(Direction.LEFT)
 $>> Alcine.look_to(Direction.UP)
 Asteria.Neutral: Here, this is the building.
 [hide]
-$> add_flag("PyrsonHome")
+$> add_flag("Event/PyrsonHome")
 $> Party.set_to(["Mira"])
 $> Loader.travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(112, 439), 0, Direction.UP, false)
 $> spawn("Daze", Vector2(153, 474), Direction.UP, 0)
