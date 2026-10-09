@@ -330,7 +330,7 @@ func _on_attack() -> void:
 	PrevStage = "root"
 	CurrentChar.NextAction = Actor.BtAction.ACT
 	CurrentChar.NextMove = CurrentChar.StandardAttack
-	get_target(Bt.get_oposing_faction())
+	get_target(Bt.get_opposing_faction())
 
 
 func _on_ability() -> void:
@@ -777,7 +777,7 @@ func _on_ability_entry() -> void:
 			Ability.T.ONE_ENEMY:
 				PrevStage = "ability"
 				stage = &"target"
-				get_target(Bt.get_oposing_faction())
+				get_target(Bt.get_opposing_faction())
 
 			Ability.T.ONE_ALLY:
 				PrevStage = "ability"
@@ -802,7 +802,7 @@ func _on_ability_entry() -> void:
 			Ability.T.AOE_ENEMIES:
 				PrevStage = "ability"
 				stage = &"target"
-				var fact := Bt.get_oposing_faction(CurrentChar, !ab.CanTargetDead)
+				var fact := Bt.get_opposing_faction(CurrentChar, !ab.CanTargetDead)
 
 				for i in fact:
 					show_aoe_indicator(i)
@@ -845,7 +845,7 @@ func use_item() -> void:
 
 		if aitem.BattleEffect.Target == Ability.T.ONE_ENEMY:
 			CurrentChar.NextMove = aitem.BattleEffect
-			get_target(Bt.get_oposing_faction())
+			get_target(Bt.get_opposing_faction())
 
 
 func turn_order() -> void:

@@ -211,16 +211,8 @@ func _ready() -> void:
 	for i in range(1, 4):
 		if Party.has_member_index(i):
 			var member := Party.current[i]
-			var dub := act.get_node("Actor0").duplicate()
-			dub.name = "Actor" + str(i)
-			act.add_child(dub)
-			member.node = dub
-			dub.sprite_frames = await member.get_BT()
+			await create_actor_node(member, "Actor" + str(i))
 			TurnOrder.push_front(member)
-			dub.material = dub.material.duplicate()
-
-			if member.SoundSet:
-				dub.add_child(member.SoundSet.instantiate())
 
 	for i in Party.current:
 		if not i: continue
@@ -233,17 +225,11 @@ func _ready() -> void:
 		i.IsEnemy = false
 
 	for i in Troop.size():
-		var dub := act.get_node("Actor0").duplicate()
-		dub.name = "Enemy" + str(i)
-		act.add_child(dub)
-		Troop[i].node = dub
-		dub.sprite_frames = await Troop[i].get_BT()
-		dub.material = dub.material.duplicate()
+		var dub := await create_actor_node(Troop[i], "Enemy" + str(i))
 		dub.offset = Troop[i].Offset
 		dub.play("Idle")
 		Troop[i].Health = Troop[i].MaxHP
 		Troop[i].Aura = Troop[i].MaxAura
-		dub.add_child(Troop[i].SoundSet.instantiate())
 
 	if battle_advantage == 1:
 		for i in TurnOrder:
@@ -291,6 +277,29 @@ static func tween(
 	await t.finished
 
 
+## Duplicates the base battle sprite (Actor0) for an actor, parents it under
+## `node_name` in the Act node, and gives it the actor's battle sprites and
+## sound set.
+func create_actor_node(actor: Actor, node_name: String) -> AnimatedSprite2D:
+	var sprite: AnimatedSprite2D = act.get_node("Actor0").duplicate()
+	sprite.name = node_name
+	act.add_child(sprite)
+	actor.node = sprite
+	sprite.sprite_frames = await actor.get_BT()
+	sprite.material = sprite.material.duplicate()
+
+	# A duplicate made after Actor0 got its own sound set carries a stale "SFX"
+	# child; remove it so the actor's sound set can take its place.
+	if sprite.has_node("SFX"):
+		sprite.get_node("SFX").queue_free()
+		await Event.wait()
+
+	if actor.SoundSet:
+		sprite.add_child(actor.SoundSet.instantiate())
+
+	return sprite
+
+
 func sprite_init(i: Actor) -> void:
 	i.node.sprite_frames = await i.get_BT()
 	i.node.flip_h = i.FlipH
@@ -310,16 +319,14 @@ func sprite_init(i: Actor) -> void:
 
 
 func speed_sort(a: Actor, b: Actor) -> bool:
-	if a.Speed + a.SpeedBoost > b.Speed + b.SpeedBoost:
-		return true
-	elif a.Speed + a.SpeedBoost == b.Speed + b.SpeedBoost:
+	var a_speed := a.Speed + a.SpeedBoost
+	var b_speed := b.Speed + b.SpeedBoost
 
-		if a.IsEnemy:
-			return false
-		else:
-			return true
-	else:
-		return false
+	if a_speed == b_speed:
+		# Ties are broken in favour of party members.
+		return not a.IsEnemy
+
+	return a_speed > b_speed
 
 
 func turn_ui_init() -> void:
@@ -342,78 +349,44 @@ func turn_ui_check() -> void:
 		if i.get_meta("Actor") == CurrentChar: i.get_node("Arrow").show()
 		else: i.get_node("Arrow").hide()
 
+## Party sprite positions for each party size (leader first).
+const PARTY_POSITIONS := {
+	1: [Vector2(-45, 0)],
+	2: [Vector2(-45, -15), Vector2(-45, 45)],
+	3: [Vector2(-45, -25), Vector2(-45, 15), Vector2(-45, 55)],
+	4: [Vector2(-20, -40), Vector2(-45, -15), Vector2(-20, 15), Vector2(-45, 40)],
+}
+## Enemy sprite positions for each troop size.
+const ENEMY_POSITIONS := {
+	1: [Vector2(66, 0)],
+	2: [Vector2(66, -15), Vector2(46, 30)],
+	3: [Vector2(66, -25), Vector2(36, 15), Vector2(66, 55)],
+	4: [Vector2(66, -35), Vector2(36, 15), Vector2(90, 15), Vector2(66, 65)],
+}
+
 
 func position_sprites() -> void:
 	act.get_node("Actor0").show()
-	
-	match Query.number_of_party_members():
-		1:
-			Party.Leader.node.position = Vector2(-45, 0)
 
-		2:
-			Party.Leader.node.position = Vector2(-45, -15)
-			Party.current[1].node.show()
-			Party.current[1].node.position = Vector2(-45, 45)
+	var party_count := Query.number_of_party_members()
 
-		3:
-			Party.Leader.node.position = Vector2(-45, -25)
-			Party.current[1].node.show()
-			Party.current[1].node.position = Vector2(-45, 15)
-			Party.current[2].node.show()
-			Party.current[2].node.position = Vector2(-45, 55)
+	if PARTY_POSITIONS.has(party_count):
+		var party_positions: Array = PARTY_POSITIONS[party_count]
 
-		4:
-			Party.Leader.node.position = Vector2(-20, -40)
-			Party.current[1].node.show()
-			Party.current[1].node.position = Vector2(-45, -15)
-			Party.current[2].node.show()
-			Party.current[2].node.position = Vector2(-20, 15)
-			Party.current[3].node.show()
-			Party.current[3].node.position = Vector2(-45, 40)
+		for i in party_positions.size():
+			var member: Actor = Party.current[i]
+			member.node.show()
+			member.node.position = party_positions[i]
 
-	match Troop.size():
-		1:
-			act.get_node("Enemy0").show()
-			act.get_node("Enemy0").position = Vector2(66, 0)
+	if ENEMY_POSITIONS.has(Troop.size()):
+		var enemy_positions: Array = ENEMY_POSITIONS[Troop.size()]
 
-		2:
-			if act.has_node("Enemy0"):
-				act.get_node("Enemy0").show()
-				act.get_node("Enemy0").position = Vector2(66, -15)
+		for i in enemy_positions.size():
+			var enemy := act.get_node_or_null("Enemy" + str(i))
 
-			if act.has_node("Enemy1"):
-				act.get_node("Enemy1").show()
-				act.get_node("Enemy1").position = Vector2(46, 30)
-
-		3:
-			if act.has_node("Enemy0"):
-				act.get_node("Enemy0").show()
-				act.get_node("Enemy0").position = Vector2(66, -25)
-
-			if act.has_node("Enemy1"):
-				act.get_node("Enemy1").show()
-				act.get_node("Enemy1").position = Vector2(36, 15)
-
-			if act.has_node("Enemy2"):
-				act.get_node("Enemy2").show()
-				act.get_node("Enemy2").position = Vector2(66, 55)
-
-		4:
-			if act.has_node("Enemy0"):
-				act.get_node("Enemy0").show()
-				act.get_node("Enemy0").position = Vector2(66, -35)
-
-			if act.has_node("Enemy1"):
-				act.get_node("Enemy1").show()
-				act.get_node("Enemy1").position = Vector2(36, 15)
-
-			if act.has_node("Enemy2"):
-				act.get_node("Enemy2").show()
-				act.get_node("Enemy2").position = Vector2(90, 15)
-
-			if act.has_node("Enemy3"):
-				act.get_node("Enemy3").show()
-				act.get_node("Enemy3").position = Vector2(66, 65)
+			if enemy:
+				enemy.show()
+				enemy.position = enemy_positions[i]
 
 	for i in TurnOrder:
 		if i.CustomPosition != Vector2i.ZERO:
@@ -521,12 +494,9 @@ func _on_next_turn() -> void:
 
 
 func check_for_victory() -> bool:
-	var j: int = 0
+	var knocked_out := filter_actors_by_state(Troop, "Knocked Out").size()
 
-	for i in Troop:
-		if i.has_state("Knocked Out"): j += 1
-
-	if j == Troop.size() or Troop.size() == 0:
+	if knocked_out == Troop.size() or Troop.is_empty():
 		victory()
 		return true
 	else: return false
@@ -751,14 +721,11 @@ func battle_msg(id: String, insert := "MISSING", insert2 := "MISSING2") -> Strin
 	text = text.replace("[tar]", target.FirstName)
 	text = text.replace("[insert]", insert)
 	text = text.replace("[insert2]", insert2)
-	text = text.replace("[cur_themself]", CurrentChar.get_pronoun("themself"))
-	text = text.replace("[cur_they]", CurrentChar.get_pronoun("they"))
-	text = text.replace("[cur_them]", CurrentChar.get_pronoun("them"))
-	text = text.replace("[cur_their]", CurrentChar.get_pronoun("their"))
-	text = text.replace("[tar_themself]", target.get_pronoun("themself"))
-	text = text.replace("[tar_they]", target.get_pronoun("they"))
-	text = text.replace("[tar_them]", target.get_pronoun("them"))
-	text = text.replace("[tar_their]", target.get_pronoun("their"))
+
+	for pronoun in ["themself", "they", "them", "their"] as PackedStringArray:
+		text = text.replace("[cur_" + pronoun + "]", CurrentChar.get_pronoun(pronoun))
+		text = text.replace("[tar_" + pronoun + "]", target.get_pronoun(pronoun))
+
 	UI.toast(text)
 	return text
 
@@ -802,7 +769,9 @@ func end_turn(confirm_aoe := false) -> void:
 	aoe_returns = 0
 
 	for i in TurnOrder:
-		if i.Aura == 0 and not i.has_state("AuraBreak") and not i.has_state("UnbreakingAura") and not i.has_state("KnockedOut") and i.Health != 0:
+		if i.Aura == 0 and i.Health != 0 and not (
+			i.has_state("AuraBreak") or i.has_state("UnbreakingAura") or i.has_state("KnockedOut")
+		):
 			await i.add_state("AuraBreak")
 			if i != CurrentChar:
 				follow_up_next = true
@@ -915,31 +884,7 @@ func damage(
 
 	if CurrentAbility.RecoverAura: CurrentChar.add_aura(dmg / 2)
 
-	if elemental:
-		var base_dmg := int(dmg * target.Defence * 2 * target.DefenceMultiplier)
-		var aur_dmg := relation_to_aura_dmg(relation, base_dmg)
-		print(target.FirstName, " takes ", aur_dmg, " aura damage")
-		target.add_aura(-aur_dmg)
-		pop_num(target, dmg, color)
-		
-		# Show the popup text
-		match relation:
-			"wk": pop_num(target, "WEAK")
-			"op": pop_num(target, "WEAK!")
-			"res": pop_num(target, "RESIST")
-	else: pop_num(target, dmg)
-
-	if !target.IsEnemy:
-		Hud.hit_partybox(Party.current.find(target), int(dmg / 2), int(dmg * 100 / target.MaxHP * 100) / 300)
-	else:
-		Event.node_shake(enemy_ui.get_node("EnemyFocus"), int(dmg), int(dmg * 100 / target.MaxHP * 100) / 300)
-
-	if target.Controllable:
-		Controller.rumble(remap(dmg * 2, 0, target.MaxHP, 0, 1), remap(dmg, 0, 100, 0, 1), remap(dmg * 2, 0, target.MaxHP, 0, 1))
-	elif CurrentChar.Controllable:
-		Controller.rumble(remap(dmg, 0, target.MaxHP, 0, 0.5), remap(dmg, 0, 100, 0, 1), remap(dmg, 0, target.MaxHP, 0, 0.5))
-	else:
-		Controller.rumble(remap(dmg, 0, target.MaxHP, 0, 0.3), remap(dmg, 0, 100, 0, 0.5), remap(dmg, 0, 100, 0, 0.5))
+	damage_feedback(target, dmg, color, relation, elemental)
 
 	check_party.emit()
 	if target.Health == 0:
@@ -972,6 +917,36 @@ func damage(
 	return dmg
 
 
+## Applies the visual and audio feedback of a landed hit: aura drain, damage
+## numbers, HUD shake and controller rumble.
+func damage_feedback(target: Actor, dmg: int, color: Color, relation: String, elemental: bool) -> void:
+	if elemental:
+		var base_dmg := int(dmg * target.Defence * 2 * target.DefenceMultiplier)
+		var aur_dmg := relation_to_aura_dmg(relation, base_dmg)
+		print(target.FirstName, " takes ", aur_dmg, " aura damage")
+		target.add_aura(-aur_dmg)
+		pop_num(target, dmg, color)
+
+		# Show the popup text
+		match relation:
+			"wk": pop_num(target, "WEAK")
+			"op": pop_num(target, "WEAK!")
+			"res": pop_num(target, "RESIST")
+	else: pop_num(target, dmg)
+
+	if !target.IsEnemy:
+		Hud.hit_partybox(Party.current.find(target), int(dmg / 2), int(dmg * 100 / target.MaxHP * 100) / 300)
+	else:
+		Event.node_shake(enemy_ui.get_node("EnemyFocus"), int(dmg), int(dmg * 100 / target.MaxHP * 100) / 300)
+
+	if target.Controllable:
+		Controller.rumble(remap(dmg * 2, 0, target.MaxHP, 0, 1), remap(dmg, 0, 100, 0, 1), remap(dmg * 2, 0, target.MaxHP, 0, 1))
+	elif CurrentChar.Controllable:
+		Controller.rumble(remap(dmg, 0, target.MaxHP, 0, 0.5), remap(dmg, 0, 100, 0, 1), remap(dmg, 0, target.MaxHP, 0, 0.5))
+	else:
+		Controller.rumble(remap(dmg, 0, target.MaxHP, 0, 0.3), remap(dmg, 0, 100, 0, 0.5), remap(dmg, 0, 100, 0, 0.5))
+
+
 func queue_sequence_for_actor(chara: Actor, sequence_name: String) -> void:
 	var ab := Ability.nothing().duplicate()
 	ab.name = sequence_name
@@ -981,11 +956,11 @@ func queue_sequence_for_actor(chara: Actor, sequence_name: String) -> void:
 	chara.NextAction = Actor.BtAction.ACT
 
 
-func hit_animation(tar: Actor) -> void:
-	if tar.node.animation != "KnockedOut":
-		anim("Hit", tar)
-		await tar.node.animation_finished
-		anim("Idle", tar)
+func hit_animation(target: Actor) -> void:
+	if target.node.animation != "KnockedOut":
+		anim("Hit", target)
+		await target.node.animation_finished
+		anim("Idle", target)
 
 
 func outline(target: Actor, color: Color = target.MainColor) -> void:
@@ -1002,15 +977,15 @@ func outline_remove(target: Actor, time := 0.5) -> void:
 		target.node.material.set_shader_parameter("outline_enabled", false)
 
 
-func screen_shake(amount: float = 15, times: float = 7, ShakeDuration: float = 0.2) -> void:
+func screen_shake(amount: float = 15, times: float = 7, duration: float = 0.2) -> void:
 	var t := create_tween()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)
-	var dur := ShakeDuration / times
+	var dur := duration / times
 	var am := amount
 
 	if Input.get_joy_vibration_strength(0) == Vector2.ZERO:
-		Controller.rumble(amount / 20, times / 10, ShakeDuration)
+		Controller.rumble(amount / 20, times / 10, duration)
 
 	for i in range(0, times):
 		am = am - (amount / times)
@@ -1023,23 +998,23 @@ func screen_shake(amount: float = 15, times: float = 7, ShakeDuration: float = 0
 	await t.finished
 
 
-func play_effect(stri: String, tar: Variant, offset := Vector2.ZERO, flip_on_player_use := false, dont_free := false) -> void:
-	if effects.sprite_frames.has_animation(stri):
-		print_rich("[color=cornflower-blue]Playing effect ", stri)
+func play_effect(animation: String, target: Variant, offset := Vector2.ZERO, flip_on_player_use := false, dont_free := false) -> void:
+	if effects.sprite_frames.has_animation(animation):
+		print_rich("[color=cornflower-blue]Playing effect ", animation)
 
-		if tar is not Vector2:
-			if tar is Actor and is_instance_valid(tar) and is_instance_valid(tar.node): tar = tar.node.position
+		if target is not Vector2:
+			if target is Actor and is_instance_valid(target) and is_instance_valid(target.node): target = target.node.position
 			else:
-				push_error("The target of the effect ", stri, " was invalid")
+				push_error("The target of the effect ", animation, " was invalid")
 				return
 
 		var ef: AnimatedSprite2D = effects.duplicate()
 
 		if flip_on_player_use and !CurrentChar.IsEnemy: ef.flip_h = true
-		ef.name = stri
+		ef.name = animation
 		act.add_child(ef)
-		ef.position = tar + offset
-		ef.play(stri)
+		ef.position = target + offset
+		ef.play(animation)
 		await ef.animation_finished
 		if not dont_free: ef.queue_free()
 
@@ -1083,7 +1058,7 @@ func is_valid_target(target: Actor, ability: Ability = CurrentChar.NextMove) -> 
 		if target in get_ally_faction(): return false
 
 	if ability.Target == Ability.T.ONE_ALLY or ability.Target == Ability.T.AOE_ALLIES:
-		if target in get_oposing_faction(): return false
+		if target in get_opposing_faction(): return false
 
 	if target.has_state("KnockedOut"):
 		if !ability.CanTargetDead: return false
@@ -1132,16 +1107,16 @@ func pop_num(target: Actor, text: Variant, color: Color = Color.WHITE) -> void:
 			number.queue_free()
 
 
-func play_sound(SoundName: String, actor: Actor = null, volume: float = 1) -> void:
+func play_sound(sound_name: String, actor: Actor = null, volume: float = 1) -> void:
 	$AudioListener2D.make_current()
 	var player: AudioStreamPlayer2D
-	if actor and actor.node.get_node("SFX").has_node(SoundName):
-		player = actor.node.get_node("SFX").get_node(SoundName)
+	if actor and actor.node.get_node("SFX").has_node(sound_name):
+		player = actor.node.get_node("SFX").get_node(sound_name)
 	else:
 		player = $Audio/Stream0.duplicate()
 		$Audio.add_child(player)
-		if not ResourceLoader.exists("res://sound/SFX/Battle/" + SoundName + ".ogg"): return
-		player.stream = await Loader.load_res("res://sound/SFX/Battle/" + SoundName + ".ogg")
+		if not ResourceLoader.exists("res://sound/SFX/Battle/" + sound_name + ".ogg"): return
+		player.stream = await Loader.load_res("res://sound/SFX/Battle/" + sound_name + ".ogg")
 
 		if actor: player.global_position = actor.node.global_position
 
@@ -1151,9 +1126,9 @@ func play_sound(SoundName: String, actor: Actor = null, volume: float = 1) -> vo
 	if player.get_parent() == $Audio: player.queue_free()
 
 
-func stop_sound(SoundName: String, actor: Actor) -> void:
-	if actor.node.get_node("SFX").has_node(SoundName):
-		actor.node.get_node("SFX").get_node(SoundName).stop()
+func stop_sound(sound_name: String, actor: Actor) -> void:
+	if actor.node.get_node("SFX").has_node(sound_name):
+		actor.node.get_node("SFX").get_node(sound_name).stop()
 
 
 ## Runs when an actor is defeated, usually when HP reaches 0
@@ -1255,33 +1230,34 @@ func delete_actor(target: Actor) -> void:
 
 
 func slowmo(timescale := 0.5, time := 1.0) -> void:
-	Engine.time_scale = 0.5
+	Engine.time_scale = timescale
 	await Event.wait(time * timescale)
 	Engine.time_scale = 1
 
 
+## Returns the enemy faction or the party, depending on `enemies`.
+## Optionally filters out defeated actors.
+func get_faction(enemies: bool, filter_out_dead := true) -> Array[Actor]:
+	var rtn: Array[Actor] = Troop if enemies else Party.current
+
+	if filter_out_dead: rtn = filter_dead(rtn)
+	return rtn
+
+
+## The faction the given actor fights alongside.
 func get_ally_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
-	var rtn: Array[Actor]
-	if actor.IsEnemy: rtn = Troop
-	else: rtn = Party.current
-
-	if filter_out_dead: rtn = filter_dead(rtn)
-	return rtn
+	return get_faction(actor.IsEnemy, filter_out_dead)
 
 
-func get_oposing_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
-	var rtn: Array[Actor]
-	if actor.IsEnemy: rtn = Party.current
-	else: rtn = Troop
-
-	if filter_out_dead: rtn = filter_dead(rtn)
-	return rtn
+## The faction the given actor fights against.
+func get_opposing_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
+	return get_faction(not actor.IsEnemy, filter_out_dead)
 
 
 func get_target_faction(ab := CurrentAbility) -> Array[Actor]:
 	match ab.Target:
 		Ability.T.AOE_ALLIES: return get_ally_faction(CurrentChar, !ab.CanTargetDead)
-		Ability.T.AOE_ENEMIES: return get_oposing_faction()
+		Ability.T.AOE_ENEMIES: return get_opposing_faction()
 		_: return [CurrentTarget]
 
 
@@ -1470,11 +1446,10 @@ func end_battle() -> void:
 	Hud.shrink()
 	if sequence.Detransition or battle_result != Result.VICTORY:
 		hide_victory_stuff()
-		Global.bt.zoom(4)
+		zoom(4)
 		Loader.battle_bars(4)
 		await get_tree().create_timer(0.5).timeout
-		if is_instance_valid(Global.bt):
-			Global.bt.queue_free()
+		queue_free()
 	else:
 		var t := create_tween()
 		t.set_ease(Tween.EASE_OUT)
@@ -1482,7 +1457,7 @@ func end_battle() -> void:
 		t.set_parallel()
 		#Engine.time_scale = 0.1
 		Global.room.setup_zoom(true)
-		for i in Global.bt.TurnOrder:
+		for i in TurnOrder:
 			t.tween_property(i.node.get_node("Glow"), "energy", 0, 0.3)
 
 		background.material = null
@@ -1545,12 +1520,12 @@ func hide_victory_stuff() -> void:
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)
 	t.set_parallel()
-	for i in Global.bt.get_node("Canvas").get_children():
+	for i in canvas.get_children():
 		if i.name != "DottedBack":
 			t.tween_property(i, "position:x", i.position.x + 500, 0.3)
 			t.tween_property(i, "modulate", Color.TRANSPARENT, 0.3)
 
-	t.tween_property(Global.bt.get_node("Canvas/DottedBack"), "modulate", Color(0.188, 0.188, 0.188, 0), 0.5)
+	t.tween_property(canvas.get_node("DottedBack"), "modulate", Color(0.188, 0.188, 0.188, 0), 0.5)
 
 
 func reset_all() -> void:
@@ -1673,21 +1648,24 @@ func victory(ignore_seq := false) -> void:
 	enemy_ui.colapse_root()
 	AwaitVictory = true
 
-	if is_instance_valid(Global.player):
-		if sequence.UseBackground:
-			pass
-		else:
-			Global.player.global_position = act.get_node("Actor0").global_position
+	if is_instance_valid(Global.player) and not sequence.UseBackground:
+		align_player_to_battle()
 
-			for i in range(1, 4):
-				if Party.has_member_index(i):
-					Global.room.followers[i - 1].global_position = act.get_node("Actor" + str(i)).global_position
 
-			Global.camera.position_smoothing_enabled = false
-			Global.camera.global_position = cam.global_position
-			Global.camera.enabled = true
-			cam.enabled = false
-			Global.camera.zoom = cam.zoom
+## Lines the overworld player and followers up with their battle sprites so the
+## camera can be handed back seamlessly when the battle ends.
+func align_player_to_battle() -> void:
+	Global.player.global_position = act.get_node("Actor0").global_position
+
+	for i in range(1, 4):
+		if Party.has_member_index(i):
+			Global.room.followers[i - 1].global_position = act.get_node("Actor" + str(i)).global_position
+
+	Global.camera.position_smoothing_enabled = false
+	Global.camera.global_position = cam.global_position
+	Global.camera.enabled = true
+	cam.enabled = false
+	Global.camera.zoom = cam.zoom
 
 
 func victory_music() -> void:
@@ -1763,20 +1741,12 @@ func add_to_troop(en: Actor) -> void:
 	en = en.duplicate()
 	lock_turn = true
 	Troop.append(en)
-	var dub: AnimatedSprite2D = act.get_node("Actor0").duplicate()
-	dub.name = "Enemy" + str(Troop.size() - 1)
-	act.add_child(dub)
+	var dub := await create_actor_node(en, "Enemy" + str(Troop.size() - 1))
 	TurnOrder.push_front(en)
-	en.node = dub
-	dub.sprite_frames = await en.get_BT()
-	dub.material = dub.material.duplicate()
 	dub.offset = en.Offset
 	anim(&"Idle", en)
 	en.Health = en.MaxHP
 	en.Aura = en.MaxAura
-	dub.get_node("SFX").queue_free()
-	await Event.wait()
-	dub.add_child(en.SoundSet.instantiate())
 	outline_remove(en)
 	TurnOrder.sort_custom(speed_sort)
 	TurnInd = TurnOrder.find(CurrentChar)
@@ -1801,8 +1771,7 @@ func color_relation(offender: Color, defender: Color) -> String:
 
 	if def.hue in affinity.oposing_range: return "op"
 	elif def.hue in affinity.weak_range: return "wk"
-	elif def.hue in affinity.resist_range: return "res"
-	elif def.hue in affinity.near_range: return "res"
+	elif def.hue in affinity.resist_range or def.hue in affinity.near_range: return "res"
 	else: return "n"
 
 
@@ -1941,7 +1910,7 @@ func get_actor(codename: StringName, unsafe := false) -> Actor:
 
 
 func has_actor(codename: StringName) -> bool:
-	return not get_actor(codename, true) == null
+	return get_actor(codename, true) != null
 
 
 func random_target(ab: Ability) -> Actor:
@@ -1951,13 +1920,12 @@ func random_target(ab: Ability) -> Actor:
 			return CurrentChar
 
 		Ability.T.ONE_ENEMY:
-			var faction := get_oposing_faction(CurrentChar, !ab.CanTargetDead)
+			var faction := get_opposing_faction(CurrentChar, !ab.CanTargetDead)
 
 			if faction.is_empty(): return null
 			else: return faction.pick_random()
 
 		Ability.T.ONE_ALLY:
-			print_rich("[color=cornflower-blue]a")
 			var faction := get_ally_faction(CurrentChar, !ab.CanTargetDead)
 
 			if faction.is_empty(): return null
@@ -1988,10 +1956,10 @@ func filter_actors_by_state(input: Array[Actor], state: String) -> Array[Actor]:
 
 
 func filter_dead(arr: Array[Actor]) -> Array[Actor]:
-	var warr := arr.duplicate()
+	var warr: Array[Actor] = []
 
 	for i in arr:
-		if i.has_state("KnockedOut") or i.Health == 0: warr.erase(i)
+		if not i.has_state("KnockedOut") and i.Health != 0: warr.append(i)
 
 	return warr
 

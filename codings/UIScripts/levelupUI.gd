@@ -232,6 +232,15 @@ func complimentary_cutin(from_name: String, font_color: Color) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	if not visible: return
+
+	if Input.is_action_just_pressed(Controller.confirm()):
+		if active:
+			_confirm()
+		elif $ChooseUpgrade/Continue.visible:
+			close()
+		return
+
 	if not active: return
 	if Input.is_action_just_pressed("ui_down"):
 		index += 1

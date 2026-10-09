@@ -901,7 +901,7 @@ func HeatWave(target: Actor) -> void:
 		await Event.wait(1)
 		additional_done.emit()
 		await Event.wait(0.3)
-		if Bt.filter_actors_by_state(Bt.get_oposing_faction(), "Burned").is_empty():
+		if Bt.filter_actors_by_state(Bt.get_opposing_faction(), "Burned").is_empty():
 			Bt.battle_msg("nothing_happened")
 			await Event.wait(1)
 
@@ -956,7 +956,7 @@ func Humidity(target: Actor) -> void:
 		await Event.wait(1)
 		additional_done.emit()
 		await Event.wait(0.3)
-		if Bt.filter_actors_by_state(Bt.get_oposing_faction(), "Soaked").is_empty():
+		if Bt.filter_actors_by_state(Bt.get_opposing_faction(), "Soaked").is_empty():
 			Bt.battle_msg("nothing_happened")
 
 		await Event.wait(1)

@@ -25,13 +25,13 @@ enum TP {
 
 ## Damage type
 enum D {
-	NONE = 0, ## This abilitiy does no damage
-	WEAK = 12, ## 12
-	MEDIUM = 24, ## 24
-	HEAVY = 48, ## 48
-	SEVERE = 96, ## 96
-	CUSTOM = -2, ## Specify in parameter
-	WEAPON = -1 ## Uses weapon stats
+	NONE, ## This abilitiy does no damage
+	WEAK, ## 12
+	MEDIUM, ## 24
+	HEAVY, ## 48
+	SEVERE, ## 96
+	CUSTOM, ## Specify in parameter
+	WEAPON ## Uses weapon stats
 }
 
 ##0: Target range
