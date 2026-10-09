@@ -957,9 +957,9 @@ use_name_as_flag = false
 take_control = false
 return_control = false
 ShowTextbox = true
+textbox_mode = "Passive"
 text_file = "story_0"
 text_cue = "hey_wait"
-use_passive_textbox = true
 
 [node name="EvAlcineFollow3" parent="Event" unique_id=73391420 instance=ExtResource("36_2q7ov")]
 z_index = 1
@@ -980,9 +980,9 @@ add_the_flag = true
 take_control = false
 return_control = false
 ShowTextbox = true
+textbox_mode = "Passive"
 text_file = "story_0"
 text_cue = "a_bridge"
-use_passive_textbox = true
 AlterMovement = true
 slow_down = true
 
@@ -1004,10 +1004,8 @@ position = Vector2(-1, 0)
 collision_layer = 257
 collision_mask = 257
 label_text = "Pick up"
-action_type = "event"
-file = "axe_seq"
-dialogue_file = "axe_seq"
-itemtype = "Key"
+dialogue_file = "story_0"
+dialogue_cue = "axe_seq"
 add_flag = true
 hide_this_node = true
 hide_parent = true
@@ -1031,9 +1029,8 @@ position = Vector2(-1, 0)
 collision_layer = 257
 collision_mask = 257
 label_text = "Pick up"
-action_type = "event"
-file = "bag_seq"
-dialogue_file = "bag_seq"
+dialogue_file = "story_0"
+dialogue_cue = "bag_seq"
 return_control = false
 show_on_flag = &"day=0"
 hide_on_flag = &"HasBag"
@@ -1247,8 +1244,10 @@ position = Vector2(1956, -1758)
 trigger_size = Vector2i(76, 50)
 flag = "EnterAmberelm"
 return_control = false
-PlayEvent = true
-event_name = "enter_amberelm"
+ShowTextbox = true
+textbox_mode = "Headless"
+text_file = "story_0"
+text_cue = "enter_amberelm"
 
 [node name="RegionEnemy" type="NavigationRegion2D" parent="." unique_id=213061388]
 visible = false

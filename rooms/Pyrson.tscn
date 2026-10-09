@@ -81,16 +81,6 @@ script = ExtResource("9_nlfpl")
 [sub_resource type="Resource" id="Resource_4ygg4"]
 script = ExtResource("9_nlfpl")
 
-[sub_resource type="Resource" id="Resource_n1bc5"]
-script = ExtResource("9_nlfpl")
-way = 2
-
-[sub_resource type="Resource" id="Resource_7edst"]
-script = ExtResource("9_nlfpl")
-
-[sub_resource type="Resource" id="Resource_4a3rh"]
-script = ExtResource("9_nlfpl")
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ig8e"]
 size = Vector2(41, 14)
 
@@ -423,8 +413,7 @@ facing = SubResource("Resource_nlfpl")
 [node name="TalkPrompt" parent="NPCs/AsteriaOutsideHouse" unique_id=776850733 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
 label_text = "Talk"
-action_type = "social_link"
-file = "sl_asteria"
+action_type = "text"
 dialogue_file = "sl_asteria"
 dialogue_cue = ""
 to_time_relative = 2
@@ -437,29 +426,6 @@ position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_taf6h")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="NPCs/AsteriaOutsideHouse" unique_id=15157718]
-use_parent_material = true
-position = Vector2(0, 1)
-sprite_frames = ExtResource("21_4lmea")
-animation = &"IdleDown"
-autoplay = "IdleDown"
-offset = Vector2(0, -10)
-
-[node name="TalkPrompt2" parent="NPCs/AsteriaOutsideHouse" unique_id=1839600409 instance=ExtResource("9_w0u03")]
-position = Vector2(-1, -3)
-label_text = "Talk"
-action_type = "social_link"
-file = "sl_asteria"
-dialogue_file = "sl_asteria"
-dialogue_cue = ""
-to_time_relative = 2
-bubble_always = true
-bubble_height = 15
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="NPCs/AsteriaOutsideHouse" unique_id=909974430]
-position = Vector2(-1, 0)
-shape = SubResource("RectangleShape2D_taf6h")
-
-[node name="Sprite2" type="AnimatedSprite2D" parent="NPCs/AsteriaOutsideHouse" unique_id=397326339]
 use_parent_material = true
 position = Vector2(0, 1)
 sprite_frames = ExtResource("21_4lmea")
@@ -481,8 +447,7 @@ facing = SubResource("Resource_2ig8e")
 [node name="TalkPrompt" parent="NPCs/AsteriaPlaza" unique_id=523109857 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
 label_text = "Talk"
-action_type = "social_link"
-file = "sl_asteria"
+action_type = "text"
 dialogue_file = "sl_asteria"
 dialogue_cue = ""
 to_time = -1
@@ -496,29 +461,6 @@ position = Vector2(-1, 0)
 shape = SubResource("RectangleShape2D_taf6h")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="NPCs/AsteriaPlaza" unique_id=1696025331]
-use_parent_material = true
-position = Vector2(0, 1)
-sprite_frames = ExtResource("21_4lmea")
-animation = &"IdleRight"
-frame_progress = 0.546041
-offset = Vector2(0, -10)
-
-[node name="TalkPrompt2" parent="NPCs/AsteriaPlaza" unique_id=1056713524 instance=ExtResource("9_w0u03")]
-position = Vector2(-1, -3)
-label_text = "Talk"
-file = "sl_asteria"
-dialogue_file = "sl_asteria"
-dialogue_cue = ""
-to_time = -1
-to_time_relative = 2
-bubble_always = true
-bubble_height = 15
-
-[node name="CollisionShape2D3" type="CollisionShape2D" parent="NPCs/AsteriaPlaza" unique_id=1393124645]
-position = Vector2(-1, 0)
-shape = SubResource("RectangleShape2D_taf6h")
-
-[node name="Sprite2" type="AnimatedSprite2D" parent="NPCs/AsteriaPlaza" unique_id=957021480]
 use_parent_material = true
 position = Vector2(0, 1)
 sprite_frames = ExtResource("21_4lmea")
@@ -554,8 +496,7 @@ offset = Vector2(0, -16)
 [node name="TalkPrompt" parent="NPCs/Maple" unique_id=2087883881 instance=ExtResource("9_w0u03")]
 position = Vector2(1.14441e-05, 1)
 label_text = "Talk"
-action_type = "social_link"
-file = "sl_maple"
+action_type = "text"
 dialogue_file = "sl_maple"
 dialogue_cue = ""
 to_time = -1
@@ -564,42 +505,9 @@ hide_parent = true
 free_on_hide = true
 bubble_always = true
 
-[node name="Sprite2" type="AnimatedSprite2D" parent="NPCs/Maple" unique_id=266464559]
-use_parent_material = true
-position = Vector2(0, 3)
-sprite_frames = ExtResource("17_585ds")
-animation = &"IdleDown"
-autoplay = "IdleDown"
-frame_progress = 0.137967
-offset = Vector2(0, -16)
-
-[node name="TalkPrompt2" parent="NPCs/Maple" unique_id=1059377953 instance=ExtResource("9_w0u03")]
-position = Vector2(1.14441e-05, 1)
-label_text = "Talk"
-file = "sl_maple"
-dialogue_file = "sl_maple"
-to_time = -1
-to_time_relative = 2
-hide_this_node = true
-bubble_always = true
-
 [node name="HideOnFlag" parent="NPCs/Maple" unique_id=1780838806 instance=ExtResource("12_nlfpl")]
 flag = "SocialLink/Maple=0"
 also_hide_on_reserved_dates = true
-
-[node name="AsteriaOutsideHouse2" parent="NPCs" unique_id=1309029277 instance=ExtResource("16_s1pqb")]
-z_index = 0
-position = Vector2(412, 221)
-facing = SubResource("Resource_n1bc5")
-
-[node name="AsteriaPlaza2" parent="NPCs" unique_id=1506030897 instance=ExtResource("16_s1pqb")]
-position = Vector2(500, 666)
-facing = SubResource("Resource_7edst")
-
-[node name="Maple2" parent="NPCs" unique_id=913600050 instance=ExtResource("16_s1pqb")]
-z_index = 4
-position = Vector2(715, 505)
-facing = SubResource("Resource_4a3rh")
 
 [node name="JumpPoints" type="Node" parent="." unique_id=483877055]
 
@@ -645,9 +553,6 @@ jump_am = 3
 jump_am_v = 1
 to_z = 0
 to_layers = 3
-
-[node name="NPCs2" type="Node2D" parent="." unique_id=998508411]
-use_parent_material = true
 
 [node name="Chairs" type="Node" parent="." unique_id=729285830]
 
@@ -1100,8 +1005,7 @@ facing = SubResource("Resource_sdewa")
 [node name="TalkPrompt" parent="LindeHouse/Linde" unique_id=2045856511 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)
 label_text = "Talk"
-action_type = "social_link"
-file = "sl_linde"
+action_type = "text"
 dialogue_file = "sl_linde"
 dialogue_cue = ""
 to_time = -1
@@ -1141,13 +1045,12 @@ shape = SubResource("RectangleShape2D_u5udm")
 position = Vector2(0, -1)
 collision_layer = 271
 collision_mask = 271
-action_type = "social_link"
-file = "sl_linde"
+action_type = "text"
 dialogue_file = "sl_linde"
-dialogue_cue = ""
+dialogue_cue = "linde_door"
 to_time = -1
 to_time_relative = 1
-hide_on_flag = &"LindeDoor"
+hide_on_flag = &"Event/LindeDoor"
 hide_parent = true
 free_on_hide = true
 

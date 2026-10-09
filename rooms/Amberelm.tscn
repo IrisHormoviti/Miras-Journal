@@ -642,10 +642,8 @@ z_index = 8
 position = Vector2(83, 352)
 trigger_size = 24
 label_text = "Rest"
-file = "rest_amberelm"
 dialogue_file = "story_0"
 dialogue_cue = "rest_amberelm"
-itemtype = ""
 to_time = 2
 show_on_flag = &"day=0+time=1"
 
@@ -654,8 +652,10 @@ z_index = 5
 position = Vector2(224, 407)
 trigger_size = Vector2i(80, 50)
 return_control = false
-PlayEvent = true
-event_name = "enter_amberelm_2"
+ShowTextbox = true
+textbox_mode = "Headless"
+text_file = "story_0"
+text_cue = "enter_amberelm_2"
 
 [node name="EvStoneGuardian" parent="." unique_id=28897104 instance=ExtResource("30_djhcr")]
 position = Vector2(2460, -120)
@@ -663,10 +663,10 @@ trigger_size = Vector2i(50, 140)
 flag = "BeatStoneGuardian"
 use_name_as_flag = false
 return_control = false
-PlayEvent = true
-event_name = "amberelm_guardian"
 ShowTextbox = true
-AlterMovement = true
+textbox_mode = "Headless"
+text_file = "story_0"
+text_cue = "amberelm_guardian"
 
 [node name="EvStoneGuardianCheckBody" parent="." unique_id=1297631556 instance=ExtResource("30_djhcr")]
 position = Vector2(2567, -121)
@@ -684,7 +684,9 @@ flag = "AlcineAlone"
 flag_should_be = true
 use_name_as_flag = false
 return_control = false
-event_name = "amberelm_reunion"
+ShowTextbox = true
+text_file = "story_1"
+text_cue = "amberelm_reunion"
 
 [node name="InteractBackround" parent="." unique_id=373005192 instance=ExtResource("5_3ycob")]
 position = Vector2(69, 206)

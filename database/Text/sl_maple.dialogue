@@ -1,19 +1,31 @@
-~ prepare
-do Textbox.open("rank"+str(Event.condition("sl_maple"))+"_prepare")
+match get_flag("SocialLink/Maple"):
+	when 0:
+		=> rank1_prepare
 => END
 
 ~ rank1_prepare
 Maple.Neutral: Hello mira
 if confirm_time_passage("Talk to Maple" ,"I can get to know Maple a bit better. This might also allow me make better force orbs."):
 	Maple.Neutral: Let's go then
-	do! sequence("sl_maple_1")
+	$>> run_cue("sl_maple", "rank1")
 else:
 	Maple.Neutral: Okay...
+=> END
+
+~ rank1
+$> travel_to("Pyrson", Vector2(362, 778), 0, "wait")
+$> no_player()
+$> spawn("Mira:MiraOVBag", Vector2(300, 778), Direction.RIGHT)
+$> spawn("Maple", Vector2(350, 778), Direction.LEFT)
+$> zoom(5)
+$>> Transition.unwipe()
+$> wait(1)
+$> Textbox.open("sl_maple", "rank1_1")
+$> progress_by_time(1)
+$>> time_transition()
 => END
 
 ~ rank1_1
 Pretend a conversation is happening
 Ok now time moves forward
-do time_transition()
-do travel_to("Pyrson")
 => END

@@ -28,7 +28,6 @@ signal action()
 	"toggle",
 	"item",
 	"battle",
-	"event",
 	"veinet",
 	"focus_cam",
 	"chair",
@@ -42,6 +41,8 @@ signal action()
 @export var file: String = ""
 @export_enum("testbush") var dialogue_file: String = "testbush"
 @export_enum("start") var dialogue_cue: String = "start"
+## How the dialogue is played
+@export_enum("Textbox", "Passive", "Headless") var textbox_mode: String = "Textbox"
 
 @export_enum("Con", "Mat", "Bti", "Key") var itemtype := "Con":
 	set(x):
@@ -50,7 +51,9 @@ signal action()
 		notify_property_list_changed()
 
 @export_enum("Failed to Load") var item := ""
+## Default time of day for the dialogue's confirm_time_passage() to move to
 @export var to_time: Event.TOD
+## Instead of to_time, pass this many time slots from the current time
 @export var to_time_relative: int
 @export var chair_faces: Array[String] = ["U", "D", "L", "R"]
 @export var return_control := true
@@ -84,13 +87,14 @@ var used_properties: Array[String]
 var action_options: Array[String] = [
 		"file",
 		"dialogue_cue",
+		"dialogue_file",
+		"textbox_mode",
 		"item",
 		"itemtype",
 		"to_time",
 		"to_time_relative",
 		"return_control",
 		"chair_faces",
-		"dialogue_file",
 		"focus_position",
 	]
 
@@ -115,7 +119,7 @@ func setup_action_options() -> void:
 	if dialogue_file.is_empty(): dialogue_file = file
 	match action_type:
 		"text":
-			used_properties = ["dialogue_cue", "return_control", "event_condition", "dialogue_file"]
+			used_properties = ["dialogue_cue", "dialogue_file", "textbox_mode", "return_control"]
 
 		"toggle":
 			used_properties = []
@@ -124,15 +128,11 @@ func setup_action_options() -> void:
 		"battle":
 			used_properties = ["file", "return_control"]
 
-		"event": used_properties = ["event_condition", "file", "return_control"]
-		"pass_time": used_properties = ["event_condition", "to_time", "return_control", "to_time_relative"]
 		"item":
 			used_properties = ["item", "itemtype"]
 			return_control = true
 
 		"veinet": used_properties = []
-		"social_link":
-			used_properties = ["dialogue_file", "return_control", "event_condition"]
 
 		"focus_cam":
 			used_properties = ["focus_position"]
@@ -152,7 +152,7 @@ func _validate_property(property: Dictionary) -> void:
 		else: property.usage = PROPERTY_USAGE_STORAGE
 
 	match action_type:
-		"text", "social_link":
+		"text":
 			match property.name:
 				"dialogue_file":
 					var files := DirAccess.get_files_at("res://database/Text/")
@@ -432,20 +432,20 @@ func _on_button_pressed() -> void:
 			await Event.take_control(false, false, true)
 			disappear(true)
 			if dialogue_file.is_empty(): dialogue_file = file
-			await Textbox.open(dialogue_file, "" if dialogue_cue == "start" else dialogue_cue)
+			var cue: String = "" if dialogue_cue == "start" else dialogue_cue
+			match textbox_mode:
+				"Passive":
+					await Passive.open(dialogue_file, cue)
+				"Headless":
+					await Event.run_cue(dialogue_file, cue)
+				_:
+					await Textbox.open(dialogue_file, cue)
 
 		"item":
 			Item.add_item(item, itemtype)
 
 		"battle":
 			Battle.start(file)
-
-		"global":
-			Global.call(file)
-
-		"event":
-			Audio.confirm_sound()
-			Event.sequence(file)
 
 		"veinet":
 			await Event.take_control(false, false, true)

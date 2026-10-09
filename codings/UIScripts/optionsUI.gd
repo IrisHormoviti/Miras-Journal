@@ -868,7 +868,7 @@ func _new_game() -> void:
 	if not FileAccess.file_exists("user://Autosave.tres") or await UI.warning("Start a new game? Any Autosave data will be overwritten, so make sure to save it into a new file if you want to keep it.", "NEW GAME", ["Cancel", "Start New Game"]):
 		was_controllable = false
 		close(true)
-		Event.sequence("new_game")
+		Loader.new_game()
 	else:
 		stage = "save_managment"
 		$SavePanel/ScrollContainer/Files/New/NewGame.grab_focus()

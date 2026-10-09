@@ -111,7 +111,7 @@ elif alcine.begins_with("John") or alcine == "Jojo":
 else:
 	"{{alcine}}". Should I go with this?
 - Use this name
-	do get_tree().root.get_node("AlcineNaming").enter.emit()
+	$> UI.get_open("AlcineNaming").enter.emit()
 - Let's rethink this
-	do! get_tree().root.get_node("AlcineNaming").start()
+	$>> UI.get_open("AlcineNaming").start()
 => END

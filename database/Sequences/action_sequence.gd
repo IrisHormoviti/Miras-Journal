@@ -1251,7 +1251,7 @@ func AlcineWoods1() -> void:
 	Bt.lock_turn = true
 	Bt.Action = true
 	await Passive.open("story_0", "going_nowhere")
-	Event.sequence("AlcineFollowHelp")
+	Event.run_cue("story_0", "AlcineFollowHelp")
 
 
 func AlcineWoods2() -> void:

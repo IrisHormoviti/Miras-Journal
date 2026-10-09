@@ -72,7 +72,7 @@ gdscript/warnings/native_method_override=0
 
 [dialogue_manager]
 
-runtime/state_autoload_shortcuts=["Global", "Loader", "World", "Event", "Hud", "Item", "Query", "Audio"]
+runtime/state_autoload_shortcuts=["Global", "Loader", "World", "Event", "Hud", "Item", "Query", "Audio", "UI"]
 editor/wrap_long_lines=true
 editor/advanced/custom_test_scene_path="uid://dro6xc73x3rl4"
 runtime/advanced/ignore_missing_state_values=true

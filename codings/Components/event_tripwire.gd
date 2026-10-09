@@ -26,21 +26,14 @@ extends Area2D
 ## Return control after the event has finished
 @export var return_control: bool = true
 @export_category("Result")
-@export_group("Play Event Sequence")
-## Play an event sequence when the event is triggered
-@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var PlayEvent: bool = false
-## Name of the Event sequence
-@export var event_name: String
-## Waits for the event to finish
-@export var await_event: bool = false
 @export_group("Show Textbox")
-## Open a textbox when the event is triggered
+## Play dialogue when the event is triggered
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var ShowTextbox := false
+## How the dialogue is played
+@export_enum("Textbox", "Passive", "Headless") var textbox_mode: String = "Textbox"
 @export_enum("testbush") var text_file: String
 ## The ~title in the dialogue to show
 @export_enum("start") var text_cue: String
-## Open the passive textbox instead of the normal one
-@export var use_passive_textbox: bool = false
 @export_group("Start Battle")
 ## When entering this tripwire, start a battle immediatly
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var StartBattle := false
@@ -129,17 +122,14 @@ func _on_body_entered(body: Node2D) -> void:
 		if kick_direction:
 			kick()
 
-		if event_name != "":
-			if await_event:
-				await Event.sequence(event_name)
-			else:
-				Event.sequence(event_name)
-
 		if text_file != "":
-			if use_passive_textbox:
-				await Passive.open(text_file, text_cue)
-			else:
-				await Textbox.open(text_file, text_cue)
+			match textbox_mode:
+				"Passive":
+					await Passive.open(text_file, text_cue)
+				"Headless":
+					await Event.run_cue(text_file, text_cue)
+				_:
+					await Textbox.open(text_file, text_cue)
 
 		if battle_sequence != null:
 			Battle.start(battle_sequence)

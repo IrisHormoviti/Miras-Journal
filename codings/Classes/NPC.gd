@@ -184,6 +184,10 @@ func set_dir_marker(vec: Vector2 = direction, dir_marker: Marker2D = null) -> vo
 
 
 func update_anim_prm() -> void:
+	if sprite == null: 
+		push_warning(name+": Sprite is null")
+		return
+
 	if sprite.sprite_frames == null: return
 	if footstep_sounds: handle_step_sounds(sprite)
 	if state == S.IDLE and not sprite.is_playing(): sprite.play()

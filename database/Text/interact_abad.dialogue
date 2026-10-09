@@ -86,9 +86,9 @@ I should be able to get to the other side with enough speed.
 => END
 
 ~ the_sky
-$> Global.Player.camera_follow(false)
-$> Global.Player.look_to(Vector2(0, -1))
-$> Global.get_cam().position -= Vector2(0, 24)
+$> player.camera_follow(false)
+$> player.look_to(Vector2(0, -1))
+$> camera.position -= Vector2(0, 24)
 $> Event.wait(0.5)
 if Event.f("TheSkyAmberelm"):
 	Mira.Neutral: ...
@@ -97,11 +97,7 @@ else:
 	Mira.Neutral: Looks like we're near the sea, but it fades into those strange lines.
 	Mira.Neutral: It must be so far from my home...
 	$> Event.add_flag("TheSkyAmberelm", true)
-$> Global.Player.camera_follow(true)
-=> END
-
-~ wrong_way
- Mira.Neutral: [[I thing we're going the wrong way.|I dont this this is where we should be going...|There isn't anything to see back here, let's go the other way.]]
+$> player.camera_follow(true)
 => END
 
 ~ quick_rest
@@ -134,6 +130,7 @@ else:
 => END
 
 ~ WL_void
+$> take_control(false, true, true)
 if Party.has_member_index("Mira") and Party.has_member_index("Daze"):
 	Daze.Neutral: Ms. Levenor stop.
 	Mira.Neutral: Huh?
@@ -149,6 +146,7 @@ if Party.has_member_index("Mira") and Party.has_member_index("Daze"):
 	The urge to just walk into it, even though I know I shouldn't.
 	Mira.Neutral: Yeah...  let's walk the other way.
 	$> Event.add_flag("EvWLVoidMira")
+$> give_control()
 => END
 
 ~ daze_camp
@@ -198,13 +196,13 @@ if day == 1:
 	elif f_past("AlcineIsTheLeaderReal", 1):
 		Mira.Neutral: Psst, {{alcine}}! How old are you?
 		[hide]
-		$> npc("AlcineCamp").bubble("Question")
+		$> AlcineCamp.bubble("Question")
 		{{alcine}} seems unsure. Maybe more confused.
 		Mira.Neutral: Not surprised, you could be a thousand years old for all I know.
 		Mira.Neutral: Maybe you should be the leader!
 		[hide]
-		$> npc("AlcineCamp").bubble("Ellipsis")
-		$> npc("AlcineCamp").bubble("Excited")
+		$> AlcineCamp.bubble("Ellipsis")
+		$> AlcineCamp.bubble("Excited")
 		{{alcine}} thinks about it for a moment, then poses heroically at me.
 		Mira.Neutral: Hehe, that's the spirit!
 		$> add_flag("AlcineIsTheLeaderReal", 2)
@@ -213,9 +211,9 @@ if day == 1:
 		Alcine.Neutral: Shewoom!!
 		Mira.Neutral: I promise he doesn't bite...
 elif day == 2:
-	Mira.Neutral: Hey {{alcine}}, what $> you think of her?
+	Mira.Neutral: Hey {{alcine}}, what do you think of her?
 	Alcine.Neutral: Meeemmmm...
-	$>> npc("AlcineCamp").bubble("Excited")
+	$>> AlcineCamp.bubble("Excited")
 	Alcine.Happy: Shaaa!
 	Mira.Neutral: You like her? That's good.
 => END
@@ -239,9 +237,6 @@ No reason to go back there.
 
 ~ kick_debug
 I will not pass without a bag.
-=> END
-
-~ asteria_join_daze
 => END
 
 ~ kick_sgplains
@@ -271,14 +266,31 @@ else:
 	Mira.Neutral: I should be exploring this place with the others...
 => END
 
-~ shards_low_hp
-Asteria.Neutral: Mira? Are you okay?
-Mira.Neutral: Hm?
-Asteria.Neutral: You have been stepping in a lot of these shards! I can give you my sandals if you want.
-Mira.Neutral: No, I'm fine.
-Asteria.Neutral: Okay, just be careful.
-=> END
-
 ~ sg_jump_reminder
 Mira.Neutral: I should be able to make that jump!
+=> END
+
+~ hurt_1
+$> Party.Leader.Health -= 1
+$>> Audio.ui_sound("Crunch")
+$>> Hud.hit_partybox(0, 4, 3)
+if Party.Leader.Health < 10:
+	if not f("ShardsLowHP") and Party.has_member("Asteria"):
+		$> take_control(false, true, true)
+		$> add_flag("ShardsLowHP")
+		Asteria.Neutral: Mira? Are you okay?
+		Mira.Neutral: Hm?
+		Asteria.Neutral: You have been stepping in a lot of these shards! I can give you my sandals if you want.
+		Mira.Neutral: No, I'm fine.
+		Asteria.Neutral: Okay, just be careful.
+		$> give_control()
+	$> Party.Leader.Health += 1
+$> check.emit()
+=> END
+
+~ wake_home
+$> Party.reset_party()
+$> Loader.travel_to("Pyrson;HomeBuilding-MyRoom")
+$> player.look_to(Direction.RIGHT)
+$> give_control()
 => END

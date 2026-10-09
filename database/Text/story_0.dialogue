@@ -322,7 +322,7 @@ if Hud.confirm_time_passage("Rest", "Fully recover Health."):
 	$> spawn("Alcine", "UnderTree+(24, -12)", Direction.LEFT, 8)
 	$> zoom(6)
 	$> camera_move(Vector2(85, 360))
-	$> detransition()
+	$> Transition.unwipe()
 	Placeholder description: This is an unfinished cutscene. Boxes like this will describe what should be on screen.
 	Placeholder description: Mira is writing something on a paper.
 	Mira.Neutral: Hm? Something up {{alcine}}?
@@ -348,7 +348,7 @@ $> no_player()
 $> zoom(4)
 $> spawn("Mira", "UnderTree", "SitDown", 7)
 $> spawn("Alcine", "UnderTree+(24, -12)", "IdleLeft", 7)
-$> detransition()
+$> Transition.unwipe()
 Placeholder description: Mira gets up from sleep.
 Placeholder description: {{alcine}} who was resting on Mira also gets up.
 Mira.Neutral: Mmm... Good morning {{alcine}}. Or is it afternoon?
@@ -507,7 +507,7 @@ But... {{alcine}} has kind of inspired me.
 Perhaps I could give liquid magic a try.
 [hide]
 $> add_complimentary("FluidBlast", alcine)
-$> npc("P").jump_to(get_marker_pos("BenchBeforeGuardian"))
+$> player.jump_to(get_marker_pos("BenchBeforeGuardian"))
 $> save()
 => END
 
@@ -661,4 +661,162 @@ if Party.get_member("Daze").FirstName != "Daze":
 	Mira.Neutral: Is that a first or last name?
 	Daze.Neutral: It's... more of a nickname.
 	Mira.Neutral: Oh, got it.
+=> END
+
+~ bag_seq
+$> Party.Leader.OV = "Bag"
+$> player.state = NPC.S.CUSTOM
+$> player.direction = Vector2.ZERO
+$> player.set_anim("BagGet", true)
+$> player.set_anim("IdleRight")
+$> Audio.item_sound()
+$> item_icon("res://art/Icons/Items.tres", Vector2(90, 90), Vector2(18, 18), "Flimsy bag")
+$> remove_flag(&"Player/NoBag")
+$> give_control()
+$> player._check_party()
+=> END
+
+~ axe_seq
+$> Item.add_item("LightweightAxe", &"Key")
+$> pop_tutorial("ov_attack")
+$> save()
+=> END
+
+~ AlcineFollowHelp
+$> Alcine.set_anim("IdleRight")
+$> Alcine.bubble("Surprise")
+$> temp.pterogon_hp = bt.get_actor("Pterogon").Health
+if temp.pterogon_hp < 5:
+	$> temp.pterogon_hp = 5
+$> Alcine.z_index = 9
+$>> Transition.fade_in_out(Color.WHITE, 0.5, 2, 3)
+$> Alcine.jump_to(Vector2(1660, -1068), 7, 0.5)
+$>> bt.end_battle()
+$> wait_for_battle()
+$> Party.add("Alcine")
+$> Party.Member1.FirstName = "Spirit"
+$> Alcine.hide()
+$> wait(0.5, false)
+$> Battle.start("AlcineFollow2")
+$> wait(1)
+$> bt.get_actor("Pterogon", true).Health = temp.pterogon_hp
+$> wait_for_battle()
+=> AlcineFollow4
+
+~ AlcineFollow4
+$> check.emit()
+$> take_control()
+while Battle.in_battle:
+	$> wait(0.1)
+$> take_control()
+$> Party.Member1.FirstName = "Alcine"
+$> Alcine.z_index = 0
+$> Party.get_member("Mira").OV = "Bag"
+$> Alcine.position = Global.room.followers[0].position
+$> player.go_to(Vector2(67, -45), true)
+$> Global.room.followers[0].dont_follow = true
+$> Global.room.followers[0].hide()
+$> Alcine.show()
+$> Alcine.go_to(Vector2(66, -46), true)
+$> wait(0.3)
+$> Alcine.look_to(Direction.RIGHT)
+$> camera.position = player.position - Vector2(18, 0)
+$> take_control()
+$> player.look_to(Direction.LEFT)
+$> player.position = Vector2(1619, -1068)
+$> Textbox.open("story_0", "got_through_that")
+$> UI.alcine_naming()
+$> Textbox.open("story_0", "use_name")
+$> Transition.wipe(Direction.RIGHT)
+$> flag_progress("Event/AlcineFollow", 4)
+$> Alcine.hide()
+$> camera.zoom = Vector2(4, 4)
+$> Hud.disabled = false
+$> Hud.ui_visible = true
+$> add_flag("Player/Flame")
+$> Global.room.followers[0].dont_follow = false
+$>> Transition.unwipe()
+$> Hud.shrink()
+$> give_control(true)
+$> pop_tutorial("party")
+$> Alcine.default()
+$> save()
+=> END
+
+~ enter_amberelm
+$> player.move_by_tiles(Vector2(0, -2))
+$> travel_to("Amberelm", Vector2.ZERO, 1, Direction.UP, false)
+$> MiraCut.speed = 50
+$> AlcineCut.speed = 50
+$>> AlcineCut.go_to(Vector2(13, 50), true, false)
+$> MiraCut.go_to(Vector2(13, 49), true, false)
+$> wait(0.2)
+$> MiraCut.look_to(Direction.RIGHT)
+$> wait(0.2)
+$> AlcineCut.look_to(Direction.RIGHT)
+$> wait(0.3)
+$> AlcineCut.speed = 75
+$> time_of_day = TOD.MORNING
+$> day = 0
+$> Textbox.open("story_0", "morning")
+$> MiraCut.speed = 75
+$> MiraCut.move_by_tiles(Vector2.UP * 5)
+$> AlcineCut.chain_moves([Vector2.RIGHT, Vector2.UP * 5])
+$> wait(0.8)
+$>> travel_to("Amberelm", Vector2.ZERO, 0, Direction.UP)
+$> add_flag("EnterAmberelm")
+=> END
+
+~ enter_amberelm_2
+$> take_control()
+$> player.camera_follow(false)
+$> player.set_anim("IdleUp")
+$>> tween(camera, "position", Vector2(150, 252), 7, Ease.IN_OUT, Trans.LINEAR)
+$> wait(1)
+$> UI.location_name("Amberelm")
+$> wait(5)
+$>> Transition.fade_in(Color.BLACK, 1)
+$> wait(2)
+$> give_control(true)
+$> player.position = Vector2(222, 429)
+$> take_control(false, true)
+$> wait(1)
+$> Global.room.followers[0].position = player.position + Vector2(0, 24)
+$>> Transition.fade_out()
+$> Textbox.open("story_0", "what_happened_here")
+$> Transition.wipe(Direction.RIGHT)
+$> player.position = Vector2(150, 345)
+$>> Transition.unwipe()
+$> give_control(true)
+$> player.set_anim("IdleRight")
+=> END
+
+~ amberelm_guardian
+$> Battle.start("StoneGuardianBoss")
+$> wait_for_battle()
+if Battle.battle_result == 1:
+	$> Party.set_to(["Mira"])
+	$>> Transition.fade_out()
+	$> to_day = 0
+	$> to_time = 5
+	$> add_flag("BeatStoneGuardian")
+	$>> time_transition()
+=> END
+
+~ oct31_night
+$> Item.remove_item("LightweightAxe", &"Key")
+$> Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
+$> add_flag("BeatStoneGuardian")
+$> travel_to("WitheredLeaves", Vector2(750, -211), 0, "none", false)
+$> no_player()
+$> spawn("Mira", Vector2(770, -211), Direction.LEFT)
+$> spawn("Daze", Vector2(670, -211), Direction.RIGHT)
+$> Textbox.open("story_0", "daze_introduction")
+$> Item.remove_item("LightweightAxe", &"Key")
+$> add_flag("Meta/Veinet/Disable")
+$> remove_flag("UI/HideDate")
+$> Party.set_to(["Mira"])
+$> Party.Leader.ClutchDmg = false
+$> travel_to("WitheredLeaves", Vector2(775, -211))
+$> save()
 => END

@@ -20,9 +20,9 @@ Mira.Neutral: Yes, this is [[indeed|in fact]] a bush
 	[wait=0.5][hide][next=auto]
 	Mira.Smile: Yeah I thought so.
 	Mira.Smile: The purpose of this dialog is to test text sounds and dialog skipping.
-	do picture("Placeholder")
+	$> picture("Placeholder")
 	Mira.Smile: Look at this cool texture
-	do picture_clear()
+	$> picture_clear()
 	Mira.Smile: I can hold shift to skip all of it.
 	Also here are some thought sounds.
 	Mira.Curious: Ok I think that's enough.
@@ -34,45 +34,45 @@ Where to go?
 - Pyrson
 	Part?
 	- Start
-		do travel_to("Pyrson")
+		$> travel_to("Pyrson")
 	- My room
-		do travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(178, 482))
+		$> travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(178, 482))
 	- Town hall
-		do travel_to("Pyrson;TownHall", Vector2(443, 179))
+		$> travel_to("Pyrson;TownHall", Vector2(443, 179))
 - Temple Woods
 	Part?
 	- Start
-		do travel_to("TempleWoods")
+		$> travel_to("TempleWoods")
 	- Lake
-		do travel_to("TempleWoods", Vector2.ZERO, 1)
+		$> travel_to("TempleWoods", Vector2.ZERO, 1)
 	- Small temple
-		do travel_to_coords("TempleWoods", Vector2(59, 0), 1)
+		$> travel_to_coords("TempleWoods", Vector2(59, 0), 1)
 	- Road
-		do travel_to("TempleWoods", Vector2.ZERO, 2)
+		$> travel_to("TempleWoods", Vector2.ZERO, 2)
 - Amberelm
 	Part?
 	- Start
-		do travel_to("Amberelm")
+		$> travel_to("Amberelm")
 	- Upstairs
-		do travel_to("Amberelm", Vector2(155, 347), 0, 7)
+		$> travel_to("Amberelm", Vector2(155, 347), 0, 7)
 	- Ruined Town
-		do travel_to("Amberelm", Vector2(1520, -285), 2)
+		$> travel_to("Amberelm", Vector2(1520, -285), 2)
 - Shard Gardens
 	Part?
 	- Start
-		do travel_to("ShardGardens")
+		$> travel_to("ShardGardens")
 	- Underground 1
-		do travel_to("ShardGardens", Vector2(-150, 622), 1)
+		$> travel_to("ShardGardens", Vector2(-150, 622), 1)
 	- Underground 2
-		do travel_to("ShardGardens", Vector2(-130, -100), 1)
+		$> travel_to("ShardGardens", Vector2(-130, -100), 1)
 	- Lakeside
-		do travel_to("ShardGardens", Vector2(-223, -697), 2)
+		$> travel_to("ShardGardens", Vector2(-223, -697), 2)
 - WitheredLeaves
-	do travel_to("WitheredLeaves")
+	$> travel_to("WitheredLeaves")
 - Bunker
 	Sector
 	- A
-		do travel_to("BunkerSectorA")
+		$> travel_to("BunkerSectorA")
 => END
 
 ~ greetings
@@ -90,47 +90,47 @@ What to do?
 		~ add
 		Who to add?
 		- Mira
-			do Party.add("Mira")
+			$> Party.add("Mira")
 		- Alcine
-			do Party.add("Alcine")
+			$> Party.add("Alcine")
 		- Daze
-			do Party.add("Daze")
+			$> Party.add("Daze")
 		- Asteria
-			do Party.add("Asteria")
+			$> Party.add("Asteria")
 		- Erinn
-			do Party.add("Erinn")
+			$> Party.add("Erinn")
 	- Standard full party
-		do heal_party()
-		do Party.reset_party()
-		do Party.add("Alcine")
-		do Party.add("Asteria")
-		do Party.add("Daze")
+		$> heal_party()
+		$> Party.reset_party()
+		$> Party.add("Alcine")
+		$> Party.add("Asteria")
+		$> Party.add("Daze")
 	- Clear and set Leader
-		do Party.reset_party()
-		set Party.Leader = null
+		$> Party.reset_party()
+		$> Party.Leader = null
 		=> add
 	- Make everyone controllable
 		$> Party.make_everyone_controllable()
 - Abilities
 	go on
 	- Unlock all abilities
-		do unlock_all_abilities()
+		$> unlock_all_abilities()
 	- Add state testing abilities
-		do add_test_state(Party.Leader)
+		$> add_test_state(Party.Leader)
 	- Give every ability
-		do give_every_ability()
+		$> give_every_ability()
 - Full heal
-	do heal_party()
+	$> heal_party()
 - Give Mira lots of HP
-	do Party.Leader.Health = 9999
+	$> Party.Leader.Health = 9999
 - Reset all members
-	do Party.reset_all_members()
-do give_control()
+	$> Party.reset_all_members()
+$> give_control()
 
 => END
 
 ~ battle_event
-Turn {{Global.Bt.Turn}}
+Turn {{bt.Turn}}
 => END!
 
 ~ mira_hp_low
@@ -138,7 +138,7 @@ Mira.Neutral: My hp is low
 => END!
 
 ~ debug_battle_begin
-do Party.Leader.Health = 9999
+$> Party.Leader.Health = 9999
 Debug battle begin!
 => END!
 
@@ -154,20 +154,20 @@ Note: Please provide feedback to the developer after testing.
 Note: Oh welcome back!
 Note: With this prototype being so short, a titlescreen wasn't implemented...[wait=1] So use this menu as one.
 - Continue
-	do load_game()
+	$> load_game()
 - New game
-	do new_game()
+	$> Loader.new_game()
 => END!
 
 ~ arena_over
-do fade_txt_background(1)
+$> fade_txt_background(1)
 You lost this round. Try again?
 - Retry
-	do load_game("Arena")
+	$> load_game("Arena")
 - Exit Arena mode.
-	do load_game()
-	do Bt.end_battle()
-	do load_game()
+	$> load_game()
+	$> Bt.end_battle()
+	$> load_game()
 => END!
 
 ~ demo_end
@@ -180,34 +180,51 @@ System: (You've been sent back before resting, there's nothing else to do here.)
 ~ battle_test
 Choose battle
 - Dummy
-	do! Battle.start(load("res://database/BattleSeq/DebugDummy.tres"))
+	$>> Battle.start(load("res://database/BattleSeq/DebugDummy.tres"))
 - Lazulite Heart
-	do! Battle.start(load("res://database/BattleSeq/LazuliteHeartBoss.tres"))
+	$>> Battle.start(load("res://database/BattleSeq/LazuliteHeartBoss.tres"))
 - Stone Guardian
-	do! Battle.start(load("res://database/BattleSeq/StoneGuardianBoss.tres"))
+	$>> Battle.start(load("res://database/BattleSeq/StoneGuardianBoss.tres"))
 => END
 
 ~ chapter_select
 Event select
 - Petrogon fight
-	do Event.Flags.clear()
+	$> Event.flags.clear()
 	$> to_day = 0
 	$> to_time = TOD.NIGHT
-	do Event.add_flag("HasBag")
-	do Event.add_flag("Player/Flame")
-	do travel_to("TempleWoods", Vector2(1272, -966), 2)
+	$> Event.add_flag("HasBag")
+	$> Event.add_flag("Player/Flame")
+	$> travel_to("TempleWoods", Vector2(1272, -966), 2)
 - Maple Meet Scene
-	set Day = 2
-	set TimeOfDay = TOD.NIGHT
-	do! textbox_open("story_1", "maple_meet")
+	$> day = 2
+	$> time_of_day = TOD.NIGHT
+	$>> textbox_open("story_1", "maple_meet")
 - Going to shard gardens
 	$> to_day = 3
 	$> to_time = TOD.AFTERNOON
-	do! time_transition()
+	$>> time_transition()
 => END
 
 ~ jump_playtest
 This is the end of this segment.
 You will now jump to a part a bit further in the game, and you have met two other party members.
 It's still pretty unfinished tho.
+$> day = 3
+$> to_time = TOD.AFTERNOON
+$> remove_flag("UI/HideDate")
+$>> time_transition()
+=> END
+
+~ waste_time
+$> take_control()
+$> Transition.wipe()
+$> progress_by_time(1)
+$> time_transition()
+$>> Transition.unwipe()
+=> END
+
+~ demo_credits
+$> take_control()
+$> play_credits()
 => END

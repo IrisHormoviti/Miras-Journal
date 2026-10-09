@@ -1,7 +1,6 @@
 import "res://database/Text/reserved_date.dialogue" as reserved_date
 
 ~ sleep_home
-#> progress_by_time(1)
 if date_is_reserved():
 	=>< {{get_reserved_date_dialog()}}
 elif time_of_day == 1:
@@ -23,14 +22,14 @@ else:
 	else:
 		It's my bed.
 	if confirm_time_passage("Rest", "Will make me feel less tired."):
-		$> Loader.transition("")
+		$> Transition.wipe()
 		$> Event.progress_by_time(1)
 		$> Event.time_transition()
 		$> remove_flag("eepy")
 => END
 
 ~ gather_pyrson
-do remove_flag("InCamp")
+$> remove_flag("InCamp")
 if f_past("eepy", 1):
 	I don't have the energy to go out right now...
 	$> give_control()
@@ -48,28 +47,24 @@ else:
 	- Gather allies
 		[hide]
 		$> Transition.wipe(Direction.LEFT)
-		do Party.add("Alcine")
-		do Party.add("Asteria")
-		do Party.add("Daze")
-		do zoom(5)
-		do wait(0.3, false)
-		set npc("F1").position = Global.Player.position + Vector2(24, 0)
-		set npc("F2").position = Global.Player.position + Vector2(24, 24)
-		set npc("F3").position = Global.Player.position + Vector2(0, 24)
-		do npc("F1").show()
-		do npc("F2").show()
-		do npc("F3").show()
-		do Hud.hide_all()
-		do detransition()
+		$> Party.add("Alcine")
+		$> Party.add("Asteria")
+		$> Party.add("Daze")
+		$> zoom(5)
+		$> wait(0.3, false)
+		$> F1.position = player.position + Vector2(24, 0)
+		$> F2.position = player.position + Vector2(24, 24)
+		$> F3.position = player.position + Vector2(0, 24)
+		$> F1.show()
+		$> F2.show()
+		$> F3.show()
+		$> Hud.hide_all()
+		$> Transition.unwipe()
 		Ok, let's go.
-		do Event.veinet_map("Gate")
+		$> UI.veinet_map("Gate")
 	- Go alone
-		do Party.reset_party()
-		do Event.veinet_map("Gate")
+		$> Party.reset_party()
+		$> UI.veinet_map("Gate")
 	- Don't go
-	do give_control()
-=> END
-
-~ return_home_pyrson
-After returning, we split off and rest.
+	$> give_control()
 => END

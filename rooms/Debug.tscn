@@ -485,7 +485,7 @@ return_control = false
 [node name="EvKick" parent="." unique_id=1509469914 instance=ExtResource("16_35d7e")]
 position = Vector2(-191, 60)
 flag = "HasBag"
-text_file = "interactions"
+text_file = "interact_abad"
 text_cue = "kick_debug"
 
 [node name="InteractBush" parent="." unique_id=1801924940 instance=ExtResource("6_pmuyc")]
@@ -496,10 +496,8 @@ dialogue_cue = "bush"
 [node name="InteractRest" parent="." unique_id=56388288 instance=ExtResource("6_pmuyc")]
 position = Vector2(276, 63)
 label_text = "Sleep"
-action_type = "pass_time"
-file = "sleep_home"
-dialogue_file = "sleep_home"
-itemtype = "Bti"
+dialogue_file = "interact_pyrson"
+dialogue_cue = "sleep_home"
 to_time = 1
 hide_on_flag = &"time:1"
 
@@ -572,12 +570,8 @@ animation = &"WalkUp"
 [node name="TalkPrompt" parent="NPCDaze" unique_id=562294727 instance=ExtResource("6_pmuyc")]
 position = Vector2(1.14441e-05, 8)
 label_text = "Talk"
-action_type = "pass_time"
-file = "waste_time"
-dialogue_file = "waste_time"
-itemtype = "Mat"
-to_time = -1
-to_time_relative = 1
+dialogue_file = "testbush"
+dialogue_cue = "waste_time"
 bubble_always = true
 
 [node name="NPCAsteria" parent="." unique_id=344934070 instance=ExtResource("12_toobe")]

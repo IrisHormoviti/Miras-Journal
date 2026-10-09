@@ -1,6 +1,6 @@
 ~ FoldedPaper
 
-do fade_txt_background()
+$> fade_txt_background()
 I unfold the paper.
 There are some strange symbols written on its one side.
 I used the other side earlier to write on.
@@ -8,7 +8,7 @@ I used the other side earlier to write on.
 
 ~ PenCase
 
-do fade_txt_background()
+$> fade_txt_background()
 I look inside the case.
 There are a few diffrent pens with a variety of ink colors.
 There's black, orange, red, blue, yellow and purple.[wait=0.3] Black and orange seem to be the most used.

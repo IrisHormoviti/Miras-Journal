@@ -317,4 +317,6 @@ subroom = "BossEntry"
 position = Vector2(-406, 305)
 flag = "AsteriaBoss=5"
 use_name_as_flag = false
-event_name = "asteria_boss"
+ShowTextbox = true
+text_file = "story_1"
+text_cue = "asteria_boss"

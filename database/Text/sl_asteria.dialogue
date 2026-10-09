@@ -1,4 +1,4 @@
-match get_flag("sl_asteria"):
+match get_flag("SocialLink/Asteria"):
 	when 0:
 		=> rank1_prepare
 	when 1: 
@@ -28,11 +28,11 @@ $> AsteriaPlaza.set_anim("IdleRight")
 $> wait(2)
 Mira.Neutral: So...
 [hide]
-do wait(1)
+$> wait(1)
 Asteria.Neutral: How are you holding up?
 Mira.Neutral: M-Me? I'm not sure...
 [hide]
-do wait(2)
+$> wait(2)
 Asteria.Neutral: Are you liking this village?
 - Somewhat
 	Mira.Neutral: I mean... The people are nice... 
@@ -43,7 +43,7 @@ Asteria.Neutral: Are you liking this village?
 - No
 	Mira.Neutral: I just want to go home...
 	[hide]
-	do wait(1)
+	$> wait(1)
 	Asteria.Neutral: ...[wait=1]I get it.
 	Asteria.Neutral: What was... your home like?
 	Mira.Neutral: It's a small village just north of the Artaria mountains.
@@ -56,7 +56,7 @@ Asteria.Neutral: I've been here since I was a child. There isn't much to miss...
 Mira.Neutral: Oh...
 Mira.Neutral: ...
 [hide]
-do wait(2)
+$> wait(2)
 Mira.Neutral: So... you mentioned knowing someone who can dispell?
 Asteria.Neutral: Oh right, [shake rate=20 level=8]them[/shake].
 Mira.Neutral: [shake rate=20 level=10]Them[/shake]?
@@ -71,7 +71,7 @@ Mira.Neutral: Is that some sort of passcode? Can't I just... knock the door?
 Asteria.Neutral: No, just do what I said.
 Mira.Neutral: Okay...
 [hide]
-do wait(2)
+$> wait(2)
 Asteria.Neutral: One... last thing...
 Asteria.Neutral: I'm sorry about everything back at the bunker... I jumped to conclusions too fast!
 Asteria.Neutral: I'm sorry if I hurt you...

@@ -693,8 +693,9 @@ flag = "day=1"
 flag_should_be = true
 add_the_flag = true
 return_control = false
-PlayEvent = true
-event_name = "daze_enemy_1"
+ShowTextbox = true
+text_file = "story_1"
+text_cue = "daze_enemy_1"
 
 [node name="EvDazeEnemy2" parent="." unique_id=475487490 instance=ExtResource("15_mqvg4")]
 position = Vector2(-912, -51)
@@ -723,13 +724,17 @@ battle_sequence = SubResource("Resource_lemrk")
 
 [node name="EvTripwire0" parent="." unique_id=1903024655 instance=ExtResource("15_mqvg4")]
 position = Vector2(-467, 265)
-event_name = "WL_alcine_slide"
+ShowTextbox = true
+text_file = "story_1"
+text_cue = "WL_alcine_slide"
 
 [node name="EvWLVoidMira" parent="." unique_id=1300572210 instance=ExtResource("15_mqvg4")]
 position = Vector2(1025, -1714)
 scale = Vector2(16.552042, 0.9619772)
 take_control = false
-event_name = "WL_void"
+ShowTextbox = true
+text_file = "interact_abad"
+text_cue = "WL_void"
 
 [node name="Flame" type="PointLight2D" parent="." unique_id=1861159934]
 texture_filter = 2
@@ -778,9 +783,6 @@ flag = "WLDoor1b"
 
 [node name="WLAlcineSwitch1" parent="SwitchCast1" unique_id=244300434 instance=ExtResource("4_d8pup")]
 action_type = "focus_cam"
-file = "-741"
-dialogue_file = "-741"
-dialogue_cue = "320"
 focus_position = Vector2(-745, 318)
 add_flag = true
 hide_on_flag = &"WLDoor1b"
@@ -803,9 +805,6 @@ flag = "WLDoor1a"
 
 [node name="WLDoor1a" parent="SwitchCast2" unique_id=191020952 instance=ExtResource("4_d8pup")]
 action_type = "focus_cam"
-file = "-681"
-dialogue_file = "-681"
-dialogue_cue = "406"
 focus_position = Vector2(-675, 413)
 add_flag = true
 hide_on_flag = &"WLDoor1a"
@@ -827,9 +826,9 @@ text_cue = "metalic_gate"
 
 [node name="WLBunkerSwitch" parent="." unique_id=743108280 instance=ExtResource("4_d8pup")]
 position = Vector2(-275, -1010)
-action_type = "event"
-file = "WL_bunker_switch"
-dialogue_file = "WL_bunker_switch"
+action_type = "text"
+dialogue_file = "story_1"
+dialogue_cue = "WL_bunker_switch"
 return_control = false
 hide_on_flag = &"Bunker1Open"
 

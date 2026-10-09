@@ -1,36 +1,6 @@
 [gd_scene format=3 uid="uid://uet6axlmqkcy"]
 
 [ext_resource type="Script" uid="uid://dqo5wfmmgj61a" path="res://codings/Autoload/Event.gd" id="1_jv5no"]
-[ext_resource type="Script" uid="uid://wbfeom5qw5ig" path="res://database/Sequences/Event/Ev_interact_abad.gd" id="3_1u450"]
-[ext_resource type="Script" uid="uid://gsak7ba18bn1" path="res://database/Sequences/Event/Ev_conditions.gd" id="3_4wll1"]
-[ext_resource type="Script" uid="uid://cpi42wjwa7r7i" path="res://database/Sequences/Event/Ev_story_0.gd" id="3_5xqug"]
-[ext_resource type="Script" uid="uid://cbm5epuavpum4" path="res://database/Sequences/Event/Ev_story_1.gd" id="4_1m7kh"]
-[ext_resource type="Script" uid="uid://dncdvujlbkiqo" path="res://database/Sequences/Event/Ev_testbush.gd" id="4_5xqug"]
-[ext_resource type="Script" uid="uid://c13ass5a25dpi" path="res://database/Sequences/Event/Ev_story_2.gd" id="5_5lhhq"]
-[ext_resource type="Script" uid="uid://bc6grr41yy5yt" path="res://database/Sequences/Event/Ev_social_links.gd" id="7_tqbd2"]
 
 [node name="Event" type="Node" unique_id=835734472]
 script = ExtResource("1_jv5no")
-
-[node name="Sequences" type="Node" parent="." unique_id=1651336182]
-
-[node name="interact_abad" type="Node" parent="Sequences" unique_id=1747912679]
-script = ExtResource("3_1u450")
-
-[node name="story_0" type="Node" parent="Sequences" unique_id=649627878]
-script = ExtResource("3_5xqug")
-
-[node name="story_1" type="Node" parent="Sequences" unique_id=651347871]
-script = ExtResource("4_1m7kh")
-
-[node name="story_2" type="Node" parent="Sequences" unique_id=186815510]
-script = ExtResource("5_5lhhq")
-
-[node name="testbush" type="Node" parent="Sequences" unique_id=732180842]
-script = ExtResource("4_5xqug")
-
-[node name="social_links" type="Node" parent="Sequences" unique_id=989523669]
-script = ExtResource("7_tqbd2")
-
-[node name="Conditions" type="Node" parent="." unique_id=1647285387]
-script = ExtResource("3_4wll1")

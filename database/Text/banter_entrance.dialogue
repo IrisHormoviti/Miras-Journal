@@ -6,16 +6,16 @@ Daze.Neutral: You understand what this means, right?
 	Daze.Neutral: Your Aura color is [color=#ff6b50]Orange[/color], it's on the oposite side of the spectrum!
 	Daze.Neutral: It's [color=#57a0f9]Liquid[/color] attacks will be fatal if they hit you!
 	Mira.Neutral: I do know about-[next=auto]
-	do! Bt.screen_shake()
+	$>> Bt.screen_shake()
 	Daze.Neutral: [big]Just like my [color=#fcde42]Static Saber[/color] will be fatal on it!
 - Obviously
 	Mira.Neutral: Of course I know this! You take me for a capital baby?
 	Mira.Neutral: It's color is the oposite of mine, its attacks will hurt on me!
-	do! Bt.screen_shake()
+	$>> Bt.screen_shake()
 	Daze.Neutral: Not if my [color=#fcde42]Static Saber[/color] can finish it off!
-set Party.get_member("Daze").NextAction = "Ability"
-set Party.get_member("Daze").NextMove = Query.get_ability("StaticSaber")
-set Party.get_member("Mira").Controllable = true
+$> Party.get_member("Daze").NextAction = "Ability"
+$> Party.get_member("Daze").NextMove = Query.get_ability("StaticSaber")
+$> Party.get_member("Mira").Controllable = true
 => END
 
 ~ skritcher_root_daze

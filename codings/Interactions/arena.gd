@@ -24,5 +24,5 @@ func start_round(i: int) -> void:
 	await Event.wait(0.1)
 	await Battle.start("ArenaBattles/Round" + str(i))
 	Loader.save("Arena")
-	await Loader.battle_end
+	await Global.battle_end
 	Event.flag_progress("ArenaRound", i)

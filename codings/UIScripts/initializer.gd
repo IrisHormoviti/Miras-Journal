@@ -49,7 +49,7 @@ func _ready() -> void:
 	else:
 		options.queue_free()
 		dismiss_title()
-		Event.sequence.call_deferred("new_game")
+		Loader.new_game.call_deferred()
 
 
 func focus() -> void:
@@ -107,28 +107,3 @@ func you_can_now_play_as(chara: String) -> void:
 
 	ResourceSaver.save(data, "user://Autosave.tres")
 	UI.warning("You can now play as [img height=64]res://art/Icons/Party/" + chara + ".png[/img] " + chara + ".", "CONGRATS", ["A"])
-
-# Deprecated
-
-
-#func _on_continue_pressed() -> void:
-	#if inactive: return
-	#inactive = true
-#
-	#if Input.is_action_pressed("LeftTrigger"):
-		#you_can_now_play_as("Asteria")
-#
-	#await Loader.load_game("Autosave")
-	#dismiss_title()
-	#Event.give_control(false)
-	#get_tree().paused = false
-#
-#
-#func _on_new_pressed() -> void:
-	#Audio.confirm_sound()
-	#if not game_exists or await UI.warning("Start a new game? Any Autosave data will be overwritten, so make sure to save it into a new file if you want to keep it.", "NEW GAME", ["Cancel", "Start New Game"]):
-		#dismiss_title()
-		#Event.sequence("new_game")
-
-	#else:
-		#focus()

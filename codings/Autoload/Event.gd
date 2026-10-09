@@ -24,6 +24,9 @@ var diary: Dictionary[int, PackedStringArray]
 ## "day" and "time" are top level
 var flags: Dictionary[StringName, int]
 
+## Scratch space for dialogue scripts to store temporary values. Not saved.
+var temp: Dictionary = {}
+
 var day: int:
 	set(x):
 		day = x
@@ -37,8 +40,6 @@ var time_of_day := TOD.DARKHOUR:
 ## New time for the next time transition
 var to_time := TOD.DARKHOUR
 var to_day: int
-
-@onready var sequences: Node = $Sequences
 
 ## Remap for tween enums as a workaround for dialoguemanager
 enum Ease {
@@ -526,21 +527,33 @@ func teleport_followers() -> void:
 	Global.player.path.curve.add_point(Global.player.position.round())
 
 
-func sequence(title: String) -> Node:
-	for i in sequences.get_children():
-		if i.has_method(title):
-			return await i.call(title)
-
-	OS.alert(title + " is not a valid event")
-	return null
+## Await the end of the current battle.
+## Useful in dialogue files to wait for a battle started with [code]Battle.start()[/code].
+func wait_for_battle() -> void:
+	await Global.battle_end
 
 
-func sequence_exists(title: String) -> bool:
-	for i in sequences.get_children():
-		if i.has_method(title):
-			return true
+## Run a dialogue cue's logic without opening a textbox.
+## Useful for trigger events that don't display any dialogue.
+func run_cue(file: String, cue: String) -> void:
+	var dialogue: DialogueResource = await Loader.load_res("res://database/Text/" + file + ".dialogue")
+	var line: DialogueLine = await DialogueManager.get_next_dialogue_line(dialogue, cue)
 
-	return false
+	while line != null:
+		line = await DialogueManager.get_next_dialogue_line(dialogue, line.next_id)
+
+
+## Show the item pickup popup using a region from an icon atlas
+func item_icon(atlas_path: String, region_position: Vector2, region_size: Vector2, item_name: String) -> void:
+	var icon: AtlasTexture = (await Loader.load_res(atlas_path)).duplicate()
+	icon.region = Rect2(region_position, region_size)
+	await Item.get_animation(icon, item_name, false)
+
+
+## Roll the credits
+func play_credits() -> void:
+	var scene: PackedScene = await Loader.load_res("res://UI/Misc/CreditsRoll.tscn")
+	UI.add_child(scene.instantiate())
 
 
 ## Get the position of a Marker2D in the room who's name starts with "Marker" (don't include the "Marker" part)
@@ -630,7 +643,7 @@ func no_player() -> void:
 
 
 ## Take the current value of to_day and to_time, and begin a proper transition to that time.
-## Never run this from a dialogue file without do!
+## Never run this from a dialogue file without $>>
 func time_transition(location := Global.room.codename()) -> void:
 	if UI.is_open("Textbox"):
 		UI.get_node("Textbox")._on_close()
@@ -685,32 +698,22 @@ func camera_unlock() -> void:
 		Global.player.camera_follow(false)
 
 
-## Start any events specified for this day and time
-## These could be in any Ev script
+## Start any events specified for this day and time in date_event_map.cfg
 func start_time_events(location: String) -> void:
 	var id := get_date_identifier()
 	var map := ConfigFile.new()
 	map.load("res://database/Sequences/date_event_map.cfg")
 
 	if map.has_section(id):
-		var event_script: bool = map.get_value(id, "event_script", false)
 		var file: String = map.get_value(id, "file", "")
 		var title: String = map.get_value(id, "cue", id)
 
 		print_rich("[color=purple]Starting date event: " + id)
-
-		if event_script:
-			await sequence(title)
-		else:
-			await Textbox.open(file, title)
+		await Textbox.open(file, title)
 	else:
 		match location:
 			"Pyrson":
-				#if Global.room.is_dungeon:
-					#await sequence("return_home_pyrson")
-
-				#else:
-					await sequence("wake_home")
+				await run_cue("interact_abad", "wake_home")
 
 			"Dungeon":
 				Passive.open("banter_misc", "rest_dungeon")
@@ -728,16 +731,6 @@ func start_time_events(location: String) -> void:
 func get_date_identifier(of_day := day, time := time_of_day) -> String:
 	return Query.get_mmm(Query.get_month(of_day)).to_lower() + Query.get_date_day(of_day) + "_" + Query.to_tod_text(time).to_lower()
 
-
-## Run a condition script and return the number
-func condition(con: String) -> int:
-	if $Conditions.has_method(con):
-		var res: int = $Conditions.call(con) #I'm guessing it's supposed to be an int here
-		#print_rich("[color=purple]Condition "+ con+" ", res)
-		return res
-	else:
-		push_error(con + " condition is not valid")
-		return 0
 
 
 ## Change any parameters from the time change

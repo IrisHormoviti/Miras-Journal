@@ -1,23 +1,23 @@
-match get_flag("sl_linde"):
+match get_flag("SocialLink/Linde"):
 	when 0:
 		=> rank1
 => END
 
 ~ linde_door
-if f("sl_asteria_1"):
+if f("SocialLink/Asteria>=1"):
 	This is the building Asteria was talking about.
 	if confirm_time_passage("Open door" ,"Try the thing asteria told me and get in."):
 		*knock[wait=1] knock*
-		do add_flag("Event/LindeDoor")
+		$> add_flag("Event/LindeDoor")
 		The door is open
 else:
 	The door is locked.
 
 ~ rank1
-if f("LindeDoor"):
+if f("Event/LindeDoor"):
 	you know dispel now
-	do Party.Leader.Abilities.append(load("res://database/Abilities/Dispel.tres"))
-	do add_flag("sl_linde_1")
-	do Event.progress_by_time(1)
-	do Event.time_transition()
+	$> Party.Leader.Abilities.append(load("res://database/Abilities/Dispel.tres"))
+	$> add_flag("SocialLink/Linde", 1)
+	$> Event.progress_by_time(1)
+	$> Event.time_transition()
 => END

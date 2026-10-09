@@ -217,6 +217,96 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	Battle.prevent_battles = false
 
 
+## Start a brand new game: resets the flags, party and items, then plays the intro
+func new_game() -> void:
+	Global.first_start_time = Time.get_unix_time_from_system()
+
+	# Hide any UI
+	UI.kill("Textbox")
+	UI.kill("Initializer")
+	Hud.hide_all()
+	# Initial flags
+	Event.flags.clear()
+	Event.add_flag("Meta/Started")
+	Event.add_flag("Player/NoBag", true)
+	Event.add_flag("UI/Disable", true)
+	Event.add_flag("UI/HideDate", true)
+	Event.add_flag("Meta/Veinet/Disable")
+	Event.day = 0
+	Event.time_of_day = Event.TOD.NIGHT
+	# Initial Items
+	Item.Inventory.clear()
+	Item.add_item("Wallet", &"Key", false)
+	Item.add_item("PenCase", &"Key", false)
+	Item.add_item("FoldedPaper", &"Key", false)
+	defeated.clear()
+	# Reset party
+	Party.reset_all_members()
+	Party._init()
+	Global.check.emit()
+
+	# Now start the transition
+	Transition.fade_in_out(Color.WHITE, 0, 7, 1)
+	await travel_to("TempleWoods", Vector2.ZERO, 0, null, false)
+	get_tree().paused = false
+	# Skip intro shortcut
+	if Input.is_action_pressed("Dash"):
+		refresh()
+		return
+
+	Global.player.set_anim("OnFloor", false, true)
+	Global.player.shadow(false)
+	var tn := create_tween()
+	tn.set_ease(Tween.EASE_OUT)
+	tn.set_trans(Tween.TRANS_QUART)
+	Hud.ui_visible = false
+	tn.tween_property(Global.camera, "zoom", Vector2(6, 6), 6).from(Vector2(2, 2))
+	save()
+	await tn.finished
+	tn = create_tween()
+	tn.set_ease(Tween.EASE_OUT)
+	tn.set_trans(Tween.TRANS_QUART)
+	tn.set_parallel()
+	var getup: Button = Global.room.get_node("GetUp")
+	var options: Button = Global.room.get_node("Options")
+	getup.show()
+	options.show()
+	options.position = Vector2(15, 600)
+	tn.tween_property(getup, "position", Vector2(100, 512), 0.2).from(Vector2(120, 512))
+	tn.tween_property(getup, "modulate", Color.WHITE, 0.2).from(Color.TRANSPARENT)
+	tn.tween_property(getup, "size", Vector2(120, 33), 0.2).from(Vector2(41, 33))
+	tn.tween_property(options, "position", Vector2(15, 583), 0.3).set_delay(1.5)
+	while not getup.button_pressed or UI.is_open("Options"):
+		if not is_instance_valid(getup): return
+		options.icon = Controller.get_scheme().Start
+
+		if options.button_pressed and not UI.is_open("Options"):
+			await UI.options()
+			options.button_pressed = false
+
+		await Event.wait()
+		if not is_instance_valid(getup): return
+
+	getup.button_pressed = false
+	tn = create_tween()
+	tn.set_ease(Tween.EASE_OUT)
+	tn.set_trans(Tween.TRANS_QUART)
+	tn.set_parallel()
+	Hud.disabled = true
+	tn.tween_property(options, "position", Vector2(15, 600), 0.3)
+	tn.tween_property(getup, "size", Vector2(41, 33), 0.1)
+	tn.tween_property(getup, "modulate", Color.TRANSPARENT, 0.1)
+	tn.tween_property(options, "modulate", Color.TRANSPARENT, 0.1)
+	tn.tween_property(Global.camera, "zoom", Vector2(5, 5), 5)
+	tn.tween_property(Global.player.get_node("%Shadow"), "modulate", Color.WHITE, 3).from(Color.TRANSPARENT).set_delay(3)
+	await Global.player.set_anim("GetUp", true)
+	Global.player.set_anim("IdleUp")
+	Global.controllable = true
+	Event.pop_tutorial("walk")
+	options.hide()
+	getup.hide()
+
+
 func load_res(path: String) -> Resource:
 	load_failed = false
 	var frame := Global.process_frame
@@ -503,6 +593,7 @@ func validate_save(savefile: String) -> bool:
 			return false
 	else:
 		return false
+
 
 func refresh() -> void:
 	await Loader.save()
