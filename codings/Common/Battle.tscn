@@ -5730,6 +5730,7 @@ icon = ExtResource("29_0ae34")
 expand_icon = true
 
 [node name="TurnOrderPop" type="Panel" parent="Canvas" unique_id=1849491009]
+visible = false
 z_index = 10
 use_parent_material = true
 offset_left = -450.0

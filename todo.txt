@@ -1,22 +1,27 @@
 0.2.0 target:
 wizard guy
 more journal entries in story events
-jump anim for the others
 polish upper withered leaves
 void shader
 alcine alone area art
 daze portraits
 polish bunker
 Cutscene for entering shard gardens underground
-maplethorpe sprites for all directions
-maplethorpe social links in general
+maple sprites for all directions
+maple social links in general
 daze introduction cutscene
 enemies in bunker
+trap mechanic
 
 bug fixes:
 Options not saving
 
+item ideas:
+Aura supercharge item with a unique effect on everyone
+Trap items
+
 far future shit:
+jump anim for the others
 implement alcine goofing cutscene art
 title screen art
 new puzzles in shart gardens
