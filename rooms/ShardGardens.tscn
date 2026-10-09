@@ -33,6 +33,7 @@
 [ext_resource type="Texture2D" uid="uid://d2moorxu5wbpx" path="res://art/OV/Objects/CastLines1.png" id="25_70av8"]
 [ext_resource type="Texture2D" uid="uid://cgp1bxulpb0qy" path="res://art/OV/Objects/CastLines2.png" id="26_hrf2i"]
 [ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EvTripwire.tscn" id="26_yhh0x"]
+[ext_resource type="PackedScene" uid="uid://b0pk66kwtm38a" path="res://rooms/components/HideOnFlag.tscn" id="29_5l4ys"]
 [ext_resource type="PackedScene" uid="uid://bgate001gate1" path="res://rooms/components/Gate.tscn" id="29_gate1"]
 [ext_resource type="Script" uid="uid://b2qf7ggvy4inm" path="res://codings/Components/event_tripwire.gd" id="29_oh1ty"]
 [ext_resource type="PackedScene" uid="uid://ccm0r6n0e8q8e" path="res://rooms/components/Transfer.tscn" id="30_ekhkx"]
@@ -329,9 +330,6 @@ animations = [{
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a7h8m"]
 size = Vector2(11, 41)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_sd3du"]
-size = Vector2(55.453, 21.0225)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_lpbgp"]
 atlas = ExtResource("23_8huol")
 region = Rect2(0, 0, 48, 48)
@@ -421,9 +419,6 @@ animations = [{
 "name": &"hide",
 "speed": 6.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wvntm"]
-size = Vector2(142.454, 17.2214)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lj216"]
 atlas = ExtResource("13_ggbak")
@@ -1290,71 +1285,50 @@ position = Vector2(-134, -193)
 texture = ExtResource("25_70av8")
 offset = Vector2(-1, 123)
 
-[node name="DoorBridge1" type="StaticBody2D" parent="." unique_id=608167270]
+[node name="DoorBridge1" parent="." unique_id=608167270 node_paths=PackedStringArray("interactable") instance=ExtResource("29_gate1")]
 position = Vector2(-179, -913)
 scale = Vector2(1.2509149, -0.6295602)
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorBridge1" unique_id=1460150134]
-position = Vector2(-1, 0)
-shape = SubResource("RectangleShape2D_sd3du")
-
-[node name="Gate" parent="DoorBridge1" unique_id=566038083 node_paths=PackedStringArray("interactable") instance=ExtResource("29_gate1")]
+interactable = NodePath("../SwitchBridge1/SGBridge1")
 condition = "ShardGardens/Interact/SGBridge1"
-interactable = NodePath("../../SwitchBridge1/SGBridge1")
+metadata/_edit_group_ = true
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorBridge1/Gate" unique_id=500236612]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorBridge1" unique_id=500236612]
 texture_filter = 1
 position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_esqi5")
 
-[node name="DoorLocked1" type="StaticBody2D" parent="." unique_id=657961396]
+[node name="DoorLocked1" parent="." unique_id=657961396 node_paths=PackedStringArray("interactable") instance=ExtResource("29_gate1")]
 position = Vector2(-335, 590)
-metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLocked1" unique_id=1488869410]
-position = Vector2(-1, 5)
-scale = Vector2(0.999999, 1)
-shape = SubResource("RectangleShape2D_sd3du")
-
-[node name="Gate" parent="DoorLocked1" unique_id=1561510618 node_paths=PackedStringArray("interactable") instance=ExtResource("29_gate1")]
+gate_size = Vector2(55.453, 21.0225)
+gate_offset = Vector2(-1, 5)
+interactable = NodePath("../SwitchCast1/SGDoor1")
 condition = "ShardGardens/Interact/SGDoor1"
-interactable = NodePath("../../SwitchCast1/SGDoor1")
+metadata/_edit_group_ = true
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1/Gate" unique_id=362467646]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1" unique_id=362467646]
 texture_filter = 1
 position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_esqi5")
 
-[node name="DoorLocked2" type="StaticBody2D" parent="." unique_id=1828156749]
+[node name="DoorLocked2" parent="." unique_id=1828156749 instance=ExtResource("29_gate1")]
 position = Vector2(-215, -322)
+gate_size = Vector2(55.453, 21.0225)
+condition = "ShardGardens/SGDoor2"
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLocked2" unique_id=824190865]
-position = Vector2(-1, 0)
-shape = SubResource("RectangleShape2D_sd3du")
-
-[node name="Gate" parent="DoorLocked2" unique_id=374533572 instance=ExtResource("29_gate1")]
-condition = "ShardGardens/SGDoor2"
-
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2/Gate" unique_id=896449868]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2" unique_id=896449868]
 texture_filter = 1
 position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_esqi5")
 
-[node name="DoorLocked3" type="StaticBody2D" parent="." unique_id=1527416625]
+[node name="DoorLocked3" parent="." unique_id=1527416625 instance=ExtResource("29_gate1")]
 position = Vector2(325, -1393)
+gate_size = Vector2(142.454, 17.2214)
+gate_offset = Vector2(0, 4)
+condition = "ShardGardens/Bunker2Open"
 metadata/_edit_group_ = true
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLocked3" unique_id=1490079483]
-position = Vector2(0, 4)
-scale = Vector2(0.999999, 1)
-shape = SubResource("RectangleShape2D_wvntm")
-
-[node name="Gate" parent="DoorLocked3" unique_id=383735080 instance=ExtResource("29_gate1")]
-condition = "ShardGardens/Bunker2Open"
-
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3/Gate" unique_id=281615667]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3" unique_id=281615667]
 texture_filter = 1
 position = Vector2(-1, -35)
 sprite_frames = SubResource("SpriteFrames_ggbak")
@@ -2025,13 +1999,12 @@ scale = Vector2(1.36621, 1.31353)
 energy = 0.5
 texture = SubResource("GradientTexture2D_tdwg2")
 
+[node name="HideOnFlag" parent="SwitchBridge1" unique_id=206159318 instance=ExtResource("29_5l4ys")]
+flag = "ShardGardens/Interact/SGBridge1"
+
 [node name="SGBridge1" parent="SwitchBridge1" unique_id=690503422 instance=ExtResource("20_pu5uh")]
 label_text = "Switch"
-action_type = "gate"
-hide_on_flag = &"ShardGardens/Interact/SGBridge1"
-hide_this_node = true
-hide_parent = true
-return_control = false
+action_type = "toggle"
 
 [node name="SwitchCast1" type="AnimatedSprite2D" parent="." unique_id=286155623]
 texture_filter = 1
@@ -2046,13 +2019,13 @@ scale = Vector2(1.36621, 1.31353)
 energy = 0.5
 texture = SubResource("GradientTexture2D_tdwg2")
 
+[node name="HideOnFlag" parent="SwitchCast1" unique_id=852320904 instance=ExtResource("29_5l4ys")]
+flag = "ShardGardens/Interact/SGDoor1"
+
 [node name="SGDoor1" parent="SwitchCast1" unique_id=751756239 instance=ExtResource("20_pu5uh")]
-action_type = "gate"
 label_text = "Switch"
+action_type = "toggle"
 hide_on_flag = &"ShardGardens/Interact/SGDoor1"
-hide_this_node = true
-hide_parent = true
-return_control = false
 
 [node name="SwitchCastLines2" type="Sprite2D" parent="." unique_id=477013644]
 texture_filter = 1

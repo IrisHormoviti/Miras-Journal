@@ -92,9 +92,6 @@ script = ExtResource("15_ncxtw")
 [sub_resource type="Resource" id="Resource_4ctaf"]
 script = ExtResource("15_ncxtw")
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ha88r"]
-size = Vector2(55.453, 21.0225)
-
 [sub_resource type="SpriteFrames" id="SpriteFrames_vctnq"]
 animations = [{
 "frames": [{
@@ -113,9 +110,6 @@ animations = [{
 "name": &"hide",
 "speed": 6.0
 }]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nxfet"]
-size = Vector2(26.912537, 110)
 
 [sub_resource type="Resource" id="Resource_ncxtw"]
 script = ExtResource("13_ohbkp")
@@ -272,9 +266,6 @@ gradient = SubResource("Gradient_06fd7")
 fill = 1
 fill_from = Vector2(0.508547, 0.495726)
 fill_to = Vector2(0.897436, 0.00854701)
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_fci10"]
-size = Vector2(142.454, 17.2214)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_lj216"]
 atlas = ExtResource("29_mqvg4")
@@ -493,55 +484,40 @@ dialogue_cue = "asteria_camp"
 bubble_always = true
 bubble_height = 20
 
-[node name="DoorLocked1" type="StaticBody2D" parent="." unique_id=1707909631]
+[node name="DoorLocked1" parent="." unique_id=1707909631 node_paths=PackedStringArray("interactable") instance=ExtResource("19_gate1")]
 position = Vector2(-742, 321)
 metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLocked1" unique_id=322876496]
-position = Vector2(-1, 5)
-scale = Vector2(0.999999, 1)
-shape = SubResource("RectangleShape2D_ha88r")
-
-[node name="Gate" parent="DoorLocked1" unique_id=420060779 node_paths=PackedStringArray("interactable") instance=ExtResource("19_gate1")]
+gate_size = Vector2(55.453, 21.0225)
+gate_offset = Vector2(-1, 5)
 condition = "WitheredLeaves/WLDoor1a+WitheredLeaves/WLDoor1b"
-interactable = NodePath("../../SwitchCast1/WLAlcineSwitch1")
+interactable = NodePath("../SwitchCast1/WLAlcineSwitch1")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1/Gate" unique_id=250466873]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1" unique_id=250466873]
 texture_filter = 1
 position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_vctnq")
 
-[node name="DoorLocked2" type="StaticBody2D" parent="." unique_id=1800212102]
+[node name="DoorLocked2" parent="." unique_id=1800212102 node_paths=PackedStringArray("interactable") instance=ExtResource("19_gate1")]
 position = Vector2(-666, 389)
 metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLocked2" unique_id=1726337342]
-position = Vector2(-17, 19)
-scale = Vector2(0.999999, 1)
-shape = SubResource("RectangleShape2D_nxfet")
-
-[node name="Gate" parent="DoorLocked2" unique_id=637321918 node_paths=PackedStringArray("interactable") instance=ExtResource("19_gate1")]
+gate_size = Vector2(26.912537, 110)
+gate_offset = Vector2(-17, 19)
 condition = "WitheredLeaves/WLDoor1a"
-interactable = NodePath("../../SwitchCast2/WLDoor1a")
+interactable = NodePath("../SwitchCast2/WLDoor1a")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2/Gate" unique_id=1222588454]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2" unique_id=1222588454]
 texture_filter = 1
 position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_vctnq")
 
-[node name="DoorLocked3" type="StaticBody2D" parent="." unique_id=1425573640]
+[node name="DoorLocked3" parent="." unique_id=1425573640 instance=ExtResource("19_gate1")]
 position = Vector2(352, -860)
 metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLocked3" unique_id=2028845645]
-position = Vector2(-15.456268, 18)
-scale = Vector2(0.999999, 1)
-shape = SubResource("RectangleShape2D_nxfet")
-
-[node name="Gate" parent="DoorLocked3" unique_id=1905243525 instance=ExtResource("19_gate1")]
+gate_size = Vector2(26.912537, 110)
+gate_offset = Vector2(-15.456268, 18)
 condition = "WitheredLeaves/WLLeftSideOpen"
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3/Gate" unique_id=2135567216]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3" unique_id=2135567216]
 texture_filter = 1
 position = Vector2(-28, 17)
 sprite_frames = SubResource("SpriteFrames_vctnq")
@@ -830,24 +806,19 @@ dialogue_cue = "WL_bunker_switch"
 return_control = false
 hide_on_flag = &"WitheredLeaves/Bunker1Open"
 
-[node name="DoorLocked4" type="StaticBody2D" parent="." unique_id=520288389]
+[node name="DoorLocked4" parent="." unique_id=520288389 instance=ExtResource("19_gate1")]
 position = Vector2(-204, -1057)
 metadata/_edit_group_ = true
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DoorLocked4" unique_id=1915828735]
-position = Vector2(-0.197144, 4.09424)
-scale = Vector2(0.999999, 1)
-shape = SubResource("RectangleShape2D_fci10")
-
-[node name="Gate" parent="DoorLocked4" unique_id=5416825 instance=ExtResource("19_gate1")]
-position = Vector2(0, -34)
+gate_size = Vector2(142.454, 17.2214)
+gate_offset = Vector2(-0.197144, 4.09424)
 condition = "WitheredLeaves/Bunker1Open"
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked4/Gate" unique_id=49035216]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked4" unique_id=49035216]
 texture_filter = 1
+position = Vector2(0, -34)
 sprite_frames = SubResource("SpriteFrames_ug3t0")
 
-[node name="Interactable2" parent="DoorLocked4/Gate" unique_id=1759938912 instance=ExtResource("4_d8pup")]
+[node name="Interactable2" parent="DoorLocked4" unique_id=1759938912 instance=ExtResource("4_d8pup")]
 position = Vector2(0, 35)
 label_text = "Force Open"
 file = "interact_abad"

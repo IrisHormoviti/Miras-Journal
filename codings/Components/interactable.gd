@@ -30,7 +30,6 @@ signal action()
 	"battle",
 	"veinet",
 	"chair",
-	"gate",
 ) var action_type: String = "text":
 	set(x):
 		action_type = x
@@ -431,11 +430,14 @@ func _on_button_pressed() -> void:
 			disappear(true)
 			if dialogue_file.is_empty(): dialogue_file = file
 			var cue: String = "" if dialogue_cue == "start" else dialogue_cue
+
 			match textbox_mode:
 				"Passive":
 					await Passive.open(dialogue_file, cue)
+
 				"Headless":
 					await Event.run_cue(dialogue_file, cue)
+
 				_:
 					await Textbox.open(dialogue_file, cue)
 
@@ -486,11 +488,6 @@ func _on_button_pressed() -> void:
 
 			Global.player.look_to(Direction.from(to_local(pos)))
 			await Event.jump_to_global(Global.player, pos)
-
-		"gate":
-			# The linked Gate handles control, camera and the flag itself.
-			action.emit()
-			return
 
 	if add_flag:
 		if hide_on_flag != "":
