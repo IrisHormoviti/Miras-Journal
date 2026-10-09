@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bgate001gate1"]
+
+[ext_resource type="Script" uid="uid://dl3vgpb08inx0" path="res://codings/Components/gate.gd" id="1_gate1"]
+
+[node name="Gate" type="Node2D" unique_id=1000000001]
+script = ExtResource("1_gate1")
+metadata/_custom_type_script = "uid://dl3vgpb08inx0"
+
+[node name="Sprite" type="AnimatedSprite2D" parent="." unique_id=1000000003]
+texture_filter = 1

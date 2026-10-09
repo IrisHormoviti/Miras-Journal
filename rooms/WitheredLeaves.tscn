@@ -24,6 +24,7 @@
 [ext_resource type="Resource" uid="uid://oi2xv8bjx6ph" path="res://database/BattleSeq/SkritcherRootDaze.tres" id="16_lemrk"]
 [ext_resource type="Texture2D" uid="uid://ubrl1l3wlpgo" path="res://art/OV/Objects/CastSwitch.png" id="18_6fdth"]
 [ext_resource type="PackedScene" uid="uid://b0pk66kwtm38a" path="res://rooms/components/HideOnFlag.tscn" id="19_3p2gw"]
+[ext_resource type="PackedScene" uid="uid://bgate001gate1" path="res://rooms/components/Gate.tscn" id="19_gate1"]
 [ext_resource type="Resource" uid="uid://cod3sfmno6veq" path="res://database/Enemies/Skullish.tres" id="20_ceufj"]
 [ext_resource type="Script" uid="uid://b05nwmod2wbs2" path="res://codings/Components/hide_on_flag.gd" id="20_nxfet"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="21_8pygo"]
@@ -501,11 +502,11 @@ position = Vector2(-1, 5)
 scale = Vector2(0.999999, 1)
 shape = SubResource("RectangleShape2D_ha88r")
 
-[node name="HideOnFlag" type="Node2D" parent="DoorLocked1" unique_id=420060779]
-script = ExtResource("20_nxfet")
-flag = "WitheredLeaves/WLDoor1a+WitheredLeaves/WLDoor1b"
+[node name="Gate" parent="DoorLocked1" unique_id=420060779 node_paths=PackedStringArray("interactable") instance=ExtResource("19_gate1")]
+condition = "WitheredLeaves/WLDoor1a+WitheredLeaves/WLDoor1b"
+interactable = NodePath("../../SwitchCast1/WLAlcineSwitch1")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1/HideOnFlag" unique_id=250466873]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1/Gate" unique_id=250466873]
 texture_filter = 1
 position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_vctnq")
@@ -519,11 +520,11 @@ position = Vector2(-17, 19)
 scale = Vector2(0.999999, 1)
 shape = SubResource("RectangleShape2D_nxfet")
 
-[node name="HideOnFlag" type="Node2D" parent="DoorLocked2" unique_id=637321918]
-script = ExtResource("20_nxfet")
-flag = "WitheredLeaves/WLDoor1a"
+[node name="Gate" parent="DoorLocked2" unique_id=637321918 node_paths=PackedStringArray("interactable") instance=ExtResource("19_gate1")]
+condition = "WitheredLeaves/WLDoor1a"
+interactable = NodePath("../../SwitchCast2/WLDoor1a")
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2/HideOnFlag" unique_id=1222588454]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2/Gate" unique_id=1222588454]
 texture_filter = 1
 position = Vector2(-1, -8)
 sprite_frames = SubResource("SpriteFrames_vctnq")
@@ -537,11 +538,10 @@ position = Vector2(-15.456268, 18)
 scale = Vector2(0.999999, 1)
 shape = SubResource("RectangleShape2D_nxfet")
 
-[node name="HideOnFlag" type="Node2D" parent="DoorLocked3" unique_id=1905243525]
-script = ExtResource("20_nxfet")
-flag = "WitheredLeaves/WLLeftSideOpen"
+[node name="Gate" parent="DoorLocked3" unique_id=1905243525 instance=ExtResource("19_gate1")]
+condition = "WitheredLeaves/WLLeftSideOpen"
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3/HideOnFlag" unique_id=2135567216]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3/Gate" unique_id=2135567216]
 texture_filter = 1
 position = Vector2(-28, 17)
 sprite_frames = SubResource("SpriteFrames_vctnq")
@@ -782,10 +782,9 @@ texture = SubResource("GradientTexture2D_5vs6x")
 flag = "WitheredLeaves/WLDoor1b"
 
 [node name="WLAlcineSwitch1" parent="SwitchCast1" unique_id=244300434 instance=ExtResource("4_d8pup")]
-action_type = "focus_cam"
-focus_position = Vector2(-745, 318)
-add_flag = true
+action_type = "gate"
 hide_on_flag = &"WitheredLeaves/WLDoor1b"
+return_control = false
 
 [node name="SwitchCast2" type="AnimatedSprite2D" parent="." unique_id=1499783082]
 texture_filter = 1
@@ -804,10 +803,9 @@ texture = SubResource("GradientTexture2D_5vs6x")
 flag = "WitheredLeaves/WLDoor1a"
 
 [node name="WLDoor1a" parent="SwitchCast2" unique_id=191020952 instance=ExtResource("4_d8pup")]
-action_type = "focus_cam"
-focus_position = Vector2(-675, 413)
-add_flag = true
+action_type = "gate"
 hide_on_flag = &"WitheredLeaves/WLDoor1a"
+return_control = false
 
 [node name="TransferToAmberelm" parent="." unique_id=1439515348 instance=ExtResource("3_lemrk")]
 position = Vector2(-1278, -106)
@@ -841,16 +839,15 @@ position = Vector2(-0.197144, 4.09424)
 scale = Vector2(0.999999, 1)
 shape = SubResource("RectangleShape2D_fci10")
 
-[node name="HideOnFlag" type="Node2D" parent="DoorLocked4" unique_id=5416825]
+[node name="Gate" parent="DoorLocked4" unique_id=5416825 instance=ExtResource("19_gate1")]
 position = Vector2(0, -34)
-script = ExtResource("20_nxfet")
-flag = "WitheredLeaves/Bunker1Open"
+condition = "WitheredLeaves/Bunker1Open"
 
-[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked4/HideOnFlag" unique_id=49035216]
+[node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked4/Gate" unique_id=49035216]
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_ug3t0")
 
-[node name="Interactable2" parent="DoorLocked4/HideOnFlag" unique_id=1759938912 instance=ExtResource("4_d8pup")]
+[node name="Interactable2" parent="DoorLocked4/Gate" unique_id=1759938912 instance=ExtResource("4_d8pup")]
 position = Vector2(0, 35)
 label_text = "Force Open"
 file = "interact_abad"

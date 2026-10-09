@@ -29,8 +29,8 @@ signal action()
 	"item",
 	"battle",
 	"veinet",
-	"focus_cam",
 	"chair",
+	"gate",
 ) var action_type: String = "text":
 	set(x):
 		action_type = x
@@ -57,7 +57,6 @@ signal action()
 @export var to_time_relative: int
 @export var chair_faces: Array[String] = ["U", "D", "L", "R"]
 @export var return_control := true
-@export var focus_position: Vector2
 
 @export_category("Flag")
 @export var add_flag: bool = false
@@ -95,7 +94,6 @@ var action_options: Array[String] = [
 		"to_time_relative",
 		"return_control",
 		"chair_faces",
-		"focus_position",
 	]
 
 @onready var button: Button
@@ -134,13 +132,13 @@ func setup_action_options() -> void:
 
 		"veinet": used_properties = []
 
-		"focus_cam":
-			used_properties = ["focus_position"]
-			return_control = true
-
 		"chair":
 			used_properties = ["chair_faces"]
 			return_control = true
+
+		"gate":
+			used_properties = []
+			return_control = false
 
 
 ## For editor listings
@@ -461,16 +459,6 @@ func _on_button_pressed() -> void:
 				appear()
 				Loader.save()
 
-		"focus_cam":
-			Event.take_control()
-			Global.player.camera_follow(false)
-			Global.camera.position = focus_position
-			await Event.wait(1)
-			if add_flag: Event.add_flag(hide_on_flag, true)
-			Global.check.emit()
-			await Event.wait(3, false)
-			Global.player.camera_follow(true)
-
 		"chair":
 			await Event.take_control()
 			var face := Global.player.facing
@@ -498,6 +486,11 @@ func _on_button_pressed() -> void:
 
 			Global.player.look_to(Direction.from(to_local(pos)))
 			await Event.jump_to_global(Global.player, pos)
+
+		"gate":
+			# The linked Gate handles control, camera and the flag itself.
+			action.emit()
+			return
 
 	if add_flag:
 		if hide_on_flag != "":
