@@ -337,7 +337,7 @@ if Hud.confirm_time_passage("Rest", "Fully recover Health."):
 	Placeholder description: {{alcine}} picks up the paper.
 	$> transition(Direction.CENTER)
 	$> wait(1)
-	$> heal_party()
+	$> Party.heal_party()
 	$>>  time_transition()
 else: 
 	$> give_control()

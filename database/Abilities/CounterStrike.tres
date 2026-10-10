@@ -1,0 +1,37 @@
+[gd_resource type="Resource" script_class="Ability" format=3 uid="uid://cf4ck1aspqb45"]
+
+[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_ab"]
+[ext_resource type="Script" uid="uid://bsccjy22fwuit" path="res://codings/Classes/trap_condition.gd" id="2_jgiwd"]
+[ext_resource type="Script" uid="uid://bqrgukmh060n1" path="res://codings/Classes/trap.gd" id="3_cyotl"]
+
+[sub_resource type="Resource" id="Resource_lfbny"]
+script = ExtResource("1_ab")
+name = "CounterStrike"
+ActionSequence = &"CloseupAttack"
+Types = Array[int]([3])
+Damage = 6
+Target = 1
+CritChance = 0.1
+
+[sub_resource type="Resource" id="Resource_cond"]
+script = ExtResource("2_jgiwd")
+hit_kind = 1
+
+[sub_resource type="Resource" id="Resource_cov55"]
+resource_name = "CounterStance"
+script = ExtResource("3_cyotl")
+ability = SubResource("Resource_lfbny")
+condition = SubResource("Resource_cond")
+name = "Counter Stance"
+Description = "Lies in wait. Weapon damage on the first enemy that lands a weapon hit."
+turns = 3
+
+[resource]
+script = ExtResource("1_ab")
+name = "CounterStrike"
+description = "Counterattack the next enemy that lands a weapon attack. Lasts 3 turns."
+ActionSequence = &"SetTrap"
+Types = Array[int]([18])
+SetsTrap = SubResource("Resource_cov55")
+AuraCost = 4
+Callout = false

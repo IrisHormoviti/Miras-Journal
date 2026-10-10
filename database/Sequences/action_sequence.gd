@@ -9,6 +9,9 @@ var Turn: int
 #var target:Actor
 var miss: bool
 var crit: bool
+## Set when a trap springs, so the current ability stops dealing further damage.
+## Reset at the start of every sequence invocation.
+var interrupted := false
 signal states_handled
 signal additional_done
 
@@ -16,6 +19,7 @@ signal additional_done
 func play(nam: String, tar: Actor) -> void:
 	TurnOrder = Bt.TurnOrder
 	CurrentChar = Bt.CurrentChar
+	interrupted = false
 	Bt.Action = true
 	CurrentChar.node.z_index = 1
 	Loader.battle_bars(2)
@@ -49,6 +53,7 @@ func play_aoe(nam: String) -> void:
 		required_returns -= 1
 
 	for i in fact:
+		interrupted = false
 		roll_rng(i)
 		call(nam, i)
 		print("AOE sequence on ", i.FirstName)
@@ -92,14 +97,14 @@ func handle_states() -> void:
 					#chara.node.get_node("State").play("Burned")
 					Bt.focus_cam(chara, 0.3)
 					Bt.play_sound("BurnWoosh", chara)
-					Bt.damage(chara, true, true, randi_range(3, 12), false, true, true, Colorizer.ElementColor.get("heat"))
+					await Bt.damage(chara, true, true, randi_range(3, 12), false, true, true, Colorizer.ElementColor.get("heat"))
 					await get_tree().create_timer(0.8).timeout
 
 				"Poisoned":
 					state.turns += 1
 					#chara.node.get_node("State").play("Poisoned")
 					Bt.focus_cam(chara, 0.3)
-					Bt.damage(chara, true, true, abs(state.turns), false, true, true, Colorizer.ElementColor.get("corruption"))
+					await Bt.damage(chara, true, true, abs(state.turns), false, true, true, Colorizer.ElementColor.get("corruption"))
 					await get_tree().create_timer(0.8).timeout
 
 				"Confused":
@@ -130,7 +135,7 @@ func handle_states() -> void:
 						Bt.play_effect("LeechGrab1", chara, Vector2.ZERO, false, true)
 						Bt.focus_cam(chara, 0.3)
 						if chara.DamageRecivedThisTurn == 0:
-							Bt.damage(chara, true, true, 4, false, true, true, Colorizer.ElementColor.get("natural"))
+							await Bt.damage(chara, true, true, 4, false, true, true, Colorizer.ElementColor.get("natural"))
 
 						var dmg: int = chara.DamageRecivedThisTurn
 						await $LeechGrab1.animation_finished
@@ -229,13 +234,13 @@ func AttackMira(target: Actor) -> void:
 		Bt.screen_shake(15, 7, 0.2)
 		Bt.anim("Attack2")
 		Bt.play_effect("SimpleHit", target)
-		Bt.damage(target)
+		await Bt.damage(target)
 	else:
 		Bt.anim("Attack2")
 		Bt.miss()
 
 	if crit:
-		Bt.damage(target, false, true)
+		await Bt.damage(target, false, true)
 		Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.WheelColor)
 
 	await get_tree().create_timer(0.4).timeout
@@ -252,7 +257,7 @@ func JumpAttack(target: Actor) -> void:
 	await Bt.anim_done
 	if not miss:
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target, false, false)
+		await Bt.damage(target, false, false)
 		Bt.screen_shake(15, 7, 0.2)
 		Bt.anim("Attack2")
 		Bt.play_effect("SimpleHit", target)
@@ -270,18 +275,18 @@ func AttackAlcine(target: Actor) -> void:
 	await Event.wait(0.2)
 	await Bt.move(CurrentChar, target.node.position + Vector2(Bt.offsetize(-57), 0), 0.4, Tween.EASE_OUT)
 	if not miss:
-		Bt.damage(target)
+		await Bt.damage(target)
 		Bt.screen_shake(8, 5, 0.1)
 		Bt.anim("Attack2")
 		Bt.move(target, target.node.position + Vector2(Bt.offsetize(-10), 0), 0.3, Tween.EASE_OUT)
 		Bt.move(CurrentChar, target.node.position + Vector2(Bt.offsetize(-70), 0), 0.3, Tween.EASE_OUT)
 		await Event.wait(0.6)
 		if crit:
-			Bt.damage(target, false, true)
+			await Bt.damage(target, false, true)
 			Bt.screen_shake(15, 7, 0.3)
 			Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.WheelColor)
 		else:
-			Bt.damage(target, false, false)
+			await Bt.damage(target, false, false)
 			Bt.screen_shake(10, 7, 0.3)
 
 		Bt.move(target, target.node.position + Vector2(Bt.offsetize(10), 0), 0.5, Tween.EASE_OUT)
@@ -303,7 +308,7 @@ func AttackDaze(target: Actor) -> void:
 	Bt.anim("Attack2")
 	if not miss:
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target, false, false)
+		await Bt.damage(target, false, false)
 		Bt.screen_shake(5, 7, 0.2)
 		Bt.shake_actor()
 		await Bt.move(CurrentChar, target.node.position + Vector2(Bt.offsetize(45), 0), 0.2, Tween.EASE_OUT)
@@ -317,7 +322,7 @@ func AttackDaze(target: Actor) -> void:
 			await Event.wait(0.5)
 			Bt.play_effect("SimpleHit", target)
 			Bt.screen_shake(15, 7, 0.2)
-			Bt.damage(target, false, true)
+			await Bt.damage(target, false, true)
 			await Event.wait(0.7)
 	else: Bt.miss()
 	await Event.wait(0.3)
@@ -335,14 +340,14 @@ func AttackAsteria(target: Actor) -> void:
 	await Event.wait(0.2)
 	if not miss:
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target)
+		await Bt.damage(target)
 		Bt.screen_shake()
 	else: Bt.miss()
 	await Event.wait(0.5)
 	roll_rng(target)
 	if not miss:
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target)
+		await Bt.damage(target)
 		Bt.screen_shake()
 	else: Bt.miss()
 	await $Scarf1.animation_finished
@@ -350,7 +355,7 @@ func AttackAsteria(target: Actor) -> void:
 		$Scarf1.play("Scarf3")
 		await Event.wait(0.6)
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target, false, true)
+		await Bt.damage(target, false, true)
 		Bt.screen_shake()
 		Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.WheelColor)
 	else:
@@ -378,6 +383,29 @@ func TestState(target: Actor) -> void:
 	Bt.end_turn()
 
 
+func SetTrap(target: Actor) -> void:
+	Bt.zoom(5)
+	Bt.focus_cam(CurrentChar)
+	Bt.anim("Cast")
+	await Event.wait(0.3)
+	Bt.zoom(6)
+	Bt.focus_cam(target)
+
+	if Bt.CurrentAbility.Damage != Ability.D.NONE:
+		if miss: Bt.miss()
+		else: await Bt.damage(target, true, true)
+
+	if Bt.CurrentAbility.InflictsState != "":
+		await target.add_state(Bt.CurrentAbility.InflictsState)
+
+	if Bt.CurrentAbility.SetsTrap != null:
+		await Bt.apply_trap(Bt.CurrentAbility.SetsTrap, target)
+
+	await Event.wait(1)
+	Bt.anim()
+	Bt.end_turn()
+
+
 func StickAttack(target: Actor) -> void:
 	Bt.zoom()
 	Bt.focus_cam(target, 0.5, 30)
@@ -386,7 +414,7 @@ func StickAttack(target: Actor) -> void:
 	await Bt.anim_done
 	Bt.move(CurrentChar, target.node.position, 0.5, Tween.EASE_IN)
 	Bt.play_sound("Attack2", CurrentChar)
-	Bt.damage(target)
+	await Bt.damage(target)
 	Bt.screen_shake(15, 7, 0.2)
 	Bt.anim("Attack2")
 	Bt.play_effect("SimpleHit", target)
@@ -408,7 +436,7 @@ func WarpAttack(target: Actor) -> void:
 	await Event.wait(0.2)
 	if not miss:
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target)
+		await Bt.damage(target)
 		Bt.screen_shake()
 	else: Bt.miss()
 	await Event.wait(0.7)
@@ -433,7 +461,7 @@ func RemoteAttack(target: Actor) -> void:
 	await Event.wait(0.4)
 	if not miss:
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target)
+		await Bt.damage(target)
 		Bt.screen_shake()
 	else: Bt.miss()
 	await Event.wait(0.5)
@@ -450,7 +478,7 @@ func CloseupAttack(target: Actor) -> void:
 	await Event.wait(0.2)
 	if not miss:
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target)
+		await Bt.damage(target)
 		Bt.play_effect("SimpleHit", target)
 		Bt.screen_shake(18)
 	else: Bt.miss()
@@ -477,7 +505,7 @@ func AOEAttack(target: Actor) -> void:
 		if miss: Bt.miss(target)
 		else:
 			Bt.play_sound("Attack2", CurrentChar)
-			Bt.damage(target)
+			await Bt.damage(target)
 			Bt.play_effect("SimpleHit", target)
 			Bt.screen_shake(18)
 
@@ -569,7 +597,7 @@ func FlameSpark(target: Actor) -> void:
 	else:
 		Bt.focus_cam(target, 0.3)
 		await Event.wait(0.2)
-		Bt.damage(target, true, true)
+		await Bt.damage(target, true, true)
 		await Event.wait(0.8)
 		await target.add_state("Burned")
 
@@ -589,7 +617,7 @@ func RagingFire(target: Actor) -> void:
 	Bt.focus_cam(target, 0.3)
 	await Event.wait(0.2)
 	Bt.screen_shake()
-	Bt.damage(target, true, true)
+	await Bt.damage(target, true, true)
 	await Event.wait(0.8)
 	if crit:
 		await target.add_state("Burned")
@@ -627,7 +655,7 @@ func SoulTap(target: Actor) -> void:
 	if crit: target.add_state("Confused")
 	await Bt.shake_actor(target, 1, 2)
 	Bt.screen_shake(5, 2, 0.1)
-	Bt.damage(target, true, true)
+	await Bt.damage(target, true, true)
 	await Event.wait(0.5)
 	Bt.anim()
 	Bt.end_turn()
@@ -642,7 +670,7 @@ func SoulGrasp(target: Actor) -> void:
 	if crit: target.add_state("Confused")
 	await Bt.shake_actor(target, 1)
 	Bt.screen_shake(8, 2, 0.1)
-	Bt.damage(target, true, true)
+	await Bt.damage(target, true, true)
 	await Event.wait(1)
 	Bt.anim()
 	Bt.end_turn()
@@ -656,7 +684,7 @@ func Needle(target: Actor) -> void:
 	if !miss:
 		await Event.wait(0.3)
 		Bt.screen_shake(12, 5, 0.1)
-		Bt.damage(target, false, true)
+		await Bt.damage(target, false, true)
 	else: Bt.miss()
 	await Event.wait(1)
 	Bt.anim()
@@ -709,7 +737,7 @@ func ToxicSplash(target: Actor) -> void:
 	Bt.focus_cam(target, 1)
 	Bt.play_effect("ToxicSplash", target)
 	await Event.wait(0.8)
-	Bt.damage(target, true, true)
+	await Bt.damage(target, true, true)
 	Bt.screen_shake(8, 5, 0.1)
 	await Event.wait(1)
 	if crit: await target.add_state("Poisoned")
@@ -750,14 +778,14 @@ func IcyDrizzle(target: Actor) -> void:
 		Bt.play_effect("Iceicle", target, Vector2(randi_range(-10, 10), randi_range(-10, 10)))
 		await Event.wait(0.3)
 		if not miss:
-			Bt.damage(target, false, true, Query.calc_num() / 2)
+			await Bt.damage(target, false, true, Query.calc_num() / 2)
 			Bt.screen_shake(5)
 
 		roll_rng(target)
 		if not miss:
 			Bt.play_effect("Iceicle", target, Vector2(randi_range(-10, 10), randi_range(-10, 10)))
 			await Event.wait(randf_range(0, 0.5))
-			Bt.damage(target, true, true, Query.calc_num() / 2)
+			await Bt.damage(target, true, true, Query.calc_num() / 2)
 			Bt.screen_shake(5)
 			if crit: await target.add_state("Frozen")
 
@@ -785,7 +813,7 @@ func SmallShock(target: Actor) -> void:
 	Bt.focus_cam(target, 1)
 	#Bt.play_effect("ToxicSplash", target)
 	await Event.wait(0.8)
-	Bt.damage(target, true, true)
+	await Bt.damage(target, true, true)
 	Bt.screen_shake(8, 5, 0.1)
 	await Event.wait(1)
 	if crit: await target.add_state("Zapped")
@@ -798,7 +826,7 @@ func FluidBlast(target: Actor) -> void:
 	Bt.zoom(6)
 	Bt.focus_cam(target, 1)
 	await Event.wait(0.8)
-	Bt.damage(target, true, true)
+	await Bt.damage(target, true, true)
 	Bt.screen_shake(8, 5, 0.1)
 	await Event.wait(1)
 	if crit: await target.add_state("Soaked")
@@ -813,7 +841,7 @@ func StaticSaber(target: Actor) -> void:
 	Bt.focus_cam(target, 1, 0)
 	await Bt.move(CurrentChar, target.node.position + Vector2(Bt.offsetize(-20), 0), 0.3, Tween.EASE_IN)
 	Bt.move(CurrentChar, target.node.position + Vector2(Bt.offsetize(30), -20), 1, Tween.EASE_OUT)
-	Bt.damage(target, false, true)
+	await Bt.damage(target, false, true)
 	Bt.screen_shake(8, 5, 0.1)
 	await Event.wait(1.5)
 	if crit: await target.add_state("Zapped")
@@ -828,7 +856,7 @@ func RedShift(target: Actor) -> void:
 	Bt.focus_cam(target, 1)
 	Bt.play_effect("ToxicSplash", target)
 	await Event.wait(0.8)
-	Bt.damage(target, true, true, Query.calc_num() + (Query.calc_num() * target.States.size()))
+	await Bt.damage(target, true, true, Query.calc_num() + (Query.calc_num() * target.States.size()))
 	Bt.screen_shake(8, 5, 0.1)
 	await Event.wait(1)
 	Bt.anim()
@@ -911,7 +939,7 @@ func HeatWave(target: Actor) -> void:
 			await Bt.shake_actor(target)
 			Bt.screen_shake(5)
 			Bt.play_sound("BurnWoosh", target)
-			Bt.damage(target, true, true)
+			await Bt.damage(target, true, true)
 		elif crit:
 			target.add_state("Burned")
 
@@ -936,7 +964,7 @@ func Thunderstorm(target: Actor) -> void:
 			await Bt.shake_actor(target)
 			Bt.screen_shake(10)
 			Bt.play_sound("Attack2", CurrentChar)
-			Bt.damage(target, true, true)
+			await Bt.damage(target, true, true)
 
 		target.add_state("Soaked", 5)
 
@@ -966,7 +994,7 @@ func Humidity(target: Actor) -> void:
 			await Bt.shake_actor(target)
 			Bt.screen_shake(5)
 			Bt.play_sound("BurnWoosh", target)
-			Bt.damage(target, true, true)
+			await Bt.damage(target, true, true)
 		elif crit:
 			target.add_state("Soaked")
 
@@ -1089,7 +1117,7 @@ func ItemThrow(target: Actor) -> void:
 	Bt.focus_cam(target)
 	Bt.play_effect("Hit", target)
 	Bt.screen_shake()
-	Bt.damage(target, false, true, Query.calc_num(), true, false, true)
+	await Bt.damage(target, false, true, Query.calc_num(), true, false, true)
 	if Bt.CurrentAbility.InflictsState != "":
 		await target.add_state(Bt.CurrentAbility.InflictsState)
 
@@ -1171,12 +1199,12 @@ func FirstBattle2(target: Actor) -> void:
 	Bt.anim("FirstBattle", Party.Leader)
 	CurrentChar.node.hide()
 	Bt.play_sound("Attack2", CurrentChar)
-	Bt.damage(target, false, false, 12, false)
+	await Bt.damage(target, false, false, 12, false)
 	Passive.open("story_0", "gahh")
 	await Event.wait(2)
 	for i in 3:
 		Bt.play_sound("Attack2", CurrentChar)
-		Bt.damage(target, false, false, randi_range(1, 5), false)
+		await Bt.damage(target, false, false, randi_range(1, 5), false)
 		await Event.wait(0.5)
 
 	await Event.wait(1.8)

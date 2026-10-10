@@ -6,6 +6,13 @@ var tar_aff: Affinity
 var relation_ico: TextureRect = null
 var t: Tween
 
+enum Relation {
+	N,
+	RESIST,
+	WEAK,
+	OP
+}
+
 
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("DebugC"):

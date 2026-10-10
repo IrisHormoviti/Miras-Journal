@@ -21,6 +21,7 @@ enum TP {
 	FOLLOW_UP = 15, ## Can be used only after a followup
 	COLOR_CHANGE = 16, ## Changes colors
 	STATE_RECOVERY = 17, ## Heals a state
+	TRAP = 18, ## Sets up a trap on the target
 }
 
 ## Damage type
@@ -45,15 +46,20 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 @export var Types: Array[TP] = [TP.UNSET]
 @export var Group: String = ""
 @export var InflictsState: String = ""
+## A trap placed on the target when this ability is used. Traps are States that
+## spring when the target is hit. See the "SetTrap" action sequence.
+@export var SetsTrap: Trap = null
 @export var AuraCost: int
 @export var HPCost: int
 @export var disabled := false
 @export var Damage: D = D.NONE
+@export var MakesPhysicalContact := false
 @export var Parameter: float = 0
 @export var Target: T = T.SELF
 @export var CanTargetDead := false
 @export var AOE_Stagger: float = 0
 @export var AOE_AdditionalSeq := true
+@export var show_cutin := false
 
 @export var ColorSameAsActor := false
 @export_color_no_alpha var WheelColor: Color = Color(1, 1, 1, 1)

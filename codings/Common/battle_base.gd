@@ -62,6 +62,11 @@ var follow_up_next := false
 ## Counts turn ends for each AOE ability sequence
 ## The turn ends after all targets have returned
 var aoe_returns := 0
+## True while a sprung trap is being preformed, so traps can't chain forever
+var in_trap := false
+## Traps that sprung from the current hit, consumed and waiting to counterattack
+## immediately (resolved inside damage, at the impact).
+var pending_traps: Array[Dictionary] = []
 
 @onready var ui: Control = %ControllerBattleUI
 @onready var canvas: CanvasLayer = $Canvas
@@ -159,7 +164,7 @@ func _ready() -> void:
 	act.global_position = sequence.ScenePosition
 	act.z_index = Global.room.camera_index.z if Global.room.camera_index else 3
 	cam.make_current()
-	
+
 	battle_start.emit()
 	current = self
 	get_tree().paused = false
@@ -249,7 +254,6 @@ func _ready() -> void:
 	if sequence.Music:
 		Audio.change_music_from_to(sequence.Music.track, sequence.Music.battle_start)
 
-	
 	position_sprites()
 	if is_instance_valid(attacker): attacker.hide()
 	if sequence.EntranceSequence != "": await act.call(sequence.EntranceSequence)
@@ -258,7 +262,6 @@ func _ready() -> void:
 	for i in TurnOrder:
 		print(i.Speed + i.SpeedBoost, " - ", i.FirstName)
 
-	
 	await entrance()
 
 
@@ -454,6 +457,8 @@ func entrance_anim(i: Actor) -> void:
 
 func _on_next_turn() -> void:
 	if check_for_victory(): return
+	# A trap's interruption only lasts for the action that sprung it
+	act.interrupted = false
 	#position_sprites()
 	Turn += 1
 
@@ -521,16 +526,19 @@ func _on_ai_chosen() -> void:
 
 func confirm_next(action_anim := true) -> void:
 	if CurrentChar.NextMove == null:
-		CurrentChar.NextMove = Ability.nothing() 
+		CurrentChar.NextMove = Ability.nothing()
 
 	if CurrentChar.Controllable: ui.close()
-	
+
 	if CurrentChar.NextMove == CurrentChar.StandardAttack:
 		CurrentChar.NextAction = Actor.BtAction.ACT
 
 	print_rich("[color=cornflower-blue]Action: ", CurrentChar.NextAction)
 
 	if action_anim:
+		if CurrentChar.NextMove.show_cutin:
+			cut_in(CurrentChar.codename)
+
 		match CurrentChar.NextAction:
 			Actor.BtAction.MAGIC:
 				focus_cam(CurrentChar)
@@ -733,6 +741,7 @@ func battle_msg(id: String, insert := "MISSING", insert2 := "MISSING2") -> Strin
 func jump_to(
 	character: Actor, to_position: Vector2, time: float, height: float = 0.5
 ) -> void:
+	hide_state_effects(character)
 	var t := create_tween()
 	var start_pos := character.node.position
 	var jump_distance: float = start_pos.distance_to(to_position)
@@ -768,6 +777,11 @@ func end_turn(confirm_aoe := false) -> void:
 	if ignore_end_turn: return
 	aoe_returns = 0
 
+	# Traps sprung during an AOE resolve here, once every per-target sequence has
+	# finished and the shared sequence context is free again.
+	if not pending_traps.is_empty():
+		await resolve_traps()
+
 	for i in TurnOrder:
 		if i.Aura == 0 and i.Health != 0 and not (
 			i.has_state("AuraBreak") or i.has_state("UnbreakingAura") or i.has_state("KnockedOut")
@@ -782,13 +796,12 @@ func end_turn(confirm_aoe := false) -> void:
 
 	sequence.reset_events()
 	TurnOrder.sort_custom(speed_sort)
-	#for i in TurnOrder:
-		#print(i.Speed+i.SpeedBoost, " - ", i.FirstName)
 
 	while lock_turn:
 		await Event.wait()
 
 	await get_tree().create_timer(0.1).timeout
+	show_state_effects()
 	act.end_turn_checks()
 	if is_instance_valid(CurrentChar.node):
 		CurrentChar.node.z_index = 0
@@ -801,36 +814,42 @@ func end_turn(confirm_aoe := false) -> void:
 
 
 func damage(
-	target: Actor, 
-	is_magic := CurrentAbility.Damage != Ability.D.WEAPON, 
+	target: Actor,
+	is_magic := CurrentAbility.Damage != Ability.D.WEAPON,
 	elemental := false,
-	x: int = Query.calc_num(), 
+	x: int = Query.calc_num(),
 	effect := true,
-	limiter := false, 
+	limiter := false,
 	ignore_stats := false,
 	overwrite_color: Color = Color.WHITE
 ) -> int:
+	# A sprung trap interrupts the attacker's ability, so it can't deal any more
+	# damage this action.
+	if act.interrupted:
+		print_rich("[color=cornflower-blue]Ability was interrupted by a trap, no damage dealt")
+		return 0
+
 	take_dmg.emit()
 	if CurrentAbility == null: CurrentAbility = Ability.nothing()
-	
+
 	## Elemental modifier
 	var el_mod: float = 1
 	## Color of the offending ability
 	var color := (CurrentAbility.WheelColor if overwrite_color == Color.WHITE else overwrite_color)
 	## Relation from the ability to the target
 	var relation := color_relation(color, target.MainColor)
-	
+
 	if elemental:
 		el_mod = relation_to_dmg_modifier(relation)
 		print("Relation: %s	Modifier: %d"%[relation, el_mod])
 
 	print_rich("[color=cornflower-blue]Attack power: ", x, " * ", el_mod)
-	
+
 	## Attacker to get offensive stats from (null if stats are ignored)
 	var offender: Actor = null if ignore_stats else CurrentChar
 	## Initial number of damage
 	var dmg: int = target.calc_dmg(x * el_mod, is_magic, offender)
-	
+
 	## State specific modifications
 	for state in target.States:
 		# Mutiply with each state's modifiers
@@ -846,17 +865,17 @@ func damage(
 
 			"Guarding":
 				# With Guarding, you nothing is weak
-				if relation != "res":
-					relation = "n"
+				if relation != Wheel.Relation.RESIST:
+					relation = Wheel.Relation.N
 					el_mod = min(el_mod, 1)
 
 			"AuraBreak":
 				# With AuraBreak, everything is weak
-				if relation != "op":
-					relation = "wk"
+				if relation != Wheel.Relation.OP:
+					relation = Wheel.Relation.WEAK
 					el_mod = max(el_mod, 1)
 
-		if relation == "wk":
+		if relation == Wheel.Relation.WEAK:
 			dmg = int(dmg * state.weak_mult)
 
 	# If damage is 0, don't do anything below
@@ -866,7 +885,7 @@ func damage(
 
 	# Clutch damage, health should never go to 0
 	if (
-		((target.ClutchDmg and target.Health > 0.2*target.MaxHP) 
+		((target.ClutchDmg and target.Health > 0.2*target.MaxHP)
 		or target.CantDie) and target.Health - dmg < 0
 	):
 		print("Damage on ", target.FirstName, " was clutched")
@@ -892,13 +911,13 @@ func damage(
 			target.Health = 1
 		else:
 			await death(target)
-			if target != CurrentChar and relation == "wk": follow_up_next = true
+			if target != CurrentChar and relation == Wheel.Relation.WEAK: follow_up_next = true
 			return dmg
 
 	if target.Health == 0 or target.has_state("Knocked Out"): return dmg
 
 	if target.has_state("Guarding"):
-		if relation == "res": target.add_aura(dmg * 2)
+		if relation == Wheel.Relation.RESIST: target.add_aura(dmg * 2)
 		else: target.add_aura(dmg)
 	elif effect:
 		play_sound("Hit", target)
@@ -913,13 +932,22 @@ func damage(
 			await outline_remove(target)
 			Input.stop_joy_vibration(0)
 
+	# Traps: resolve any that spring from this hit. Single-target abilities resolve
+	# right at the impact so a counterattack reads as a reaction to the hit rather
+	# than a follow-up. AOE abilities run several per-target sequences at once, so
+	# resolving here would clobber their shared context (CurrentChar, initial...);
+	# those traps are resolved by end_turn once every sequence has finished.
+	if dmg > 0 and target != CurrentChar and not in_trap:
+		if queue_traps(target, is_magic, relation, dmg) and not CurrentAbility.is_aoe():
+			await resolve_traps()
+
 	target.DamageRecivedThisTurn += dmg
 	return dmg
 
 
 ## Applies the visual and audio feedback of a landed hit: aura drain, damage
 ## numbers, HUD shake and controller rumble.
-func damage_feedback(target: Actor, dmg: int, color: Color, relation: String, elemental: bool) -> void:
+func damage_feedback(target: Actor, dmg: int, color: Color, relation: Wheel.Relation, elemental: bool) -> void:
 	if elemental:
 		var base_dmg := int(dmg * target.Defence * 2 * target.DefenceMultiplier)
 		var aur_dmg := relation_to_aura_dmg(relation, base_dmg)
@@ -929,9 +957,9 @@ func damage_feedback(target: Actor, dmg: int, color: Color, relation: String, el
 
 		# Show the popup text
 		match relation:
-			"wk": pop_num(target, "WEAK")
-			"op": pop_num(target, "WEAK!")
-			"res": pop_num(target, "RESIST")
+			Wheel.Relation.WEAK: pop_num(target, "WEAK")
+			Wheel.Relation.OP: pop_num(target, "WEAK!")
+			Wheel.Relation.RESIST: pop_num(target, "RESIST")
 	else: pop_num(target, dmg)
 
 	if !target.IsEnemy:
@@ -947,11 +975,143 @@ func damage_feedback(target: Actor, dmg: int, color: Color, relation: String, el
 		Controller.rumble(remap(dmg, 0, target.MaxHP, 0, 0.3), remap(dmg, 0, 100, 0, 0.5), remap(dmg, 0, 100, 0, 0.5))
 
 
+## Checks a freshly hit actor for traps whose condition matches the incoming hit
+## and queues them to spring. Returns true if anything was queued.
+func queue_traps(target: Actor, is_magic: bool, relation: Wheel.Relation, dmg: int) -> bool:
+	if in_trap: return false
+	if target.Health <= 0 or target.has_state("KnockedOut"): return false
+
+	var sprung := false
+
+	# Iterate over a copy, since a consumed trap removes itself from the owner.
+	for state: State in target.States.duplicate():
+		if not state is Trap: continue
+
+		var trap := state as Trap
+
+		if trap.ability == null: continue
+
+		if trap.condition != null and not trap.condition.matches(is_magic, relation, dmg, CurrentAbility):
+			continue
+
+		if trap.consume_on_trigger:
+			target.remove_state(trap)
+		else:
+			trap.turns = 0
+
+		pending_traps.append({"trap": trap, "owner": target, "attacker": CurrentChar})
+		sprung = true
+		print_rich("[color=cornflower-blue]", target.FirstName, "'s ", trap.name, " trap springs")
+
+	# Cancel any further damage the interrupting ability would have dealt
+	if sprung:
+		act.interrupted = true
+
+	return sprung
+
+
+## Runs every trap that sprung from the current hit, one after another.
+func resolve_traps() -> void:
+	# Snapshot and clear first, trigger_trap sets in_trap so nothing new is queued
+	# while a counterattack is playing.
+	var queued := pending_traps.duplicate()
+	pending_traps.clear()
+
+	for entry: Dictionary in queued:
+		var trap: Trap = entry.get("trap")
+		var victim: Actor = entry.get("owner")
+		var hitter: Actor = entry.get("attacker")
+
+		if trap == null or not is_instance_valid(victim) or victim.node == null:
+			continue
+
+		await trigger_trap(trap, victim, hitter)
+
+
+## Springs a trap. The trap's owner performs the trap's ability
+func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
+	print_rich("[color=cornflower-blue]", victim.FirstName, "'s ", trap.name, " trap springs on ", hitter.FirstName if hitter else "?")
+
+	# Feedback
+	pop_num(victim, trap.name, trap.color if trap.color != Color.WHITE else victim.MainColor)
+	await Event.wait(0.2)
+
+	# Preserve the surrounding context
+	var prev_char := CurrentChar
+	var prev_ability := CurrentAbility
+	var prev_target := CurrentTarget
+	var prev_ignore := ignore_end_turn
+	var prev_aoe := aoe_returns
+	var prev_initial := initial
+	var prev_miss: bool = act.miss
+	var prev_crit: bool = act.crit
+	var prev_interrupted: bool = act.interrupted
+
+	in_trap = true
+	ignore_end_turn = true
+	act.interrupted = false
+
+	# The counter runs during the attacker's turn, so `initial` holds the
+	# attacker's home position. Point it at the trap owner instead, so any
+	# return_cur() inside the counter returns the owner to where it stood.
+	if victim.node != null:
+		initial = victim.node.position
+
+	# Aim the trap's ability
+	var tgt: Actor = victim
+
+	if trap.aims_at_attacker() and hitter != null:
+		tgt = hitter
+
+	## Cutin
+	callout(trap.ability)
+	if trap.inflicter:
+		await cut_in(trap.inflicter.codename)
+
+	CurrentChar = victim
+	CurrentAbility = trap.ability
+	CurrentTarget = tgt
+	act.CurrentChar = victim
+	act.roll_rng(tgt)
+
+	if trap.ability.ActionSequence != &"":
+		await act.call(trap.ability.ActionSequence, tgt)
+
+	# Restore the surrounding context
+	ignore_end_turn = prev_ignore
+	aoe_returns = prev_aoe
+	initial = prev_initial
+	CurrentChar = prev_char
+	CurrentAbility = prev_ability
+	CurrentTarget = prev_target
+	act.CurrentChar = prev_char
+	act.miss = prev_miss
+	act.crit = prev_crit
+	act.interrupted = prev_interrupted
+	in_trap = false
+
+
+## Places a trap on `target`. Traps are States, so this mirrors add_state but
+func apply_trap(trap: Trap, target: Actor, inflicter: Actor = null) -> State:
+	if trap == null: return null
+
+	var place: Trap = trap.duplicate(true)
+
+	if place.name.is_empty(): place.name = "Trap"
+
+	if not place.resource_path.is_empty():
+		place.resource_name = place.resource_path.get_file().get_basename()
+	elif place.resource_name.is_empty():
+		place.resource_name = place.name
+
+	return await target.add_state(place, -1, inflicter if inflicter != null else CurrentChar)
+
+
 func queue_sequence_for_actor(chara: Actor, sequence_name: String) -> void:
 	var ab := Ability.nothing().duplicate()
 	ab.name = sequence_name
 	ab.ActionSequence = sequence_name
-	
+
 	chara.NextMove = ab
 	chara.NextAction = Actor.BtAction.ACT
 
@@ -1020,6 +1180,9 @@ func play_effect(animation: String, target: Variant, offset := Vector2.ZERO, fli
 
 
 func cut_in(image: String = CurrentChar.codename) -> void:
+	if not ResourceLoader.exists("res://art/Pictures/Cutin_" + image + ".png"):
+		return
+
 	#Engine.time_scale = 0.1
 	var img: Texture = await Loader.load_res("res://art/Pictures/Cutin_" + image + ".png")
 	$Canvas/Cutin/Texture.texture = img
@@ -1028,7 +1191,7 @@ func cut_in(image: String = CurrentChar.codename) -> void:
 	t.tween_property($Canvas/Cutin, "size:y", 380, 0.3).from(0)
 	t.tween_property($Canvas/Cutin, "position:y", 185, 0.3).from(400)
 	t.set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
-	t.tween_property($Canvas/Cutin/Texture, "position", Vector2(0, -145), 1.5).from(Vector2(-1000, 0))
+	t.tween_property($Canvas/Cutin/Texture, "position", Vector2(0, -145), 1).from(Vector2(-1000, 0))
 	#t = create_tween().set_parallel().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUAD)
 	#t.tween_property($Canvas/Cutin/Texture, "position", Vector2(0, -148), 1).from(Vector2(-121, 0))
 	await t.finished
@@ -1386,6 +1549,7 @@ func move(
 	offset: Vector2 = Vector2.ZERO
 ) -> void:
 	if is_instance_valid(chara) and chara.node != null:
+		hide_state_effects(chara)
 		var tm := create_tween()
 		tm.set_ease(mode)
 		tm.set_trans(Tween.TRANS_QUART)
@@ -1393,6 +1557,23 @@ func move(
 		await tm.finished
 
 	anim_done.emit()
+
+
+func hide_state_effects(chara: Actor) -> void:
+	if not is_instance_valid(chara) or chara.node == null: return
+	for i in chara.node.get_children():
+		if i is AnimatedSprite2D and i.name != "State":
+			i.hide()
+
+
+func show_state_effects(chara: Actor = null) -> void:
+	var actors := TurnOrder if chara == null else [chara]
+
+	for actor in actors:
+		if not is_instance_valid(actor) or actor.node == null: continue
+		for i in actor.node.get_children():
+			if i is AnimatedSprite2D and i.name != "State":
+				i.show()
 
 
 #int(max(Query.calc_num(), target.MaxHP*((Query.calc_num()*CurrentChar.Magic)*0.02)))
@@ -1442,7 +1623,7 @@ func end_battle() -> void:
 	await Hud.preform_levelups()
 	if Global.room == null: Loader.travel_to("Debug"); queue_free(); return
 	Audio.fade_out_music()
-	
+
 	Hud.shrink()
 	if sequence.Detransition or battle_result != Result.VICTORY:
 		hide_victory_stuff()
@@ -1476,9 +1657,9 @@ func end_battle() -> void:
 
 	Global.player.set_anim("IdleRight")
 	Global.player.dashing = false
-	
+
 	post_battle()
-	
+
 	Global.camera.make_current()
 	act.free()
 	queue_free()
@@ -1497,7 +1678,6 @@ static func post_battle() -> void:
 			if Global.player.is_on_wall():
 				Global.player.position = attacker.position
 
-			
 			if attacker is NPC: attacker.defeat()
 
 	Global.controllable = false
@@ -1529,6 +1709,7 @@ func hide_victory_stuff() -> void:
 
 
 func reset_all() -> void:
+	pending_traps.clear()
 	for i in TurnOrder:
 		for j in i.States: if j.RemovedOnBattleEnd: i.States.erase(j)
 		i.AttackMultiplier = 1
@@ -1761,36 +1942,32 @@ func add_to_troop(en: Actor) -> void:
 
 
 ## Returns the relation between the colors when an attacker is attacking a defender
-## wk: Weak
-## op: Oposite, more weak
-## res: Resist
-## n: Neutral
-func color_relation(offender: Color, defender: Color) -> String:
+func color_relation(offender: Color, defender: Color) -> Wheel.Relation:
 	var affinity := Query.get_affinity(offender)
 	var def := Query.get_affinity(defender)
 
-	if def.hue in affinity.oposing_range: return "op"
-	elif def.hue in affinity.weak_range: return "wk"
-	elif def.hue in affinity.resist_range or def.hue in affinity.near_range: return "res"
-	else: return "n"
+	if def.hue in affinity.oposing_range: return Wheel.Relation.OP
+	elif def.hue in affinity.weak_range: return Wheel.Relation.WEAK
+	elif def.hue in affinity.resist_range or def.hue in affinity.near_range: return Wheel.Relation.RESIST
+	else: return Wheel.Relation.N
 
 
-func relation_to_dmg_modifier(relation: String) -> float:
+func relation_to_dmg_modifier(relation: Wheel.Relation) -> float:
 	var base: float
 	var value_mod: float = remap(CurrentChar.MainColor.v, 0, 1, 2, 1)
 
-	if relation == "op": base = 1.5 * value_mod
-	elif relation == "wk": base = 1.25 * value_mod
-	elif relation == "res": base = 0.75
+	if relation == Wheel.Relation.OP: base = 1.5 * value_mod
+	elif relation == Wheel.Relation.WEAK: base = 1.25 * value_mod
+	elif relation == Wheel.Relation.RESIST: base = 0.75
 	else: return 1
 	return round(base * 10) / 10
 
 
-func relation_to_aura_dmg(relation: String, dmg: int) -> int:
+func relation_to_aura_dmg(relation: Wheel.Relation, dmg: int) -> int:
 	print_rich("[color=cornflower-blue]Color value: ", CurrentChar.MainColor.v)
 
-	if relation == "op": return int(dmg * CurrentChar.MainColor.v)
-	elif relation == "wk": return int(dmg * (CurrentChar.MainColor.v / 2))
+	if relation == Wheel.Relation.OP: return int(dmg * CurrentChar.MainColor.v)
+	elif relation == Wheel.Relation.WEAK: return int(dmg * (CurrentChar.MainColor.v / 2))
 	else: return 0
 
 
@@ -1877,7 +2054,12 @@ func add_state_effect(state: State, chara: Actor) -> void:
 
 func remove_state_effect(statename: String, chara: Actor) -> void:
 	if chara.node == null: return
-	var state := await Query.get_state(statename)
+	# Inline states (defined directly inside an Ability, e.g. traps) have no .tres
+	# file in database/States, so fall back to the live state on the actor.
+	var state: State = chara.get_state(statename)
+
+	if state == null:
+		state = await Query.get_state(statename)
 
 	if chara.node.get_node_or_null(statename):
 		chara.node.get_node(statename).queue_free()
@@ -1886,9 +2068,9 @@ func remove_state_effect(statename: String, chara: Actor) -> void:
 		"Guarding", "MagicShield":
 			outline_remove(chara)
 
-		"AtkUp": chara.AttackMultiplier -= state.parameter
-		"DefUp": chara.DefenceMultiplier -= state.parameter
-		"MagUp": chara.MagicMultiplier -= state.parameter
+		"AtkUp": chara.AttackMultiplier -= (state.parameter if state else 0.0)
+		"DefUp": chara.DefenceMultiplier -= (state.parameter if state else 0.0)
+		"MagUp": chara.MagicMultiplier -= (state.parameter if state else 0.0)
 		"AuraOverwrite":
 			chara.MainColor = chara.AuraDefault
 			outline_remove(chara)

@@ -65,7 +65,12 @@ static func globalize(coords: Vector2i) -> Vector2:
 
 
 static func get_state(stat: StringName) -> State:
-	return await Loader.load_res("res://database/States/" + stat + ".tres")
+	# States with no file (defined inline inside an Ability, like traps) can't be
+	# loaded, so return null instead of pushing a missing-resource error.
+	var path := "res://database/States/" + stat + ".tres"
+	if not ResourceLoader.exists(path): return null
+
+	return await Loader.load_res(path)
 
 
 static func in_360(nm: int) -> int:

@@ -107,9 +107,23 @@ func overwrite_member(num: int, actor: Actor) -> void:
 
 
 func add(member: String) -> void:
-	current.append(get_member(member))
+	var actor := get_member(member)
+	if actor == null: return
+	if actor in current: return
+
+	# `current` is a fixed 4-slot array; fill the first empty slot instead of
+	# appending, which would overwrite the Leader slot when the array is short.
+	for i in 4:
+		if i >= current.size():
+			current.append(actor)
+			break
+
+		if current[i] == null:
+			current[i] = actor
+			break
+
 	Global.check.emit()
-	print(member, " joins the party at position ", Query.number_of_party_members())
+	print(member, " joins the party at position ", member_index(actor))
 
 
 func member_name(x: int) -> String:
@@ -137,7 +151,6 @@ func make_everyone_controllable() -> void:
 	for i in current:
 		if i: i.Controllable = true
 
-
 ## Complimentary abilities available
 var complimentaries: Array[String] = []
 
@@ -162,7 +175,7 @@ func add_test_state(chara: Actor) -> void:
 func unlock_all_abilities() -> void:
 	for mem in members:
 		for ab in mem.LearnableAbilities:
-			mem.Abilities.append(ab)
+			if ab not in mem.Abilities: mem.Abilities.append(ab)
 
 
 func give_every_ability() -> void:

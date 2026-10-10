@@ -111,7 +111,7 @@ elif Party.has_member("Mira"):
 $> Event.progress_by_time(1)
 if confirm_time_passage("Rest", "Fully restore health."):
 	[hide]
-	$> heal_party()
+	$> Party.heal_party()
 	$>> Event.time_transition()
 => END
 
@@ -125,7 +125,7 @@ if date_is_reserved():
 else:
 	$> progress_by_time(1)
 	if Hud.confirm_time_passage("Rest", "Stay in the camp for a while. Restores all Health."):
-		$> heal_party()
+		$> Party.heal_party()
 		$>> time_transition()
 => END
 

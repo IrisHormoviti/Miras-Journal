@@ -100,7 +100,7 @@ What to do?
 		- Erinn
 			$> Party.add("Erinn")
 	- Standard full party
-		$> heal_party()
+		$> Party.heal_party()
 		$> Party.reset_party()
 		$> Party.add("Alcine")
 		$> Party.add("Asteria")
@@ -114,13 +114,13 @@ What to do?
 - Abilities
 	go on
 	- Unlock all abilities
-		$> unlock_all_abilities()
+		$> Party.unlock_all_abilities()
 	- Add state testing abilities
-		$> add_test_state(Party.Leader)
+		$> Party.add_test_state(Party.Leader)
 	- Give every ability
-		$> give_every_ability()
+		$> Party.give_every_ability()
 - Full heal
-	$> heal_party()
+	$> Party.heal_party()
 - Give Mira lots of HP
 	$> Party.Leader.Health = 9999
 - Reset all members

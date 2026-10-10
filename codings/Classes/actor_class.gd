@@ -233,7 +233,9 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar
 	var state: State
 	if x is State:
 		state = x
-		state.filename = state.resource_name.replace(".tres", "")
+		# Bare resources (e.g. a Trap referenced directly by an ability) may not
+		# have a resource_name, so fall back to the state's display name.
+		state.filename = state.resource_name.replace(".tres", "") if state.resource_name != "" else state.name
 	else:
 		state = (await Loader.load_res("res://database/States/" + x + ".tres")).duplicate()
 		state.filename = x

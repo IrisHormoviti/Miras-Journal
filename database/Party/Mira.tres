@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://dt3173m0fj781" path="res://database/Abilities/FlameSpark.tres" id="2_ntlg3"]
 [ext_resource type="Resource" uid="uid://cie87kerii84o" path="res://database/Abilities/HeatWave.tres" id="3_g7gj5"]
 [ext_resource type="Resource" uid="uid://d1ri7q5c1bkev" path="res://database/Abilities/PitchIn.tres" id="6_00vn1"]
+[ext_resource type="Resource" uid="uid://kgv3hvk1riao" path="res://database/Abilities/FireWire.tres" id="6_a84rm"]
 [ext_resource type="Resource" uid="uid://dmpcx5dl0qr2p" path="res://database/Abilities/Preparations.tres" id="6_enhby"]
 [ext_resource type="Resource" uid="uid://cu3k0uyihyv24" path="res://database/Abilities/Attacks/AttackMira.tres" id="6_pdf3s"]
 [ext_resource type="Resource" uid="uid://cnpmp4umxxgic" path="res://database/Text/Profiles/MiraBox.tres" id="6_u8hid"]
@@ -49,7 +50,7 @@ Speed = 8.0
 SkillCurve = SubResource("Curve_00vn1")
 Abilities = Array[ExtResource("1_446mq")]([ExtResource("1_uxycv"), ExtResource("2_ntlg3")])
 StandardAttack = ExtResource("6_pdf3s")
-LearnableAbilities = Array[ExtResource("1_446mq")]([ExtResource("3_g7gj5"), ExtResource("6_00vn1"), ExtResource("6_enhby"), ExtResource("8_27hub")])
+LearnableAbilities = Array[ExtResource("1_446mq")]([ExtResource("3_g7gj5"), ExtResource("6_a84rm"), ExtResource("6_00vn1"), ExtResource("6_enhby"), ExtResource("8_27hub")])
 Offset = Vector2(0, -15)
 Shadow = true
 SoundSet = ExtResource("10_rljiu")

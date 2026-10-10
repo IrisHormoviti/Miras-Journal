@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://06q2mwpgupg3" path="res://database/Abilities/StaticSaber.tres" id="3_ssdks"]
 [ext_resource type="Script" uid="uid://ojp6ga7rf3xg" path="res://codings/Classes/box_profile.gd" id="3_vnjlu"]
 [ext_resource type="Texture2D" uid="uid://bmvya68gkqnwr" path="res://art/Icons/Party/Daze.png" id="4_ddwib"]
+[ext_resource type="Resource" uid="uid://cf4ck1aspqb45" path="res://database/Abilities/CounterStrike.tres" id="5_jt23b"]
 [ext_resource type="Resource" uid="uid://dyhjcmwjdkepj" path="res://database/Abilities/Thunderstorm.tres" id="7_jt23b"]
 [ext_resource type="Resource" uid="uid://5bc8qntxd2og" path="res://database/Abilities/Attacks/AttackDaze.tres" id="9_l2o8n"]
 [ext_resource type="Resource" uid="uid://pd0gagp8jsao" path="res://database/Items/KeyItems/GoldPlatedKatana.tres" id="10_s8hit"]
@@ -50,7 +51,7 @@ Speed = 2.0
 SkillLevel = 14
 SkillPoints = 21
 SkillCurve = SubResource("Curve_jt23b")
-Abilities = Array[ExtResource("1_3ecv6")]([ExtResource("2_y217q"), ExtResource("2_ps7rl"), ExtResource("3_ssdks")])
+Abilities = Array[ExtResource("1_3ecv6")]([ExtResource("2_y217q"), ExtResource("2_ps7rl"), ExtResource("3_ssdks"), ExtResource("5_jt23b")])
 StandardAttack = ExtResource("9_l2o8n")
 LearnableAbilities = Array[ExtResource("1_3ecv6")]([ExtResource("7_jt23b")])
 OVShadowOffset = 7
