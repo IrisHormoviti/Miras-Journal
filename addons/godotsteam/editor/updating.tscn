@@ -1,0 +1,65 @@
+[gd_scene format=3 uid="uid://cbaxxe7y72c71"]
+
+[ext_resource type="Theme" uid="uid://bi5h1mi6a0inw" path="res://addons/godotsteam/editor/updater.tres" id="1_v2asj"]
+[ext_resource type="Script" uid="uid://c6hmq7cphoksk" path="res://addons/godotsteam/editor/updating.gd" id="1_ypawi"]
+
+[node name="Updating" type="PopupPanel" unique_id=1458400595]
+oversampling_override = 1.0
+initial_position = 2
+size = Vector2i(500, 200)
+visible = true
+sharp_corners = true
+min_size = Vector2i(500, 200)
+max_size = Vector2i(500, 200)
+theme = ExtResource("1_v2asj")
+script = ExtResource("1_ypawi")
+
+[node name="Frame" type="VBoxContainer" parent="." unique_id=852457456]
+offset_left = 5.0
+offset_top = 25.0
+offset_right = 495.0
+offset_bottom = 190.0
+theme_override_constants/separation = 30
+metadata/_edit_lock_ = true
+
+[node name="Title" type="Label" parent="Frame" unique_id=673214770]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(125, 35)
+layout_mode = 2
+text = "Downloading GodotSteam 0.0"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Updating" type="HBoxContainer" parent="Frame" unique_id=1471439782]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 60)
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 25
+alignment = 1
+metadata/_edit_lock_ = true
+
+[node name="Downloading" type="ProgressBar" parent="Frame/Updating" unique_id=1325182820]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(425, 60)
+layout_mode = 2
+step = 1.0
+rounded = true
+metadata/_edit_lock_ = true
+
+[node name="InstallButton" type="Button" parent="Frame/Updating" unique_id=827153274]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(150, 60)
+layout_mode = 2
+text = "Install"
+metadata/_edit_lock_ = true
+
+[node name="CancelButton" type="Button" parent="Frame/Updating" unique_id=2077812705]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(150, 60)
+layout_mode = 2
+text = "Cancel"
+metadata/_edit_lock_ = true
