@@ -829,6 +829,10 @@ func damage(
 		print_rich("[color=cornflower-blue]Ability was interrupted by a trap, no damage dealt")
 		return 0
 
+	# A target whose node is already gone should be discarded
+	if target == null or not is_instance_valid(target) or target.node == null:
+		return 0
+
 	take_dmg.emit()
 	if CurrentAbility == null: CurrentAbility = Ability.nothing()
 
@@ -845,12 +849,12 @@ func damage(
 
 	print_rich("[color=cornflower-blue]Attack power: ", x, " * ", el_mod)
 
-	## Attacker to get offensive stats from (null if stats are ignored)
+	# Attacker to get offensive stats from (null if stats are ignored)
 	var offender: Actor = null if ignore_stats else CurrentChar
-	## Initial number of damage
+	# Initial number of damage
 	var dmg: int = target.calc_dmg(x * el_mod, is_magic, offender)
 
-	## State specific modifications
+	# State specific modifications
 	for state in target.States:
 		# Mutiply with each state's modifiers
 		if is_magic:
@@ -923,12 +927,16 @@ func damage(
 		play_sound("Hit", target)
 		hit_animation(target)
 		if elemental and not target.has_state("AuraBreak"):
-			if el_mod > 1:
-				target.node.get_node("Particle").emitting = true
+			var part: GPUParticles2D = target.node.get_node_or_null("Particle")
+
+			if el_mod > 1 and part:
+				part.emitting = true
 
 			outline(target)
-			target.node.get_node("Particle").process_material.gravity = Vector3(offsetize(120), 0, 0)
-			target.node.get_node("Particle").process_material.color = target.MainColor
+			if part:
+				part.process_material.gravity = Vector3(offsetize(120), 0, 0)
+				part.process_material.color = target.MainColor
+
 			await outline_remove(target)
 			Input.stop_joy_vibration(0)
 
@@ -946,7 +954,7 @@ func damage(
 
 
 ## Applies the visual and audio feedback of a landed hit: aura drain, damage
-## numbers, HUD shake and controller rumble.
+## numbers, HUD shake and controller rumble
 func damage_feedback(target: Actor, dmg: int, color: Color, relation: Wheel.Relation, elemental: bool) -> void:
 	if elemental:
 		var base_dmg := int(dmg * target.Defence * 2 * target.DefenceMultiplier)
@@ -1119,7 +1127,7 @@ func queue_sequence_for_actor(chara: Actor, sequence_name: String) -> void:
 func hit_animation(target: Actor) -> void:
 	if target.node.animation != "KnockedOut":
 		anim("Hit", target)
-		await target.node.animation_finished
+		await await_anim(target.node, "Hit")
 		anim("Idle", target)
 
 
@@ -1175,7 +1183,7 @@ func play_effect(animation: String, target: Variant, offset := Vector2.ZERO, fli
 		act.add_child(ef)
 		ef.position = target + offset
 		ef.play(animation)
-		await ef.animation_finished
+		await await_anim(ef, animation)
 		if not dont_free: ef.queue_free()
 
 
@@ -1298,7 +1306,8 @@ func stop_sound(sound_name: String, actor: Actor) -> void:
 func death(target: Actor) -> void:
 	# Skip if already dead
 	if not is_instance_valid(target): return
-	if target == null or target.has_state("KnockedOut"): return
+	if target == null or target.node == null: return
+	if target.has_state("KnockedOut"): return
 
 	# Turn must not end until everything here has finished
 	lock_turn = true
@@ -1306,7 +1315,7 @@ func death(target: Actor) -> void:
 	clear_states(target)
 
 	# TODO: Determine if this is balanced enough or not
-	if CurrentChar != target:
+	if CurrentChar != null and CurrentChar != target:
 		CurrentChar.add_aura(target.Aura)
 
 	target.set_aura(0)
@@ -1323,15 +1332,21 @@ func death(target: Actor) -> void:
 	if not target.IsEnemy and filter_dead(Party.current).is_empty():
 		game_over(target)
 
-	# Effects
-	var particle: GPUParticles2D = target.node.get_node("Particle")
-	particle.emitting = true
+	# Effects. Every node lookup is guarded: if any of these errored, this
+	# coroutine would abort before clearing lock_turn and softlock the turn.
+	var particle: GPUParticles2D = target.node.get_node_or_null("Particle")
 	outline(target)
-	particle.process_material.gravity = Vector3(offsetize(120), 0, 0)
-	particle.process_material.color = target.MainColor
+	if particle:
+		particle.emitting = true
+		particle.process_material.gravity = Vector3(offsetize(120), 0, 0)
+		particle.process_material.color = target.MainColor
+
 	var td := create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
-	td.tween_property(target.node.get_node("Shadow"), "modulate", Color.TRANSPARENT, 0.5)
-	if target.Disappear:
+
+	if target.node.get_node_or_null("Shadow"):
+		td.tween_property(target.node.get_node("Shadow"), "modulate", Color.TRANSPARENT, 0.5)
+
+	if target.Disappear and target.node.get_node_or_null("Glow"):
 		td.parallel().tween_property(target.node.get_node("Glow"), "energy", 0, 0.5)
 
 	outline_remove(target)
@@ -1340,15 +1355,23 @@ func death(target: Actor) -> void:
 	target.add_state("KnockedOut")
 
 	await Event.wait(1)
-	if not target.DeathSequence.is_empty() and not target.CantDie:
+	if (
+		not target.DeathSequence.is_empty()
+		and not target.CantDie
+		and act.has_method(target.DeathSequence)
+	):
 		await act.call(target.DeathSequence, target)
 
 	lock_turn = false
 
 	# Wait for animations to finish, then delete character if applicable
-	if is_instance_valid(target.node):
+	if is_instance_valid(target) and is_instance_valid(target.node):
 		if target.Disappear and not target.CantDie:
-			while target.node.is_playing() and target.node.animation == "KnockOut":
+			while (
+				is_instance_valid(target.node)
+				and target.node.is_playing()
+				and target.node.animation == "KnockOut"
+			):
 				await Event.wait()
 
 			if is_instance_valid(target) and is_instance_valid(target.node):
@@ -1477,6 +1500,22 @@ func anim(animation: String = "", chara: Actor = CurrentChar) -> void:
 	print_rich("[color=cornflower-blue]Animation: ", animation)
 
 	while chara.node and chara.node.is_playing() and chara.node.animation == animation:
+		await Event.wait()
+
+
+## Waits until a battle [AnimatedSprite2D] stops playing.
+func await_anim(sprite: AnimatedSprite2D, animation := "", timeout := 10.0) -> void:
+	if not is_instance_valid(sprite) or not sprite.is_playing(): return
+	if not animation.is_empty() and sprite.animation != animation: return
+
+	var deadline := Time.get_ticks_msec() + int(timeout * 1000.0)
+
+	while (
+		is_instance_valid(sprite)
+		and sprite.is_playing()
+		and(animation.is_empty() or sprite.animation == animation)
+		and Time.get_ticks_msec() < deadline
+	):
 		await Event.wait()
 
 
@@ -1901,6 +1940,7 @@ func victory_show_items() -> void:
 
 
 func miss(target: Actor = CurrentTarget) -> void:
+	if target == null or not is_instance_valid(target) or target.node == null: return
 	lock_turn = true
 	play_effect("Miss", target)
 	var prev := target.node.position

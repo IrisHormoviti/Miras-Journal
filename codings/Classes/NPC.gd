@@ -324,6 +324,11 @@ func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Direc
 
 	state = S.MOVE
 
+	# Guard against softlocks: give up if we make no progress for a while
+	# (e.g. blocked by a wall or a zeroed speed).
+	var stuck_frames := 0
+	var last_position := global_position
+
 	while ceil(global_position / accuracy) != ceil(pos / accuracy):
 		if not is_instance_valid(self) or is_queued_for_deletion():
 			return
@@ -332,6 +337,13 @@ func go_to(pos: Variant, use_coords := false, autostop := false, look_dir: Direc
 		direction = to_local(pos).normalized()
 		await Event.wait()
 		if (autostop and is_on_wall()) or stopping: break
+
+		if global_position.distance_to(last_position) < 0.1:
+			stuck_frames += 1
+			if stuck_frames > 30: break
+		else:
+			stuck_frames = 0
+			last_position = global_position
 
 	direction = Vector2.ZERO
 	state = S.IDLE

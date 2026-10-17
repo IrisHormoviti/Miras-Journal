@@ -8,7 +8,7 @@
 [ext_resource type="TileSet" uid="uid://jqaqyvwoe653" path="res://art/Tilesets/Shadow.tres" id="6_226mm"]
 [ext_resource type="Script" uid="uid://cqt3rk0rxvrpk" path="res://codings/Components/editor_only.gd" id="6_plrt1"]
 [ext_resource type="Script" uid="uid://cvp04cgsljoib" path="res://codings/Components/path_hider.gd" id="7_4n5ci"]
-[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EvTripwire.tscn" id="8_jy425"]
+[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EventTripwire.tscn" id="8_jy425"]
 [ext_resource type="Script" uid="uid://vbo77a47wnto" path="res://codings/Components/flashing_light.gd" id="9_226mm"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_jy425"]

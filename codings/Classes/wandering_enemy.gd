@@ -101,6 +101,22 @@ func default() -> void:
 	patrol()
 
 
+## Whether the enemy is standing on the same navigation island as at least
+## one of its patrol points. If it is not, it has ended up somewhere it cannot
+## navigate back from and needs to be sent home. Returns true when there are no
+## patrol points to check, so a missing PatrolPath is never treated as "lost".
+func can_reach_homepoints() -> bool:
+	if homepoints.is_empty() or not is_instance_valid(Nav):
+		return true
+
+	for homepoint in homepoints:
+		Nav.set_target_position(homepoint)
+		if Nav.is_target_reachable():
+			return true
+
+	return false
+
+
 func patrol() -> void:
 	stopping = false
 	pin_range = false
@@ -117,6 +133,14 @@ func patrol() -> void:
 				nearest_dist = dist
 				nearest_idx = i
 		current_path_index = nearest_idx
+
+		# If the enemy strayed somewhere it cannot patrol back from (for example
+		# it was lured across a gap the navigation mesh doesn't connect, or the
+		# map changed under it), return it to where it spawned. Otherwise it
+		# would keep wandering around whatever area it got stuck in.
+		if nearest_dist > 32.0 and not can_reach_homepoints():
+			global_position = default_position
+			cur_homepoint = Vector2.ZERO
 
 
 func extended_process() -> void:

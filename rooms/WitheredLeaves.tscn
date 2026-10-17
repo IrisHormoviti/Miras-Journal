@@ -18,7 +18,7 @@
 [ext_resource type="Texture2D" uid="uid://lxbcdro77mak" path="res://art/OV/Objects/BigLog.png" id="12_lk1yj"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="13_ohbkp"]
 [ext_resource type="SpriteFrames" uid="uid://cw67sswrcewvj" path="res://art/OV/Enemies/GenericEnemy.tres" id="14_it168"]
-[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EvTripwire.tscn" id="15_mqvg4"]
+[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EventTripwire.tscn" id="15_mqvg4"]
 [ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="15_ncxtw"]
 [ext_resource type="Resource" uid="uid://bc78enbwohmsk" path="res://database/Enemies/LostSpiritRed.tres" id="16_7gvkw"]
 [ext_resource type="Resource" uid="uid://oi2xv8bjx6ph" path="res://database/BattleSeq/SkritcherRootDaze.tres" id="16_lemrk"]
@@ -26,7 +26,6 @@
 [ext_resource type="PackedScene" uid="uid://b0pk66kwtm38a" path="res://rooms/components/HideOnFlag.tscn" id="19_3p2gw"]
 [ext_resource type="PackedScene" uid="uid://bgate001gate1" path="res://rooms/components/Gate.tscn" id="19_gate1"]
 [ext_resource type="Resource" uid="uid://cod3sfmno6veq" path="res://database/Enemies/Skullish.tres" id="20_ceufj"]
-[ext_resource type="Script" uid="uid://b05nwmod2wbs2" path="res://codings/Components/hide_on_flag.gd" id="20_nxfet"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="21_8pygo"]
 [ext_resource type="Resource" uid="uid://c4vpbxeag0n74" path="res://database/Enemies/Steelkee.tres" id="21_ohbkp"]
 [ext_resource type="PackedScene" uid="uid://c2p687bjfd64q" path="res://rooms/components/JumpPointH.tscn" id="22_5vs6x"]
@@ -486,11 +485,10 @@ bubble_height = 20
 
 [node name="DoorLocked1" parent="." unique_id=1707909631 node_paths=PackedStringArray("interactable") instance=ExtResource("19_gate1")]
 position = Vector2(-742, 321)
-metadata/_edit_group_ = true
-gate_size = Vector2(55.453, 21.0225)
 gate_offset = Vector2(-1, 5)
-condition = "WitheredLeaves/WLDoor1a+WitheredLeaves/WLDoor1b"
 interactable = NodePath("../SwitchCast1/WLAlcineSwitch1")
+condition = "WitheredLeaves/WLDoor1a+WitheredLeaves/WLDoor1b"
+metadata/_edit_group_ = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked1" unique_id=250466873]
 texture_filter = 1
@@ -499,11 +497,11 @@ sprite_frames = SubResource("SpriteFrames_vctnq")
 
 [node name="DoorLocked2" parent="." unique_id=1800212102 node_paths=PackedStringArray("interactable") instance=ExtResource("19_gate1")]
 position = Vector2(-666, 389)
-metadata/_edit_group_ = true
-gate_size = Vector2(26.912537, 110)
+gate_size = Vector2i(26, 110)
 gate_offset = Vector2(-17, 19)
-condition = "WitheredLeaves/WLDoor1a"
 interactable = NodePath("../SwitchCast2/WLDoor1a")
+condition = "WitheredLeaves/WLDoor1a"
+metadata/_edit_group_ = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked2" unique_id=1222588454]
 texture_filter = 1
@@ -512,10 +510,10 @@ sprite_frames = SubResource("SpriteFrames_vctnq")
 
 [node name="DoorLocked3" parent="." unique_id=1425573640 instance=ExtResource("19_gate1")]
 position = Vector2(352, -860)
-metadata/_edit_group_ = true
-gate_size = Vector2(26.912537, 110)
+gate_size = Vector2i(26, 110)
 gate_offset = Vector2(-15.456268, 18)
 condition = "WitheredLeaves/WLLeftSideOpen"
+metadata/_edit_group_ = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked3" unique_id=2135567216]
 texture_filter = 1
@@ -759,8 +757,8 @@ flag = "WitheredLeaves/WLDoor1b"
 
 [node name="WLAlcineSwitch1" parent="SwitchCast1" unique_id=244300434 instance=ExtResource("4_d8pup")]
 action_type = "gate"
-hide_on_flag = &"WitheredLeaves/WLDoor1b"
 return_control = false
+hide_on_flag = &"WitheredLeaves/WLDoor1b"
 
 [node name="SwitchCast2" type="AnimatedSprite2D" parent="." unique_id=1499783082]
 texture_filter = 1
@@ -780,8 +778,8 @@ flag = "WitheredLeaves/WLDoor1a"
 
 [node name="WLDoor1a" parent="SwitchCast2" unique_id=191020952 instance=ExtResource("4_d8pup")]
 action_type = "gate"
-hide_on_flag = &"WitheredLeaves/WLDoor1a"
 return_control = false
+hide_on_flag = &"WitheredLeaves/WLDoor1a"
 
 [node name="TransferToAmberelm" parent="." unique_id=1439515348 instance=ExtResource("3_lemrk")]
 position = Vector2(-1278, -106)
@@ -800,7 +798,6 @@ text_cue = "metalic_gate"
 
 [node name="WLBunkerSwitch" parent="." unique_id=743108280 instance=ExtResource("4_d8pup")]
 position = Vector2(-275, -1010)
-action_type = "text"
 dialogue_file = "story_1"
 dialogue_cue = "WL_bunker_switch"
 return_control = false
@@ -808,10 +805,10 @@ hide_on_flag = &"WitheredLeaves/Bunker1Open"
 
 [node name="DoorLocked4" parent="." unique_id=520288389 instance=ExtResource("19_gate1")]
 position = Vector2(-204, -1057)
-metadata/_edit_group_ = true
-gate_size = Vector2(142.454, 17.2214)
+gate_size = Vector2i(142, 17)
 gate_offset = Vector2(-0.197144, 4.09424)
 condition = "WitheredLeaves/Bunker1Open"
+metadata/_edit_group_ = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="DoorLocked4" unique_id=49035216]
 texture_filter = 1

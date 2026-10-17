@@ -72,6 +72,8 @@ signal action()
 @export var free_on_hide: bool = false
 ## Disable this collision shape when hiding
 @export var disable_this_collision_shape: CollisionShape2D = null
+# Apply the hiding after the sequence has finished
+@export var hide_after: bool = false
 
 @export_group("Bubble")
 @export var bubble_always: bool
@@ -393,6 +395,7 @@ func do_position() -> void:
 
 func _on_button_pressed() -> void:
 	if not can_interact: return
+	Audio.confirm_sound()
 
 	Global.controllable = false
 	Global.player.direction = Vector2.ZERO
@@ -421,9 +424,13 @@ func _on_button_pressed() -> void:
 	if not (to_time == 0 and to_time_relative == 0):
 		Event.to_time = to_time if to_time_relative == 0 else Event.get_time_progress_from_now(to_time_relative)
 
+	if not hide_after and hide_this_node:
+		if hide_parent: get_parent().hide()
+		else: hide()
+
 	match action_type:
 		"toggle":
-			Audio.confirm_sound()
+			pass
 
 		"text":
 			await Event.take_control(false, false, true)
@@ -502,6 +509,7 @@ func _on_button_pressed() -> void:
 		if is_instance_valid(disable_this_collision_shape): disable_this_collision_shape.set_deferred("disabled", true)
 		if hide_parent: get_parent().queue_free()
 		else: queue_free()
+
 	action.emit()
 	check()
 

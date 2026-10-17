@@ -90,14 +90,13 @@ func control_process() -> void:
 
 	if target_dist < 3.0:
 		direction = Vector2.ZERO
-		speed = 0
 	else:
 		direction = target_vec.normalized()
 		var max_allowed_speed: float = Global.player.speed * 1.5
 		speed = int(clampf(Global.player.speed * (target_dist / 20.0), 30.0, max_allowed_speed))
 
-	if floor(player_dist / 5.0) < floor(distance / 5.0):
-		speed /= 2
+		if floor(player_dist / 5.0) < floor(distance / 5.0):
+			speed /= 2
 
 	if player_dist > 180.0:
 		jump_to_player()

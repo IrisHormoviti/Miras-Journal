@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://c05rdatesxgtl" path="res://art/OV/Objects/Harold.png" id="12_xx0e1"]
 [ext_resource type="PackedScene" uid="uid://h8hsgjo5gg6" path="res://rooms/components/Item.tscn" id="13_b8v1n"]
 [ext_resource type="Script" uid="uid://bhw57f1k8vvrj" path="res://codings/Classes/direction.gd" id="15_78w0y"]
-[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EvTripwire.tscn" id="16_35d7e"]
+[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EventTripwire.tscn" id="16_35d7e"]
 [ext_resource type="SpriteFrames" uid="uid://b4iv6g76q0x8r" path="res://art/OV/Daze/DazeOV.tres" id="17_en1a7"]
 [ext_resource type="Texture2D" uid="uid://c1pk3d7vu8n26" path="res://art/OV/Objects/Shadow1.png" id="18_wmbgr"]
 [ext_resource type="SpriteFrames" uid="uid://b4rkebw16wimp" path="res://art/OV/Asteria/AsteriaOV2.tres" id="19_tuy8d"]
@@ -571,7 +571,6 @@ animation = &"WalkUp"
 [node name="TalkPrompt" parent="NPCDaze" unique_id=562294727 instance=ExtResource("6_pmuyc")]
 position = Vector2(1.14441e-05, 8)
 label_text = "Talk"
-dialogue_file = "testbush"
 dialogue_cue = "waste_time"
 bubble_always = true
 

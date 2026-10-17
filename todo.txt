@@ -14,7 +14,7 @@ enemies in bunker
 trap mechanic
 
 bug fixes:
-Options not saving
+random ass breakables breaking
 
 item ideas:
 Aura supercharge item with a unique effect on everyone

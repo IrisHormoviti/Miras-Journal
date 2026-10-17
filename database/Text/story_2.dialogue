@@ -320,6 +320,31 @@ Mira.Neutral: {{alcine}} isn't wearing shoes either!
 Alcine.Tired: Wooom...
 => END
 
+~ sg_fallen_down
+$> F2.move_by_tiles(Vector2.LEFT * 3)
+Asteria.Curious: Huh?[br]A dead end?
+Asteria.Curious: I swear it was this way!
+[hide]
+$>> F2.bubble("Surprise")
+$> screen_shake(15, 10, 1)
+$> Transition.fade_in()
+$> travel_to("ShardGardens", Vector2(-150, 622), 1)
+$> Transition.fade_out()
+Asteria.Neutral: Ow...
+Daze.Neutral: Where did we end up now...?
+Asteria.Curious: I... have no idea.
+Asteria.Neutral: Hey Mira, can you fly back up there and look for a way out?
+I open my aura wings and try to launch myself up.
+[hide]
+$> player.hop(32, 0.8)
+I'm not able to get even close before I fall off.
+Mira.Neutral: *Sigh*, I can't go high enough with these...
+[hide]
+$> player.activate_flame()
+Mira.Neutral: I can use my power to light the way at least.
+Mira.Neutral: Let's look for a way out.
+=> END
+
 ~ cast_lines_sg
 $> player.look_to(Direction.UP)
 $> player.camera_follow(false)

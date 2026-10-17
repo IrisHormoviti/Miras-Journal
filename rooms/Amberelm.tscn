@@ -33,7 +33,7 @@
 [ext_resource type="SpriteFrames" uid="uid://cw67sswrcewvj" path="res://art/OV/Enemies/GenericEnemy.tres" id="24_2ksw5"]
 [ext_resource type="PackedScene" uid="uid://tcn5wh8gstsu" path="res://rooms/components/Ladder.tscn" id="25_vddgi"]
 [ext_resource type="PackedScene" uid="uid://cr3hn08s615pf" path="res://rooms/components/NPC.tscn" id="26_r6fn3"]
-[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EvTripwire.tscn" id="30_djhcr"]
+[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EventTripwire.tscn" id="30_djhcr"]
 [ext_resource type="Texture2D" uid="uid://dc01c6q7ceiwc" path="res://art/OV/Objects/GuardianDestroyed.png" id="30_ylfhl"]
 [ext_resource type="PackedScene" uid="uid://b0pk66kwtm38a" path="res://rooms/components/HideOnFlag.tscn" id="31_ylfhl"]
 [ext_resource type="PackedScene" uid="uid://d0r3jc40ijx6l" path="res://rooms/components/BreakableOre.tscn" id="35_icl6y"]

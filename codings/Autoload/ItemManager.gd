@@ -129,6 +129,7 @@ func add_item(item_input: Variant, type: StringName = &"", animate := true, play
 		return
 
 	Inventory.append(to_add)
+	Global.check.emit()
 
 	if animate:
 		print_rich("[color=cyan]Added item ", to_add.Name, " of type ", to_add.ItemType)

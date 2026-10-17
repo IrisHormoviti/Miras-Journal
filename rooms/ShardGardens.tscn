@@ -32,7 +32,7 @@
 [ext_resource type="Texture2D" uid="uid://ubrl1l3wlpgo" path="res://art/OV/Objects/CastSwitch.png" id="24_cd4rc"]
 [ext_resource type="Texture2D" uid="uid://d2moorxu5wbpx" path="res://art/OV/Objects/CastLines1.png" id="25_70av8"]
 [ext_resource type="Texture2D" uid="uid://cgp1bxulpb0qy" path="res://art/OV/Objects/CastLines2.png" id="26_hrf2i"]
-[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EvTripwire.tscn" id="26_yhh0x"]
+[ext_resource type="PackedScene" uid="uid://vddf6k6h8067" path="res://rooms/components/EventTripwire.tscn" id="26_yhh0x"]
 [ext_resource type="PackedScene" uid="uid://b0pk66kwtm38a" path="res://rooms/components/HideOnFlag.tscn" id="29_5l4ys"]
 [ext_resource type="PackedScene" uid="uid://bgate001gate1" path="res://rooms/components/Gate.tscn" id="29_gate1"]
 [ext_resource type="Script" uid="uid://b2qf7ggvy4inm" path="res://codings/Components/event_tripwire.gd" id="29_oh1ty"]
@@ -1231,6 +1231,7 @@ sprite_frames = SubResource("SpriteFrames_mgap8")
 autoplay = "default"
 
 [node name="BreakableWallSG3" parent="Breakables" unique_id=635503168 instance=ExtResource("8_pg846")]
+z_index = 1
 position = Vector2(-109, 468)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Breakables/BreakableWallSG3" unique_id=260382645]
@@ -1628,6 +1629,8 @@ scale = Vector2(0.504117, 0.648075)
 add_the_flag = true
 take_control = false
 return_control = false
+ShowTextbox = true
+textbox_mode = "Passive"
 text_file = "interact_abad"
 text_cue = "sg_jump_reminder"
 
@@ -1702,6 +1705,7 @@ itemtype = ""
 position = Vector2(-2, 115)
 
 [node name="RegionEnemy" type="NavigationRegion2D" parent="." unique_id=74833953]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_hcmug")
 use_edge_connections = false
 navigation_layers = 2
@@ -2044,10 +2048,12 @@ position = Vector2(9, 12)
 shape = SubResource("RectangleShape2D_hrf2i")
 
 [node name="Transfer2" parent="." unique_id=1525700929 instance=ExtResource("30_ekhkx")]
-position = Vector2(29, 622)
+position = Vector2(10, 623)
 scale = Vector2(1.1, 1)
+trigger_size = Vector2i(17, 80)
 room = "ShardGardens"
 ToCamera = 1
+UseExactPosition = true
 Position = Vector2(-150, 622)
 metadata/_edit_group_ = true
 
@@ -2076,6 +2082,13 @@ metadata/_edit_group_ = true
 [node name="VPPlains" parent="." unique_id=901518549 instance=ExtResource("3_r8nk5")]
 position = Vector2(438, 59)
 metadata/_edit_group_ = true
+
+[node name="EvTripwire0" parent="." unique_id=1901921073 instance=ExtResource("26_yhh0x")]
+position = Vector2(90, 626)
+trigger_size = Vector2i(50, 86)
+ShowTextbox = true
+text_file = "story_2"
+text_cue = "sg_fallen_down"
 
 [connection signal="body_entered" from="EvKick" to="EvKick" method="_on_body_entered"]
 

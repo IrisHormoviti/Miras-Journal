@@ -664,20 +664,20 @@ if Party.get_member("Daze").FirstName != "Daze":
 => END
 
 ~ bag_seq
+$> remove_flag(&"Player/NoBag")
 $> Party.Leader.OV = "Bag"
 $> player.state = NPC.S.CUSTOM
 $> player.direction = Vector2.ZERO
 $> player.set_anim("BagGet", true)
 $> player.set_anim("IdleRight")
 $> Audio.item_sound()
-$> item_icon("res://art/Icons/Items.tres", Vector2(90, 90), Vector2(18, 18), "Flimsy bag")
-$> remove_flag(&"Player/NoBag")
+$>> item_icon("res://art/Icons/Items.tres", Vector2(90, 90), Vector2(18, 18), "Flimsy bag")
 $> give_control()
 $> player._check_party()
 => END
 
 ~ axe_seq
-$> Item.add_item("LightweightAxe", &"Key")
+$>> Item.add_item("LightweightAxe", &"Key")
 $> pop_tutorial("ov_attack")
 $> save()
 => END
