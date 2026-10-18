@@ -6,12 +6,15 @@ void shader
 alcine alone area art
 daze portraits
 polish bunker
-Cutscene for entering shard gardens underground
 maple sprites for all directions
 maple social links in general
 daze introduction cutscene
 enemies in bunker
 trap mechanic
+
+shart caves / shart cavern grotto/ shart gardens underground ideas
+
+
 
 bug fixes:
 random ass breakables breaking

@@ -51,21 +51,18 @@ var initial: Vector2
 var callout_onscreen := false
 ## The turn will not end when requested, but will once this is false
 var lock_turn := false
-## The turn will not end when requested
-var ignore_end_turn := false
+## How many flows are holding the turn, lock_turn is true while above 0
+var lock_count := 0
 ## Prevent critical hits
 var no_crits := false
 ## Prevent missing
 var no_misses := false
 ## The next turn a followup will be preformed
 var follow_up_next := false
-## Counts turn ends for each AOE ability sequence
-## The turn ends after all targets have returned
-var aoe_returns := 0
 ## True while a sprung trap is being preformed, so traps can't chain forever
 var in_trap := false
-## Traps that sprung from the current hit, consumed and waiting to counterattack
-## immediately (resolved inside damage, at the impact).
+## Traps that sprung from the current hit, waiting to counterattack
+## (resolved by end_turn, once the attacking sequence is over)
 var pending_traps: Array[Dictionary] = []
 
 @onready var ui: Control = %ControllerBattleUI
@@ -292,7 +289,7 @@ func create_actor_node(actor: Actor, node_name: String) -> AnimatedSprite2D:
 	sprite.material = sprite.material.duplicate()
 
 	# A duplicate made after Actor0 got its own sound set carries a stale "SFX"
-	# child; remove it so the actor's sound set can take its place.
+	# child. Remove it so the actor's sound set can take its place.
 	if sprite.has_node("SFX"):
 		sprite.get_node("SFX").queue_free()
 		await Event.wait()
@@ -768,17 +765,24 @@ func return_cur(target: Actor = CurrentChar) -> void:
 	await jump_to(target, initial, 1, 0.2)
 
 
-func end_turn(confirm_aoe := false) -> void:
+## Make the turn wait until a matching release_turn is called. 
+## Counter based, so parallel holders can't unlock each other's hold early.
+func hold_turn() -> void:
+	lock_count += 1
+	lock_turn = true
+
+
+## Undo one hold_turn
+func release_turn() -> void:
+	lock_count = maxi(0, lock_count - 1)
+
+	if lock_count == 0: lock_turn = false
+
+
+func end_turn() -> void:
 	Global.check.emit()
-	if CurrentAbility.is_aoe() and not confirm_aoe:
-		aoe_returns += 1
-		return
 
-	if ignore_end_turn: return
-	aoe_returns = 0
-
-	# Traps sprung during an AOE resolve here, once every per-target sequence has
-	# finished and the shared sequence context is free again.
+	# Traps are resolved here, after the action's sequences are done
 	if not pending_traps.is_empty():
 		await resolve_traps()
 
@@ -797,7 +801,15 @@ func end_turn(confirm_aoe := false) -> void:
 	sequence.reset_events()
 	TurnOrder.sort_custom(speed_sort)
 
+	# Safety timer just in case to avoid softlocks
+	var lock_start := Time.get_ticks_msec()
+
 	while lock_turn:
+		if Time.get_ticks_msec() - lock_start > 20000:
+			push_warning("lock_turn was held for over 20 seconds, releasing early")
+			lock_count = 0
+			lock_turn = false
+
 		await Event.wait()
 
 	await get_tree().create_timer(0.1).timeout
@@ -823,8 +835,8 @@ func damage(
 	ignore_stats := false,
 	overwrite_color: Color = Color.WHITE
 ) -> int:
-	# A sprung trap interrupts the attacker's ability, so it can't deal any more
-	# damage this action.
+	# A sprung trap interrupts the ability against the hit target, so it can't
+	# deal any more damage in that sequence
 	if act.interrupted:
 		print_rich("[color=cornflower-blue]Ability was interrupted by a trap, no damage dealt")
 		return 0
@@ -914,7 +926,8 @@ func damage(
 		if target.CantDie:
 			target.Health = 1
 		else:
-			await death(target)
+			# Fire and forget, the turn won't end until knockouts finish
+			death(target)
 			if target != CurrentChar and relation == Wheel.Relation.WEAK: follow_up_next = true
 			return dmg
 
@@ -937,17 +950,13 @@ func damage(
 				part.process_material.gravity = Vector3(offsetize(120), 0, 0)
 				part.process_material.color = target.MainColor
 
-			await outline_remove(target)
+			outline_remove(target)
 			Input.stop_joy_vibration(0)
 
-	# Traps: resolve any that spring from this hit. Single-target abilities resolve
-	# right at the impact so a counterattack reads as a reaction to the hit rather
-	# than a follow-up. AOE abilities run several per-target sequences at once, so
-	# resolving here would clobber their shared context (CurrentChar, initial...);
-	# those traps are resolved by end_turn once every sequence has finished.
+	# Traps are resolved by end_turn() once the action is over, so damage()
+	# stays synchronous and AOE contexts stay untouched
 	if dmg > 0 and target != CurrentChar and not in_trap:
-		if queue_traps(target, is_magic, relation, dmg) and not CurrentAbility.is_aoe():
-			await resolve_traps()
+		queue_traps(target, is_magic, relation, dmg)
 
 	target.DamageRecivedThisTurn += dmg
 	return dmg
@@ -987,7 +996,6 @@ func damage_feedback(target: Actor, dmg: int, color: Color, relation: Wheel.Rela
 ## and queues them to spring. Returns true if anything was queued.
 func queue_traps(target: Actor, is_magic: bool, relation: Wheel.Relation, dmg: int) -> bool:
 	if in_trap: return false
-	if target.Health <= 0 or target.has_state("KnockedOut"): return false
 
 	var sprung := false
 
@@ -1033,6 +1041,10 @@ func resolve_traps() -> void:
 		if trap == null or not is_instance_valid(victim) or victim.node == null:
 			continue
 
+		# Playback was deferred to end_turn, skip owners that died in the meantime
+		if victim.Health <= 0 or victim.has_state("KnockedOut"):
+			continue
+
 		await trigger_trap(trap, victim, hitter)
 
 
@@ -1048,15 +1060,13 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 	var prev_char := CurrentChar
 	var prev_ability := CurrentAbility
 	var prev_target := CurrentTarget
-	var prev_ignore := ignore_end_turn
-	var prev_aoe := aoe_returns
 	var prev_initial := initial
 	var prev_miss: bool = act.miss
 	var prev_crit: bool = act.crit
 	var prev_interrupted: bool = act.interrupted
 
 	in_trap = true
-	ignore_end_turn = true
+	hold_turn()
 	act.interrupted = false
 
 	# The counter runs during the attacker's turn, so `initial` holds the
@@ -1086,8 +1096,6 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 		await act.call(trap.ability.ActionSequence, tgt)
 
 	# Restore the surrounding context
-	ignore_end_turn = prev_ignore
-	aoe_returns = prev_aoe
 	initial = prev_initial
 	CurrentChar = prev_char
 	CurrentAbility = prev_ability
@@ -1096,6 +1104,7 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 	act.miss = prev_miss
 	act.crit = prev_crit
 	act.interrupted = prev_interrupted
+	release_turn()
 	in_trap = false
 
 
@@ -1310,7 +1319,7 @@ func death(target: Actor) -> void:
 	if target.has_state("KnockedOut"): return
 
 	# Turn must not end until everything here has finished
-	lock_turn = true
+	hold_turn()
 
 	clear_states(target)
 
@@ -1332,8 +1341,7 @@ func death(target: Actor) -> void:
 	if not target.IsEnemy and filter_dead(Party.current).is_empty():
 		game_over(target)
 
-	# Effects. Every node lookup is guarded: if any of these errored, this
-	# coroutine would abort before clearing lock_turn and softlock the turn.
+	# Effects
 	var particle: GPUParticles2D = target.node.get_node_or_null("Particle")
 	outline(target)
 	if particle:
@@ -1362,26 +1370,30 @@ func death(target: Actor) -> void:
 	):
 		await act.call(target.DeathSequence, target)
 
-	lock_turn = false
+	release_turn()
 
 	# Wait for animations to finish, then delete character if applicable
 	if is_instance_valid(target) and is_instance_valid(target.node):
 		if target.Disappear and not target.CantDie:
-			while (
-				is_instance_valid(target.node)
-				and target.node.is_playing()
-				and target.node.animation == "KnockOut"
-			):
-				await Event.wait()
+			queue_death_delete(target)
 
-			if is_instance_valid(target) and is_instance_valid(target.node):
-				target.queue_delete = true
-				target.node.hide()
+
+func queue_death_delete(target: Actor) -> void:
+	while (
+		is_instance_valid(target.node)
+		and target.node.is_playing()
+		and target.node.animation == "KnockOut"
+	):
+		await Event.wait()
+
+	if is_instance_valid(target) and is_instance_valid(target.node):
+		target.queue_delete = true
+		target.node.hide()
 
 
 ## Pass a target to show a dramatic last hit animation
 func game_over(target: Actor = null) -> void:
-	lock_turn = true
+	hold_turn()
 	Audio.fade_out_music(2)
 	if target != null:
 		await Event.wait(0.2)
@@ -1941,7 +1953,7 @@ func victory_show_items() -> void:
 
 func miss(target: Actor = CurrentTarget) -> void:
 	if target == null or not is_instance_valid(target) or target.node == null: return
-	lock_turn = true
+	hold_turn()
 	play_effect("Miss", target)
 	var prev := target.node.position
 	move(target, Vector2(target.node.position.x + offsetize(30), target.node.position.y), 0.3, Tween.EASE_OUT)
@@ -1951,7 +1963,7 @@ func miss(target: Actor = CurrentTarget) -> void:
 
 	await Event.wait(0.5)
 	await move(target, prev, 0.3)
-	lock_turn = false
+	release_turn()
 
 
 func _on_battle_ui_command() -> void:
@@ -1960,7 +1972,7 @@ func _on_battle_ui_command() -> void:
 
 func add_to_troop(en: Actor) -> void:
 	en = en.duplicate()
-	lock_turn = true
+	hold_turn()
 	Troop.append(en)
 	var dub := await create_actor_node(en, "Enemy" + str(Troop.size() - 1))
 	TurnOrder.push_front(en)
@@ -1978,7 +1990,7 @@ func add_to_troop(en: Actor) -> void:
 	fix_enemy_node_issues()
 	position_sprites()
 	turn_ui_init()
-	lock_turn = false
+	release_turn()
 
 
 ## Returns the relation between the colors when an attacker is attacking a defender

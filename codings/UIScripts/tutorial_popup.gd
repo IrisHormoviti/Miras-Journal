@@ -112,7 +112,7 @@ func aura1() -> void:
 	await await_next()
 	$Border2/Text.text = Colorizer.colorize("This meter will be drained whenever a magic Ability is used.")
 	await await_next()
-	Global.bt.lock_turn = false
+	Global.bt.release_turn()
 	queue_free()
 
 
@@ -155,7 +155,7 @@ func aura2() -> void:
 	$Border2.position = Vector2(104, 279)
 	$Border2/Text.text = Colorizer.colorize("Using her Aura Guard ability, Mira will take less damage, while increasing her AP when hit.").replace("guard", "Guard")
 	await await_next()
-	Global.bt.lock_turn = false
+	Global.bt.release_turn()
 	queue_free()
 
 
@@ -170,7 +170,7 @@ func aura3() -> void:
 	await await_next()
 	$Border2/Text.text = "So go on and finish off this enemy!"
 	await await_next()
-	Global.bt.lock_turn = false
+	Global.bt.release_turn()
 	queue_free()
 
 
