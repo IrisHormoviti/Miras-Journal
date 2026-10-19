@@ -229,7 +229,10 @@ func calc_dmg(power: float, is_magic: bool, E: Actor = null) -> int:
 	return int(max(((power * atk_stat) / ((Defence * 1.5 * DefenceMultiplier) + 0.3)), 1))
 
 
-func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar, effect := true) -> State:
+## Adds a state to this actor and returns it. When [param await_effect] is true
+## the caller waits for the state's presentation (pop number, effect) to finish
+## before continuing, so a sequence can pace itself against it.
+func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar, effect := true, await_effect := false) -> State:
 	var state: State
 	if x is State:
 		state = x
@@ -269,9 +272,16 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar
 	state.inflicter = inflicter
 	States.append(state)
 	if node:
-		Global.bt.on_state_add(state, self, effect)
+		if await_effect:
+			await Global.bt.on_state_add(state, self, effect)
+		else:
+			Global.bt.on_state_add(state, self, effect)
+
 		if Global.bt.effects.sprite_frames.has_animation(state.name):
-			Global.bt.play_effect(state.name, self)
+			if await_effect:
+				await Global.bt.play_effect(state.name, self)
+			else:
+				Global.bt.play_effect(state.name, self)
 
 	return state
 

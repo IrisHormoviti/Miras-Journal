@@ -4,7 +4,7 @@ extends PanelContainer
 const StepCardScene = preload("res://addons/battle_step_editor/step_card.tscn")
 const StepCatalog = preload("res://addons/battle_step_editor/step_catalog.gd")
 
-const PREVIEW_BATTLE_SCENE := "res://codings/Common/Battle.tscn"
+const PREVIEW_BATTLE_SCENE := "res://codings/Battle/Battle.tscn"
 const PREVIEW_ACTORS := ["Mira", "Alcine", "Asteria", "Daze"]
 const PREVIEW_TARGETS := ["Single dummy", "Three dummies"]
 const PREVIEW_OUTCOME_BASE := 100
@@ -441,16 +441,40 @@ func preview(outcome: int) -> void:
 	if not Engine.is_editor_hint() or not (object is ActionSequence):
 		return
 
+	var sequence := object as ActionSequence
 	var request := {
 		"outcome": outcome,
 		"actor": preview_actor,
 		"targets": preview_targets,
+		"wheel_color": preview_wheel_color(sequence).to_html(),
 	}
 
 	if not Battle.write_preview(Battle.preview_shared_dir_static(), typed_steps(get_steps()), request):
 		return
 
 	EditorInterface.play_custom_scene(PREVIEW_BATTLE_SCENE)
+
+
+## The wheel color of the ability that owns the edited sequence, so the preview
+## resolves WHEEL_COLOR damage the same way a real cast would. Sequences saved
+## inside an ability resource keep its path in `resource_path`
+## (`.../SmallShock.tres::Resource_x`).
+func preview_wheel_color(sequence: ActionSequence) -> Color:
+	var ability := owning_ability(sequence)
+
+	return ability.wheel_color if ability != null else Color.WHITE
+
+
+## The ability a sequence was saved under, or null when it stands alone.
+func owning_ability(sequence: ActionSequence) -> Ability:
+	var path := sequence.resource_path.get_slice("::", 0)
+
+	if path.is_empty() or not ResourceLoader.exists(path):
+		return null
+
+	var ability := ResourceLoader.load(path)
+
+	return ability as Ability
 
 
 func apply_title() -> void:

@@ -179,10 +179,9 @@ func _exit_tree() -> void:
 	if is_instance_valid(act):
 		act.free()
 
-
 ## The sequence the standalone preview copies. Shared with the headless battle
 ## harness so previewing and testing run through the same setup.
-const PREVIEW_SEQUENCE_PATH := "res://codings/Common/BattlePreviewSequence.tres"
+const PREVIEW_SEQUENCE_PATH := "res://codings/Battle/BattlePreviewSequence.tres"
 const PREVIEW_DUMMY_PATH := "res://database/Enemies/Dummy.tres"
 const PREVIEW_PARTY := ["Mira", "Alcine", "Asteria", "Daze"]
 ## Files the inspector preview and the headless harness share.
@@ -215,6 +214,8 @@ static func build_preview_sequence(targets: int) -> BattleSequence:
 
 	var preview := template.duplicate() as BattleSequence
 	preview.transition = true
+	# The preview is about the action, not the opening, so skip the entrance.
+	preview.skip_entrance = true
 	preview.Enemies = []
 
 	var dummy := load(PREVIEW_DUMMY_PATH) as Actor
@@ -331,8 +332,9 @@ func _ready() -> void:
 
 	position_sprites()
 	if is_instance_valid(attacker): attacker.hide()
-	if sequence.entrance_sequence != null: await run_battle_sequence(sequence.entrance_sequence, null, null, false)
-	elif sequence.EntranceSequence != "": await act.call(sequence.EntranceSequence)
+	if not sequence.skip_entrance:
+		if sequence.entrance_sequence != null: await run_battle_sequence(sequence.entrance_sequence, null, null, false)
+		elif sequence.EntranceSequence != "": await act.call(sequence.EntranceSequence)
 	TurnOrder.sort_custom(speed_sort)
 	turn_ui_init()
 	for i in TurnOrder:
@@ -389,7 +391,7 @@ func prepare_standalone_preview() -> bool:
 		return false
 
 	var aoe := int(request.get("targets", 1)) >= 3
-	var ability := preview_ability(preview, aoe)
+	var ability := preview_ability(preview, aoe, wheel_color_from_request(request))
 	apply_preview_outcome(ability, int(request.get("outcome", 0)))
 	previewing = true
 	force_next_actor(caster)
@@ -426,13 +428,13 @@ static func read_preview_request_at(dir: String) -> Dictionary:
 
 ## Writes the sequence and request the standalone battle reads back. Shared by
 ## the inspector preview and the headless battle harness.
-static func write_preview(dir: String, steps: Array, request: Dictionary) -> bool:
-	var sequence := ActionSequence.new()
+static func write_preview(dir: String, steps: Array[BattleStep], request: Dictionary) -> bool:
+	var preview_sequence := ActionSequence.new()
 
 	for step in steps:
-		sequence.steps.append(step)
+		preview_sequence.steps.append(step)
 
-	if ResourceSaver.save(sequence, dir.path_join(PREVIEW_SEQUENCE_FILE)) != OK:
+	if ResourceSaver.save(preview_sequence, dir.path_join(PREVIEW_SEQUENCE_FILE)) != OK:
 		push_error("Could not save the battle preview sequence")
 		return false
 
@@ -462,11 +464,17 @@ static func preview_shared_dir_static() -> String:
 	return user_dir
 
 
-func preview_ability(preview: ActionSequence, aoe: bool) -> Ability:
+func preview_ability(preview: ActionSequence, aoe: bool, wheel_color := Color.WHITE) -> Ability:
 	var ability := Ability.nothing().duplicate() as Ability
 	ability.name = "Battle Preview"
 	ability.success_chance = 1
 	ability.crit_chance = 0
+	# The standalone battle has no real ability, so a DamageStep's WHEEL_COLOR
+	# ref would fall back to white. Carry the ability being previewed instead,
+	# and stop the run from overwriting it with the caster's color: it is
+	# copied from Ability.nothing(), which opts into exactly that.
+	ability.wheel_color = wheel_color
+	ability.color_same_as_actor = false
 
 	if aoe:
 		ability.target = Ability.T.AOE_ENEMIES
@@ -478,6 +486,21 @@ func preview_ability(preview: ActionSequence, aoe: bool) -> Ability:
 	return ability
 
 
+## The wheel color the inspector preview asked for, or white when it did not
+## send one (e.g. a sequence with no owning ability). The request travels as
+## JSON, so the color arrives as an html string.
+func wheel_color_from_request(request: Dictionary) -> Color:
+	var value: Variant = request.get("wheel_color")
+
+	if value is Color:
+		return value
+
+	if value is String and not value.is_empty():
+		return Color.html(value)
+
+	return Color.WHITE
+
+
 func apply_preview_outcome(ability: Ability, outcome: int) -> void:
 	# Hit is 0, crit is 1, miss is 2 (see the inspector preview menu).
 	no_misses = true
@@ -487,6 +510,7 @@ func apply_preview_outcome(ability: Ability, outcome: int) -> void:
 		1:
 			no_crits = false
 			ability.crit_chance = 1
+
 		2:
 			no_misses = false
 			ability.success_chance = 0
@@ -630,7 +654,7 @@ func entrance() -> void:
 	Global.controllable = false
 	cam.position_smoothing_enabled = false
 
-	if sequence.transition:
+	if sequence.transition and not sequence.skip_entrance:
 		Loader.battle_bars(3)
 		if sequence.EntranceBanter != "":
 			if sequence.EntranceBanterIsPassive:
@@ -643,7 +667,7 @@ func entrance() -> void:
 					if cam.position.x > 0: cam.position.x -= 0.01
 					await Event.wait()
 
-		if has_entrance_sequence():
+		if not has_entrance_sequence():
 			cam.zoom = Vector2(4, 4)
 			cam.position = Vector2(90, 10)
 			var t := create_tween()
@@ -661,7 +685,7 @@ func entrance() -> void:
 	else:
 		screen_shake(15, 4)
 
-	if not has_entrance_sequence():
+	if not has_entrance_sequence() and not sequence.skip_entrance:
 		for i in Party.current:
 			if not i: continue
 			entrance_anim(i)
@@ -1171,7 +1195,7 @@ func damage(
 
 	# Effects!
 	if not is_magic and CurrentChar.has_state("AtkUp") and CurrentChar.get_state("AtkUp").turns == -2:
-		CurrentChar.get_state("AtkUp").QueueRemove = true
+		CurrentChar.get_state("AtkUp").queue_remove = true
 		print_rich("[color=cornflower-blue]Weapon attack, so AtkUp will be removed")
 
 	if CurrentAbility.recover_aura: CurrentChar.add_aura(dmg / 2)
@@ -1375,7 +1399,7 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 
 
 ## Places a trap on `target`. Traps are States, so this mirrors add_state but
-func apply_trap(trap: Trap, target: Actor, inflicter: Actor = null) -> State:
+func apply_trap(trap: Trap, target: Actor, inflicter: Actor = null, await_effect := false) -> State:
 	if trap == null: return null
 
 	var place: Trap = trap.duplicate(true)
@@ -1387,7 +1411,7 @@ func apply_trap(trap: Trap, target: Actor, inflicter: Actor = null) -> State:
 	elif place.resource_name.is_empty():
 		place.resource_name = place.name
 
-	return await target.add_state(place, -1, inflicter if inflicter != null else CurrentChar)
+	return await target.add_state(place, -1, inflicter if inflicter != null else CurrentChar, true, await_effect)
 
 
 func queue_sequence_for_actor(chara: Actor, sequence_name: String) -> void:
@@ -2035,7 +2059,7 @@ func remove_queued_states(chara: Actor) -> void:
 	for i in range(chara.States.size() - 1, -1, -1):
 		var state := chara.States[i]
 
-		if state.QueueRemove:
+		if state.queue_remove:
 			chara.remove_state(state)
 
 	if chara.States.is_empty(): chara.node.get_node("State").play("None")
@@ -2168,7 +2192,7 @@ func hide_victory_stuff() -> void:
 func reset_all() -> void:
 	pending_traps.clear()
 	for i in TurnOrder:
-		for j in i.States: if j.RemovedOnBattleEnd: i.States.erase(j)
+		for j in i.States: if j.removed_on_battle_end: i.States.erase(j)
 		i.AttackMultiplier = 1
 		i.DefenceMultiplier = 1
 		i.MagicMultiplier = 1

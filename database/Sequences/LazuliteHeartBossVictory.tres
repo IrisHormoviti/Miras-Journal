@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="ActionSequence" format=3]
+[gd_resource type="Resource" script_class="ActionSequence" format=3 uid="uid://clol06pt2bego"]
 
 [ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1"]
 [ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2"]
@@ -14,13 +14,11 @@ cue = &"lazulite_heart_3"
 [sub_resource type="Resource" id="Resource_fade"]
 script = ExtResource("4")
 mode = 1
-fade_mode = 0
 color = Color(1, 1, 1, 1)
 in_time = 1.0
 
 [sub_resource type="Resource" id="Resource_victory"]
 script = ExtResource("5")
-mode = 0
 silent = true
 
 [resource]

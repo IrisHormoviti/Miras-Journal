@@ -20,8 +20,10 @@ enum Mode {
 @export var actor: ActorRef = ActorRef.new(ActorRef.Mode.TARGET)
 @export var state: State
 @export var turns := -1
-@export var inflicter: ActorRef
 @export var silent := false
+## Wait for the state's presentation (pop number, effect) before the sequence
+## continues. Turn this off to add the state while the sequence runs on.
+@export var wait := true
 @export var trap: Trap
 @export var use_ability_trap := false:
 	set(value):
@@ -39,7 +41,7 @@ func run(ctx: ActionSequenceContext) -> void:
 	match mode:
 		Mode.ADD:
 			var place: Variant = _state(ctx)
-			ctx.last_state = await subject.add_state(place, turns, _inflicter(ctx), not silent)
+			ctx.last_state = await subject.add_state(place, turns, ctx.caster, not silent, wait)
 
 		Mode.REMOVE:
 			subject.remove_state(_state(ctx))
@@ -53,7 +55,7 @@ func run(ctx: ActionSequenceContext) -> void:
 			if use_ability_trap and ctx.ability != null:
 				place = ctx.ability.sets_trap()
 
-			ctx.last_state = await ctx.battle.apply_trap(place, subject, _inflicter(ctx))
+			ctx.last_state = await ctx.battle.apply_trap(place, subject, ctx.caster, wait)
 
 		Mode.AURA_OVERWRITE:
 			var overwrite := color.resolve(ctx) if color != null else subject.MainColor
@@ -96,13 +98,6 @@ func _state_name(ctx: ActionSequenceContext) -> String:
 		return str(ctx.ability.inflicts_state())
 
 	return ""
-
-
-func _inflicter(ctx: ActionSequenceContext) -> Actor:
-	if inflicter != null:
-		return inflicter.resolve(ctx)
-
-	return ctx.caster
 
 
 ## The state resource this step adds, or null when it defers to the ability or
@@ -174,7 +169,7 @@ func _validate_property(property: Dictionary) -> void:
 
 	match mode:
 		Mode.ADD:
-			visible.append_array(["state", "turns", "inflicter", "silent"])
+			visible.append_array(["state", "turns", "silent", "wait"])
 
 		Mode.REMOVE:
 			visible.append("state")
@@ -183,7 +178,7 @@ func _validate_property(property: Dictionary) -> void:
 			pass
 
 		Mode.SET_TRAP:
-			visible.append_array(["inflicter", "use_ability_trap"])
+			visible.append_array(["use_ability_trap", "wait"])
 
 			if not use_ability_trap:
 				visible.append("trap")

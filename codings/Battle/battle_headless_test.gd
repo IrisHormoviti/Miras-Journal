@@ -8,11 +8,11 @@ extends Node
 ## writes the preview request and sequence, launches Battle.tscn on its own, and
 ## then asserts against the live battle. Run it with:
 ##
-##     godot --headless --path . res://codings/Common/BattleHeadlessTest.tscn
+##     godot --headless --path . res://codings/Battle/BattleHeadlessTest.tscn
 ##
 ## The scene quits with a nonzero exit code when a check fails.
 
-const BATTLE_SCENE := preload("res://codings/Common/Battle.tscn")
+const BATTLE_SCENE := preload("res://codings/Battle/Battle.tscn")
 const ZAPPED := preload("res://database/States/Zapped.tres")
 const ICY_DRIZZLE := preload("res://database/Abilities/IcyDrizzle.tres")
 const TEST_DAMAGE := 5
@@ -50,18 +50,21 @@ func _ready() -> void:
 	print("BATTLE_TEST_READY")
 	await _test_action()
 	await _test_damage_and_state()
+	await _test_state_wait()
 	await _test_aoe()
 	await _test_trap_interrupt()
 	await _test_miss()
 	await _test_auto_idle()
 	_test_branch_outcomes()
+
 	print("BATTLE_TEST_DONE failed=", failed)
 	get_tree().quit(1 if failed else 0)
 
 
 ## The preview sequence used to boot the standalone battle.
-func _preview_steps() -> Array:
-	return [_damage_step(TEST_DAMAGE)]
+func _preview_steps() -> Array[BattleStep]:
+	var steps: Array[BattleStep] = [_damage_step(TEST_DAMAGE)]
+	return steps
 
 
 func _damage_step(power: int) -> DamageStep:
@@ -74,10 +77,11 @@ func _damage_step(power: int) -> DamageStep:
 	return damage
 
 
-func _state_step(state: State) -> StateStep:
+func _state_step(state: State, wait := true) -> StateStep:
 	var step := StateStep.new()
 	step.mode = StateStep.Mode.ADD
 	step.state = state
+	step.wait = wait
 	return step
 
 
@@ -148,6 +152,39 @@ func _test_damage_and_state() -> void:
 
 	if battle.lock_turn or battle.lock_count != 0:
 		_fail("Damage and state test left the turn locked")
+
+
+func _test_state_wait() -> void:
+	var target := battle.Troop[0]
+
+	if target == null:
+		_fail("Battle harness has no target for the state wait test")
+		return
+
+	# A waiting state step should block on the state's presentation; a
+	# non-waiting one should add the state and run straight through. Measure
+	# the add_state call directly so the check does not touch turn state.
+	var waiting := await _measure_add_state(target, ZAPPED, true)
+	var not_waiting := await _measure_add_state(target, ZAPPED, false)
+	print("BATTLE_TEST_STATE_WAIT waiting=", waiting, " not_waiting=", not_waiting)
+
+	if waiting <= not_waiting:
+		_fail("Waiting state step did not block the sequence")
+
+	if not target.has_state("Zapped"):
+		_fail("State wait test did not apply the state")
+
+	if battle.lock_turn or battle.lock_count != 0:
+		_fail("State wait test left the turn locked")
+
+
+## Adds [param state] to [param target] and returns how long it took, in
+## milliseconds.
+func _measure_add_state(target: Actor, state: State, wait: bool) -> int:
+	target.remove_state(state.name)
+	var started := Time.get_ticks_msec()
+	await target.add_state(state, -1, Party.Leader, true, wait)
+	return Time.get_ticks_msec() - started
 
 
 func _test_aoe() -> void:
@@ -251,15 +288,19 @@ func _test_miss() -> void:
 	battle.no_misses = false
 	battle.no_crits = false
 
+	var damage := _damage_step(TEST_DAMAGE)
+	# The miss animation holds the turn until it finishes. Waiting for it here
+	# keeps the check deterministic instead of racing the detached animation.
+	var miss := MissStep.new()
+	miss.wait = true
+	damage.miss_steps = [miss]
+
 	var sequence := ActionSequence.new()
-	sequence.steps.append(_damage_step(TEST_DAMAGE))
+	sequence.steps.append(damage)
 	ability.action_sequence = sequence
 
 	var before := target.Health
 	await battle.use_ability_now(Party.Leader, ability, target)
-	# The miss animation is fire-and-forget, so let it finish before checking
-	# that the turn was released.
-	await get_tree().create_timer(1.0).timeout
 	print("BATTLE_TEST_MISS before=", before, " after=", target.Health)
 
 	if target.Health != before:

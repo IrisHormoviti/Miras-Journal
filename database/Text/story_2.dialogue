@@ -437,17 +437,17 @@ Daze.Neutral: A Guardian...
 Asteria.Neutral: Hey! Why are you using Mira's thing!?
 Mira.Neutral: Heck yeah!
 [hide][next]
-$>> Bt.pop_num(Party.Leader, "1")
+$>> bt.pop_num(Party.Leader, "1")
 Mira.Neutral: Ow.
 Mira.Neutral: A little help here?
 => END
 
 ~ lazulite_heart_1
-$> Bt.move(Party.Leader, Vector2(-20,-40), 0.3)
-$>> Bt.focus_cam(Party.Leader)
+$> bt.move(Party.Leader, Vector2(-20,-40), 0.3)
+$>> bt.focus_cam(Party.Leader)
 Mira.Neutral: Thanks {{alcine}}!
-$>> Bt.entrance_anim(Party.Leader)
-$> Bt.no_misses = false
+$>> bt.entrance_anim(Party.Leader)
+$> bt.no_misses = false
 => END!
 
 ~ lazulite_heart_2
@@ -471,7 +471,7 @@ Yaru.Neutral: wait..!
 Yaru.Neutral: its link to the realm... it's falling apart...
 Yaru.Neutral: star, maybe you can...
 [hide][next]
-$> Bt.move(Party.Member2, Vector2(0,0), 0.5)
+$> bt.move(Party.Member2, Vector2(0,0), 0.5)
 Asteria.Neutral: There's no need to be scared anymore. Come to me.
 => END
 

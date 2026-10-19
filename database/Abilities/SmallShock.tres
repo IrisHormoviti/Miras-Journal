@@ -4,9 +4,107 @@
 [ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="2_eglye"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_hj84y"]
 [ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_7ifvw"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_8hdyw"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="4_sbiil"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_3mpoc"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_1mn63"]
+[ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="7_m3n2h"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="8_y70sl"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_iraym"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_dvxvm"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="11_2ysd5"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="12_nxosv"]
+[ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_p05qe"]
+[ext_resource type="Resource" uid="uid://d1yept33qk7oe" path="res://database/States/Zapped.tres" id="14_24akk"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_ayreo"]
+
+[sub_resource type="Resource" id="Resource_b685w"]
+resource_name = "Caster"
+script = ExtResource("3_8hdyw")
+
+[sub_resource type="Resource" id="Resource_cp8ve"]
+script = ExtResource("4_sbiil")
+actor = SubResource("Resource_b685w")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_e5q6f"]
+resource_name = "Target"
+script = ExtResource("3_8hdyw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_8fxb6"]
+script = ExtResource("5_3mpoc")
+zoom_enabled = true
+amount = 6.0
+move_enabled = true
+actor = SubResource("Resource_e5q6f")
+
+[sub_resource type="Resource" id="Resource_qinx0"]
+script = ExtResource("6_1mn63")
+duration = 0.8
+
+[sub_resource type="Resource" id="Resource_cl5dn"]
+resource_name = "Wheel Color"
+script = ExtResource("7_m3n2h")
+metadata/_custom_type_script = "uid://chy73ndgt66nv"
+
+[sub_resource type="Resource" id="Resource_25802"]
+script = ExtResource("8_y70sl")
+
+[sub_resource type="Resource" id="Resource_bcuoy"]
+script = ExtResource("9_iraym")
+
+[sub_resource type="Resource" id="Resource_o6wno"]
+resource_name = "Target"
+script = ExtResource("3_8hdyw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_4yan4"]
+script = ExtResource("10_dvxvm")
+target = SubResource("Resource_o6wno")
+
+[sub_resource type="Resource" id="Resource_ieont"]
+resource_name = "weak"
+script = ExtResource("11_2ysd5")
+damage_scale = 0
+
+[sub_resource type="Resource" id="Resource_ikfds"]
+resource_name = "Target"
+script = ExtResource("3_8hdyw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_aaspi"]
+script = ExtResource("12_nxosv")
+target = SubResource("Resource_ikfds")
+power = SubResource("Resource_ieont")
+magic_mode = 2
+elemental = true
+color = SubResource("Resource_cl5dn")
+hit_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_25802"), SubResource("Resource_bcuoy")])
+miss_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_4yan4")])
+
+[sub_resource type="Resource" id="Resource_js25u"]
+resource_name = "Target"
+script = ExtResource("3_8hdyw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_8gdv3"]
+script = ExtResource("13_p05qe")
+actor = SubResource("Resource_js25u")
+state = ExtResource("14_24akk")
+wait = null
+
+[sub_resource type="Resource" id="Resource_j5knt"]
+script = ExtResource("15_ayreo")
+mode = 2
+if_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_8gdv3")])
+
+[sub_resource type="Resource" id="Resource_aku36"]
+script = ExtResource("6_1mn63")
 
 [sub_resource type="Resource" id="Resource_dvxvm"]
 script = ExtResource("2_eglye")
+steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_cp8ve"), SubResource("Resource_8fxb6"), SubResource("Resource_qinx0"), SubResource("Resource_aaspi"), SubResource("Resource_j5knt"), SubResource("Resource_aku36")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hj84y"]
 atlas = ExtResource("1_qthqk")

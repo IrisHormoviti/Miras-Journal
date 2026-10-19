@@ -18,3 +18,4 @@ Enemies = Array[ExtResource("2_actor")]([ExtResource("3_enemy"), ExtResource("3_
 Music = SubResource("Resource_upawa")
 BattleBack = ExtResource("4_back")
 transition = false
+skip_entrance = true

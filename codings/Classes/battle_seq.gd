@@ -27,6 +27,10 @@ class_name BattleSequence
 @export var DeleteAttacker := true
 ## The steps that play when the battle opens, before the first turn
 @export var entrance_sequence: ActionSequence
+## Play no opening at all: no authored sequence, no default camera sweep or
+## party entrance animation. Used by the inspector preview and tests to get to
+## the first turn quickly.
+@export var skip_entrance := false
 ## The steps that play when the party wins, before the victory screen
 @export var victory_sequence: ActionSequence
 ## The steps that play when the party loses, before the game over
