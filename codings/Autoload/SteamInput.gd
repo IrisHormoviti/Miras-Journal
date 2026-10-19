@@ -34,11 +34,11 @@ var action_names := {
 var got_handles := false
 
 # The action set handles and the current action set.
-var game_action_set
-var current_action_set
+var game_action_set: int = 0
+var current_action_set: int = 0
 
 # Store the resulting handles for each action.
-var actions = { }
+var actions: Dictionary = {}
 
 
 ## Call this after calling `Steam.inputInit()` and `Steam.enableDeviceCallbacks()`
@@ -65,10 +65,10 @@ func get_handles() -> void:
 	get_action_handles(action_names)
 
 
-func get_action_handles(action_names: Dictionary) -> void:
-	for action in action_names.keys():
+func get_action_handles(action_map: Dictionary) -> void:
+	for action: String in action_map.keys():
 		# If true, analog
-		if action_names[action]:
+		if action_map[action]:
 			actions[action] = Steam.getAnalogActionHandle(action)
 		else:
 			actions[action] = Steam.getDigitalActionHandle(action)

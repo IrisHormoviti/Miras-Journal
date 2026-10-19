@@ -64,6 +64,14 @@ var in_trap := false
 ## Traps that sprung from the current hit, waiting to counterattack
 ## (resolved by end_turn, once the attacking sequence is over)
 var pending_traps: Array[Dictionary] = []
+## Optional story phase used by PhaseCondition.
+var battle_phase: StringName = &""
+## Runtime owner for data-driven action sequences.
+var action_runner: ActionSequenceRunner
+## Saved acting context used by use_ability_now.
+var acting_stack: Array[Dictionary] = []
+## Actors whose next turn should be skipped by skip_next_turn.
+var skipped_turns: Array[Actor] = []
 
 @onready var ui: Control = %ControllerBattleUI
 @onready var canvas: CanvasLayer = $Canvas
@@ -161,6 +169,11 @@ func _ready() -> void:
 	act.global_position = sequence.ScenePosition
 	act.z_index = Global.room.camera_index.z if Global.room.camera_index else 3
 	cam.make_current()
+
+	action_runner = ActionSequenceRunner.new()
+	action_runner.name = "ActionSequenceRunner"
+	action_runner.battle = self
+	act.add_child(action_runner)
 
 	battle_start.emit()
 	current = self
@@ -475,6 +488,14 @@ func _on_next_turn() -> void:
 		_on_next_turn()
 		return
 
+	if CurrentChar in skipped_turns:
+		skipped_turns.erase(CurrentChar)
+		CurrentChar.NextAction = Actor.BtAction.UNSET
+		CurrentChar.NextMove = null
+		CurrentChar.NextTarget = null
+		end_turn()
+		return
+
 	print("-------------------------------------------------")
 	print_rich("[color=cornflower-blue]Turn: ", Turn, " - Index: ", TurnInd, " - Name: ", CurrentChar.FirstName)
 	initial = CurrentChar.node.position
@@ -706,12 +727,17 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 		ui.emit_signal("targetFoc", CurrentChar)
 	elif ab.Target == 2: enemy_ui.all_enemy_ui()
 
-	if ab.ActionSequence != &"":
+	var has_sequence := ab.action_sequence != null and not ab.action_sequence.is_empty()
+
+	if has_sequence or ab.legacy_action_sequence != &"":
 		CurrentChar.add_aura(-CurrentAbility.AuraCost)
 		if CurrentAbility.Callout and CurrentChar.Controllable:
 			callout()
 
-		act.play(ab.ActionSequence, CurrentTarget)
+		if has_sequence:
+			action_runner.run_ability(ab, CurrentChar, CurrentTarget)
+		else:
+			act.play(ab.legacy_action_sequence, CurrentTarget)
 	else:
 		end_turn()
 		return
@@ -1092,8 +1118,17 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 	act.CurrentChar = victim
 	act.roll_rng(tgt)
 
-	if trap.ability.ActionSequence != &"":
-		await act.call(trap.ability.ActionSequence, tgt)
+	if trap.ability.action_sequence != null and not trap.ability.action_sequence.is_empty():
+		var outcome := HitOutcome.HIT
+
+		if act.miss:
+			outcome = HitOutcome.MISS
+		elif act.crit:
+			outcome = HitOutcome.CRIT
+
+		await action_runner.run_trap(trap.ability, victim, tgt, outcome)
+	elif trap.ability.legacy_action_sequence != &"":
+		await act.call(trap.ability.legacy_action_sequence, tgt)
 
 	# Restore the surrounding context
 	initial = prev_initial
@@ -1127,10 +1162,107 @@ func apply_trap(trap: Trap, target: Actor, inflicter: Actor = null) -> State:
 func queue_sequence_for_actor(chara: Actor, sequence_name: String) -> void:
 	var ab := Ability.nothing().duplicate()
 	ab.name = sequence_name
-	ab.ActionSequence = sequence_name
+	ab.legacy_action_sequence = sequence_name
+	queue_action(chara, ab, null, Actor.BtAction.ACT)
 
-	chara.NextMove = ab
-	chara.NextAction = Actor.BtAction.ACT
+
+## Queues an intent without touching actor fields at the call site.
+func queue_action(actor: Actor, ability: Ability, target: Actor, action := Actor.BtAction.MAGIC) -> void:
+	if actor == null:
+		return
+
+	actor.NextAction = action
+	actor.NextMove = ability
+	actor.NextTarget = target
+
+
+## Runs an ability through the same runner as a normal turn action.
+func use_ability_now(actor: Actor, ability: Ability, target: Actor, consume_turn := false) -> void:
+	if actor == null or ability == null:
+		return
+
+	push_acting_context(actor, ability, target)
+	await action_runner.run_ability(ability, actor, target, consume_turn)
+	pop_acting_context()
+
+
+func push_acting_context(actor: Actor, ability: Ability, target: Actor) -> void:
+	acting_stack.append({
+		"char": CurrentChar,
+		"ability": CurrentAbility,
+		"target": CurrentTarget,
+		"initial": initial,
+	})
+	CurrentChar = actor
+	CurrentAbility = ability
+	CurrentTarget = target
+	initial = actor.node.position if actor.node != null else initial
+
+
+func pop_acting_context() -> void:
+	if acting_stack.is_empty():
+		return
+
+	var previous: Dictionary = acting_stack.pop_back()
+	CurrentChar = previous["char"]
+	CurrentAbility = previous["ability"]
+	CurrentTarget = previous["target"]
+	initial = previous["initial"]
+
+
+func force_next_actor(actor: Actor) -> void:
+	if actor == null:
+		return
+
+	var index := TurnOrder.find(actor)
+
+	if index >= 0:
+		TurnInd = index - 1
+		follow_up_next = false
+
+
+func skip_next_turn(actor: Actor) -> void:
+	if actor == null:
+		return
+
+	if not skipped_turns.has(actor):
+		skipped_turns.append(actor)
+
+
+func resort_turn_order(preserve_current := true) -> void:
+	var current_actor := CurrentChar
+	TurnOrder.sort_custom(speed_sort)
+	if preserve_current and current_actor in TurnOrder:
+		TurnInd = TurnOrder.find(current_actor)
+
+
+func cancel_follow_up() -> void:
+	follow_up_next = false
+
+
+## Runs a named sequence from database/Sequences for dialogue cues and events.
+func run_action_sequence(sequence_name: StringName) -> void:
+	var path := "res://database/Sequences/" + str(sequence_name) + ".tres"
+
+	if not ResourceLoader.exists(path):
+		push_warning("Action sequence not found: " + path)
+		return
+
+	var seq: ActionSequence = await Loader.load_res(path)
+
+	if seq == null:
+		return
+
+	var ctx := ActionSequenceContext.new()
+	ctx.battle = self
+	ctx.runner = action_runner
+	ctx.sequence = seq
+	ctx.caster = CurrentChar
+	ctx.target = CurrentTarget
+	ctx.home_position = initial
+	hold_turn()
+	await action_runner.run_action_sequence(seq, ctx)
+	release_turn()
 
 
 func hit_animation(target: Actor) -> void:
@@ -1970,7 +2102,7 @@ func _on_battle_ui_command() -> void:
 	anim("Command")
 
 
-func add_to_troop(en: Actor) -> void:
+func add_to_troop(en: Actor) -> Actor:
 	en = en.duplicate()
 	hold_turn()
 	Troop.append(en)
@@ -1991,6 +2123,7 @@ func add_to_troop(en: Actor) -> void:
 	position_sprites()
 	turn_ui_init()
 	release_turn()
+	return en
 
 
 ## Returns the relation between the colors when an attacker is attacking a defender
@@ -2028,7 +2161,7 @@ func _on_battle_ui_item() -> void:
 	if CurrentChar.node.animation == "Bag": anim("BagLoop")
 
 
-func shake_actor(chara := CurrentTarget, amount := 2, repeat := 5, time := 0.03) -> void:
+func shake_actor(chara := CurrentTarget, amount: float = 2.0, repeat: int = 5, time: float = 0.03) -> void:
 	if not is_instance_valid(chara.node): return
 	for i in repeat:
 		var t := create_tween()

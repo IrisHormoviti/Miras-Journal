@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_gruww"]
 script = ExtResource("2_gruww")
 name = "Weapon"
-ActionSequence = &"ItemThrow"
+legacy_action_sequence = &"ItemThrow"
 InflictsState = "Leeched"
 Damage = 1
 Target = 1

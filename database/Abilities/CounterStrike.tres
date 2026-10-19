@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_lfbny"]
 script = ExtResource("1_ab")
 name = "CounterStrike"
-ActionSequence = &"CloseupAttack"
+legacy_action_sequence = &"CloseupAttack"
 Types = Array[int]([3])
 Damage = 6
 Target = 1
@@ -30,7 +30,7 @@ turns = 3
 script = ExtResource("1_ab")
 name = "CounterStrike"
 description = "Counterattack the next enemy that lands a weapon attack. Lasts 3 turns."
-ActionSequence = &"SetTrap"
+legacy_action_sequence = &"SetTrap"
 Types = Array[int]([18])
 SetsTrap = SubResource("Resource_cov55")
 AuraCost = 4

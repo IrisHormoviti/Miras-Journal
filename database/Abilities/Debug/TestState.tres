@@ -7,7 +7,7 @@ script = ExtResource("2_3ahn1")
 name = "Inflict "
 description = "This one exists for testing purposes. 
 Inflicts said state."
-ActionSequence = &"TestState"
+legacy_action_sequence = &"TestState"
 Types = Array[int]([4])
 Group = "TestState"
 Target = 5

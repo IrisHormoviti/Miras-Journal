@@ -6,7 +6,7 @@
 script = ExtResource("2_xjsts")
 name = "Nothing"
 description = "Skips the turn."
-ActionSequence = &"Nothing"
+legacy_action_sequence = &"Nothing"
 ColorSameAsActor = true
 Callout = false
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

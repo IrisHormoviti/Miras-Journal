@@ -69,6 +69,7 @@ gdscript/warnings/integer_division=0
 gdscript/warnings/int_as_enum_without_cast=0
 gdscript/warnings/int_as_enum_without_match=0
 gdscript/warnings/native_method_override=0
+gdscript/warnings/treat_warnings_as_errors=true
 
 [dialogue_manager]
 
@@ -92,7 +93,7 @@ naming/scene_name_casing=1
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/SimpleFormatOnSave/plugin.cfg", "res://addons/antialiased_line2d/plugin.cfg", "res://addons/dialogue_manager/plugin.cfg", "res://addons/gdscript_refactoring/plugin.cfg", "res://addons/godotsteam/plugin.cfg", "res://addons/scene-tree-sorter/plugin.cfg")
+enabled=PackedStringArray("res://addons/AsepriteWizard/plugin.cfg", "res://addons/SimpleFormatOnSave/plugin.cfg", "res://addons/antialiased_line2d/plugin.cfg", "res://addons/battle_step_editor/plugin.cfg", "res://addons/dialogue_manager/plugin.cfg", "res://addons/gdscript_refactoring/plugin.cfg", "res://addons/godotsteam/plugin.cfg", "res://addons/scene-tree-sorter/plugin.cfg")
 
 [file_customization]
 

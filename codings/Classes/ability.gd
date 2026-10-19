@@ -1,3 +1,4 @@
+@tool
 extends Resource
 class_name Ability
 
@@ -41,7 +42,12 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 @export var name: String
 @export_multiline var description: String
 @export var Icon: Texture = load("res://art/Icons/Items.tres")
-@export var ActionSequence: StringName = &"Default"
+@export var action_sequence: ActionSequence
+@export var legacy_action_sequence: StringName = &"Default"
+@export_group("AOE only")
+@export var aoe_sequence: ActionSequence
+@export var AOE_Stagger: float = 0
+@export_group("")
 #@export var ActionSequenceGraph: SequenceGraph = null
 @export var Types: Array[TP] = [TP.UNSET]
 @export var Group: String = ""
@@ -57,7 +63,6 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 @export var Parameter: float = 0
 @export var Target: T = T.SELF
 @export var CanTargetDead := false
-@export var AOE_Stagger: float = 0
 @export var AOE_AdditionalSeq := true
 @export var show_cutin := false
 
@@ -87,6 +92,50 @@ func is_aoe() -> bool:
 
 func is_magic() -> bool:
 	return WheelColor == Color.WHITE
+
+
+func all_steps() -> Array[BattleStep]:
+	var result: Array[BattleStep] = []
+
+	if action_sequence != null:
+		result.append_array(action_sequence.walk())
+
+	if aoe_sequence != null:
+		result.append_array(aoe_sequence.walk())
+
+	return result
+
+
+func primary_damage_step() -> DamageStep:
+	for step in all_steps():
+		if step is DamageStep:
+			return step
+
+	return null
+
+
+func deals_damage() -> bool:
+	return primary_damage_step() != null or Damage != D.NONE
+
+
+func uses_weapon() -> bool:
+	var step := primary_damage_step()
+
+	if step != null:
+		if step.magic_mode == DamageStep.MagicMode.PHYSICAL:
+			return true
+
+		if step.power != null and step.power.mode == ValueRef.Mode.WEAPON_POWER:
+			return true
+
+	return Damage == D.WEAPON
+
+
+func damage_hint() -> D:
+	if Damage != D.NONE:
+		return Damage
+
+	return D.CUSTOM
 
 
 static func nothing() -> Ability:

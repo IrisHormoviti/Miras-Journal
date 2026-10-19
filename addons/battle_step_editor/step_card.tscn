@@ -1,0 +1,156 @@
+[gd_scene format=3 uid="uid://cl212v1uinl55"]
+
+[ext_resource type="Script" uid="uid://dx56kfnlpy0xa" path="res://addons/battle_step_editor/step_card.gd" id="1"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
+content_margin_left = 4.0
+content_margin_top = 4.0
+content_margin_right = 4.0
+content_margin_bottom = 4.0
+bg_color = Color(0.16078432, 0.16078432, 0.16078432, 1)
+corner_radius_top_left = 12
+corner_radius_top_right = 12
+corner_radius_bottom_right = 12
+corner_radius_bottom_left = 12
+
+[sub_resource type="DPITexture" id="DPITexture_ikc13"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"none\" stroke=\"#e0e0e0\" d=\"M2 4h12zm0 4h12zm0 4h12z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_lc15y"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m5 1v11h9v-6h-5v-5zm5 0v4h4zm-8 3v11h2 8v-2h-8v-9z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_y3vn2"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m5 1v1h-4v2h14v-2h-4v-1zm-3 4v8a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-8zm1 2h2v6h-2zm4 0h2v6h-2zm4 0h2v6h-2z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[sub_resource type="DPITexture" id="DPITexture_cqsqn"]
+_source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M3 1a1 1 0 0 0-1 1c0 1.5.967 2.625 1.873 3.66.76.87 1.416 1.643 1.875 2.34-.459.697-1.114 1.472-1.875 2.342C2.967 11.377 2 12.5 2 14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1c0-1.5-.967-2.623-1.873-3.658-.76-.87-1.416-1.645-1.875-2.342.459-.697 1.114-1.47 1.875-2.34C13.033 4.625 14 3.5 14 2a1 1 0 0 0-1-1zm8.412 2c-.238.44-.305.79-.789 1.342-.844.964-1.898 1.972-2.518 3.21A1 1 0 0 0 8 8a1 1 0 0 0-.106-.447c-.619-1.239-1.673-2.247-2.517-3.211-.484-.553-.551-.901-.79-1.342z\"/></svg>
+"
+saturation = 2.0
+color_map = {
+Color(1, 0.37254903, 0.37254903, 1): Color(1, 0.47, 0.42, 1),
+Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
+Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
+}
+
+[node name="StepCard" type="PanelContainer" unique_id=1984092787]
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_card")
+script = ExtResource("1")
+
+[node name="Layout" type="VBoxContainer" parent="." unique_id=119752091]
+layout_mode = 2
+theme_override_constants/separation = 4
+
+[node name="Header" type="HBoxContainer" parent="Layout" unique_id=2059650498]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="ReorderButton" type="Button" parent="Layout/Header" unique_id=1986705791]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+tooltip_text = "Drag to reorder"
+focus_mode = 0
+mouse_default_cursor_shape = 13
+icon = SubResource("DPITexture_ikc13")
+flat = true
+
+[node name="StepIcon" type="TextureRect" parent="Layout/Header" unique_id=443404726]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(16, 16)
+layout_mode = 2
+stretch_mode = 3
+
+[node name="IndexLabel" type="Label" parent="Layout/Header" unique_id=1804129013]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0.5)
+custom_minimum_size = Vector2(18, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+text = "1"
+horizontal_alignment = 2
+
+[node name="TypeLabel" type="Label" parent="Layout/Header" unique_id=925880927]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme_override_font_sizes/font_size = 14
+text = "Step"
+
+[node name="DuplicateButton" type="Button" parent="Layout/Header" unique_id=1190284677]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+tooltip_text = "Duplicate"
+icon = SubResource("DPITexture_lc15y")
+flat = true
+
+[node name="RemoveButton" type="Button" parent="Layout/Header" unique_id=443133005]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+tooltip_text = "Remove"
+icon = SubResource("DPITexture_y3vn2")
+flat = true
+
+[node name="Description" type="HBoxContainer" parent="Layout" unique_id=2113192749]
+layout_mode = 2
+theme_override_constants/separation = 3
+
+[node name="SummaryLabel" type="Label" parent="Layout/Description" unique_id=671250125]
+unique_name_in_owner = true
+modulate = Color(1, 1, 1, 0.62)
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+clip_text = true
+text_overrun_behavior = 3
+
+[node name="AwaitToggle" type="Button" parent="Layout/Description" unique_id=1819701468]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(22, 0)
+layout_mode = 2
+tooltip_text = "Wait for this step to finish"
+toggle_mode = true
+icon = SubResource("DPITexture_cqsqn")
+flat = true
+
+[node name="Body" type="VBoxContainer" parent="Layout" unique_id=441836224]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2
+
+[node name="InspectorMargin" type="PanelContainer" parent="Layout/Body" unique_id=219079220]
+unique_name_in_owner = true
+layout_mode = 2
+
+[node name="Children" type="VBoxContainer" parent="Layout" unique_id=1917125460]
+unique_name_in_owner = true
+visible = false
+layout_mode = 2

@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_as5re"]
 script = ExtResource("1_m0d2q")
 name = "Weapon"
-ActionSequence = &"ItemThrow"
+legacy_action_sequence = &"ItemThrow"
 Damage = 2
 Target = 1
 WheelColor = Color(0.88663924, 0, 0.39451027, 1)

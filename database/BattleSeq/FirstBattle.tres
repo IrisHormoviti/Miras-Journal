@@ -11,7 +11,7 @@
 [sub_resource type="Resource" id="Resource_kgu6i"]
 script = ExtResource("2_kk4y6")
 name = "JumpSucc"
-ActionSequence = &"FirstBattle2"
+legacy_action_sequence = &"FirstBattle2"
 Callout = false
 
 [sub_resource type="Resource" id="Resource_6vdia"]

@@ -7,7 +7,7 @@
 [sub_resource type="Resource" id="Resource_as5re"]
 script = ExtResource("2_t7t58")
 name = "Weapon"
-ActionSequence = &"ItemThrow"
+legacy_action_sequence = &"ItemThrow"
 Types = Array[int]([2])
 Damage = 4
 Target = 1

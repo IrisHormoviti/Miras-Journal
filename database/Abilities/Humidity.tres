@@ -14,7 +14,7 @@ name = "Humidity"
 description = "Chance of soaking each enemy.
 Deals a bit Liquid damage to already soaked enemies."
 Icon = SubResource("AtlasTexture_g1hb7")
-ActionSequence = &"Humidity"
+legacy_action_sequence = &"Humidity"
 Types = Array[int]([2])
 InflictsState = "Soaked"
 AuraCost = 12

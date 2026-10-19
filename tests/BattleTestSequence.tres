@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="BattleSequence" format=3 uid="uid://gfl24hwl6dtj"]
+
+[ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="1_seq"]
+[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="1_tnbbk"]
+[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_actor"]
+[ext_resource type="Resource" uid="uid://cwp57sgr8rbwo" path="res://database/Enemies/Dummy.tres" id="3_enemy"]
+[ext_resource type="Texture2D" uid="uid://da4wno1fcym1u" path="res://art/Backgrounds/Debug.png" id="4_back"]
+[ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="5_51b0u"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_tmcxd"]
+
+[resource]
+script = ExtResource("1_seq")
+Enemies = Array[ExtResource("2_actor")]([ExtResource("3_enemy"), ExtResource("3_enemy")])
+BattleBack = ExtResource("4_back")
+transition = false

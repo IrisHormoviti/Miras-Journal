@@ -14,7 +14,7 @@ name = "Heat Wave"
 description = "Deals some Heat damage to all burned enemies. 
 Low chance of burning others."
 Icon = SubResource("AtlasTexture_p5ac4")
-ActionSequence = &"HeatWave"
+legacy_action_sequence = &"HeatWave"
 Types = Array[int]([2])
 AuraCost = 8
 Damage = 3
