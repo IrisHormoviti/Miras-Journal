@@ -13,13 +13,13 @@ filter_clip = true
 script = ExtResource("2_v4m21")
 name = "Item cure "
 description = "This is used internally for curing items in battle."
-Icon = SubResource("AtlasTexture_uyukm")
+icon = SubResource("AtlasTexture_uyukm")
 legacy_action_sequence = &"ItemCure"
-Types = Array[int]([5, 17])
+types = Array[int]([5, 17])
 InflictsState = "Poisoned"
 Damage = 5
 Parameter = 30.0
-Callout = false
+callout = false
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1mmxx"]
 atlas = ExtResource("1_lne2v")
@@ -28,11 +28,11 @@ filter_clip = true
 
 [resource]
 script = ExtResource("3_t2vp7")
-Name = "Life Lave"
-Description = "Cures Poison and restores 30 HP."
-ItemType = "Con"
-Icon = SubResource("AtlasTexture_1mmxx")
-Use = 3
-UsedInBattle = true
-BattleEffect = SubResource("Resource_y1gkf")
+name = "Life Lave"
+description = "Cures Poison and restores 30 HP."
+item_type = "Con"
+icon = SubResource("AtlasTexture_1mmxx")
+use = 3
+used_in_battle = true
+battle_effect = SubResource("Resource_y1gkf")
 Parameter = "30"

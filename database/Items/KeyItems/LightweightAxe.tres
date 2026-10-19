@@ -14,8 +14,8 @@ filter_clip = true
 script = ExtResource("3_v30n1")
 attack = ExtResource("2_y350c")
 power = 18
-Name = "Lightweight Axe"
-Description = "A light and easy to weild axe.
+name = "Lightweight Axe"
+description = "A light and easy to weild axe.
 It can be attached to a strap on the bag."
-ItemType = "Key"
-Icon = SubResource("AtlasTexture_y350c")
+item_type = "Key"
+icon = SubResource("AtlasTexture_y350c")

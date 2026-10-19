@@ -7,5 +7,5 @@ script = ExtResource("2_exvs0")
 name = "Gather"
 description = "Recover all AP"
 legacy_action_sequence = &"Gather"
-ColorSameAsActor = true
+color_same_as_actor = true
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

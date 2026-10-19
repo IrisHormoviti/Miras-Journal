@@ -107,7 +107,7 @@ func _check_party() -> void:
 		var dub: Control = $EnemyFocus/States/State.duplicate()
 		dub.texture = i.icon
 		dub.show()
-		dub.tooltip_text = i.name + "\n" + i.Description
+		dub.tooltip_text = i.name + "\n" + i.description
 		dub.name = i.name
 		$EnemyFocus/States.add_child(dub)
 

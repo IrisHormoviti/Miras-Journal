@@ -22,9 +22,9 @@ filter_clip = true
 [sub_resource type="Resource" id="Resource_5mg01"]
 script = ExtResource("1_lcqvh")
 name = "Time Break"
-Icon = SubResource("AtlasTexture_5mg01")
+icon = SubResource("AtlasTexture_5mg01")
 legacy_action_sequence = &"AsteriaBossFollowup"
-WheelColor = Color(0.6901961, 0.39607844, 0.6862745, 1)
+wheel_color = Color(0.6901961, 0.39607844, 0.6862745, 1)
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"
 
 [sub_resource type="Curve" id="Curve_7hmow"]

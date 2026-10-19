@@ -199,5 +199,5 @@ func add_complimentary(ability: String, from_name: String = "Mira Levenor", popu
 
 func use_ability_overworld(ab: Ability, user: Actor) -> void:
 	get_viewport().gui_release_focus()
-	if Ability.TP.HEALING in ab.Types:
+	if Ability.TP.HEALING in ab.types:
 		await Hud.choose_member(ab, user)

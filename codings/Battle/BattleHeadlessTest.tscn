@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://b527hafx5uc42"]
+
+[ext_resource type="Script" uid="uid://drebmegb555jx" path="res://codings/Battle/battle_headless_test.gd" id="1_test"]
+
+[node name="BattleHeadlessTest" type="Node" unique_id=741863704]
+script = ExtResource("1_test")

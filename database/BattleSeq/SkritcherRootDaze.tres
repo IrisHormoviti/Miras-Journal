@@ -1,12 +1,12 @@
 [gd_resource type="Resource" script_class="BattleSequence" format=3 uid="uid://oi2xv8bjx6ph"]
 
-[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="1_vdu0h"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_x6468"]
+[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="1_2lova"]
+[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_oaiji"]
 [ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="3_kjmt8"]
 [ext_resource type="Resource" uid="uid://b0haspr714s0g" path="res://database/Enemies/SkritcherRoot.tres" id="3_x6468"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="4_2lova"]
 [ext_resource type="Resource" uid="uid://dr48hmn1otdiw" path="res://database/Abilities/LeechSeeds.tres" id="5_kjmt8"]
-[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_2lova"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_f6ajr"]
 
 [sub_resource type="Resource" id="Resource_2lova"]
 script = ExtResource("3_kjmt8")
@@ -19,7 +19,7 @@ metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [resource]
 script = ExtResource("4_2lova")
-Enemies = Array[ExtResource("2_x6468")]([ExtResource("3_x6468")])
+Enemies = Array[ExtResource("2_oaiji")]([ExtResource("3_x6468")])
 ScenePosition = Vector2(-191, -10)
 CanEscape = false
 EntranceBanter = "skritcher_root_daze"

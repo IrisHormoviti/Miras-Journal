@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("2_owflq")
 name = "Magic Shield"
-Description = "Blocks any magic damage."
+description = "Blocks any magic damage."
 turns = 1
 icon = SubResource("AtlasTexture_qipse")
 pose = "Guard"

@@ -10,7 +10,7 @@ region = Rect2(108, 18, 18, 18)
 [resource]
 script = ExtResource("1_tuic4")
 name = "Guarding"
-Description = "Takes half damage from any attack, and converts that into Aura."
+description = "Takes half damage from any attack, and converts that into Aura."
 turns = 1
 icon = SubResource("AtlasTexture_oocop")
 color = Color(0.792157, 0.792157, 0.792157, 1)

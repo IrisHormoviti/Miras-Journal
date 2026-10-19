@@ -11,5 +11,5 @@ filter_clip = true
 [resource]
 script = ExtResource("1_28b2m")
 name = "Aura Break"
-Description = "Magic attacks deal more damage to this actor. The source of this state also gets to follow-up. Lasts until this actor's aura is not 0."
+description = "Magic attacks deal more damage to this actor. The source of this state also gets to follow-up. Lasts until this actor's aura is not 0."
 icon = SubResource("AtlasTexture_13lko")

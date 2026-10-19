@@ -55,7 +55,7 @@ func play_aoe(nam: String) -> void:
 		roll_rng(i)
 		held(nam, i, true)
 		print("AOE sequence on ", i.FirstName)
-		await Event.wait(Bt.CurrentAbility.AOE_Stagger)
+		await Event.wait(Bt.CurrentAbility.aoe_stagger)
 
 	while seq_running > 0: await Event.wait()
 	Bt.end_turn()
@@ -77,9 +77,9 @@ func roll_rng(tar: Actor) -> void:
 	crit = false
 
 	if not tar.CantDodge or tar.has_state("Bound") or tar.has_state("Soaked"):
-		if randf_range(0, 1) > Bt.CurrentAbility.SucessChance and not Bt.no_misses: miss = true
+		if randf_range(0, 1) > Bt.CurrentAbility.success_chance and not Bt.no_misses: miss = true
 
-	if randf_range(0, 1) < Bt.CurrentAbility.CritChance and not Bt.no_crits and not miss: crit = true
+	if randf_range(0, 1) < Bt.CurrentAbility.crit_chance and not Bt.no_crits and not miss: crit = true
 
 ################################################
 
@@ -93,14 +93,14 @@ func handle_states() -> void:
 			state.turns -= 1
 
 			if state.turns == 0:
-				state.QueueRemove = true
+				state.queue_remove = true
 				Bt.anim("", chara)
 
-		if not state.QueueRemove:
+		if not state.queue_remove:
 			match state.filename:
 				"AuraBreak":
 					if chara.Aura != 0:
-						state.QueueRemove = true
+						state.queue_remove = true
 
 				"Burned":
 					#chara.node.get_node("State").play("Burned")
@@ -132,9 +132,9 @@ func handle_states() -> void:
 						if chara.Controllable:
 							Bt.battle_msg("confusion_lose_control")
 						else:
-							if chara == chara.NextTarget and chara.NextMove.Target == Ability.T.ONE_ENEMY:
+							if chara == chara.NextTarget and chara.NextMove.target == Ability.T.ONE_ENEMY:
 								Bt.battle_msg("confusion_hit_self")
-							elif chara.NextTarget in Bt.get_ally_faction(chara) and chara.NextMove.Target == Ability.T.ONE_ENEMY:
+							elif chara.NextTarget in Bt.get_ally_faction(chara) and chara.NextMove.target == Ability.T.ONE_ENEMY:
 								Bt.battle_msg("confusion_hit_ally")
 
 					state.turns -= 1
@@ -249,7 +249,7 @@ func AttackMira(target: Actor) -> void:
 
 	if crit:
 		Bt.damage(target, false, true)
-		Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.WheelColor)
+		Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.wheel_color)
 
 	await Event.wait(0.6)
 	Bt.return_cur()
@@ -290,7 +290,7 @@ func AttackAlcine(target: Actor) -> void:
 		if crit:
 			Bt.screen_shake(15, 7, 0.3)
 			Bt.damage(target, false, true)
-			Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.WheelColor)
+			Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.wheel_color)
 		else:
 			Bt.screen_shake(10, 7, 0.3)
 			Bt.damage(target, false, false)
@@ -322,7 +322,7 @@ func AttackDaze(target: Actor) -> void:
 			Bt.anim("Attack3")
 			await Event.wait(0.2)
 			Bt.zoom(6, 0.2)
-			Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.WheelColor)
+			Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.wheel_color)
 			await Bt.move(CurrentChar, target.node.position + Vector2(Bt.offsetize(-30), 0), 0.2, Tween.EASE_OUT)
 			await Event.wait(0.5)
 			Bt.play_effect("SimpleHit", target)
@@ -361,7 +361,7 @@ func AttackAsteria(target: Actor) -> void:
 		Bt.play_sound("Attack2", CurrentChar)
 		Bt.screen_shake()
 		Bt.damage(target, false, true)
-		Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.WheelColor)
+		Bt.pop_num(target, "CRITICAL", Bt.CurrentAbility.wheel_color)
 		await Bt.await_anim($Scarf1, "Scarf3")
 	else:
 		$Scarf1.play("Scarf2")
@@ -547,7 +547,7 @@ func PhantomGuard(target: Actor) -> void:
 	Bt.zoom()
 	Bt.anim("Guard")
 	Bt.focus_cam(CurrentChar)
-	Bt.aura_overwrite(target, Bt.CurrentAbility.WheelColor)
+	Bt.aura_overwrite(target, Bt.CurrentAbility.wheel_color)
 	await Event.wait(0.5)
 	await CurrentChar.add_state("Guarding")
 	await Event.wait(0.5)
@@ -679,7 +679,7 @@ func AttackUp3(target: Actor) -> void:
 	Bt.anim("Cast", CurrentChar)
 	Bt.zoom(6)
 	Bt.focus_cam(target)
-	await Bt.stat_change(&"Atk", Bt.CurrentAbility.Parameter, target, 3)
+	await Bt.stat_change(&"Atk", Bt.CurrentAbility.parameter, target, 3)
 	await Event.wait(1)
 	Bt.anim()
 
@@ -688,7 +688,7 @@ func AttackUpNext(target: Actor) -> void:
 	Bt.anim("Cast", CurrentChar)
 	Bt.zoom(6)
 	Bt.focus_cam(target)
-	await Bt.stat_change(&"Atk", Bt.CurrentAbility.Parameter, target, -2)
+	await Bt.stat_change(&"Atk", Bt.CurrentAbility.parameter, target, -2)
 	await Event.wait(1)
 	Bt.anim()
 
@@ -697,7 +697,7 @@ func MagicUp3(target: Actor) -> void:
 	Bt.anim("Cast", CurrentChar)
 	Bt.zoom(6)
 	Bt.focus_cam(target)
-	await Bt.stat_change(&"Mag", Bt.CurrentAbility.Parameter, target, 3)
+	await Bt.stat_change(&"Mag", Bt.CurrentAbility.parameter, target, 3)
 	await Event.wait(1)
 	Bt.anim()
 
@@ -706,7 +706,7 @@ func DefenceUp3(target: Actor) -> void:
 	Bt.anim("Cast", CurrentChar)
 	Bt.zoom(6)
 	Bt.focus_cam(target)
-	await Bt.stat_change(&"Def", Bt.CurrentAbility.Parameter, target, 3)
+	await Bt.stat_change(&"Def", Bt.CurrentAbility.parameter, target, 3)
 	await Event.wait(1)
 	Bt.anim()
 
@@ -1025,9 +1025,9 @@ func Dispel(target: Actor) -> void:
 func Drink(target: Actor) -> void:
 	Bt.focus_cam(CurrentChar, 0.3)
 	Bt.zoom(5.5)
-	print(Bt.CurrentAbility.Types)
-	if Ability.TP.HEALING in Bt.CurrentAbility.Types:
-		Bt.heal(CurrentChar, int(Bt.CurrentAbility.Parameter))
+	print(Bt.CurrentAbility.types)
+	if Ability.TP.HEALING in Bt.CurrentAbility.types:
+		Bt.heal(CurrentChar, int(Bt.CurrentAbility.parameter))
 
 	await Bt.anim("Cast")
 	await Event.wait(1)
@@ -1037,9 +1037,9 @@ func Drink(target: Actor) -> void:
 func Eat(target: Actor) -> void:
 	Bt.focus_cam(CurrentChar, 0.3)
 	Bt.zoom(5.5)
-	print(Bt.CurrentAbility.Types)
-	if Ability.TP.HEALING in Bt.CurrentAbility.Types:
-		Bt.heal(CurrentChar, int(Bt.CurrentAbility.Parameter))
+	print(Bt.CurrentAbility.types)
+	if Ability.TP.HEALING in Bt.CurrentAbility.types:
+		Bt.heal(CurrentChar, int(Bt.CurrentAbility.parameter))
 
 	await Bt.anim("Cast")
 	await Event.wait(1)
@@ -1049,9 +1049,9 @@ func Eat(target: Actor) -> void:
 func ItemCure(target: Actor) -> void:
 	Bt.focus_cam(CurrentChar, 0.3)
 	Bt.zoom(5.5)
-	print(Bt.CurrentAbility.Types)
-	if Ability.TP.HEALING in Bt.CurrentAbility.Types:
-		Bt.heal(CurrentChar, int(Bt.CurrentAbility.Parameter))
+	print(Bt.CurrentAbility.types)
+	if Ability.TP.HEALING in Bt.CurrentAbility.types:
+		Bt.heal(CurrentChar, int(Bt.CurrentAbility.parameter))
 
 	CurrentChar.remove_state(Bt.CurrentAbility.InflictsState)
 	await Bt.anim("Cast")

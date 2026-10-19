@@ -66,8 +66,8 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	$StatPanel/StatBars/Attack.value = chara.Attack
 	$StatPanel/StatBars/Defence.value = chara.Defence
 	$StatPanel/StatBars/Magic.value = chara.Magic
-	$StatPanel/Weapon/WeaponName.text = chara.Weapon.Name
-	$StatPanel/Weapon/Icon.texture = chara.Weapon.Icon
+	$StatPanel/Weapon/WeaponName.text = chara.Weapon.name
+	$StatPanel/Weapon/Icon.texture = chara.Weapon.icon
 	$StatPanel/Weapon/Icon/WeaponRating.text = "Power rating: " + Query.get_power_rating(chara.Weapon.power)
 
 	$StatPanel/Wheel.color = chara.MainColor
@@ -193,10 +193,10 @@ func fetch_abilities(chara: Actor) -> void:
 		dub.show()
 		%AbilityList.add_child(dub)
 		dub.text = i.name
-		dub.get_node("Icon").texture = i.Icon
+		dub.get_node("Icon").texture = i.icon
 
-		if i.AuraCost != 0:
-			dub.get_child(0).text = str(i.AuraCost)
+		if i.aura_cost != 0:
+			dub.get_child(0).text = str(i.aura_cost)
 			dub.get_child(0).show()
 		else:
 			dub.get_child(0).hide()
@@ -221,14 +221,14 @@ func _on_ab_focus_entered() -> void:
 	var ab: Ability = get_viewport().gui_get_focus_owner().get_meta("Ability")
 
 	if not is_instance_valid(ab): return
-	if ab.WheelColor != Color.WHITE and not ab.ColorSameAsActor and ab.Damage != Ability.D.NONE:
+	if ab.wheel_color != Color.WHITE and not ab.color_same_as_actor and ab.deals_damage():
 		$AbilityPanel/AttackTitle/Wheel.show()
-		$AbilityPanel/AttackTitle/Wheel.color = ab.WheelColor
+		$AbilityPanel/AttackTitle/Wheel.color = ab.wheel_color
 		$AbilityPanel/AttackTitle/Wheel.draw_wheel()
 		$AbilityPanel/AttackTitle/Wheel.draw_wheel()
 	else: $AbilityPanel/AttackTitle/Wheel.hide()
 	$AbilityPanel/AttackTitle.text = ab.name
-	#$AbilityPanel/AttackTitle.icon = ab.Icon
+	#$AbilityPanel/AttackTitle.icon = ab.icon
 	$AbilityPanel/AttackTitle/RichTextLabel.text = Colorizer.colorize(ab.description)
 
 

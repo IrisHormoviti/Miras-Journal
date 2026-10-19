@@ -8,7 +8,7 @@ name = "Inflict "
 description = "This one exists for testing purposes. 
 Inflicts said state."
 legacy_action_sequence = &"TestState"
-Types = Array[int]([4])
-Group = "TestState"
-Target = 5
+types = Array[int]([4])
+group = "TestState"
+target = 5
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("2_rcepv")
 Essence = Color(0.827451, 0.266667, 0.427451, 1)
-Name = "Red Fragment"
-Description = "A small crystal that contains a pure Physical essence."
-ItemType = "Mat"
-Icon = SubResource("AtlasTexture_f11ge")
+name = "Red Fragment"
+description = "A small crystal that contains a pure Physical essence."
+item_type = "Mat"
+icon = SubResource("AtlasTexture_f11ge")

@@ -10,10 +10,10 @@ name = "Weapon"
 legacy_action_sequence = &"ItemThrow"
 InflictsState = "Leeched"
 Damage = 1
-Target = 1
-Callout = false
-CritChance = 0.2
-DmgVarience = true
+target = 1
+callout = false
+crit_chance = 0.2
+damage_variance = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2utmj"]
 resource_local_to_scene = true
@@ -23,11 +23,11 @@ filter_clip = true
 
 [resource]
 script = ExtResource("2_2utmj")
-Name = "Leech Spear"
-Description = "Deals slight damage and Leeches the target"
-ItemType = "Bti"
-Icon = SubResource("AtlasTexture_2utmj")
-Use = 4
-UsedInBattle = true
-BattleEffect = SubResource("Resource_gruww")
+name = "Leech Spear"
+description = "Deals slight damage and Leeches the target"
+item_type = "Bti"
+icon = SubResource("AtlasTexture_2utmj")
+use = 4
+used_in_battle = true
+battle_effect = SubResource("Resource_gruww")
 metadata/_custom_type_script = "uid://b1asade5rjus"

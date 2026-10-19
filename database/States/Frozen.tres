@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("1_wpwwi")
 name = "Frozen"
-Description = "Cannot move until hit again, or after 3 turns
+description = "Cannot move until hit again, or after 3 turns
 "
 turns = 3
 icon = SubResource("AtlasTexture_ir784")

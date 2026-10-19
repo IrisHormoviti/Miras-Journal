@@ -9,11 +9,11 @@ script = ExtResource("1_m0d2q")
 name = "Weapon"
 legacy_action_sequence = &"ItemThrow"
 Damage = 2
-Target = 1
-WheelColor = Color(0.88663924, 0, 0.39451027, 1)
-Callout = false
-CritChance = 0.2
-DmgVarience = true
+target = 1
+wheel_color = Color(0.88663924, 0, 0.39451027, 1)
+callout = false
+crit_chance = 0.2
+damage_variance = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_85b45"]
 atlas = ExtResource("2_rcejj")
@@ -22,10 +22,10 @@ filter_clip = true
 
 [resource]
 script = ExtResource("1_h38r3")
-Name = "Sharp Rock"
-Description = "A small rock with a sharp end.
+name = "Sharp Rock"
+description = "A small rock with a sharp end.
 Deals weak Physical damage to one enemy."
-ItemType = "Bti"
-Icon = SubResource("AtlasTexture_85b45")
-UsedInBattle = true
-BattleEffect = SubResource("Resource_as5re")
+item_type = "Bti"
+icon = SubResource("AtlasTexture_85b45")
+used_in_battle = true
+battle_effect = SubResource("Resource_as5re")

@@ -25,12 +25,23 @@ class_name BattleSequence
 ## Whether the Escape button should be usable
 @export var CanEscape := true
 @export var DeleteAttacker := true
-@export var EntranceSequence := ""
+## The steps that play when the battle opens, before the first turn
+@export var entrance_sequence: ActionSequence
+## The steps that play when the party wins, before the victory screen
+@export var victory_sequence: ActionSequence
+## The steps that play when the party loses, before the game over
+@export var defeat_sequence: ActionSequence
 @export var EntranceBanter := ""
 @export var EntranceBanterIsPassive := true
-@export var VictorySequence := ""
 @export var VictoryBanter := ""
 @export var VictoryText := "Victory"
+
+@export_group("Deprecated")
+## Deprecated: build the entrance_sequence instead.
+@export var EntranceSequence := ""
+## Deprecated: build the victory_sequence instead.
+@export var VictorySequence := ""
+## Deprecated: build the defeat_sequence instead.
 @export var DefeatSequence := ""
 ## Override the party with the specified Array of IDs
 @export var PartyOverride: PackedStringArray = []

@@ -361,14 +361,14 @@ func _on_ability() -> void:
 	await get_tree().physics_frame
 
 	%AbilityList.get_child(MenuIndex).grab_focus()
-	var color: Color = Abilities[MenuIndex].WheelColor
+	var color: Color = Abilities[MenuIndex].wheel_color
 
-	if Abilities[MenuIndex].ColorSameAsActor: color = CurrentChar.MainColor
+	if Abilities[MenuIndex].color_same_as_actor: color = CurrentChar.MainColor
 	$DescPaper/Title.add_theme_color_override("font_color", color - Color(0.2, 0.2, 0.2, 0))
 	$DescPaper/Desc.text = Colorizer.colorize(Abilities[0].description)
 
-	if Abilities[0].AuraCost != 0:
-		$DescPaper/Cost.text = str("Cost ", str(Abilities[0].AuraCost))
+	if Abilities[0].aura_cost != 0:
+		$DescPaper/Cost.text = str("Cost ", str(Abilities[0].aura_cost))
 		$DescPaper/Cost.show()
 	else:
 		$DescPaper/Cost.hide()
@@ -536,16 +536,16 @@ func get_target(faction: Array[Actor], ab := CurrentChar.NextMove) -> void:
 	if ab != null:
 		if (
 			CurrentChar.NextAction != Actor.BtAction.ACT
-			and ab.WheelColor.s > 0 and ab.Damage != Ability.D.NONE
+			and ab.wheel_color.s > 0 and ab.deals_damage()
 		):
 			wheel.show()
-			wheel.show_atk_color(ab.WheelColor)
+			wheel.show_atk_color(ab.wheel_color)
 		else:
 			wheel.hide()
 
 		attack_title.get_node("RichTextLabel").text = Colorizer.colorize(ab.description)
 		attack_title.text = ab.name
-		attack_title.icon = ab.Icon
+		attack_title.icon = ab.icon
 
 	if LastTarget == null or not LastTarget in faction:
 		LastTarget = CurrentTarget
@@ -647,31 +647,31 @@ func move_menu() -> void:
 			%AbilityList.get_child(MenuIndex).grab_focus()
 
 		$DescPaper/Desc.text = Colorizer.colorize(ab.description)
-		var color: Color = ab.WheelColor
+		var color: Color = ab.wheel_color
 
-		if ab.ColorSameAsActor or color == Color.WHITE: color = CurrentChar.MainColor
+		if ab.color_same_as_actor or color == Color.WHITE: color = CurrentChar.MainColor
 		$DescPaper/Title.add_theme_color_override("font_color",
 		color - Color(0.2, 0.2, 0.2, 0))
 		$DescPaper/Title.text = ab.name
 		CurrentChar.NextMove = foc.get_meta("Ability")
 
-		if ab.AuraCost != 0:
-			$DescPaper/Cost.text = str("Cost ", str(ab.AuraCost))
+		if ab.aura_cost != 0:
+			$DescPaper/Cost.text = str("Cost ", str(ab.aura_cost))
 			$DescPaper/Cost.show()
 		else:
 			$DescPaper/Cost.hide()
 
-		if CurrentChar.NextMove.WheelColor.s > 0 and CurrentChar.NextMove.Damage != Ability.D.NONE:
+		if CurrentChar.NextMove.wheel_color.s > 0 and CurrentChar.NextMove.deals_damage():
 			$DescPaper/ShowWheel.show()
-			$DescPaper/ShowWheel/Wheel.show_atk_color(CurrentChar.NextMove.WheelColor)
+			$DescPaper/ShowWheel/Wheel.show_atk_color(CurrentChar.NextMove.wheel_color)
 		else:
 			$DescPaper/ShowWheel.hide()
 
 		if (
-			ab.AuraCost > CurrentChar.Aura or ab.disabled or
-			(CurrentChar.has_state("Bound") and ab.Damage == Ability.D.WEAPON)
+			ab.aura_cost > CurrentChar.Aura or ab.disabled or
+			(CurrentChar.has_state("Bound") and ab.uses_weapon())
 		):
-			if ab.AuraCost > CurrentChar.Aura:
+			if ab.aura_cost > CurrentChar.Aura:
 				foc.get_node("Label").add_theme_color_override("font_color", Color(1, 0.25, 0.32, 0.5))
 
 			foc.disabled = true
@@ -773,7 +773,7 @@ func _on_ability_entry() -> void:
 		Audio.confirm_sound()
 		var ab: Ability = %AbilityList.get_child(MenuIndex).get_meta("Ability")
 
-		match ab.Target:
+		match ab.target:
 			Ability.T.ONE_ENEMY:
 				PrevStage = "ability"
 				stage = &"target"
@@ -782,17 +782,17 @@ func _on_ability_entry() -> void:
 			Ability.T.ONE_ALLY:
 				PrevStage = "ability"
 				stage = &"target"
-				get_target(Bt.get_ally_faction(CurrentChar, !ab.CanTargetDead))
+				get_target(Bt.get_ally_faction(CurrentChar, !ab.can_target_dead))
 
 			Ability.T.ANY:
 				PrevStage = "ability"
 				stage = &"target"
-				get_target(Bt.get_any_faction(!ab.CanTargetDead))
+				get_target(Bt.get_any_faction(!ab.can_target_dead))
 
 			Ability.T.AOE_ALLIES:
 				PrevStage = "ability"
 				stage = &"target"
-				var fact := Bt.get_ally_faction(CurrentChar, !ab.CanTargetDead)
+				var fact := Bt.get_ally_faction(CurrentChar, !ab.can_target_dead)
 
 				for i in fact:
 					show_aoe_indicator(i)
@@ -802,7 +802,7 @@ func _on_ability_entry() -> void:
 			Ability.T.AOE_ENEMIES:
 				PrevStage = "ability"
 				stage = &"target"
-				var fact := Bt.get_opposing_faction(CurrentChar, !ab.CanTargetDead)
+				var fact := Bt.get_opposing_faction(CurrentChar, !ab.can_target_dead)
 
 				for i in fact:
 					show_aoe_indicator(i)
@@ -830,21 +830,21 @@ func _on_confirm_pressed() -> void:
 
 func use_item() -> void:
 	if foc == null or !foc.has_meta("ItemData") or foc.get_meta("ItemData") == null: return
-	elif foc is Button and foc.get_meta("ItemData").UsedInBattle:
+	elif foc is Button and foc.get_meta("ItemData").used_in_battle:
 		var aitem: ItemData = foc.get_meta("ItemData")
-		aitem.BattleEffect.name = aitem.Name
-		aitem.BattleEffect.description = aitem.Description
-		aitem.BattleEffect.Icon = aitem.Icon
-		aitem.BattleEffect.remove_item_on_use = foc.get_meta("ItemData")
+		aitem.battle_effect.name = aitem.name
+		aitem.battle_effect.description = aitem.description
+		aitem.battle_effect.icon = aitem.icon
+		aitem.battle_effect.remove_item_on_use = foc.get_meta("ItemData")
 		PrevStage = &"item"
 		CurrentChar.NextAction = Actor.BtAction.ITEM
 
-		if aitem.BattleEffect.Target == Ability.T.SELF or aitem.BattleEffect.Target == Ability.T.ONE_ALLY:
-			CurrentChar.NextMove = aitem.BattleEffect
+		if aitem.battle_effect.target == Ability.T.SELF or aitem.battle_effect.target == Ability.T.ONE_ALLY:
+			CurrentChar.NextMove = aitem.battle_effect
 			get_target([CurrentChar])
 
-		if aitem.BattleEffect.Target == Ability.T.ONE_ENEMY:
-			CurrentChar.NextMove = aitem.BattleEffect
+		if aitem.battle_effect.target == Ability.T.ONE_ENEMY:
+			CurrentChar.NextMove = aitem.battle_effect
 			get_target(Bt.get_opposing_faction())
 
 
@@ -905,9 +905,9 @@ func fetch_inventory() -> void:
 			i.free()
 
 		for aitem in Item.get_inv(inv):
-			if aitem.UsedInBattle and aitem not in passed:
+			if aitem.used_in_battle and aitem not in passed:
 				var dub: Control = %Item.duplicate()
-				dub.icon = aitem.Icon
+				dub.icon = aitem.icon
 				dub.set_meta("ItemData", aitem)
 
 				var item_count := Item.count(aitem)
@@ -957,10 +957,10 @@ func fetch_abilities() -> void:
 
 	for i in %AbilityList.get_children():
 		if (
-			i.get_meta("Ability").AuraCost > CurrentChar.Aura or i.get_meta("Ability").disabled or
-			(CurrentChar.has_state("Bound") and i.get_meta("Ability").Damage == Ability.D.WEAPON)
+			i.get_meta("Ability").aura_cost > CurrentChar.Aura or i.get_meta("Ability").disabled or
+			(CurrentChar.has_state("Bound") and i.get_meta("Ability").uses_weapon())
 		):
-			if i.get_meta("Ability").AuraCost > CurrentChar.Aura:
+			if i.get_meta("Ability").aura_cost > CurrentChar.Aura:
 				i.get_node("Label").add_theme_color_override("font_color", Color(1, 0.25, 0.32, 0.5))
 
 			i.disabled = true
@@ -972,16 +972,16 @@ func update_ab(dub: Button) -> void:
 	dub.text = ab.name
 
 	if dub is WaveButton:
-		if ab.ColorSameAsActor:
+		if ab.color_same_as_actor:
 			dub.theme_color = CurrentChar.MainColor
 		else:
-			dub.theme_color = ab.WheelColor
+			dub.theme_color = ab.wheel_color
 
-	dub.get_node("Icon").texture = ab.Icon
+	dub.get_node("Icon").texture = ab.icon
 	var label: Label = dub.get_node("Label")
 
-	if ab.AuraCost != 0:
-		label.text = str(ab.AuraCost)
+	if ab.aura_cost != 0:
+		label.text = str(ab.aura_cost)
 		label.show()
 	else:
 		dub.get_child(0).hide()
@@ -1010,8 +1010,8 @@ func focus_item(node: Button) -> void:
 	if not node.get_parent() is GridContainer: return
 	if not node.has_meta("ItemData"): return
 	var item_data: ItemData = node.get_meta("ItemData")
-	$Inventory/DescPaper/Title.text = item_data.Name
-	$Inventory/DescPaper/Desc.text = Colorizer.colorize(item_data.Description)
+	$Inventory/DescPaper/Title.text = item_data.name
+	$Inventory/DescPaper/Desc.text = Colorizer.colorize(item_data.description)
 
 	var item_count := Item.count(item_data)
 
@@ -1021,9 +1021,9 @@ func focus_item(node: Button) -> void:
 	else:
 		$Inventory/DescPaper/Amount.hide()
 
-	if not item_data.UsedInBattle:
+	if not item_data.used_in_battle:
 		canvas.get_node("Confirm").hide()
-	elif item_data.Use == ItemData.U.INSPECT:
+	elif item_data.use == ItemData.U.INSPECT:
 		canvas.get_node("Confirm").show()
 		canvas.get_node("Confirm").text = "Inspect"
 	else:
@@ -1047,15 +1047,15 @@ func _on_give_pressed() -> void:
 		CurrentChar.NextMove = null
 		CurrentChar.NextAction = Actor.BtAction.ITEM_GIVE
 		var item_dat: ItemData = foc.get_meta("ItemData")
-		item_dat.BattleEffect.name = item_dat.Name
-		item_dat.BattleEffect.description = item_dat.Description
-		item_dat.BattleEffect.Icon = item_dat.Icon
+		item_dat.battle_effect.name = item_dat.name
+		item_dat.battle_effect.description = item_dat.description
+		item_dat.battle_effect.icon = item_dat.icon
 		PrevStage = &"item"
 		given_item = item_dat
 
 		var faction := Bt.get_ally_faction().duplicate()
 		faction.erase(CurrentChar)
-		get_target(faction, item_dat.BattleEffect)
+		get_target(faction, item_dat.battle_effect)
 
 
 func give_item(item_dat: ItemData = given_item) -> void:
@@ -1068,9 +1068,9 @@ func give_item(item_dat: ItemData = given_item) -> void:
 			Bt.focus_cam(CurrentTarget)
 			Bt.zoom(5)
 			CurrentTarget.NextAction = Actor.BtAction.ITEM
-			CurrentTarget.NextMove = item_dat.BattleEffect
+			CurrentTarget.NextMove = item_dat.battle_effect
 			Item.remove_item(item_dat)
-			Bt.battle_msg("use_on_turn", item_dat.Name)
+			Bt.battle_msg("use_on_turn", item_dat.name)
 			await Event.wait(1)
 			fetch_inventory()
 			root.emit()

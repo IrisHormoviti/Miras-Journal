@@ -13,13 +13,13 @@ filter_clip = true
 script = ExtResource("3_y38if")
 name = "Drink healing item"
 description = "This is used internally for healing items in battle."
-Icon = SubResource("AtlasTexture_uyukm")
+icon = SubResource("AtlasTexture_uyukm")
 legacy_action_sequence = &"Drink"
-Types = Array[int]([5])
+types = Array[int]([5])
 Damage = 5
 Parameter = 50.0
-Callout = false
-DmgVarience = true
+callout = false
+damage_variance = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4bywt"]
 atlas = ExtResource("1_xbfcq")
@@ -28,12 +28,12 @@ filter_clip = true
 
 [resource]
 script = ExtResource("1_xhumv")
-Name = "Small Potion"
-Description = "A small bottle containing a healing potion.
+name = "Small Potion"
+description = "A small bottle containing a healing potion.
 Restores 70 HP"
-ItemType = "Con"
-Icon = SubResource("AtlasTexture_4bywt")
-Use = 3
-UsedInBattle = true
-BattleEffect = SubResource("Resource_iwvc1")
+item_type = "Con"
+icon = SubResource("AtlasTexture_4bywt")
+use = 3
+used_in_battle = true
+battle_effect = SubResource("Resource_iwvc1")
 Parameter = "70"

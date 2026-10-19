@@ -13,13 +13,13 @@ filter_clip = true
 script = ExtResource("2_n4kvo")
 name = "Eat healing item"
 description = "This is used internally for healing items in battle."
-Icon = SubResource("AtlasTexture_uyukm")
+icon = SubResource("AtlasTexture_uyukm")
 legacy_action_sequence = &"Eat"
-Types = Array[int]([5])
+types = Array[int]([5])
 Damage = 5
 Parameter = 30.0
-Callout = false
-DmgVarience = true
+callout = false
+damage_variance = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1sl0m"]
 atlas = ExtResource("1_kck5k")
@@ -28,13 +28,13 @@ filter_clip = true
 
 [resource]
 script = ExtResource("1_t4t8r")
-Name = "Strange Fruit"
-Description = "Edible probably?
+name = "Strange Fruit"
+description = "Edible probably?
 Restores 40 HP
 "
-ItemType = "Con"
-Icon = SubResource("AtlasTexture_1sl0m")
-Use = 3
-UsedInBattle = true
-BattleEffect = SubResource("Resource_53v3u")
+item_type = "Con"
+icon = SubResource("AtlasTexture_1sl0m")
+use = 3
+used_in_battle = true
+battle_effect = SubResource("Resource_53v3u")
 Parameter = "40"

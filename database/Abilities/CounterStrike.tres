@@ -8,10 +8,10 @@
 script = ExtResource("1_ab")
 name = "CounterStrike"
 legacy_action_sequence = &"CloseupAttack"
-Types = Array[int]([3])
+types = Array[int]([3])
 Damage = 6
-Target = 1
-CritChance = 0.1
+target = 1
+crit_chance = 0.1
 
 [sub_resource type="Resource" id="Resource_cond"]
 script = ExtResource("2_jgiwd")
@@ -23,7 +23,7 @@ script = ExtResource("3_cyotl")
 ability = SubResource("Resource_lfbny")
 condition = SubResource("Resource_cond")
 name = "Counter Stance"
-Description = "Lies in wait. Weapon damage on the first enemy that lands a weapon hit."
+description = "Lies in wait. Weapon damage on the first enemy that lands a weapon hit."
 turns = 3
 
 [resource]
@@ -31,7 +31,7 @@ script = ExtResource("1_ab")
 name = "CounterStrike"
 description = "Counterattack the next enemy that lands a weapon attack. Lasts 3 turns."
 legacy_action_sequence = &"SetTrap"
-Types = Array[int]([18])
+types = Array[int]([18])
 SetsTrap = SubResource("Resource_cov55")
-AuraCost = 4
-Callout = false
+aura_cost = 4
+callout = false

@@ -18,7 +18,7 @@ enum HitKind {
 @export var relations: Array[Wheel.Relation] = []
 
 ## Ability damage classes that spring the trap. Empty means "any".
-@export var damage_types: Array[Ability.D] = []
+@export var damage_types: Array[ValueRef.DamageScale] = []
 
 ## Ability categories (Ability.TP) that spring the trap. Empty means "any".
 @export var ability_types: Array[Ability.TP] = []
@@ -49,7 +49,7 @@ func matches(is_magic: bool, relation: Wheel.Relation, damage: int, ability: Abi
 			if not is_magic: return false
 
 		HitKind.PHYSICAL_CONTACT:
-			if not ability.MakesPhysicalContact: return false
+			if not ability.makes_contact(): return false
 
 	if not relations.is_empty() and relation not in relations:
 		return false
@@ -58,13 +58,13 @@ func matches(is_magic: bool, relation: Wheel.Relation, damage: int, ability: Abi
 		# Can't filter on the ability if we don't have one
 		return damage_types.is_empty() and ability_types.is_empty()
 
-	if not damage_types.is_empty() and ability.Damage not in damage_types:
+	if not damage_types.is_empty() and ability.damage_scale() not in damage_types:
 		return false
 
 	if not ability_types.is_empty():
 		var matched := false
 
-		for t: Ability.TP in ability.Types:
+		for t: Ability.TP in ability.types:
 			if t in ability_types:
 				matched = true
 				break

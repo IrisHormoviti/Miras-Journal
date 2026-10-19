@@ -14,7 +14,7 @@ filter_clip = true
 script = ExtResource("3_x41c4")
 attack = ExtResource("2_0lreb")
 power = 10
-Description = "A bare hand attack.
+description = "A bare hand attack.
 Might not be very effective."
-ItemType = "Key"
-Icon = SubResource("AtlasTexture_ts65q")
+item_type = "Key"
+icon = SubResource("AtlasTexture_ts65q")

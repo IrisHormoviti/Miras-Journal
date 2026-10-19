@@ -11,7 +11,7 @@ filter_clip = true
 
 [resource]
 script = ExtResource("1_3xuxp")
-Name = "Wallet"
-Description = "Contains 63¢ and some train tickets."
-ItemType = "Key"
-Icon = SubResource("AtlasTexture_4sbe4")
+name = "Wallet"
+description = "Contains 63¢ and some train tickets."
+item_type = "Key"
+icon = SubResource("AtlasTexture_4sbe4")

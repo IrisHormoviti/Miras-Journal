@@ -11,6 +11,6 @@ filter_clip = true
 [resource]
 script = ExtResource("1_fonnw")
 name = "Aggro"
-Description = "Can only target whoever inflicted this state."
+description = "Can only target whoever inflicted this state."
 turns = 1
 icon = SubResource("AtlasTexture_laipu")

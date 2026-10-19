@@ -14,8 +14,8 @@ filter_clip = true
 script = ExtResource("3_iptap")
 attack = ExtResource("2_oupm5")
 power = 32
-Name = "Gold Plated Katana"
-Description = "A sharp long sword.
+name = "Gold Plated Katana"
+description = "A sharp long sword.
 The gold parts on the handle allow the user's Electric magic to pass through."
-ItemType = "Key"
-Icon = SubResource("AtlasTexture_j2bwn")
+item_type = "Key"
+icon = SubResource("AtlasTexture_j2bwn")

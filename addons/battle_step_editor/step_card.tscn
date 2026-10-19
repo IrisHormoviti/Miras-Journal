@@ -53,7 +53,27 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7em3r"]
+bg_color = Color(0, 0, 0, 0.25)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_body"]
+content_margin_left = 6.0
+content_margin_top = 4.0
+content_margin_right = 6.0
+content_margin_bottom = 4.0
+bg_color = Color(0.09, 0.09, 0.09, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
 [node name="StepCard" type="PanelContainer" unique_id=1984092787]
+offset_right = 255.0
+offset_bottom = 63.0
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_card")
 script = ExtResource("1")
@@ -128,6 +148,7 @@ modulate = Color(1, 1, 1, 0.62)
 layout_mode = 2
 size_flags_horizontal = 3
 mouse_filter = 1
+text = "Does something very cool"
 clip_text = true
 text_overrun_behavior = 3
 
@@ -141,16 +162,21 @@ toggle_mode = true
 icon = SubResource("DPITexture_cqsqn")
 flat = true
 
-[node name="Body" type="VBoxContainer" parent="Layout" unique_id=441836224]
+[node name="Body" type="PanelContainer" parent="Layout" unique_id=441836224]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_body")
 
-[node name="InspectorMargin" type="PanelContainer" parent="Layout/Body" unique_id=219079220]
+[node name="InspectorPanel" type="PanelContainer" parent="Layout/Body" unique_id=219079220]
 unique_name_in_owner = true
 layout_mode = 2
 
-[node name="Children" type="VBoxContainer" parent="Layout" unique_id=1917125460]
+[node name="PanelContainer" type="PanelContainer" parent="Layout" unique_id=1549265071]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_7em3r")
+
+[node name="Children" type="VBoxContainer" parent="Layout/PanelContainer" unique_id=1917125460]
 unique_name_in_owner = true
 visible = false
 layout_mode = 2

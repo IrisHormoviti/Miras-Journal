@@ -11,9 +11,9 @@ filter_clip = true
 
 [resource]
 script = ExtResource("2_n5i0e")
-Name = "Journal"
-Description = "\"Belongs to Mira Levenor\" is written on the first page.
+name = "Journal"
+description = "\"Belongs to Mira Levenor\" is written on the first page.
 It's missing a few pages."
-ItemType = "Key"
-Icon = SubResource("AtlasTexture_xa4bt")
-Use = 2
+item_type = "Key"
+icon = SubResource("AtlasTexture_xa4bt")
+use = 2

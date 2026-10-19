@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("1_2la5l")
 name = "Poisoned"
-Description = "Takes increasingly more corruption damage each turn."
+description = "Takes increasingly more corruption damage each turn."
 turns = 2
 icon = SubResource("AtlasTexture_1vy8c")
 color = Color(0.764706, 0.2, 0.764706, 1)

@@ -1,6 +1,58 @@
 @tool
 extends RefCounted
 
+## Card tint per step family, keyed by the folder name the step lives in.
+const FAMILY_COLORS: Dictionary[String, Color] = {
+	"Actor": Color(0.36, 0.62, 0.94), ## Blue
+	"Camera": Color(0.62, 0.47, 0.90), ## Purple
+	"Combat": Color(0.90, 0.38, 0.38), ## Red
+	"Flow": Color(0.95, 0.68, 0.28), ## Orange
+	"Meta": Color(0.55, 0.60, 0.66), ## Grey
+	"Presentation": Color(0.33, 0.78, 0.62), ## Teal
+	"Scheduling": Color(0.85, 0.55, 0.80), ## Pink
+}
+## Used for steps outside a known family, such as one added in a new folder.
+const DEFAULT_FAMILY_COLOR := Color("#292929")
+
+
+## The colour for a step family, or the neutral fallback when unknown.
+static func family_color(family: String) -> Color:
+	return FAMILY_COLORS.get(family, DEFAULT_FAMILY_COLOR)
+
+
+## The colour for a step script path, derived from its folder.
+static func color_for_path(path: String) -> Color:
+	return family_color(path.get_base_dir().get_file())
+
+
+## The card surface colour, a dark version of the family colour so the white
+## icon and label text stay readable.
+static func card_color(family: String) -> Color:
+	return DEFAULT_FAMILY_COLOR.lerp(family_color(family), 0.1)
+
+
+## The card surface colour used once the card is selected, a brighter version of
+## the same family colour.
+static func selected_color(family: String) -> Color:
+	return DEFAULT_FAMILY_COLOR.lerp(family_color(family), 0.3)
+
+
+## The icon colour, brighter than the card surfaces so it reads against them.
+static func icon_color(family: String) -> Color:
+	return family_color(family)
+
+
+static func card_color_for_path(path: String) -> Color:
+	return card_color(path.get_base_dir().get_file())
+
+
+static func selected_color_for_path(path: String) -> Color:
+	return selected_color(path.get_base_dir().get_file())
+
+
+static func icon_color_for_path(path: String) -> Color:
+	return icon_color(path.get_base_dir().get_file())
+
 
 static func entries() -> Array[Dictionary]:
 	var result: Array[Dictionary] = []

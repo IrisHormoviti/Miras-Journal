@@ -11,6 +11,6 @@ filter_clip = true
 [resource]
 script = ExtResource("1_a88a3")
 name = "Unbreaking Aura"
-Description = "This actor's Aura cannot be damaged."
+description = "This actor's Aura cannot be damaged."
 icon = SubResource("AtlasTexture_8ltp1")
 metadata/_custom_type_script = "uid://47q0we3aw5v"

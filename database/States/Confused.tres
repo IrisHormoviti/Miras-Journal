@@ -11,6 +11,6 @@ filter_clip = true
 [resource]
 script = ExtResource("1_ne4g1")
 name = "Confused"
-Description = "Might loose control..."
+description = "Might loose control..."
 icon = SubResource("AtlasTexture_fx7au")
 color = Color(0.321569, 0.972549, 0.709804, 1)

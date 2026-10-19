@@ -10,10 +10,10 @@ name = "Weapon"
 legacy_action_sequence = &"ItemThrow"
 InflictsState = "Soaked"
 Damage = 1
-Target = 1
-WheelColor = Color(0.09985284, 0.3245714, 1, 1)
-Callout = false
-DmgVarience = true
+target = 1
+wheel_color = Color(0.09985284, 0.3245714, 1, 1)
+callout = false
+damage_variance = true
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dhttc"]
 atlas = ExtResource("2_dhttc")
@@ -22,12 +22,12 @@ filter_clip = true
 
 [resource]
 script = ExtResource("3_r3ic8")
-Name = "Water Vial"
-Description = "A small bottle of dirty water.
+name = "Water Vial"
+description = "A small bottle of dirty water.
 Weak Liquid damage, soaks the target"
-ItemType = "Bti"
-Icon = SubResource("AtlasTexture_dhttc")
-QuantityMeansUses = true
-AmountOnAdd = 2
-UsedInBattle = true
-BattleEffect = SubResource("Resource_2qys7")
+item_type = "Bti"
+icon = SubResource("AtlasTexture_dhttc")
+quantity_means_uses = true
+amount_on_add = 2
+used_in_battle = true
+battle_effect = SubResource("Resource_2qys7")

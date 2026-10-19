@@ -19,4 +19,5 @@ parameter2 = "debug_battle_begin"
 script = ExtResource("1_tyx4l")
 Enemies = Array[ExtResource("3_56w6l")]([ExtResource("2_tb6xv"), ExtResource("2_tb6xv")])
 BattleBack = ExtResource("1_03qle")
+transition = false
 Events = Array[ExtResource("5_a1d4h")]([SubResource("Resource_wpf26")])

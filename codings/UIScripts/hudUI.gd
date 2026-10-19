@@ -782,12 +782,12 @@ func choose_member(artifact: Resource, user: Actor = Party.Leader) -> void:
 		if not artifact:
 			return
 
-		%Cursor/ItemPreview.text = (artifact.Name+ " x" + str(Item.count(artifact)))
-		%Cursor/ItemPreview.icon = artifact.Icon
+		%Cursor/ItemPreview.text = (artifact.name+ " x" + str(Item.count(artifact)))
+		%Cursor/ItemPreview.icon = artifact.icon
 		UI.get_node("MainMenu").stage = "choose_member"
 	elif artifact is Ability:
 		%Cursor/ItemPreview.text = artifact.name
-		%Cursor/ItemPreview.icon = artifact.Icon
+		%Cursor/ItemPreview.icon = artifact.icon
 	else:
 		push_error("Invalid use of choose_member")
 		return
@@ -828,7 +828,7 @@ func _on_item_preview_pressed() -> void:
 			Audio.buzzer_sound()
 			UI.toast("No more of this item is left")
 
-		%Cursor/ItemPreview.text = (member_choosing_artifact.Name + " x" + str(Item.count(member_choosing_artifact)))
+		%Cursor/ItemPreview.text = (member_choosing_artifact.name + " x" + str(Item.count(member_choosing_artifact)))
 
 	if member_choosing_artifact is Ability:
 		if Party.current[focus].Health >= Party.current[focus].MaxHP:
@@ -836,7 +836,7 @@ func _on_item_preview_pressed() -> void:
 			Audio.buzzer_sound()
 		else:
 			Event.heal_in_overworld(Party.current[focus], member_choosing_artifact)
-			member_choosing_user.add_aura(-member_choosing_artifact.AuraCost)
+			member_choosing_user.add_aura(-member_choosing_artifact.aura_cost)
 			back()
 
 

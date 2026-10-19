@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("1_h1qn3")
 name = "Deflected"
-Description = "Cannot use magic abilities, but also takes less damage from weak hits."
+description = "Cannot use magic abilities, but also takes less damage from weak hits."
 icon = SubResource("AtlasTexture_740n8")
 color = Color(0.494118, 0.0862745, 1, 1)
 weak_mult = 0.5

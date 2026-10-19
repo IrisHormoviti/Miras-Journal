@@ -489,7 +489,7 @@ func _options() -> void:
 func _on_confirm_button_down() -> void:
 	if stage == "item":
 		if PrevCtrl == null or not PrevCtrl.has_meta("ItemData"): return
-		elif PrevCtrl is Button and PrevCtrl.get_meta("ItemData").Use != 0:
+		elif PrevCtrl is Button and PrevCtrl.get_meta("ItemData").use != 0:
 			Item.use(PrevCtrl.get_meta("ItemData"))
 			Audio.confirm_sound()
 
@@ -522,7 +522,7 @@ func _on_back_button_down() -> void:
 			await Hud.shrink()
 			await Event.wait()
 			stage = "item"
-			#print(Item.item.Name)
+			#print(Item.item.name)
 			for i in $Inventory/Margin/Scroller/Vbox/Consumables.get_children():
 				if i.get_meta("ItemData") == focused_item: i.grab_focus()
 
@@ -589,7 +589,7 @@ func get_inventory() -> void:
 
 func make_slot(item: ItemData, grid: GridContainer) -> void:
 	var dub: Button = $Inventory/Item.duplicate()
-	dub.icon = item.Icon
+	dub.icon = item.icon
 	dub.set_meta("ItemData", item)
 	var item_count: int = Item.count(item)
 
@@ -605,22 +605,22 @@ func focus_item(node: Button) -> void:
 	if not node.get_parent() is GridContainer: return
 	var item: ItemData = node.get_meta("ItemData")
 	focused_item = item
-	$DescPaper/Title.text = item.Name
-	$DescPaper/Desc.text = Colorizer.colorize(item.Description)
+	$DescPaper/Title.text = item.name
+	$DescPaper/Desc.text = Colorizer.colorize(item.description)
 
 	if node.get_parent().name == "KeyItems":
 		$Inventory/Margin/Scroller.scroll_vertical = 0
 
-	if node.get_parent().name == "BattleItems" and item.BattleEffect and item.BattleEffect.WheelColor != Color.WHITE:
+	if node.get_parent().name == "BattleItems" and item.battle_effect and item.battle_effect.wheel_color != Color.WHITE:
 		$DescPaper/Wheel.show()
-		$DescPaper/Wheel.color = item.BattleEffect.WheelColor
+		$DescPaper/Wheel.color = item.battle_effect.wheel_color
 		$DescPaper/Wheel.draw_wheel()
 	else: $DescPaper/Wheel.hide()
 
 	var item_count: int = Item.count(item)
 
 	if item_count > 1:
-		if item.QuantityMeansUses:
+		if item.quantity_means_uses:
 			$DescPaper/Amount.text = str(item_count) + " uses remain"
 		else:
 			$DescPaper/Amount.text = str(item_count) + " in bag"
@@ -629,12 +629,12 @@ func focus_item(node: Button) -> void:
 	else:
 		$DescPaper/Amount.hide()
 
-	if item.Use == 0:
+	if item.use == 0:
 		$Confirm.disabled = true
-	elif item.Use == ItemData.U.INSPECT:
+	elif item.use == ItemData.U.INSPECT:
 		$Confirm.disabled = false
 		$Confirm.text = "Inspect"
-	elif item.Use != 0:
+	elif item.use != 0:
 		$Confirm.disabled = false
 		$Confirm.text = "Use"
 

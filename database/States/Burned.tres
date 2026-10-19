@@ -10,7 +10,7 @@ region = Rect2(108, 36, 18, 18)
 [resource]
 script = ExtResource("1_e3mid")
 name = "Burned"
-Description = "Takes light heat damage every turn. 
+description = "Takes light heat damage every turn. 
 Increased damage from weak hits.
 Lasts for 5 turns"
 turns = 5

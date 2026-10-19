@@ -85,17 +85,24 @@ static func member_exists(Name: StringName) -> bool:
 
 
 static func calc_num(ab: Ability = Global.bt.CurrentAbility, chara: Actor = null) -> int:
-	var base: int
-	match ab.Damage:
-		Ability.D.NONE: base = 0
-		Ability.D.WEAK: base = 12
-		Ability.D.MEDIUM: base = 24
-		Ability.D.HEAVY: base = 48
-		Ability.D.SEVERE: base = 96
-		Ability.D.CUSTOM: base = int(ab.Parameter)
-		Ability.D.WEAPON: base = chara.Weapon.power if chara else Global.bt.CurrentChar.Weapon.power
+	if ab == null:
+		return 0
 
-	if ab.DmgVarience:
+	var scale := ValueRef.DamageScale.MEDIUM
+
+	match ab.Damage:
+		Ability.D.NONE: return 0
+		Ability.D.WEAK: scale = ValueRef.DamageScale.WEAK
+		Ability.D.MEDIUM: scale = ValueRef.DamageScale.MEDIUM
+		Ability.D.HEAVY: scale = ValueRef.DamageScale.HEAVY
+		Ability.D.SEVERE: scale = ValueRef.DamageScale.SEVERE
+		Ability.D.CUSTOM: scale = ValueRef.DamageScale.CUSTOM
+		Ability.D.WEAPON: scale = ValueRef.DamageScale.WEAPON
+
+	var base := int(ValueRef.damage_for(scale, chara, ab.Parameter))
+
+	# Fallback for legacy abilities that have no sequence ValueRef yet.
+	if ab.damage_variance:
 		base = int(base * randf_range(0.8, 1.2))
 
 	return base
@@ -204,10 +211,10 @@ static func find_abilities(Char: Actor, type: Ability.TP, ignore_cost := false, 
 	var Choices: Array[Ability] = []
 
 	for i in AblilityList:
-		if (type in i.Types and (targets == Ability.T.ANY or i.Target == targets)):
-			if ((i.AuraCost < Char.Aura or i.AuraCost == 0) and i.HPCost < Char.Health) or ignore_cost:
+		if (type in i.types and (targets == Ability.T.ANY or i.target == targets)):
+			if ((i.aura_cost < Char.Aura or i.aura_cost == 0) and i.hp_cost < Char.Health) or ignore_cost:
 				Choices.push_front(i)
-				print(i.name, " AP: ", i.AuraCost, " Targets: ", i.Target)
+				print(i.name, " AP: ", i.aura_cost, " Targets: ", i.target)
 			else: print("Not enough resources")
 	return Choices
 

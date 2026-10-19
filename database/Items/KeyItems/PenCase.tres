@@ -10,9 +10,9 @@ filter_clip = true
 
 [resource]
 script = ExtResource("1_vdg8l")
-Name = "Pen Case"
-Description = "A case with a few writting supplies."
-ItemType = "Key"
-Icon = SubResource("AtlasTexture_kiob0")
-Use = 1
+name = "Pen Case"
+description = "A case with a few writting supplies."
+item_type = "Key"
+icon = SubResource("AtlasTexture_kiob0")
+use = 1
 Parameter = "pen_case"

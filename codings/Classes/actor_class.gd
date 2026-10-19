@@ -393,9 +393,9 @@ func groupped_abilities() -> Array[Array]:
 	for i in get_abilities():
 		var found := false
 
-		if i.Group != "":
+		if i.group != "":
 			for j in rtn:
-				if j[0].Group == i.Group:
+				if j[0].group == i.group:
 					j.append(i)
 					found = true
 					break

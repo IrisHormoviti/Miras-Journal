@@ -14,8 +14,8 @@ filter_clip = true
 script = ExtResource("3_rnwar")
 attack = ExtResource("2_whqoj")
 power = 16
-Name = "Lightweight Axe"
-Description = "A scarf pocessed by a ghost.
+name = "Lightweight Axe"
+description = "A scarf pocessed by a ghost.
 The part that hurts is the magic surrounding it."
-ItemType = "Key"
-Icon = SubResource("AtlasTexture_0spox")
+item_type = "Key"
+icon = SubResource("AtlasTexture_0spox")

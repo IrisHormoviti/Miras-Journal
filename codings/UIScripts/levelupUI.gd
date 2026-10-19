@@ -14,14 +14,14 @@ func _ready() -> void:
 
 
 func got_complimentary(ability: Ability, from_name: String) -> void:
-	var color1 := ability.WheelColor
-	var color2 := ability.WheelColor
-	var color3 := ability.WheelColor
+	var color1 := ability.wheel_color
+	var color2 := ability.wheel_color
+	var color3 := ability.wheel_color
 	color2.v -= 0.2
 	color3.v -= 0.5
 	learnable = ability
 	$ChooseUpgrade/NewAb/Hbox/Text.text = ability.name
-	$ChooseUpgrade/NewAb/Hbox/Icon.texture = ability.Icon
+	$ChooseUpgrade/NewAb/Hbox/Icon.texture = ability.icon
 	$Line1.position = Vector2(0, 243)
 	$Line1.rotation_degrees = 0
 	$GotComplimentaryText.position = Vector2(-52, 364)
@@ -60,7 +60,7 @@ func got_complimentary(ability: Ability, from_name: String) -> void:
 	t.tween_property($ChooseUpgrade, "position:y", 0, 0.5)
 
 	await t.finished
-	$ChooseUpgrade/NewAb/Hbox/Icon.texture = ability.Icon
+	$ChooseUpgrade/NewAb/Hbox/Icon.texture = ability.icon
 	$ChooseUpgrade/NewAb/Hbox/Text.text = ability.name
 	t = create_tween()
 	t.set_parallel()
@@ -355,7 +355,7 @@ func _confirm() -> void:
 			t.tween_property($ChooseUpgrade/NewAb, "scale", Vector2(1.8, 1.8), 1.5)
 			await t.finished
 			working_chara.Abilities.append(learnable)
-			$ChooseUpgrade/NewAb/Hbox/Icon.texture = learnable.Icon
+			$ChooseUpgrade/NewAb/Hbox/Icon.texture = learnable.icon
 			$ChooseUpgrade/NewAb/Hbox/Text.text = learnable.name
 			t = create_tween()
 			t.set_parallel()

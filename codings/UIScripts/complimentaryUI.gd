@@ -56,9 +56,9 @@ func fetch_all_abilities() -> void:
 		dub.show()
 		%AbilityList.add_child(dub)
 		dub.text = i.name
-		dub.get_node("Icon").texture = i.Icon
-		if i.AuraCost != 0:
-			dub.get_child(0).text = str(i.AuraCost)
+		dub.get_node("Icon").texture = i.icon
+		if i.aura_cost != 0:
+			dub.get_child(0).text = str(i.aura_cost)
 			dub.get_child(0).show()
 		else:
 			dub.get_child(0).hide()
@@ -90,9 +90,9 @@ func update_equipped() -> void:
 			var i: Ability = dub.get_meta("Ability")
 			dub.disabled = false
 			dub.text = i.name
-			dub.get_node("Icon").texture = i.Icon
-			if i.AuraCost != 0:
-				dub.get_child(0).text = str(i.AuraCost)
+			dub.get_node("Icon").texture = i.icon
+			if i.aura_cost != 0:
+				dub.get_child(0).text = str(i.aura_cost)
 				dub.get_child(0).show()
 			else:
 				dub.get_child(0).hide()
@@ -113,8 +113,8 @@ func refresh() -> void:
 		if chara.Complimentaries.size() <= i:
 			t.tween_property($Background.get_child(i), "modulate", Color.TRANSPARENT, 1)
 		else:
-			var color := chara.Complimentaries[i].WheelColor
-			if chara.Complimentaries[i].WheelColor == Color.WHITE: color.a = 0.3
+			var color := chara.Complimentaries[i].wheel_color
+			if chara.Complimentaries[i].wheel_color == Color.WHITE: color.a = 0.3
 			else: color.a = 0.6
 			t.tween_property($Background.get_child(i), "modulate", color, randf_range(0.5, 3))
 
@@ -123,9 +123,9 @@ func _on_list_focus_entered() -> void:
 	Audio.cursor_sound()
 	var ab: Ability = get_viewport().gui_get_focus_owner().get_meta("Ability")
 	if not is_instance_valid(ab): return
-	if ab.WheelColor != Color.WHITE and not ab.ColorSameAsActor and ab.Damage != Ability.D.NONE:
+	if ab.wheel_color != Color.WHITE and not ab.color_same_as_actor and ab.deals_damage():
 		%Wheel.show()
-		%Wheel.color = ab.WheelColor
+		%Wheel.color = ab.wheel_color
 		%Wheel.draw_wheel()
 		%Wheel.draw_wheel()
 	else: %Wheel.hide()
@@ -140,9 +140,9 @@ func _on_equipped_focus_entered() -> void:
 	if foc.has_meta("Ability"):
 		var ab: Ability = foc.get_meta("Ability")
 		if not is_instance_valid(ab): return
-		if ab.WheelColor != Color.WHITE and not ab.ColorSameAsActor and ab.Damage != Ability.D.NONE:
+		if ab.wheel_color != Color.WHITE and not ab.color_same_as_actor and ab.deals_damage():
 			$Desc/Wheel.show()
-			$Desc/Wheel.color = ab.WheelColor
+			$Desc/Wheel.color = ab.wheel_color
 			$Desc/Wheel.draw_wheel()
 			$Desc/Wheel.draw_wheel()
 		else: $Desc/Wheel.hide()

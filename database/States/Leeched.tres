@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("1_3cc81")
 name = "Leeched"
-Description = "Damaging this actor will heal whoever inflicted this state."
+description = "Damaging this actor will heal whoever inflicted this state."
 turns = 5
 icon = SubResource("AtlasTexture_yegrv")
 color = Color(0.819608, 1, 0.235294, 1)

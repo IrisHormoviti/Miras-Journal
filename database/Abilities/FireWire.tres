@@ -15,7 +15,7 @@ filter_clip = true
 script = ExtResource("1_uy4wv")
 name = "Fire Wire"
 Damage = 2
-WheelColor = Color(0.9059794, 0.3039068, 0, 1)
+wheel_color = Color(0.9059794, 0.3039068, 0, 1)
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"
 
 [sub_resource type="Resource" id="Resource_fuwwc"]
@@ -28,7 +28,7 @@ script = ExtResource("2_oy148")
 ability = SubResource("Resource_tcqss")
 condition = SubResource("Resource_fuwwc")
 name = "FireWire"
-Description = "A trap is set on this actor that deals medium Heat damage on a weapon attack."
+description = "A trap is set on this actor that deals medium Heat damage on a weapon attack."
 color = Color(0.9059794, 0.3039068, 0, 1)
 metadata/_custom_type_script = "uid://bqrgukmh060n1"
 
@@ -36,12 +36,12 @@ metadata/_custom_type_script = "uid://bqrgukmh060n1"
 script = ExtResource("1_uy4wv")
 name = "FireWire"
 description = "Sets up a trap on an ally that deals medium Heat damage on a weapon attack. The trap will go away once used."
-Icon = SubResource("AtlasTexture_oy148")
+icon = SubResource("AtlasTexture_oy148")
 legacy_action_sequence = &"SetTrap"
-Types = Array[int]([18])
-Group = "HeatTrap"
+types = Array[int]([18])
+group = "HeatTrap"
 SetsTrap = SubResource("Resource_t4o0m")
-Target = 3
-WheelColor = Color(0.9059794, 0.3039068, 0, 1)
-Callout = false
+target = 3
+wheel_color = Color(0.9059794, 0.3039068, 0, 1)
+callout = false
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

@@ -12,7 +12,7 @@
 script = ExtResource("2_kk4y6")
 name = "JumpSucc"
 legacy_action_sequence = &"FirstBattle2"
-Callout = false
+callout = false
 
 [sub_resource type="Resource" id="Resource_6vdia"]
 script = ExtResource("2_68ui3")

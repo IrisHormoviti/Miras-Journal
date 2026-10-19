@@ -10,7 +10,7 @@ func use(item_data: ItemData, battle_target: Actor = null) -> void:
 		UI.get_node("MainMenu").stage = "using_item"
 		var prevfoc := get_viewport().gui_get_focus_owner()
 		get_viewport().gui_release_focus()
-		match item.Use:
+		match item.use:
 			ItemData.U.CUSTOM:
 				await call(item.filename)
 
@@ -24,13 +24,13 @@ func use(item_data: ItemData, battle_target: Actor = null) -> void:
 		if prevfoc != null: prevfoc.grab_focus()
 		Engine.time_scale = 1
 		UI.get_node("MainMenu").stage = "item"
-	elif item.UsedInBattle:
+	elif item.used_in_battle:
 		if battle_target == null: battle_target = Global.bt.CurrentChar
-		battle_target.NextMove = item.BattleEffect
+		battle_target.NextMove = item.battle_effect
 
 
 func _on_item_manager_return_member(mem: Actor) -> void:
-	if item.Use == ItemData.U.HEALING:
+	if item.use == ItemData.U.HEALING:
 		mem.add_health(int(item.Parameter))
 
 	#Hud.shrink()

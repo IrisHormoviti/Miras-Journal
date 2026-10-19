@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("1_1vjby")
 name = "AttackUp"
-Description = "Weapon attacks deal more damage."
+description = "Weapon attacks deal more damage."
 turns = 3
 icon = SubResource("AtlasTexture_jx88a")
 color = Color(0.87451, 0.215686, 0.215686, 1)

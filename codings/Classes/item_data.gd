@@ -3,7 +3,7 @@ extends Resource
 class_name ItemData
 
 ## Displayed name of this item
-@export var Name: String = " - None - "
+@export var name: String = " - None - "
 
 @export_storage var filename: String = "Invalid filename":
 	get():
@@ -14,22 +14,22 @@ class_name ItemData
 
 ## Displayed description of this item in the menu.
 ## Specific words are colorized
-@export_multiline var Description: String = "One that does not exit"
+@export_multiline var description: String = "One that does not exit"
 
 ## The inventory this item belongs to
 ## Note that this should match which folder the item is inside
-@export_enum("Key", "Con", "Mat", "Bti") var ItemType: String = ""
+@export_enum("Key", "Con", "Mat", "Bti") var item_type: String = ""
 
 ## The icon of this item. 
 ## Make sure the atlas used is a unique instance
-@export var Icon: Texture = load("res://art/Icons/Items.tres")
+@export var icon: Texture = load("res://art/Icons/Items.tres")
 
 ## Instead of "X in bag" when having multiple in the bag,
 ## say "X uses remain".
-@export var QuantityMeansUses := false
+@export var quantity_means_uses := false
 
 ## How many of this item should be recieved when getting it.
-@export var AmountOnAdd := 1
+@export var amount_on_add := 1
 
 enum U {
 	NONE, ## This item cannot be used
@@ -44,15 +44,15 @@ enum U {
 
 @export_group("Uses")
 ## What this item is used for
-@export var Use: U
+@export var use: U
 ## Should it appear in the battle inventory?
-@export var UsedInBattle := false
+@export var used_in_battle := false
 enum T {SELF, ONE_ALLY, AOE_ALLIES}
 ## Who should be targeted when this item is used in the overworld
-@export var OvTarget: T = T.ONE_ALLY
+@export var overworld_target: T = T.ONE_ALLY
 ## An ability for when this item is used in battle
-@export var BattleEffect: Ability
-## Used for various things, like the amount of healing in a healing item
+@export var battle_effect: Ability
+## Deprecated: set the value on the sequence's ValueRef instead.
 @export var Parameter: String
 
 

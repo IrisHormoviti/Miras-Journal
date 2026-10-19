@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("1_ckxre")
 name = "Launched"
-Description = "Can't act next turn. Double damage from any attack, quadruple damage from weak hits."
+description = "Can't act next turn. Double damage from any attack, quadruple damage from weak hits."
 turns = 1
 icon = SubResource("AtlasTexture_mhm1o")
 color = Color(0.333333, 0.839216, 0.254902, 1)

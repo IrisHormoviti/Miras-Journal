@@ -11,7 +11,7 @@ filter_clip = true
 [resource]
 script = ExtResource("2_jlm5i")
 name = "DefenceUp"
-Description = "Takes less damage"
+description = "Takes less damage"
 turns = 3
 icon = SubResource("AtlasTexture_dw75e")
 color = Color(0.243137, 0.917647, 0.454902, 1)

@@ -5,4 +5,4 @@
 [resource]
 script = ExtResource("1_uh23e")
 name = "Knocked Out"
-Description = "Cannot act at all. Might recover after being healed."
+description = "Cannot act at all. Might recover after being healed."

@@ -132,8 +132,8 @@ func add_item(item_input: Variant, type: StringName = &"", animate := true, play
 	Global.check.emit()
 
 	if animate:
-		print_rich("[color=cyan]Added item ", to_add.Name, " of type ", to_add.ItemType)
-		await get_animation(to_add.Icon, to_add.Name, player_animate)
+		print_rich("[color=cyan]Added item ", to_add.name, " of type ", to_add.item_type)
+		await get_animation(to_add.icon, to_add.name, player_animate)
 
 
 func remove_item(item_input: Variant, type: StringName = &"") -> void:
@@ -143,11 +143,11 @@ func remove_item(item_input: Variant, type: StringName = &"") -> void:
 	elif item_input is ItemData:
 		to_remove = item_input
 
-	if type == &"": type = to_remove.ItemType
+	if type == &"": type = to_remove.item_type
 	if to_remove == null:
 		UI.error("THERE'S NO ITEM CALLED " + item_input, "OOPS")
 
-	print_rich("[color=cyan]Item ", to_remove.Name, " removed")
+	print_rich("[color=cyan]Item ", to_remove.name, " removed")
 
 	Inventory.erase(to_remove)
 
@@ -166,7 +166,7 @@ func check_item(input: Variant) -> bool:
 func get_inv(type: String) -> Array[ItemData]:
 	type = type.capitalize()
 	return Inventory.filter(func(x: ItemData) -> bool:
-		return x.ItemType == type
+		return x.item_type == type
 	)
 
 
@@ -176,7 +176,7 @@ func use(iteme: ItemData) -> void:
 
 func find_filename(iteme: ItemData, type: String = "") -> void:
 	if iteme.filename.is_empty():
-		iteme.filename = iteme.Name.to_pascal_case()
+		iteme.filename = iteme.name.to_pascal_case()
 
 
 func verify_inventory() -> void:
@@ -206,14 +206,14 @@ func get_item(filename: String, item_type: StringName = &"") -> ItemData:
 		push_warning("Failed to load item: ", filename)
 		return null
 
-	loaded_item.resource_name = loaded_item.Name
+	loaded_item.resource_name = loaded_item.name
 	return loaded_item
 
 
 func save_to_strings() -> Array[String]:
 	var rtn: Array[String]
 	for aitem in Inventory:
-		rtn.append(aitem.filename + ":" + aitem.ItemType)
+		rtn.append(aitem.filename + ":" + aitem.item_type)
 
 	return rtn
 
