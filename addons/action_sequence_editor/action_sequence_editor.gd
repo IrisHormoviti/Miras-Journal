@@ -1,7 +1,7 @@
 @tool
 extends EditorProperty
 
-const STEP_LIST_SCENE = preload("res://addons/battle_step_editor/action_sequence_content.tscn")
+const STEP_LIST_SCENE = preload("res://addons/action_sequence_editor/action_sequence_content.tscn")
 
 var list
 

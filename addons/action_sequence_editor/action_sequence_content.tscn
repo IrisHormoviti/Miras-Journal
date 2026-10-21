@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://b6i33ptxfn2kh"]
 
-[ext_resource type="Script" uid="uid://cal3rv5g515v2" path="res://addons/battle_step_editor/step_list.gd" id="1_am4cq"]
+[ext_resource type="Script" uid="uid://cal3rv5g515v2" path="res://addons/action_sequence_editor/step_list.gd" id="1_am4cq"]
 
 [sub_resource type="DPITexture" id="DPITexture_am4cq"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M4 12a1 1 0 0 0 1.555.832l6-4a1 1 0 0 0 0-1.664l-6-4A1 1 0 0 0 4 4z\"/></svg>

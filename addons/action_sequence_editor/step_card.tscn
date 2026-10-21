@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://cl212v1uinl55"]
 
-[ext_resource type="Script" uid="uid://dx56kfnlpy0xa" path="res://addons/battle_step_editor/step_card.gd" id="1"]
+[ext_resource type="Script" uid="uid://dx56kfnlpy0xa" path="res://addons/action_sequence_editor/step_card.gd" id="1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_card"]
 content_margin_left = 4.0
@@ -53,19 +53,19 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7em3r"]
-bg_color = Color(0, 0, 0, 0.25)
-corner_radius_top_left = 8
-corner_radius_top_right = 8
-corner_radius_bottom_right = 8
-corner_radius_bottom_left = 8
-
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_body"]
 content_margin_left = 6.0
 content_margin_top = 4.0
 content_margin_right = 6.0
 content_margin_bottom = 4.0
 bg_color = Color(0.09, 0.09, 0.09, 1)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7em3r"]
+bg_color = Color(0, 0, 0, 0.25)
 corner_radius_top_left = 8
 corner_radius_top_right = 8
 corner_radius_bottom_right = 8

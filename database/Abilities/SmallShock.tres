@@ -92,7 +92,6 @@ mode = 1
 script = ExtResource("13_p05qe")
 actor = SubResource("Resource_js25u")
 state = ExtResource("14_24akk")
-wait = null
 
 [sub_resource type="Resource" id="Resource_j5knt"]
 script = ExtResource("15_ayreo")

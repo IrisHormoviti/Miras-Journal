@@ -1,7 +1,7 @@
 @tool
 extends EditorInspectorPlugin
 
-const ACTION_SEQUENCE_EDITOR = preload("res://addons/battle_step_editor/action_sequence_editor.gd")
+const ACTION_SEQUENCE_EDITOR = preload("res://addons/action_sequence_editor/action_sequence_editor.gd")
 
 
 func _can_handle(object: Object) -> bool:

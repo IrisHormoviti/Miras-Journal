@@ -1,7 +1,7 @@
 @tool
 extends EditorPlugin
 
-const ActionSequenceInspectorPlugin = preload("res://addons/battle_step_editor/action_sequence_inspector_plugin.gd")
+const ActionSequenceInspectorPlugin = preload("res://addons/action_sequence_editor/action_sequence_inspector_plugin.gd")
 
 var inspector_plugin: EditorInspectorPlugin
 

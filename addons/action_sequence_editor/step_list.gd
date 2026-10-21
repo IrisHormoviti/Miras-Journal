@@ -1,8 +1,8 @@
 @tool
 extends PanelContainer
 
-const StepCardScene = preload("res://addons/battle_step_editor/step_card.tscn")
-const StepCatalog = preload("res://addons/battle_step_editor/step_catalog.gd")
+const StepCardScene = preload("res://addons/action_sequence_editor/step_card.tscn")
+const StepCatalog = preload("res://addons/action_sequence_editor/step_catalog.gd")
 
 const PREVIEW_BATTLE_SCENE := "res://codings/Battle/Battle.tscn"
 const PREVIEW_ACTORS := ["Mira", "Alcine", "Asteria", "Daze"]

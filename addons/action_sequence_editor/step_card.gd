@@ -1,8 +1,8 @@
 @tool
 extends PanelContainer
 
-const StepCatalog = preload("res://addons/battle_step_editor/step_catalog.gd")
-const StepListScenePath := "res://addons/battle_step_editor/action_sequence_content.tscn"
+const StepCatalog = preload("res://addons/action_sequence_editor/step_catalog.gd")
+const StepListScenePath := "res://addons/action_sequence_editor/action_sequence_content.tscn"
 
 @onready var step_icon: TextureRect = %StepIcon
 @onready var index_label: Label = %IndexLabel
