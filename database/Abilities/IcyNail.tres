@@ -1,7 +1,134 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://ckpvp3a14lvi"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_4266k"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_3xd7l"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_4266k"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_w5an1"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_3xd7l"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_aglxm"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_i3sfm"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_0vhuv"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_3fs42"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_vomdx"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_hierh"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="8_vvwbg"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="9_lyfci"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="10_ewjm6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="11_3waxb"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="12_gyae5"]
+[ext_resource type="Resource" path="res://database/States/Frozen.tres" id="13_n8xm3"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="14_14ep7"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="15_1yv0e"]
+
+[sub_resource type="Resource" id="Resource_w5an1"]
+resource_name = "Target"
+script = ExtResource("3_i3sfm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_aglxm"]
+script = ExtResource("4_0vhuv")
+move_enabled = true
+actor = SubResource("Resource_w5an1")
+
+[sub_resource type="Resource" id="Resource_i3sfm"]
+resource_name = "Caster"
+script = ExtResource("3_i3sfm")
+
+[sub_resource type="Resource" id="Resource_0vhuv"]
+script = ExtResource("5_3fs42")
+actor = SubResource("Resource_i3sfm")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_3fs42"]
+script = ExtResource("6_vomdx")
+
+[sub_resource type="Resource" id="Resource_vomdx"]
+resource_name = "Random Offset"
+script = ExtResource("7_hierh")
+mode = 10
+random_max = Vector2(10, 0)
+
+[sub_resource type="Resource" id="Resource_hierh"]
+resource_name = "Target"
+script = ExtResource("3_i3sfm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_vvwbg"]
+script = ExtResource("8_vvwbg")
+effect_name = &"Iceicle"
+target = SubResource("Resource_hierh")
+position = SubResource("Resource_vomdx")
+
+[sub_resource type="Resource" id="Resource_lyfci"]
+script = ExtResource("6_vomdx")
+random_duration = true
+random_max = 0.5
+
+[sub_resource type="Resource" id="Resource_ewjm6"]
+script = ExtResource("9_lyfci")
+amount = 5.0
+
+[sub_resource type="Resource" id="Resource_3waxb"]
+resource_name = "weak"
+script = ExtResource("10_ewjm6")
+damage_scale = 0
+
+[sub_resource type="Resource" id="Resource_gyae5"]
+resource_name = "Target"
+script = ExtResource("3_i3sfm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_n8xm3"]
+script = ExtResource("11_3waxb")
+target = SubResource("Resource_gyae5")
+power = SubResource("Resource_3waxb")
+magic_mode = 2
+elemental = true
+hit_branch = false
+
+[sub_resource type="Resource" id="Resource_14ep7"]
+resource_name = "Target"
+script = ExtResource("3_i3sfm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_1yv0e"]
+script = ExtResource("12_gyae5")
+actor = SubResource("Resource_14ep7")
+state = ExtResource("13_n8xm3")
+
+[sub_resource type="Resource" id="Resource_2bjga"]
+script = ExtResource("14_14ep7")
+if_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_1yv0e")])
+
+[sub_resource type="Resource" id="Resource_oqbvb"]
+resource_name = "Target"
+script = ExtResource("3_i3sfm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_krl4x"]
+script = ExtResource("15_1yv0e")
+target = SubResource("Resource_oqbvb")
+wait = true
+
+[sub_resource type="Resource" id="Resource_2405i"]
+script = ExtResource("14_14ep7")
+mode = 3
+if_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_krl4x")])
+else_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_vvwbg"), SubResource("Resource_lyfci"), SubResource("Resource_ewjm6"), SubResource("Resource_n8xm3"), SubResource("Resource_2bjga")])
+
+[sub_resource type="Resource" id="Resource_sc07r"]
+script = ExtResource("6_vomdx")
+duration = 0.2
+
+[sub_resource type="Resource" id="Resource_yepk5"]
+resource_name = "Caster"
+script = ExtResource("3_i3sfm")
+
+[sub_resource type="Resource" id="Resource_lfyq2"]
+script = ExtResource("5_3fs42")
+actor = SubResource("Resource_yepk5")
+
+[sub_resource type="Resource" id="Resource_t8o83"]
+script = ExtResource("1_w5an1")
+steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_aglxm"), SubResource("Resource_0vhuv"), SubResource("Resource_3fs42"), SubResource("Resource_2405i"), SubResource("Resource_sc07r"), SubResource("Resource_lfyq2")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hd34j"]
 atlas = ExtResource("1_4266k")
@@ -13,12 +140,13 @@ script = ExtResource("2_3xd7l")
 name = "Icy Nail"
 description = "Slight Cold damage to an enemy. Chance of Freeze."
 icon = SubResource("AtlasTexture_hd34j")
-legacy_action_sequence = &"IcyNail"
+wheel_color = Color(0.0745098, 0.909804, 1, 1)
+target = 1
+action_sequence = SubResource("Resource_t8o83")
+aura_cost = 2
+crit_chance = 0.1
 types = Array[int]([1, 4])
 group = "cold"
 InflictsState = "Frozen"
-aura_cost = 2
 Damage = 1
-target = 1
-wheel_color = Color(0.0745098, 0.909804, 1, 1)
-crit_chance = 0.1
+legacy_action_sequence = &"IcyNail"

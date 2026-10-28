@@ -4418,7 +4418,9 @@ z_index = 5
 material = ExtResource("7_ef2go")
 position = Vector2(-60, -39)
 sprite_frames = ExtResource("23_s11xn")
-animation = &"AttackUp"
+animation = &"Scarf1"
+frame = 11
+frame_progress = 1.0
 
 [node name="Cam" type="Camera2D" parent="Act" unique_id=71352168]
 physics_interpolation_mode = 2

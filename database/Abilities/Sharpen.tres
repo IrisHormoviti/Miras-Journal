@@ -1,7 +1,76 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://dsel12nodt7a6"]
 
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_67y3j"]
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_cqy58"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="1_67y3j"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_cqy58"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_oynl6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_vvws0"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_s46j3"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="4_hpr7g"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_yk0h6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="6_4himj"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="7_pigap"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="8_i5tsv"]
+
+[sub_resource type="Resource" id="Resource_oynl6"]
+resource_name = "Caster"
+script = ExtResource("3_s46j3")
+
+[sub_resource type="Resource" id="Resource_vvws0"]
+script = ExtResource("4_hpr7g")
+actor = SubResource("Resource_oynl6")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_s46j3"]
+resource_name = "Target"
+script = ExtResource("3_s46j3")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_hpr7g"]
+script = ExtResource("5_yk0h6")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_s46j3")
+
+[sub_resource type="Resource" id="Resource_yk0h6"]
+resource_name = "Target"
+script = ExtResource("3_s46j3")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_4himj"]
+script = ExtResource("5_yk0h6")
+move_enabled = true
+actor = SubResource("Resource_yk0h6")
+
+[sub_resource type="Resource" id="Resource_pigap"]
+resource_name = "Target"
+script = ExtResource("3_s46j3")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_i5tsv"]
+resource_name = "ability power"
+script = ExtResource("7_pigap")
+damage_scale = 5
+
+[sub_resource type="Resource" id="Resource_k83ut"]
+script = ExtResource("6_4himj")
+stat = 2
+actor = SubResource("Resource_pigap")
+value = SubResource("Resource_i5tsv")
+
+[sub_resource type="Resource" id="Resource_a6wmb"]
+script = ExtResource("8_i5tsv")
+
+[sub_resource type="Resource" id="Resource_wermf"]
+resource_name = "Caster"
+script = ExtResource("3_s46j3")
+
+[sub_resource type="Resource" id="Resource_dxk7j"]
+script = ExtResource("4_hpr7g")
+actor = SubResource("Resource_wermf")
+
+[sub_resource type="Resource" id="Resource_t2woy"]
+script = ExtResource("1_oynl6")
+steps = Array[ExtResource("2_vvws0")]([SubResource("Resource_vvws0"), SubResource("Resource_hpr7g"), SubResource("Resource_4himj"), SubResource("Resource_k83ut"), SubResource("Resource_a6wmb"), SubResource("Resource_dxk7j")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7u5mo"]
 atlas = ExtResource("1_cqy58")
@@ -15,6 +84,7 @@ description = "Boosts the Attack of an ally by 1.5x for 3 turns."
 icon = SubResource("AtlasTexture_7u5mo")
 wheel_color = Color(0.87451, 0.215686, 0.215686, 1)
 target = 3
+action_sequence = SubResource("Resource_t2woy")
 aura_cost = 3
 types = Array[int]([8])
 Parameter = 0.5

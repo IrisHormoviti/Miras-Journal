@@ -1,7 +1,71 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://de2ymbs4ajhqc"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_jjy1w"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_uefd8"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_bkx4u"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_jjy1w"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_fgcub"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_uefd8"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_upxuo"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_e01ig"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_o3idj"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_q8coj"]
+
+[sub_resource type="Resource" id="Resource_bkx4u"]
+resource_name = "Target"
+script = ExtResource("3_upxuo")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_fgcub"]
+script = ExtResource("4_e01ig")
+zoom_enabled = true
+actor = SubResource("Resource_bkx4u")
+
+[sub_resource type="Resource" id="Resource_upxuo"]
+resource_name = "Caster"
+script = ExtResource("3_upxuo")
+
+[sub_resource type="Resource" id="Resource_e01ig"]
+script = ExtResource("4_e01ig")
+move_enabled = true
+actor = SubResource("Resource_upxuo")
+
+[sub_resource type="Resource" id="Resource_o3idj"]
+resource_name = "Caster"
+script = ExtResource("3_upxuo")
+
+[sub_resource type="Resource" id="Resource_q8coj"]
+script = ExtResource("5_o3idj")
+actor = SubResource("Resource_o3idj")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_vxl4o"]
+script = ExtResource("6_q8coj")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_r0tcu"]
+resource_name = "Target"
+script = ExtResource("3_upxuo")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_d6upf"]
+script = ExtResource("4_e01ig")
+move_enabled = true
+actor = SubResource("Resource_r0tcu")
+
+[sub_resource type="Resource" id="Resource_hsnp2"]
+script = ExtResource("6_q8coj")
+duration = 0.4
+
+[sub_resource type="Resource" id="Resource_8kedp"]
+resource_name = "Caster"
+script = ExtResource("3_upxuo")
+
+[sub_resource type="Resource" id="Resource_mhd1v"]
+script = ExtResource("5_o3idj")
+actor = SubResource("Resource_8kedp")
+
+[sub_resource type="Resource" id="Resource_8s02x"]
+script = ExtResource("1_bkx4u")
+steps = Array[ExtResource("2_fgcub")]([SubResource("Resource_fgcub"), SubResource("Resource_e01ig"), SubResource("Resource_q8coj"), SubResource("Resource_vxl4o"), SubResource("Resource_d6upf"), SubResource("Resource_hsnp2"), SubResource("Resource_mhd1v")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uefd8"]
 resource_local_to_scene = true
@@ -15,6 +79,7 @@ name = "Adaptation"
 description = "Hue-Shift to a color the target is weak to."
 icon = SubResource("AtlasTexture_uefd8")
 target = 1
+action_sequence = SubResource("Resource_8s02x")
 aura_cost = 5
 types = Array[int]([16])
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

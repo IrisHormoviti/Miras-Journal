@@ -1,7 +1,156 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://bd3g408v78yyv"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_nfi6e"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_rl627"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_ivchh"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_nfi6e"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_l54jq"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_rl627"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_0jy8k"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="4_2ilp6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_ulgpy"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="6_wlh2x"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/move_step.gd" id="7_6jdgb"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="8_f40dw"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="9_bwqfe"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="10_28h66"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="11_40l3w"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="12_fk6ed"]
+[ext_resource type="Resource" path="res://database/States/Zapped.tres" id="13_rcvox"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="14_k2dpy"]
+
+[sub_resource type="Resource" id="Resource_ivchh"]
+resource_name = "Caster"
+script = ExtResource("3_0jy8k")
+
+[sub_resource type="Resource" id="Resource_l54jq"]
+script = ExtResource("4_2ilp6")
+actor = SubResource("Resource_ivchh")
+animation = &"Attack2"
+
+[sub_resource type="Resource" id="Resource_0jy8k"]
+resource_name = "Target"
+script = ExtResource("3_0jy8k")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_2ilp6"]
+script = ExtResource("5_ulgpy")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_0jy8k")
+
+[sub_resource type="Resource" id="Resource_ulgpy"]
+resource_name = "Target"
+script = ExtResource("3_0jy8k")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_wlh2x"]
+script = ExtResource("5_ulgpy")
+move_enabled = true
+actor = SubResource("Resource_ulgpy")
+offset = Vector2(0, 0)
+duration = 1.0
+
+[sub_resource type="Resource" id="Resource_6jdgb"]
+resource_name = "Caster"
+script = ExtResource("3_0jy8k")
+
+[sub_resource type="Resource" id="Resource_f40dw"]
+resource_name = "Target Position"
+script = ExtResource("6_wlh2x")
+mode = 9
+
+[sub_resource type="Resource" id="Resource_bwqfe"]
+script = ExtResource("7_6jdgb")
+actor = SubResource("Resource_6jdgb")
+destination = SubResource("Resource_f40dw")
+offset = Vector2(-20, 0)
+duration = 0.3
+easing = 0
+
+[sub_resource type="Resource" id="Resource_28h66"]
+resource_name = "Caster"
+script = ExtResource("3_0jy8k")
+
+[sub_resource type="Resource" id="Resource_40l3w"]
+resource_name = "Target Position"
+script = ExtResource("6_wlh2x")
+mode = 9
+
+[sub_resource type="Resource" id="Resource_fk6ed"]
+script = ExtResource("7_6jdgb")
+actor = SubResource("Resource_28h66")
+destination = SubResource("Resource_40l3w")
+offset = Vector2(30, -20)
+duration = 1.0
+easing = 1
+wait = false
+
+[sub_resource type="Resource" id="Resource_rcvox"]
+script = ExtResource("8_f40dw")
+amount = 8.0
+duration = 0.1
+
+[sub_resource type="Resource" id="Resource_k2dpy"]
+resource_name = "weak"
+script = ExtResource("9_bwqfe")
+damage_scale = 0
+
+[sub_resource type="Resource" id="Resource_2jayr"]
+resource_name = "Target"
+script = ExtResource("3_0jy8k")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_5b8ye"]
+script = ExtResource("10_28h66")
+target = SubResource("Resource_2jayr")
+power = SubResource("Resource_k2dpy")
+magic_mode = 1
+elemental = true
+hit_branch = false
+
+[sub_resource type="Resource" id="Resource_2vvns"]
+script = ExtResource("11_40l3w")
+duration = 1.5
+
+[sub_resource type="Resource" id="Resource_0x48k"]
+resource_name = "Target"
+script = ExtResource("3_0jy8k")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_1vfjh"]
+script = ExtResource("12_fk6ed")
+actor = SubResource("Resource_0x48k")
+state = ExtResource("13_rcvox")
+
+[sub_resource type="Resource" id="Resource_lu38k"]
+script = ExtResource("14_k2dpy")
+if_steps = Array[ExtResource("2_l54jq")]([SubResource("Resource_1vfjh")])
+
+[sub_resource type="Resource" id="Resource_jwxt2"]
+resource_name = "Caster"
+script = ExtResource("3_0jy8k")
+
+[sub_resource type="Resource" id="Resource_fq5xu"]
+script = ExtResource("4_2ilp6")
+actor = SubResource("Resource_jwxt2")
+
+[sub_resource type="Resource" id="Resource_xxkhb"]
+resource_name = "Caster"
+script = ExtResource("3_0jy8k")
+
+[sub_resource type="Resource" id="Resource_svb0i"]
+resource_name = "Target"
+script = ExtResource("6_wlh2x")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_y3h51"]
+script = ExtResource("7_6jdgb")
+mode = 2
+actor = SubResource("Resource_xxkhb")
+destination = SubResource("Resource_svb0i")
+
+[sub_resource type="Resource" id="Resource_aliyk"]
+script = ExtResource("1_ivchh")
+steps = Array[ExtResource("2_l54jq")]([SubResource("Resource_l54jq"), SubResource("Resource_2ilp6"), SubResource("Resource_wlh2x"), SubResource("Resource_bwqfe"), SubResource("Resource_fk6ed"), SubResource("Resource_rcvox"), SubResource("Resource_5b8ye"), SubResource("Resource_2vvns"), SubResource("Resource_lu38k"), SubResource("Resource_fq5xu"), SubResource("Resource_y3h51")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nfi6e"]
 atlas = ExtResource("1_nfi6e")
@@ -15,6 +164,7 @@ description = "Weak Electric damage to a target. High chance to zap the target. 
 icon = SubResource("AtlasTexture_nfi6e")
 wheel_color = Color(0.988235, 0.866667, 0.258824, 1)
 target = 1
+action_sequence = SubResource("Resource_aliyk")
 aura_cost = 7
 crit_chance = 0.8
 types = Array[int]([1, 4])

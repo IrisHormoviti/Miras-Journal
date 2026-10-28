@@ -8,15 +8,24 @@ enum MagicMode {
 	MAGIC,
 }
 
+## Who is the damage on?
 @export var target := ActorRef.new(ActorRef.Mode.TARGET)
+## How much damage will this do
 @export var power: ValueRef = ValueRef.new()
+## Auto decides this on whether weapon damage is being used
 @export var magic_mode: MagicMode = MagicMode.AUTO
 ## Whether this hit counts as the caster physically touching the target.
 @export var contact := false
 @export_group("Extra flags")
+## The target will do a Hit animation
 @export var effect := true
+## This hit cannot finish off a target, they will stay at 1 HP
 @export var limiter := false
+## The caster's attack or magic, and the target's defence will be ignored,
+## as if they're all 1
 @export var ignore_stats := false
+## Instead of using the originally rolled crit and miss chance, 
+## the chance will be rerolled, and might have a diffrent result
 @export var reroll := false
 
 @export_group("Elemental")

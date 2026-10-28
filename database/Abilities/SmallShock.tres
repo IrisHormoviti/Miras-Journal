@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_1mn63"]
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="7_m3n2h"]
 [ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="8_y70sl"]
-[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_iraym"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_dvxvm"]
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="11_2ysd5"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="12_nxosv"]
@@ -50,9 +49,8 @@ metadata/_custom_type_script = "uid://chy73ndgt66nv"
 
 [sub_resource type="Resource" id="Resource_25802"]
 script = ExtResource("8_y70sl")
-
-[sub_resource type="Resource" id="Resource_bcuoy"]
-script = ExtResource("9_iraym")
+amount = 8.0
+duration = 0.1
 
 [sub_resource type="Resource" id="Resource_o6wno"]
 resource_name = "Target"
@@ -80,7 +78,7 @@ power = SubResource("Resource_ieont")
 magic_mode = 2
 elemental = true
 color = SubResource("Resource_cl5dn")
-hit_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_25802"), SubResource("Resource_bcuoy")])
+hit_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_25802")])
 miss_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_4yan4")])
 
 [sub_resource type="Resource" id="Resource_js25u"]
@@ -95,7 +93,6 @@ state = ExtResource("14_24akk")
 
 [sub_resource type="Resource" id="Resource_j5knt"]
 script = ExtResource("15_ayreo")
-mode = 2
 if_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_8gdv3")])
 
 [sub_resource type="Resource" id="Resource_aku36"]

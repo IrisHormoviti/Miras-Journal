@@ -1,7 +1,315 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://bfoi0xxeujmlq"]
 
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_33r3k"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_184ew"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_kys88"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_p2oam"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_xvlu5"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_gfrmv"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_yq7k7"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_sn5i7"]
+[ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_65ib1"]
+[ext_resource type="Script" uid="uid://bx8uo7d4ycpyy" path="res://codings/Battle/Steps/Actor/move_step.gd" id="8_0dpqw"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="9_nvech"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_naol0"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="11_8dss7"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="12_sfioo"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="13_p2oam"]
+[ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="13_vesd8"]
+[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="14_184ew"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_etlpd"]
+
+[sub_resource type="Resource" id="Resource_p2oam"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_xvlu5"]
+script = ExtResource("4_gfrmv")
+zoom_enabled = true
+actor = SubResource("Resource_p2oam")
+
+[sub_resource type="Resource" id="Resource_gfrmv"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_yq7k7"]
+script = ExtResource("4_gfrmv")
+move_enabled = true
+actor = SubResource("Resource_gfrmv")
+
+[sub_resource type="Resource" id="Resource_sn5i7"]
+resource_name = "Caster"
+script = ExtResource("3_xvlu5")
+
+[sub_resource type="Resource" id="Resource_65ib1"]
+script = ExtResource("5_yq7k7")
+actor = SubResource("Resource_sn5i7")
+animation = &"Attack1"
+
+[sub_resource type="Resource" id="Resource_0dpqw"]
+script = ExtResource("6_sn5i7")
+duration = 0.2
+
+[sub_resource type="Resource" id="Resource_nvech"]
+resource_name = "Caster"
+script = ExtResource("3_xvlu5")
+
+[sub_resource type="Resource" id="Resource_naol0"]
+resource_name = "Target Position"
+script = ExtResource("7_65ib1")
+mode = 9
+
+[sub_resource type="Resource" id="Resource_8dss7"]
+script = ExtResource("8_0dpqw")
+actor = SubResource("Resource_nvech")
+destination = SubResource("Resource_naol0")
+offset = Vector2(-57, 0)
+duration = 0.4
+easing = 1
+
+[sub_resource type="Resource" id="Resource_sfioo"]
+script = ExtResource("9_nvech")
+amount = 8.0
+duration = 0.1
+
+[sub_resource type="Resource" id="Resource_vesd8"]
+resource_name = "Caster"
+script = ExtResource("3_xvlu5")
+
+[sub_resource type="Resource" id="Resource_nhi0m"]
+script = ExtResource("5_yq7k7")
+actor = SubResource("Resource_vesd8")
+animation = &"Attack2"
+
+[sub_resource type="Resource" id="Resource_etlpd"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_4p4m5"]
+resource_name = "Target Position"
+script = ExtResource("7_65ib1")
+mode = 9
+
+[sub_resource type="Resource" id="Resource_ss0uy"]
+script = ExtResource("8_0dpqw")
+actor = SubResource("Resource_etlpd")
+destination = SubResource("Resource_4p4m5")
+offset = Vector2(10, 0)
+duration = 0.3
+easing = 1
+wait = false
+
+[sub_resource type="Resource" id="Resource_s3vfx"]
+resource_name = "Caster"
+script = ExtResource("3_xvlu5")
+
+[sub_resource type="Resource" id="Resource_nm8ey"]
+resource_name = "Target Position"
+script = ExtResource("7_65ib1")
+mode = 9
+
+[sub_resource type="Resource" id="Resource_o67l7"]
+script = ExtResource("8_0dpqw")
+actor = SubResource("Resource_s3vfx")
+destination = SubResource("Resource_nm8ey")
+offset = Vector2(-70, 0)
+duration = 0.3
+easing = 1
+wait = false
+
+[sub_resource type="Resource" id="Resource_8vt1k"]
+script = ExtResource("6_sn5i7")
+duration = 0.6
+
+[sub_resource type="Resource" id="Resource_0xtsj"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_pjqo1"]
+script = ExtResource("10_naol0")
+target = SubResource("Resource_0xtsj")
+
+[sub_resource type="Resource" id="Resource_tuha4"]
+resource_name = "weapon"
+script = ExtResource("11_8dss7")
+variance = true
+
+[sub_resource type="Resource" id="Resource_nfgo7"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_4t4s6"]
+script = ExtResource("12_sfioo")
+target = SubResource("Resource_nfgo7")
+power = SubResource("Resource_tuha4")
+miss_branch = true
+hit_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_sfioo"), SubResource("Resource_nhi0m"), SubResource("Resource_ss0uy"), SubResource("Resource_o67l7"), SubResource("Resource_8vt1k")])
+miss_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_pjqo1")])
+
+[sub_resource type="Resource" id="Resource_xbejl"]
+script = ExtResource("9_nvech")
+amount = 10.0
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_ercu8"]
+script = ExtResource("9_nvech")
+
+[sub_resource type="Resource" id="Resource_h78lw"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_xihco"]
+script = ExtResource("13_p2oam")
+actor = SubResource("Resource_h78lw")
+
+[sub_resource type="Resource" id="Resource_lypkt"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_lin4l"]
+script = ExtResource("10_naol0")
+target = SubResource("Resource_lypkt")
+
+[sub_resource type="Resource" id="Resource_wkthh"]
+resource_name = "weapon"
+script = ExtResource("11_8dss7")
+variance = true
+
+[sub_resource type="Resource" id="Resource_xmxrp"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_6vbsy"]
+script = ExtResource("12_sfioo")
+target = SubResource("Resource_xmxrp")
+power = SubResource("Resource_wkthh")
+magic_mode = 1
+hit_branch = false
+hit_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_ercu8"), SubResource("Resource_xihco")])
+miss_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_lin4l")])
+
+[sub_resource type="Resource" id="Resource_m0isd"]
+script = ExtResource("9_nvech")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_033hq"]
+script = ExtResource("9_nvech")
+
+[sub_resource type="Resource" id="Resource_ohm3f"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_yfhtl"]
+script = ExtResource("13_p2oam")
+actor = SubResource("Resource_ohm3f")
+
+[sub_resource type="Resource" id="Resource_csu7l"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_pqw8e"]
+script = ExtResource("10_naol0")
+target = SubResource("Resource_csu7l")
+
+[sub_resource type="Resource" id="Resource_jdrx8"]
+resource_name = "weapon"
+script = ExtResource("11_8dss7")
+variance = true
+
+[sub_resource type="Resource" id="Resource_78uff"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_gja57"]
+script = ExtResource("12_sfioo")
+target = SubResource("Resource_78uff")
+power = SubResource("Resource_jdrx8")
+magic_mode = 1
+elemental = true
+hit_branch = false
+hit_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_033hq"), SubResource("Resource_yfhtl")])
+miss_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_pqw8e")])
+
+[sub_resource type="Resource" id="Resource_vmmoc"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_so5lj"]
+resource_name = "Wheel Color"
+script = ExtResource("13_vesd8")
+
+[sub_resource type="Resource" id="Resource_2v3dr"]
+script = ExtResource("14_184ew")
+mode = 1
+actor = SubResource("Resource_vmmoc")
+value = &"CRITICAL"
+color = SubResource("Resource_so5lj")
+
+[sub_resource type="Resource" id="Resource_kiycp"]
+script = ExtResource("15_etlpd")
+if_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_m0isd"), SubResource("Resource_gja57"), SubResource("Resource_2v3dr")])
+else_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_xbejl"), SubResource("Resource_6vbsy")])
+
+[sub_resource type="Resource" id="Resource_xey2b"]
+resource_name = "Target"
+script = ExtResource("3_xvlu5")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_78afp"]
+resource_name = "Target Position"
+script = ExtResource("7_65ib1")
+mode = 9
+
+[sub_resource type="Resource" id="Resource_bx6be"]
+script = ExtResource("8_0dpqw")
+actor = SubResource("Resource_xey2b")
+destination = SubResource("Resource_78afp")
+offset = Vector2(-10, 0)
+easing = 1
+wait = false
+
+[sub_resource type="Resource" id="Resource_kjlta"]
+script = ExtResource("6_sn5i7")
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_vxwhf"]
+resource_name = "Caster"
+script = ExtResource("3_xvlu5")
+
+[sub_resource type="Resource" id="Resource_ngnem"]
+resource_name = "Target"
+script = ExtResource("7_65ib1")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_u8600"]
+script = ExtResource("8_0dpqw")
+mode = 2
+actor = SubResource("Resource_vxwhf")
+destination = SubResource("Resource_ngnem")
+
+[sub_resource type="Resource" id="Resource_3xp8e"]
+resource_name = "Caster"
+script = ExtResource("3_xvlu5")
+
+[sub_resource type="Resource" id="Resource_8l15b"]
+script = ExtResource("5_yq7k7")
+actor = SubResource("Resource_3xp8e")
+
+[sub_resource type="Resource" id="Resource_38hke"]
+script = ExtResource("1_184ew")
+steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_xvlu5"), SubResource("Resource_yq7k7"), SubResource("Resource_65ib1"), SubResource("Resource_0dpqw"), SubResource("Resource_8dss7"), SubResource("Resource_4t4s6"), SubResource("Resource_kiycp"), SubResource("Resource_bx6be"), SubResource("Resource_kjlta"), SubResource("Resource_u8600"), SubResource("Resource_8l15b")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f315r"]
 atlas = ExtResource("1_33r3k")
@@ -13,14 +321,15 @@ script = ExtResource("2_kys88")
 name = "Arm-whip"
 description = "The user extends their liquid arm into a whip. Deals damage to the target twice. Can miss."
 icon = SubResource("AtlasTexture_f315r")
-legacy_action_sequence = &"AttackAlcine"
-types = Array[int]([1])
-Damage = 6
-target = 1
-color_same_as_actor = true
 wheel_color = Color(0.498039, 0.768627, 0.768627, 1)
-callout = false
+color_same_as_actor = true
+target = 1
+action_sequence = SubResource("Resource_38hke")
 success_chance = 0.9
 crit_chance = 0.2
+types = Array[int]([1])
+callout = false
 recover_aura = true
+Damage = 6
 damage_variance = true
+legacy_action_sequence = &"AttackAlcine"

@@ -4,6 +4,10 @@ class_name HealStep
 
 @export var target: ActorRef
 @export var amount: ValueRef
+## Randomise the final amount, matching the legacy damage_variance behaviour.
+@export var variance := false
+@export var variance_min := 1.0
+@export var variance_max := 1.5
 
 
 func run(ctx: ActionSequenceContext) -> void:
@@ -13,6 +17,10 @@ func run(ctx: ActionSequenceContext) -> void:
 		return
 
 	var value := int(round(amount.resolve(ctx))) if amount != null else Query.calc_num(ctx.ability, ctx.caster) * int(ctx.caster.Magic * ctx.caster.MagicMultiplier)
+
+	if variance:
+		value = int(round(value * randf_range(variance_min, variance_max)))
+
 	ctx.battle.heal(subject, value)
 
 

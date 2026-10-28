@@ -1,15 +1,111 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://b17ykdoflr2v3"]
 
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_h54ts"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_wgwrg"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_36wto"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_h54ts"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_8nqti"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_lsuvv"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_an2b7"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="6_i4hp5"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="7_dn8hs"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="8_d5xic"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="9_q6byp"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="10_qriw3"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.tres" id="11_6h25g"]
+
+[sub_resource type="Resource" id="Resource_wgwrg"]
+resource_name = "Target"
+script = ExtResource("3_8nqti")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_36wto"]
+script = ExtResource("4_lsuvv")
+zoom_enabled = true
+actor = SubResource("Resource_wgwrg")
+
+[sub_resource type="Resource" id="Resource_8nqti"]
+resource_name = "Caster"
+script = ExtResource("3_8nqti")
+
+[sub_resource type="Resource" id="Resource_lsuvv"]
+script = ExtResource("5_an2b7")
+actor = SubResource("Resource_8nqti")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_an2b7"]
+resource_name = "Target"
+script = ExtResource("3_8nqti")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_i4hp5"]
+script = ExtResource("4_lsuvv")
+move_enabled = true
+actor = SubResource("Resource_an2b7")
+wait = true
+
+[sub_resource type="Resource" id="Resource_dn8hs"]
+resource_name = "Target"
+script = ExtResource("3_8nqti")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_d5xic"]
+script = ExtResource("6_i4hp5")
+mode = 11
+actor = SubResource("Resource_dn8hs")
+
+[sub_resource type="Resource" id="Resource_q6byp"]
+resource_name = "Target"
+script = ExtResource("3_8nqti")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_qriw3"]
+script = ExtResource("7_dn8hs")
+mode = 6
+actor = SubResource("Resource_q6byp")
+
+[sub_resource type="Resource" id="Resource_6h25g"]
+script = ExtResource("8_d5xic")
+mode = 2
+message = "dispel"
+insert_state = true
+
+[sub_resource type="Resource" id="Resource_ymogk"]
+script = ExtResource("8_d5xic")
+mode = 2
+message = "dispel_fail"
+
+[sub_resource type="Resource" id="Resource_l1t8c"]
+script = ExtResource("9_q6byp")
+mode = 0
+condition = SubResource("Resource_d5xic")
+if_steps = Array[ExtResource("2_36wto")]([SubResource("Resource_ymogk")])
+else_steps = Array[ExtResource("2_36wto")]([SubResource("Resource_qriw3"), SubResource("Resource_6h25g")])
+
+[sub_resource type="Resource" id="Resource_gtpww"]
+script = ExtResource("10_qriw3")
+
+[sub_resource type="Resource" id="Resource_5dom5"]
+resource_name = "Caster"
+script = ExtResource("3_8nqti")
+
+[sub_resource type="Resource" id="Resource_moos6"]
+script = ExtResource("5_an2b7")
+actor = SubResource("Resource_5dom5")
+
+[sub_resource type="Resource" id="Resource_7mikv"]
+script = ExtResource("1_wgwrg")
+steps = Array[ExtResource("2_36wto")]([SubResource("Resource_36wto"), SubResource("Resource_lsuvv"), SubResource("Resource_i4hp5"), SubResource("Resource_l1t8c"), SubResource("Resource_gtpww"), SubResource("Resource_moos6")])
 
 [resource]
 script = ExtResource("2_h54ts")
 name = "Dispel"
 description = "Remove one random state from any target."
-legacy_action_sequence = &"Dispel"
+icon = ExtResource("11_6h25g")
+target = 5
+action_sequence = SubResource("Resource_7mikv")
+aura_cost = 10
 types = Array[int]([17])
 group = "Linde"
 InflictsState = "Dispel"
-aura_cost = 10
-target = 5
+legacy_action_sequence = &"Dispel"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

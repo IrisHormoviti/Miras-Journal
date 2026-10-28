@@ -1,7 +1,64 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://b6f6kbhpdgv87"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_is10t"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_sl2ki"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_fcvth"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_is10t"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="1_sl2ki"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_52fnd"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_hcn0b"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="4_dy2ol"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_ae4rh"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="6_dxrun"]
+[ext_resource type="Resource" path="res://database/States/MagicShield.tres" id="7_ubsvg"]
+
+[sub_resource type="Resource" id="Resource_fcvth"]
+resource_name = "Caster"
+script = ExtResource("3_hcn0b")
+
+[sub_resource type="Resource" id="Resource_52fnd"]
+script = ExtResource("4_dy2ol")
+actor = SubResource("Resource_fcvth")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_hcn0b"]
+resource_name = "Target"
+script = ExtResource("3_hcn0b")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_dy2ol"]
+script = ExtResource("5_ae4rh")
+move_enabled = true
+actor = SubResource("Resource_hcn0b")
+
+[sub_resource type="Resource" id="Resource_ae4rh"]
+resource_name = "Target"
+script = ExtResource("3_hcn0b")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_dxrun"]
+script = ExtResource("6_dxrun")
+actor = SubResource("Resource_ae4rh")
+state = ExtResource("7_ubsvg")
+
+[sub_resource type="Resource" id="Resource_ubsvg"]
+resource_name = "Caster"
+script = ExtResource("3_hcn0b")
+
+[sub_resource type="Resource" id="Resource_om3v2"]
+script = ExtResource("4_dy2ol")
+actor = SubResource("Resource_ubsvg")
+animation = &"Guard"
+
+[sub_resource type="Resource" id="Resource_8hxn8"]
+resource_name = "Caster"
+script = ExtResource("3_hcn0b")
+
+[sub_resource type="Resource" id="Resource_rxr40"]
+script = ExtResource("4_dy2ol")
+actor = SubResource("Resource_8hxn8")
+
+[sub_resource type="Resource" id="Resource_sardv"]
+script = ExtResource("1_fcvth")
+steps = Array[ExtResource("2_52fnd")]([SubResource("Resource_52fnd"), SubResource("Resource_dy2ol"), SubResource("Resource_dxrun"), SubResource("Resource_om3v2"), SubResource("Resource_rxr40")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mdpbt"]
 atlas = ExtResource("1_is10t")
@@ -14,6 +71,7 @@ name = "Protective Field"
 description = "Protect an ally from magic attacks."
 icon = SubResource("AtlasTexture_mdpbt")
 target = 3
+action_sequence = SubResource("Resource_sardv")
 aura_cost = 3
 types = Array[int]([3])
 legacy_action_sequence = &"ProtectiveField"

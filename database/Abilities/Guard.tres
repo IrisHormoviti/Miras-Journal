@@ -1,7 +1,60 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://dadlaa3lk8441"]
 
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_f7dma"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_l50pj"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_xiiy0"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_fgdse"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_fxbjq"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_hkeb4"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_tsncw"]
+[ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="6_mtpyb"]
+[ext_resource type="Resource" uid="uid://cemf0nu6fbtaj" path="res://database/States/Guarding.tres" id="7_sq247"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="8_s7nrw"]
+
+[sub_resource type="Resource" id="Resource_f7dma"]
+resource_name = "Target"
+script = ExtResource("3_fxbjq")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_fgdse"]
+script = ExtResource("4_hkeb4")
+zoom_enabled = true
+actor = SubResource("Resource_f7dma")
+
+[sub_resource type="Resource" id="Resource_fxbjq"]
+resource_name = "Caster"
+script = ExtResource("3_fxbjq")
+
+[sub_resource type="Resource" id="Resource_hkeb4"]
+script = ExtResource("5_tsncw")
+actor = SubResource("Resource_fxbjq")
+animation = &"Guard"
+
+[sub_resource type="Resource" id="Resource_tsncw"]
+resource_name = "Caster"
+script = ExtResource("3_fxbjq")
+
+[sub_resource type="Resource" id="Resource_mtpyb"]
+script = ExtResource("4_hkeb4")
+move_enabled = true
+actor = SubResource("Resource_tsncw")
+
+[sub_resource type="Resource" id="Resource_sq247"]
+resource_name = "Caster"
+script = ExtResource("3_fxbjq")
+
+[sub_resource type="Resource" id="Resource_s7nrw"]
+script = ExtResource("6_mtpyb")
+actor = SubResource("Resource_sq247")
+state = ExtResource("7_sq247")
+
+[sub_resource type="Resource" id="Resource_nwita"]
+script = ExtResource("8_s7nrw")
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_ecevv"]
+script = ExtResource("1_f7dma")
+steps = Array[ExtResource("2_fgdse")]([SubResource("Resource_fgdse"), SubResource("Resource_hkeb4"), SubResource("Resource_mtpyb"), SubResource("Resource_s7nrw"), SubResource("Resource_nwita")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_my8qp"]
 atlas = ExtResource("1_xiiy0")
@@ -14,5 +67,6 @@ name = "Aura Guard"
 description = "The user protects themself for a turn. If hit while the guard is up they gain AP."
 icon = SubResource("AtlasTexture_my8qp")
 color_same_as_actor = true
+action_sequence = SubResource("Resource_ecevv")
 types = Array[int]([3])
 legacy_action_sequence = &"Guard"

@@ -1,11 +1,55 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://8slcowrx21ki"]
 
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_exvs0"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_7wtoi"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_exvs0"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_n6cnk"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_2tph4"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_c0x7p"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="5_rqi4o"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="6_3lkd2"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.tres" id="7_awgqa"]
+
+[sub_resource type="Resource" id="Resource_7wtoi"]
+resource_name = "Caster"
+script = ExtResource("3_2tph4")
+
+[sub_resource type="Resource" id="Resource_n6cnk"]
+script = ExtResource("4_c0x7p")
+move_enabled = true
+actor = SubResource("Resource_7wtoi")
+wait = true
+
+[sub_resource type="Resource" id="Resource_2tph4"]
+resource_name = "Caster"
+script = ExtResource("3_2tph4")
+
+[sub_resource type="Resource" id="Resource_c0x7p"]
+resource_name = "Caster"
+script = ExtResource("3_2tph4")
+
+[sub_resource type="Resource" id="Resource_rqi4o"]
+resource_name = "max aura"
+script = ExtResource("6_3lkd2")
+source = 2
+stat = 6
+actor = SubResource("Resource_c0x7p")
+
+[sub_resource type="Resource" id="Resource_3lkd2"]
+script = ExtResource("5_rqi4o")
+stat = 1
+actor = SubResource("Resource_2tph4")
+value = SubResource("Resource_rqi4o")
+
+[sub_resource type="Resource" id="Resource_awgqa"]
+script = ExtResource("1_7wtoi")
+steps = Array[ExtResource("2_n6cnk")]([SubResource("Resource_n6cnk"), SubResource("Resource_3lkd2")])
 
 [resource]
 script = ExtResource("2_exvs0")
 name = "Gather"
 description = "Recover all AP"
-legacy_action_sequence = &"Gather"
+icon = ExtResource("7_awgqa")
 color_same_as_actor = true
+action_sequence = SubResource("Resource_awgqa")
+legacy_action_sequence = &"Gather"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

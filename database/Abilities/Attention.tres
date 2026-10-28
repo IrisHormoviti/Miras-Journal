@@ -1,7 +1,82 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://d1u2ywuvl1411"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_a582d"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_sotni"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_5h44u"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_a582d"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_s33y8"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_sotni"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_qctwl"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_jnlt8"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="5_8814l"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_wr42v"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="7_ywqvh"]
+[ext_resource type="Resource" path="res://database/States/Aggro.tres" id="8_8kno2"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="9_svrdq"]
+
+[sub_resource type="Resource" id="Resource_5h44u"]
+resource_name = "Target"
+script = ExtResource("3_qctwl")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_s33y8"]
+script = ExtResource("4_jnlt8")
+zoom_enabled = true
+actor = SubResource("Resource_5h44u")
+
+[sub_resource type="Resource" id="Resource_qctwl"]
+resource_name = "Caster"
+script = ExtResource("3_qctwl")
+
+[sub_resource type="Resource" id="Resource_jnlt8"]
+script = ExtResource("4_jnlt8")
+move_enabled = true
+actor = SubResource("Resource_qctwl")
+
+[sub_resource type="Resource" id="Resource_8814l"]
+script = ExtResource("5_8814l")
+file = &"banter_battle"
+cue = &"attention"
+passive = true
+wait = false
+
+[sub_resource type="Resource" id="Resource_wr42v"]
+script = ExtResource("6_wr42v")
+
+[sub_resource type="Resource" id="Resource_ywqvh"]
+resource_name = "Target"
+script = ExtResource("3_qctwl")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_8kno2"]
+script = ExtResource("4_jnlt8")
+move_enabled = true
+actor = SubResource("Resource_ywqvh")
+
+[sub_resource type="Resource" id="Resource_svrdq"]
+resource_name = "Target"
+script = ExtResource("3_qctwl")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_sxsal"]
+script = ExtResource("7_ywqvh")
+actor = SubResource("Resource_svrdq")
+state = ExtResource("8_8kno2")
+wait = false
+
+[sub_resource type="Resource" id="Resource_fwqy2"]
+script = ExtResource("6_wr42v")
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_2kf6t"]
+resource_name = "Caster"
+script = ExtResource("3_qctwl")
+
+[sub_resource type="Resource" id="Resource_j7rhc"]
+script = ExtResource("9_svrdq")
+actor = SubResource("Resource_2kf6t")
+
+[sub_resource type="Resource" id="Resource_g2r2v"]
+script = ExtResource("1_5h44u")
+steps = Array[ExtResource("2_s33y8")]([SubResource("Resource_s33y8"), SubResource("Resource_jnlt8"), SubResource("Resource_8814l"), SubResource("Resource_wr42v"), SubResource("Resource_8kno2"), SubResource("Resource_sxsal"), SubResource("Resource_fwqy2"), SubResource("Resource_j7rhc")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3qr2u"]
 atlas = ExtResource("1_a582d")
@@ -13,9 +88,10 @@ script = ExtResource("2_sotni")
 name = "Attention"
 description = "Force an enemy to target the user for one turn."
 icon = SubResource("AtlasTexture_3qr2u")
-legacy_action_sequence = &"Attention"
+target = 1
+action_sequence = SubResource("Resource_g2r2v")
+aura_cost = 3
 types = Array[int]([7])
 group = "daze_aggro"
 InflictsState = "Aggro"
-aura_cost = 3
-target = 1
+legacy_action_sequence = &"Attention"

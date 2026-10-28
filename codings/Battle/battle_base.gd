@@ -683,7 +683,7 @@ func entrance() -> void:
 
 			await Event.wait(0.5, false)
 	else:
-		screen_shake(15, 4)
+		screen_shake()
 
 	if not has_entrance_sequence() and not sequence.skip_entrance:
 		for i in Party.current:
@@ -1561,22 +1561,38 @@ func outline_remove(target: Actor, time := 0.5) -> void:
 		target.node.material.set_shader_parameter("outline_enabled", false)
 
 
-func screen_shake(amount: float = 15.0, times: int = 7, duration: float = 0.2) -> void:
+func screen_shake(amount: float = 15.0, duration: float = 0.5, frequency := 0.2) -> void:
+	if Input.get_joy_vibration_strength(0) == Vector2.ZERO:
+		Controller.rumble(amount / 20.0, 0.35, duration)
+
+	var noise: FastNoiseLite = FastNoiseLite.new()
+	noise.seed = randi()
+	noise.frequency = frequency
+
+	var initial_offset: Vector2 = cam.offset
+	var start_time: float = Time.get_ticks_msec() / 1000.0
+
 	var t: Tween = create_tween()
 	t.set_ease(Tween.EASE_OUT)
-	t.set_trans(Tween.TRANS_QUART)
-	var dur: float = duration / (times * 2.0)
-	var am: float = amount
+	t.set_trans(Tween.TRANS_QUAD)
 
-	if Input.get_joy_vibration_strength(0) == Vector2.ZERO:
-		Controller.rumble(amount / 20.0, float(times) / 10.0, duration)
+	t.tween_method(
+		func(am: float) -> void:
+			var elapsed: float = (Time.get_ticks_msec() / 1000.0) - start_time
+			var noise_time: float = elapsed * 100.0
+			var shake_offset: Vector2 = Vector2(
+				noise.get_noise_2d(noise_time, 0.0) * am,
+				noise.get_noise_2d(0.0, noise_time) * am
+			)
+			cam.offset = initial_offset + shake_offset,
 
-	for i: int in range(times):
-		am -= amount / times
-		t.tween_property(cam, "offset", Vector2(randf_range(-am, am), randf_range(-am, am)), dur)
-		t.tween_property(cam, "offset", Vector2.ZERO, dur)
+		amount,
+		0.0,
+		duration
+	)
 
 	await t.finished
+	cam.offset = initial_offset
 
 
 func play_effect(animation: String, target: Variant, offset := Vector2.ZERO, flip_on_player_use := false, dont_free := false) -> void:
@@ -1804,7 +1820,7 @@ func game_over(target: Actor = null) -> void:
 		get_tree().paused = true
 		CurrentChar.node.pause()
 		target.node.pause()
-		await screen_shake(20, 10, 0.2)
+		await screen_shake(20, 0.2)
 		await Event.wait(0.7, false)
 		CurrentChar.node.play()
 		target.node.play()
@@ -2350,7 +2366,7 @@ func victory_show_items() -> void:
 	for i in ObtainedItems:
 		if i:
 			var dub: PanelContainer = $Canvas/VictoryItems/ItemTemp.duplicate()
-			dub.get_node("Hbox/ItemName").text = i.Name
+			dub.get_node("Hbox/ItemName").text = i.name
 			dub.get_node("Hbox/Icon").texture = i.icon
 			Item.find_filename(i)
 			Item.add_item(i, &"", false)

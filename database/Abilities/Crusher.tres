@@ -1,7 +1,59 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://bx6udm8qmxlwr"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_hd8py"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_nflkd"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_hd8py"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_ihpr3"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_nflkd"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_wh7ii"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_abilm"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_euiin"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="5_ua846"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="6_gxo1q"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="7_1wwh4"]
+
+[sub_resource type="Resource" id="Resource_ihpr3"]
+resource_name = "Target"
+script = ExtResource("3_abilm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_wh7ii"]
+script = ExtResource("4_euiin")
+zoom_enabled = true
+actor = SubResource("Resource_ihpr3")
+
+[sub_resource type="Resource" id="Resource_abilm"]
+resource_name = "Target"
+script = ExtResource("3_abilm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_euiin"]
+script = ExtResource("4_euiin")
+move_enabled = true
+actor = SubResource("Resource_abilm")
+
+[sub_resource type="Resource" id="Resource_ua846"]
+script = ExtResource("5_ua846")
+
+[sub_resource type="Resource" id="Resource_gxo1q"]
+resource_name = "medium"
+script = ExtResource("6_gxo1q")
+damage_scale = 1
+
+[sub_resource type="Resource" id="Resource_1wwh4"]
+resource_name = "Target"
+script = ExtResource("3_abilm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_on6ej"]
+script = ExtResource("7_1wwh4")
+target = SubResource("Resource_1wwh4")
+power = SubResource("Resource_gxo1q")
+magic_mode = 1
+elemental = true
+hit_branch = false
+
+[sub_resource type="Resource" id="Resource_jwhnl"]
+script = ExtResource("1_ihpr3")
+steps = Array[ExtResource("2_wh7ii")]([SubResource("Resource_wh7ii"), SubResource("Resource_euiin"), SubResource("Resource_ua846"), SubResource("Resource_on6ej")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_nflkd"]
 resource_local_to_scene = true
@@ -14,11 +66,12 @@ script = ExtResource("2_nflkd")
 name = "Crusher"
 description = "Medium Technical damage to one target."
 icon = SubResource("AtlasTexture_nflkd")
-legacy_action_sequence = &"Crusher"
+wheel_color = Color(0.49803922, 0.09019608, 1, 1)
+target = 1
+action_sequence = SubResource("Resource_jwhnl")
+aura_cost = 5
 types = Array[int]([1])
 group = "TechnicalAttack"
-aura_cost = 5
 Damage = 2
-target = 1
-wheel_color = Color(0.49803922, 0.09019608, 1, 1)
+legacy_action_sequence = &"Crusher"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

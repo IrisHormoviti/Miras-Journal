@@ -1,8 +1,99 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://33rre1l0klod"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_lne2v"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_v4m21"]
-[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="3_t2vp7"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_k8p37"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_lne2v"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_mb37q"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_v4m21"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_dlksm"]
+[ext_resource type="Script" path="res://codings/Classes/item_data.gd" id="3_t2vp7"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_kmfp0"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="5_mufue"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="6_vgybm"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="7_q8abx"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="8_plp5k"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="9_hf01o"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="10_by5tc"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="11_3o2f5"]
+
+[sub_resource type="Resource" id="Resource_k8p37"]
+resource_name = "Caster"
+script = ExtResource("3_dlksm")
+
+[sub_resource type="Resource" id="Resource_mb37q"]
+script = ExtResource("4_kmfp0")
+move_enabled = true
+actor = SubResource("Resource_k8p37")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_dlksm"]
+resource_name = "Target"
+script = ExtResource("3_dlksm")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_kmfp0"]
+script = ExtResource("4_kmfp0")
+zoom_enabled = true
+amount = 5.5
+actor = SubResource("Resource_dlksm")
+
+[sub_resource type="Resource" id="Resource_mufue"]
+script = ExtResource("5_mufue")
+mode = 15
+ability_type = 5
+
+[sub_resource type="Resource" id="Resource_vgybm"]
+resource_name = "ability power"
+script = ExtResource("6_vgybm")
+damage_scale = 5
+
+[sub_resource type="Resource" id="Resource_q8abx"]
+resource_name = "Caster"
+script = ExtResource("3_dlksm")
+
+[sub_resource type="Resource" id="Resource_plp5k"]
+script = ExtResource("7_q8abx")
+target = SubResource("Resource_q8abx")
+amount = SubResource("Resource_vgybm")
+
+[sub_resource type="Resource" id="Resource_hf01o"]
+script = ExtResource("8_plp5k")
+mode = 0
+condition = SubResource("Resource_mufue")
+if_steps = Array[ExtResource("2_mb37q")]([SubResource("Resource_plp5k")])
+
+[sub_resource type="Resource" id="Resource_by5tc"]
+resource_name = "Caster"
+script = ExtResource("3_dlksm")
+
+[sub_resource type="Resource" id="Resource_3o2f5"]
+script = ExtResource("9_hf01o")
+mode = 1
+actor = SubResource("Resource_by5tc")
+
+[sub_resource type="Resource" id="Resource_hdwhp"]
+resource_name = "Caster"
+script = ExtResource("3_dlksm")
+
+[sub_resource type="Resource" id="Resource_06uya"]
+script = ExtResource("10_by5tc")
+actor = SubResource("Resource_hdwhp")
+animation = &"Cast"
+wait = true
+
+[sub_resource type="Resource" id="Resource_0mbk5"]
+script = ExtResource("11_3o2f5")
+
+[sub_resource type="Resource" id="Resource_ec38t"]
+resource_name = "Caster"
+script = ExtResource("3_dlksm")
+
+[sub_resource type="Resource" id="Resource_f8cbs"]
+script = ExtResource("10_by5tc")
+actor = SubResource("Resource_ec38t")
+
+[sub_resource type="Resource" id="Resource_y74wh"]
+script = ExtResource("1_k8p37")
+steps = Array[ExtResource("2_mb37q")]([SubResource("Resource_mb37q"), SubResource("Resource_kmfp0"), SubResource("Resource_hf01o"), SubResource("Resource_3o2f5"), SubResource("Resource_06uya"), SubResource("Resource_0mbk5"), SubResource("Resource_f8cbs")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uyukm"]
 atlas = ExtResource("1_lne2v")
@@ -14,12 +105,13 @@ script = ExtResource("2_v4m21")
 name = "Item cure "
 description = "This is used internally for curing items in battle."
 icon = SubResource("AtlasTexture_uyukm")
-legacy_action_sequence = &"ItemCure"
+action_sequence = SubResource("Resource_y74wh")
 types = Array[int]([5, 17])
+callout = false
 InflictsState = "Poisoned"
 Damage = 5
 Parameter = 30.0
-callout = false
+legacy_action_sequence = &"ItemCure"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1mmxx"]
 atlas = ExtResource("1_lne2v")
@@ -29,6 +121,7 @@ filter_clip = true
 [resource]
 script = ExtResource("3_t2vp7")
 name = "Life Lave"
+filename = "LifeLave"
 description = "Cures Poison and restores 30 HP."
 item_type = "Con"
 icon = SubResource("AtlasTexture_1mmxx")

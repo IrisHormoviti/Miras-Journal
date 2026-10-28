@@ -1,7 +1,118 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://crmjudbrr8xf"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_83bqf"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_68626"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_83bqf"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="1_68626"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_htby5"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_ymp11"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_mj2nw"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_5wq72"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_1edme"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="6_x2u5e"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="7_ent8h"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="8_ut414"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="9_dq88d"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="10_xmy5d"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="11_bdjt2"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="12_6dcoy"]
+
+[sub_resource type="Resource" id="Resource_htby5"]
+resource_name = "Target"
+script = ExtResource("3_mj2nw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ymp11"]
+script = ExtResource("4_5wq72")
+zoom_enabled = true
+actor = SubResource("Resource_htby5")
+
+[sub_resource type="Resource" id="Resource_mj2nw"]
+resource_name = "Target"
+script = ExtResource("3_mj2nw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_5wq72"]
+script = ExtResource("4_5wq72")
+move_enabled = true
+actor = SubResource("Resource_mj2nw")
+duration = 1.0
+
+[sub_resource type="Resource" id="Resource_1edme"]
+resource_name = "Caster"
+script = ExtResource("3_mj2nw")
+
+[sub_resource type="Resource" id="Resource_x2u5e"]
+script = ExtResource("5_1edme")
+actor = SubResource("Resource_1edme")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_ent8h"]
+resource_name = "Target"
+script = ExtResource("3_mj2nw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ut414"]
+script = ExtResource("6_x2u5e")
+effect_name = &"Needle"
+target = SubResource("Resource_ent8h")
+offset = Vector2(-15, -15)
+flip_on_player_use = true
+
+[sub_resource type="Resource" id="Resource_dq88d"]
+script = ExtResource("7_ent8h")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_xmy5d"]
+script = ExtResource("8_ut414")
+amount = 12.0
+duration = 0.1
+
+[sub_resource type="Resource" id="Resource_bdjt2"]
+resource_name = "weak"
+script = ExtResource("9_dq88d")
+damage_scale = 0
+
+[sub_resource type="Resource" id="Resource_6dcoy"]
+resource_name = "Target"
+script = ExtResource("3_mj2nw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_mbb0t"]
+script = ExtResource("10_xmy5d")
+target = SubResource("Resource_6dcoy")
+power = SubResource("Resource_bdjt2")
+magic_mode = 1
+elemental = true
+hit_branch = false
+
+[sub_resource type="Resource" id="Resource_o6ug2"]
+resource_name = "Target"
+script = ExtResource("3_mj2nw")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_jovuo"]
+script = ExtResource("11_bdjt2")
+target = SubResource("Resource_o6ug2")
+
+[sub_resource type="Resource" id="Resource_jtaly"]
+script = ExtResource("12_6dcoy")
+mode = 3
+if_steps = Array[ExtResource("2_ymp11")]([SubResource("Resource_jovuo")])
+else_steps = Array[ExtResource("2_ymp11")]([SubResource("Resource_dq88d"), SubResource("Resource_xmy5d"), SubResource("Resource_mbb0t")])
+
+[sub_resource type="Resource" id="Resource_q0w1d"]
+script = ExtResource("7_ent8h")
+
+[sub_resource type="Resource" id="Resource_go62g"]
+resource_name = "Caster"
+script = ExtResource("3_mj2nw")
+
+[sub_resource type="Resource" id="Resource_fg8s4"]
+script = ExtResource("5_1edme")
+actor = SubResource("Resource_go62g")
+
+[sub_resource type="Resource" id="Resource_c07pf"]
+script = ExtResource("1_htby5")
+steps = Array[ExtResource("2_ymp11")]([SubResource("Resource_ymp11"), SubResource("Resource_5wq72"), SubResource("Resource_x2u5e"), SubResource("Resource_ut414"), SubResource("Resource_jtaly"), SubResource("Resource_q0w1d"), SubResource("Resource_fg8s4")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4gp2s"]
 atlas = ExtResource("1_83bqf")
@@ -13,10 +124,11 @@ script = ExtResource("1_68626")
 name = "Needle"
 description = "Deals slight Physical damage, with a very low chance of missing."
 icon = SubResource("AtlasTexture_4gp2s")
-legacy_action_sequence = &"Needle"
-types = Array[int]([1])
-aura_cost = 2
-Damage = 1
-target = 1
 wheel_color = Color(0.827451, 0.266667, 0.427451, 1)
+target = 1
+action_sequence = SubResource("Resource_c07pf")
+aura_cost = 2
 success_chance = 0.99
+types = Array[int]([1])
+Damage = 1
+legacy_action_sequence = &"Needle"

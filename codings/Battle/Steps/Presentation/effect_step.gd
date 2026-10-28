@@ -104,7 +104,7 @@ func _to_string() -> String:
 			label = "Play effect"
 
 		Mode.ANIM:
-			label = "Animate effect"
+			return "Change effect %s into %s" % [effect_name, animation]
 
 		Mode.MOVE:
 			label = "Move effect"

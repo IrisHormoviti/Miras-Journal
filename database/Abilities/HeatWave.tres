@@ -1,7 +1,227 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://cie87kerii84o"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_7nf1r"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_pelke"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_7nf1r"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_bn283"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_pelke"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_utvg2"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_gbfn6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_obteb"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_48uex"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_2q0l8"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_uxigr"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="8_xqkxe"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_1e42v"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="10_gunsq"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="11_4lbc1"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="12_s66qm"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_o4p8u"]
+[ext_resource type="Resource" path="res://database/States/Burned.tres" id="14_ro02p"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="15_kcda6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="16_pkae1"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="17_oxyx4"]
+
+[sub_resource type="Resource" id="Resource_bn283"]
+resource_name = "Caster"
+script = ExtResource("3_gbfn6")
+
+[sub_resource type="Resource" id="Resource_utvg2"]
+script = ExtResource("4_obteb")
+move_enabled = true
+actor = SubResource("Resource_bn283")
+
+[sub_resource type="Resource" id="Resource_gbfn6"]
+resource_name = "Target"
+script = ExtResource("3_gbfn6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_obteb"]
+script = ExtResource("4_obteb")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_gbfn6")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_48uex"]
+resource_name = "Caster"
+script = ExtResource("3_gbfn6")
+
+[sub_resource type="Resource" id="Resource_2q0l8"]
+script = ExtResource("5_48uex")
+actor = SubResource("Resource_48uex")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_uxigr"]
+script = ExtResource("6_2q0l8")
+
+[sub_resource type="Resource" id="Resource_xqkxe"]
+resource_name = "(50.0, 0.0)"
+script = ExtResource("7_uxigr")
+mode = 2
+position = Vector2(50, 0)
+
+[sub_resource type="Resource" id="Resource_1e42v"]
+script = ExtResource("8_xqkxe")
+effect_name = &"HeatWave"
+position = SubResource("Resource_xqkxe")
+
+[sub_resource type="Resource" id="Resource_gunsq"]
+resource_name = "Caster"
+script = ExtResource("3_gbfn6")
+
+[sub_resource type="Resource" id="Resource_4lbc1"]
+script = ExtResource("9_1e42v")
+actor = SubResource("Resource_gunsq")
+sound_name = &"WindShort"
+
+[sub_resource type="Resource" id="Resource_s66qm"]
+resource_name = "Target"
+script = ExtResource("3_gbfn6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_o4p8u"]
+resource_name = "(40.0, 0.0)"
+script = ExtResource("7_uxigr")
+mode = 2
+position = Vector2(40, 0)
+
+[sub_resource type="Resource" id="Resource_ro02p"]
+script = ExtResource("4_obteb")
+move_enabled = true
+move_target = 1
+actor = SubResource("Resource_s66qm")
+position = SubResource("Resource_o4p8u")
+duration = 1.0
+
+[sub_resource type="Resource" id="Resource_kcda6"]
+resource_name = "Target"
+script = ExtResource("3_gbfn6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_pkae1"]
+script = ExtResource("4_obteb")
+zoom_enabled = true
+actor = SubResource("Resource_kcda6")
+duration = 1.0
+
+[sub_resource type="Resource" id="Resource_oxyx4"]
+script = ExtResource("6_2q0l8")
+
+[sub_resource type="Resource" id="Resource_knols"]
+script = ExtResource("6_2q0l8")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_4whjw"]
+script = ExtResource("10_gunsq")
+mode = 10
+state = &"Burned"
+present = false
+group = 4
+
+[sub_resource type="Resource" id="Resource_segoe"]
+script = ExtResource("11_4lbc1")
+mode = 2
+message = "nothing_happened"
+
+[sub_resource type="Resource" id="Resource_fav82"]
+script = ExtResource("6_2q0l8")
+
+[sub_resource type="Resource" id="Resource_b1ka8"]
+script = ExtResource("12_s66qm")
+mode = 0
+condition = SubResource("Resource_4whjw")
+if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_segoe"), SubResource("Resource_fav82")])
+
+[sub_resource type="Resource" id="Resource_foo2k"]
+resource_name = "Caster"
+script = ExtResource("3_gbfn6")
+
+[sub_resource type="Resource" id="Resource_sbbno"]
+script = ExtResource("5_48uex")
+actor = SubResource("Resource_foo2k")
+
+[sub_resource type="Resource" id="Resource_anleo"]
+script = ExtResource("1_bn283")
+steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_utvg2"), SubResource("Resource_obteb"), SubResource("Resource_2q0l8"), SubResource("Resource_uxigr"), SubResource("Resource_1e42v"), SubResource("Resource_4lbc1"), SubResource("Resource_ro02p"), SubResource("Resource_pkae1"), SubResource("Resource_oxyx4"), SubResource("Resource_knols"), SubResource("Resource_b1ka8"), SubResource("Resource_sbbno")])
+
+[sub_resource type="Resource" id="Resource_0kj46"]
+resource_name = "Target"
+script = ExtResource("3_gbfn6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_45bnt"]
+script = ExtResource("10_gunsq")
+mode = 4
+actor = SubResource("Resource_0kj46")
+state = &"Burned"
+
+[sub_resource type="Resource" id="Resource_uml4w"]
+resource_name = "Target"
+script = ExtResource("3_gbfn6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_juahq"]
+script = ExtResource("13_o4p8u")
+actor = SubResource("Resource_uml4w")
+state = ExtResource("14_ro02p")
+wait = false
+
+[sub_resource type="Resource" id="Resource_l556m"]
+script = ExtResource("12_s66qm")
+if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_juahq")])
+
+[sub_resource type="Resource" id="Resource_olrtf"]
+resource_name = "Target"
+script = ExtResource("3_gbfn6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ancd5"]
+script = ExtResource("5_48uex")
+mode = 9
+actor = SubResource("Resource_olrtf")
+wait = true
+
+[sub_resource type="Resource" id="Resource_2emxm"]
+script = ExtResource("15_kcda6")
+amount = 5.0
+
+[sub_resource type="Resource" id="Resource_7lod2"]
+resource_name = "Target"
+script = ExtResource("3_gbfn6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_awjk0"]
+script = ExtResource("9_1e42v")
+actor = SubResource("Resource_7lod2")
+sound_name = &"BurnWoosh"
+
+[sub_resource type="Resource" id="Resource_ftdr6"]
+resource_name = "heavy"
+script = ExtResource("16_pkae1")
+damage_scale = 2
+
+[sub_resource type="Resource" id="Resource_e1aoa"]
+resource_name = "Target"
+script = ExtResource("3_gbfn6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_6e8rt"]
+script = ExtResource("17_oxyx4")
+target = SubResource("Resource_e1aoa")
+power = SubResource("Resource_ftdr6")
+magic_mode = 2
+elemental = true
+hit_branch = false
+
+[sub_resource type="Resource" id="Resource_agcte"]
+script = ExtResource("12_s66qm")
+mode = 0
+condition = SubResource("Resource_45bnt")
+if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_ancd5"), SubResource("Resource_2emxm"), SubResource("Resource_awjk0"), SubResource("Resource_6e8rt")])
+else_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_l556m")])
+
+[sub_resource type="Resource" id="Resource_u3bgb"]
+script = ExtResource("1_bn283")
+steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_agcte")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_p5ac4"]
 atlas = ExtResource("1_7nf1r")
@@ -14,11 +234,13 @@ name = "Heat Wave"
 description = "Deals some Heat damage to all burned enemies. 
 Low chance of burning others."
 icon = SubResource("AtlasTexture_p5ac4")
-legacy_action_sequence = &"HeatWave"
-types = Array[int]([2])
-aura_cost = 8
-Damage = 3
-target = 2
-aoe_stagger = 0.1
 wheel_color = Color(0.909804, 0.482353, 0.2, 1)
+target = 2
+action_sequence = SubResource("Resource_anleo")
+aoe_sequence = SubResource("Resource_u3bgb")
+aoe_stagger = 0.1
+aura_cost = 8
 crit_chance = 0.2
+types = Array[int]([2])
+Damage = 3
+legacy_action_sequence = &"HeatWave"

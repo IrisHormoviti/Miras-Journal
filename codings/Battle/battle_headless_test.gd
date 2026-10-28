@@ -289,6 +289,7 @@ func _test_miss() -> void:
 	battle.no_crits = false
 
 	var damage := _damage_step(TEST_DAMAGE)
+	damage.miss_branch = true
 	# The miss animation holds the turn until it finishes. Waiting for it here
 	# keeps the check deterministic instead of racing the detached animation.
 	var miss := MissStep.new()

@@ -1,8 +1,90 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://j602f3ere055"]
 
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_xbfcq"]
-[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="1_xhumv"]
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="3_y38if"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_wc5yl"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_xbfcq"]
+[ext_resource type="Script" path="res://codings/Classes/item_data.gd" id="1_xhumv"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_0boeu"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_ijiaq"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="3_y38if"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_nur8n"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="5_o02n0"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="6_5hus6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="7_3f0gx"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="8_lnwjp"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="9_25arg"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="10_ttwp1"]
+
+[sub_resource type="Resource" id="Resource_wc5yl"]
+resource_name = "Caster"
+script = ExtResource("3_ijiaq")
+
+[sub_resource type="Resource" id="Resource_0boeu"]
+script = ExtResource("4_nur8n")
+move_enabled = true
+actor = SubResource("Resource_wc5yl")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_ijiaq"]
+resource_name = "Target"
+script = ExtResource("3_ijiaq")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_nur8n"]
+script = ExtResource("4_nur8n")
+zoom_enabled = true
+amount = 5.5
+actor = SubResource("Resource_ijiaq")
+
+[sub_resource type="Resource" id="Resource_o02n0"]
+script = ExtResource("5_o02n0")
+mode = 15
+ability_type = 5
+
+[sub_resource type="Resource" id="Resource_5hus6"]
+resource_name = "ability power"
+script = ExtResource("6_5hus6")
+damage_scale = 5
+
+[sub_resource type="Resource" id="Resource_3f0gx"]
+resource_name = "Caster"
+script = ExtResource("3_ijiaq")
+
+[sub_resource type="Resource" id="Resource_lnwjp"]
+script = ExtResource("7_3f0gx")
+target = SubResource("Resource_3f0gx")
+amount = SubResource("Resource_5hus6")
+variance = true
+
+[sub_resource type="Resource" id="Resource_25arg"]
+script = ExtResource("8_lnwjp")
+mode = 0
+condition = SubResource("Resource_o02n0")
+if_steps = Array[ExtResource("2_0boeu")]([SubResource("Resource_lnwjp")])
+
+[sub_resource type="Resource" id="Resource_ttwp1"]
+resource_name = "Caster"
+script = ExtResource("3_ijiaq")
+
+[sub_resource type="Resource" id="Resource_am4v5"]
+script = ExtResource("9_25arg")
+actor = SubResource("Resource_ttwp1")
+animation = &"Cast"
+wait = true
+
+[sub_resource type="Resource" id="Resource_ep3bh"]
+script = ExtResource("10_ttwp1")
+
+[sub_resource type="Resource" id="Resource_nnqqu"]
+resource_name = "Caster"
+script = ExtResource("3_ijiaq")
+
+[sub_resource type="Resource" id="Resource_lgdp5"]
+script = ExtResource("9_25arg")
+actor = SubResource("Resource_nnqqu")
+
+[sub_resource type="Resource" id="Resource_rcv7m"]
+script = ExtResource("1_wc5yl")
+steps = Array[ExtResource("2_0boeu")]([SubResource("Resource_0boeu"), SubResource("Resource_nur8n"), SubResource("Resource_25arg"), SubResource("Resource_am4v5"), SubResource("Resource_ep3bh"), SubResource("Resource_lgdp5")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uyukm"]
 atlas = ExtResource("1_xbfcq")
@@ -14,12 +96,13 @@ script = ExtResource("3_y38if")
 name = "Drink healing item"
 description = "This is used internally for healing items in battle."
 icon = SubResource("AtlasTexture_uyukm")
-legacy_action_sequence = &"Drink"
+action_sequence = SubResource("Resource_rcv7m")
 types = Array[int]([5])
+callout = false
 Damage = 5
 Parameter = 50.0
-callout = false
 damage_variance = true
+legacy_action_sequence = &"Drink"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4bywt"]
 atlas = ExtResource("1_xbfcq")
@@ -29,6 +112,7 @@ filter_clip = true
 [resource]
 script = ExtResource("1_xhumv")
 name = "Small Potion"
+filename = "SmallPotion"
 description = "A small bottle containing a healing potion.
 Restores 70 HP"
 item_type = "Con"

@@ -18,6 +18,8 @@ enum Mode {
 @export var message: String = ""
 @export var insert: ActorRef
 @export var insert2: ActorRef
+## Use the last state touched by a previous step as the message's first insert.
+@export var insert_state := false
 @export var color: ColorRef
 @export var offset := Vector2.ZERO
 @export var flip_on_player_use := false
@@ -46,6 +48,8 @@ func run(ctx: ActionSequenceContext) -> void:
 		Mode.BATTLE_MESSAGE:
 			var first := ""
 			var second := ""
+			if insert_state and ctx.last_state != null:
+				first = ctx.last_state.name
 			if insert != null:
 				var first_actor := insert.resolve(ctx)
 				if first_actor != null:
@@ -81,7 +85,7 @@ func _validate_property(property: Dictionary) -> void:
 		Mode.POPUP:
 			visible.append_array(["actor", "value", "color"])
 		Mode.BATTLE_MESSAGE:
-			visible.append_array(["message", "insert", "insert2"])
+			visible.append_array(["message", "insert", "insert2", "insert_state"])
 	StepEditor.only(property, visible)
 
 

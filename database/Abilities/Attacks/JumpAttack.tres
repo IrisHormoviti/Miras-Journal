@@ -79,11 +79,15 @@ duration = 0.5
 
 [sub_resource type="Resource" id="Resource_526p4"]
 script = ExtResource("4_shake")
-amount = 8.0
-duration = 0.5
+duration = 0.2
+
+[sub_resource type="Resource" id="Resource_ch88p"]
+resource_name = "Caster"
+script = ExtResource("3_mpgjr")
 
 [sub_resource type="Resource" id="Resource_salct"]
 script = ExtResource("9_877xx")
+actor = SubResource("Resource_ch88p")
 
 [sub_resource type="Resource" id="Resource_4ppod"]
 resource_name = "Target"
@@ -108,15 +112,16 @@ script = ExtResource("11_vc1j4")
 target = SubResource("Resource_wgdog")
 power = SubResource("Resource_gs1bc")
 contact = true
-miss_branch = false
 hit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_526p4"), SubResource("Resource_salct")])
 miss_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_7k44n")])
 
-[sub_resource type="Resource" id="Resource_ch88p"]
-script = ExtResource("4_shake")
+[sub_resource type="Resource" id="Resource_wfi0s"]
+resource_name = "Caster"
+script = ExtResource("3_mpgjr")
 
 [sub_resource type="Resource" id="Resource_j5n4u"]
 script = ExtResource("9_877xx")
+actor = SubResource("Resource_wfi0s")
 
 [sub_resource type="Resource" id="Resource_to117"]
 resource_name = "Target"
@@ -138,6 +143,9 @@ metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
 script = ExtResource("9_877xx")
 actor = SubResource("Resource_1nrxn")
 sound_name = &"Attack2"
+
+[sub_resource type="Resource" id="Resource_blnvm"]
+script = ExtResource("4_shake")
 
 [sub_resource type="Resource" id="Resource_rmp0x"]
 resource_name = "Target"
@@ -163,7 +171,8 @@ script = ExtResource("11_vc1j4")
 target = SubResource("Resource_265y4")
 power = SubResource("Resource_rlkp1")
 color = SubResource("Resource_vc1j4")
-hit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_ch88p"), SubResource("Resource_j5n4u"), SubResource("Resource_cmgul"), SubResource("Resource_81jhf")])
+crit_branch = true
+hit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_j5n4u"), SubResource("Resource_cmgul"), SubResource("Resource_81jhf"), SubResource("Resource_blnvm")])
 miss_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_cswqf")])
 crit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_58b5n"), SubResource("Resource_heoag")])
 
@@ -180,11 +189,13 @@ animation = &"Attack2"
 script = ExtResource("13_877xx")
 duration = 0.4
 
-[sub_resource type="Resource" id="Resource_h7rct"]
-script = ExtResource("4_shake")
+[sub_resource type="Resource" id="Resource_kg6ga"]
+resource_name = "Caster"
+script = ExtResource("3_mpgjr")
 
 [sub_resource type="Resource" id="Resource_hljvs"]
 script = ExtResource("9_877xx")
+actor = SubResource("Resource_kg6ga")
 
 [sub_resource type="Resource" id="Resource_8yeia"]
 resource_name = "Target"
@@ -223,13 +234,11 @@ target = SubResource("Resource_m20af")
 power = SubResource("Resource_b16yi")
 magic_mode = 1
 contact = true
-miss_branch = false
-hit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_h7rct"), SubResource("Resource_hljvs"), SubResource("Resource_oa3h7"), SubResource("Resource_yhm2a")])
+hit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_hljvs"), SubResource("Resource_oa3h7"), SubResource("Resource_yhm2a")])
 miss_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_wiicw")])
 
 [sub_resource type="Resource" id="Resource_2uo6l"]
 script = ExtResource("15_t6frd")
-mode = 2
 if_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_v0k4k")])
 
 [sub_resource type="Resource" id="Resource_1jwav"]

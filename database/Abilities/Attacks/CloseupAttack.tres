@@ -1,7 +1,165 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://17bbb0h04khb"]
 
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_6thnr"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_ooo5y"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_iul7y"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_tce04"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_p7iv0"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_4dvip"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_xiiyj"]
+[ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="6_2io5d"]
+[ext_resource type="Script" uid="uid://bx8uo7d4ycpyy" path="res://codings/Battle/Steps/Actor/move_step.gd" id="7_gig8t"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="8_lrsee"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_ht8f2"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="10_uryyp"]
+[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="11_xttxs"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="12_np5mp"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_7jf5s"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="14_d8asv"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_5hcc5"]
+
+[sub_resource type="Resource" id="Resource_6thnr"]
+resource_name = "Target"
+script = ExtResource("3_p7iv0")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_iul7y"]
+script = ExtResource("4_4dvip")
+zoom_enabled = true
+actor = SubResource("Resource_6thnr")
+
+[sub_resource type="Resource" id="Resource_p7iv0"]
+resource_name = "Target"
+script = ExtResource("3_p7iv0")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_4dvip"]
+script = ExtResource("4_4dvip")
+move_enabled = true
+actor = SubResource("Resource_p7iv0")
+
+[sub_resource type="Resource" id="Resource_xiiyj"]
+resource_name = "Caster"
+script = ExtResource("3_p7iv0")
+
+[sub_resource type="Resource" id="Resource_2io5d"]
+script = ExtResource("5_xiiyj")
+actor = SubResource("Resource_xiiyj")
+animation = &"Attack1"
+
+[sub_resource type="Resource" id="Resource_gig8t"]
+resource_name = "Caster"
+script = ExtResource("3_p7iv0")
+
+[sub_resource type="Resource" id="Resource_lrsee"]
+resource_name = "Target Position"
+script = ExtResource("6_2io5d")
+mode = 9
+
+[sub_resource type="Resource" id="Resource_ht8f2"]
+script = ExtResource("7_gig8t")
+actor = SubResource("Resource_gig8t")
+destination = SubResource("Resource_lrsee")
+offset = Vector2(-20, 0)
+
+[sub_resource type="Resource" id="Resource_uryyp"]
+resource_name = "Caster"
+script = ExtResource("3_p7iv0")
+
+[sub_resource type="Resource" id="Resource_xttxs"]
+script = ExtResource("5_xiiyj")
+actor = SubResource("Resource_uryyp")
+animation = &"Attack2"
+
+[sub_resource type="Resource" id="Resource_np5mp"]
+script = ExtResource("8_lrsee")
+duration = 0.2
+
+[sub_resource type="Resource" id="Resource_7jf5s"]
+resource_name = "Caster"
+script = ExtResource("3_p7iv0")
+
+[sub_resource type="Resource" id="Resource_d8asv"]
+script = ExtResource("9_ht8f2")
+actor = SubResource("Resource_7jf5s")
+sound_name = &"Attack2"
+
+[sub_resource type="Resource" id="Resource_5hcc5"]
+script = ExtResource("10_uryyp")
+amount = 18.0
+
+[sub_resource type="Resource" id="Resource_626bt"]
+resource_name = "Target"
+script = ExtResource("3_p7iv0")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_bq7xw"]
+script = ExtResource("11_xttxs")
+effect_name = &"SimpleHit"
+target = SubResource("Resource_626bt")
+
+[sub_resource type="Resource" id="Resource_idxng"]
+resource_name = "weapon"
+script = ExtResource("12_np5mp")
+variance = true
+
+[sub_resource type="Resource" id="Resource_cc7rt"]
+resource_name = "Target"
+script = ExtResource("3_p7iv0")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ceyk6"]
+script = ExtResource("13_7jf5s")
+target = SubResource("Resource_cc7rt")
+power = SubResource("Resource_idxng")
+hit_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_bq7xw")])
+
+[sub_resource type="Resource" id="Resource_04yqx"]
+resource_name = "Target"
+script = ExtResource("3_p7iv0")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_awfyx"]
+script = ExtResource("14_d8asv")
+target = SubResource("Resource_04yqx")
+
+[sub_resource type="Resource" id="Resource_jig3p"]
+script = ExtResource("15_5hcc5")
+mode = 3
+if_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_awfyx")])
+else_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_d8asv"), SubResource("Resource_5hcc5"), SubResource("Resource_ceyk6")])
+
+[sub_resource type="Resource" id="Resource_2duox"]
+script = ExtResource("8_lrsee")
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_tq4k7"]
+resource_name = "Caster"
+script = ExtResource("3_p7iv0")
+
+[sub_resource type="Resource" id="Resource_34ldx"]
+resource_name = "Target"
+script = ExtResource("6_2io5d")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_vlk6u"]
+script = ExtResource("7_gig8t")
+mode = 2
+actor = SubResource("Resource_tq4k7")
+destination = SubResource("Resource_34ldx")
+wait = false
+
+[sub_resource type="Resource" id="Resource_xftal"]
+resource_name = "Caster"
+script = ExtResource("3_p7iv0")
+
+[sub_resource type="Resource" id="Resource_85wbv"]
+script = ExtResource("5_xiiyj")
+actor = SubResource("Resource_xftal")
+
+[sub_resource type="Resource" id="Resource_cc4gh"]
+script = ExtResource("1_6thnr")
+steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_iul7y"), SubResource("Resource_4dvip"), SubResource("Resource_2io5d"), SubResource("Resource_ht8f2"), SubResource("Resource_xttxs"), SubResource("Resource_np5mp"), SubResource("Resource_jig3p"), SubResource("Resource_2duox"), SubResource("Resource_vlk6u"), SubResource("Resource_85wbv")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q46ei"]
 atlas = ExtResource("1_ooo5y")
@@ -15,6 +173,7 @@ description = "Deals damage to one target with a low chance of missing."
 icon = SubResource("AtlasTexture_q46ei")
 color_same_as_actor = true
 target = 1
+action_sequence = SubResource("Resource_cc4gh")
 success_chance = 0.95
 types = Array[int]([1])
 callout = false

@@ -1,19 +1,136 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://y47pobp1y18b"]
 
-[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_2qys7"]
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="2_dhttc"]
-[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="3_r3ic8"]
+[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="1_2qys7"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_hu8k2"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="2_dhttc"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_o7ate"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_8hoj2"]
+[ext_resource type="Script" path="res://codings/Classes/item_data.gd" id="3_r3ic8"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_calgj"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_2pm2l"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_yqqny"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="7_wjklu"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="8_xl588"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="9_5oq57"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="10_62y4n"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="11_1ydp2"]
+[ext_resource type="Resource" path="res://database/States/Soaked.tres" id="12_yqvia"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.tres" id="13_wp6bi"]
+
+[sub_resource type="Resource" id="Resource_hu8k2"]
+resource_name = "Target"
+script = ExtResource("3_8hoj2")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_o7ate"]
+script = ExtResource("4_calgj")
+zoom_enabled = true
+amount = 5.5
+actor = SubResource("Resource_hu8k2")
+
+[sub_resource type="Resource" id="Resource_8hoj2"]
+resource_name = "Caster"
+script = ExtResource("3_8hoj2")
+
+[sub_resource type="Resource" id="Resource_calgj"]
+script = ExtResource("4_calgj")
+move_enabled = true
+actor = SubResource("Resource_8hoj2")
+duration = 0.2
+
+[sub_resource type="Resource" id="Resource_2pm2l"]
+resource_name = "Caster"
+script = ExtResource("3_8hoj2")
+
+[sub_resource type="Resource" id="Resource_yqqny"]
+script = ExtResource("5_2pm2l")
+actor = SubResource("Resource_2pm2l")
+animation = &"Throw"
+
+[sub_resource type="Resource" id="Resource_wjklu"]
+script = ExtResource("6_yqqny")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_xl588"]
+resource_name = "Target"
+script = ExtResource("3_8hoj2")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_5oq57"]
+script = ExtResource("4_calgj")
+move_enabled = true
+actor = SubResource("Resource_xl588")
+
+[sub_resource type="Resource" id="Resource_62y4n"]
+resource_name = "Target"
+script = ExtResource("3_8hoj2")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_1ydp2"]
+script = ExtResource("7_wjklu")
+effect_name = &"Hit"
+target = SubResource("Resource_62y4n")
+
+[sub_resource type="Resource" id="Resource_yqvia"]
+script = ExtResource("8_xl588")
+
+[sub_resource type="Resource" id="Resource_wp6bi"]
+resource_name = "weak (0.8x to 1.2x)"
+script = ExtResource("9_5oq57")
+damage_scale = 0
+variance = true
+
+[sub_resource type="Resource" id="Resource_ktqr5"]
+resource_name = "Target"
+script = ExtResource("3_8hoj2")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_hsqi6"]
+script = ExtResource("10_62y4n")
+target = SubResource("Resource_ktqr5")
+power = SubResource("Resource_wp6bi")
+magic_mode = 1
+ignore_stats = true
+elemental = true
+hit_branch = false
+
+[sub_resource type="Resource" id="Resource_hfye5"]
+resource_name = "Target"
+script = ExtResource("3_8hoj2")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_5xvhh"]
+script = ExtResource("11_1ydp2")
+actor = SubResource("Resource_hfye5")
+state = ExtResource("12_yqvia")
+
+[sub_resource type="Resource" id="Resource_pnfpo"]
+script = ExtResource("6_yqqny")
+
+[sub_resource type="Resource" id="Resource_icdkq"]
+resource_name = "Caster"
+script = ExtResource("3_8hoj2")
+
+[sub_resource type="Resource" id="Resource_ye368"]
+script = ExtResource("5_2pm2l")
+actor = SubResource("Resource_icdkq")
+
+[sub_resource type="Resource" id="Resource_y7egx"]
+script = ExtResource("1_hu8k2")
+steps = Array[ExtResource("2_o7ate")]([SubResource("Resource_o7ate"), SubResource("Resource_calgj"), SubResource("Resource_yqqny"), SubResource("Resource_wjklu"), SubResource("Resource_5oq57"), SubResource("Resource_1ydp2"), SubResource("Resource_yqvia"), SubResource("Resource_hsqi6"), SubResource("Resource_5xvhh"), SubResource("Resource_pnfpo"), SubResource("Resource_ye368")])
 
 [sub_resource type="Resource" id="Resource_2qys7"]
 script = ExtResource("1_2qys7")
 name = "Weapon"
-legacy_action_sequence = &"ItemThrow"
+icon = ExtResource("13_wp6bi")
+wheel_color = Color(0.09985284, 0.3245714, 1, 1)
+target = 1
+action_sequence = SubResource("Resource_y7egx")
+callout = false
 InflictsState = "Soaked"
 Damage = 1
-target = 1
-wheel_color = Color(0.09985284, 0.3245714, 1, 1)
-callout = false
 damage_variance = true
+legacy_action_sequence = &"ItemThrow"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dhttc"]
 atlas = ExtResource("2_dhttc")
@@ -23,6 +140,7 @@ filter_clip = true
 [resource]
 script = ExtResource("3_r3ic8")
 name = "Water Vial"
+filename = "WaterVial"
 description = "A small bottle of dirty water.
 Weak Liquid damage, soaks the target"
 item_type = "Bti"
