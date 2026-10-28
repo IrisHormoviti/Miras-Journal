@@ -18,8 +18,8 @@ func start_round(i: int) -> void:
 	if Event.add_flag("Event/ArenaRound", i): return
 	for j in Party.current:
 		if j:
-			j.add_health(int(j.MaxHP / 3))
-			j.add_aura(int(j.MaxAura / 3))
+			j.add_health(int(j.max_hp / 3))
+			j.add_aura(int(j.max_aura / 3))
 	$Round.text = "ROUND " + str(i)
 	await Event.wait(0.1)
 	await Battle.start("ArenaBattles/Round" + str(i))

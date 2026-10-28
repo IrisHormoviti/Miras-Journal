@@ -57,21 +57,21 @@ func run(ctx: ActionSequenceContext) -> void:
 					key = &"Def"
 				await ctx.battle.stat_change(key, amount, subject, turns)
 			elif stat == Stat.SPEED:
-				subject.SpeedBoost = int(round(_number(float(subject.SpeedBoost), amount)))
+				subject.speed_boost = int(round(_number(float(subject.speed_boost), amount)))
 			else:
 				_set_base_stat(subject, amount)
 		Stat.ATTACK_MULTIPLIER:
-			subject.AttackMultiplier = _number(subject.AttackMultiplier, amount)
+			subject.attack_multiplier = _number(subject.attack_multiplier, amount)
 		Stat.MAGIC_MULTIPLIER:
-			subject.MagicMultiplier = _number(subject.MagicMultiplier, amount)
+			subject.magic_multiplier = _number(subject.magic_multiplier, amount)
 		Stat.DEFENCE_MULTIPLIER:
-			subject.DefenceMultiplier = _number(subject.DefenceMultiplier, amount)
+			subject.defence_multiplier = _number(subject.defence_multiplier, amount)
 		Stat.SPEED_BOOST:
-			subject.SpeedBoost = int(round(_number(float(subject.SpeedBoost), amount)))
+			subject.speed_boost = int(round(_number(float(subject.speed_boost), amount)))
 
 
 func _apply_number(subject: Actor, amount: float, health: bool) -> void:
-	var current := float(subject.Health) if health else float(subject.Aura)
+	var current := float(subject.health) if health else float(subject.aura)
 	var result := int(round(_number(current, amount)))
 
 	if health:
@@ -99,11 +99,11 @@ func _number(current: float, amount: float) -> float:
 func _set_base_stat(subject: Actor, amount: float) -> void:
 	match stat:
 		Stat.ATTACK:
-			subject.Attack = int(round(_number(float(subject.Attack), amount)))
+			subject.attack = int(round(_number(float(subject.attack), amount)))
 		Stat.MAGIC:
-			subject.Magic = int(round(_number(float(subject.Magic), amount)))
+			subject.magic = int(round(_number(float(subject.magic), amount)))
 		Stat.DEFENCE:
-			subject.Defence = int(round(_number(float(subject.Defence), amount)))
+			subject.defence = int(round(_number(float(subject.defence), amount)))
 
 
 func _to_string() -> String:

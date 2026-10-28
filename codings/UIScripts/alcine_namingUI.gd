@@ -15,7 +15,7 @@ func start() -> void:
 	get_tree().paused = false
 	Hud.expanded = false
 	show()
-	$TextureRect.texture = await Loader.load_res(Party.get_member("Alcine").RenderArtwork)
+	$TextureRect.texture = await Loader.load_res(Party.get_member("Alcine").render_artwork)
 	response.hide()
 	textbox.grab_focus()
 	textbox.set_caret_column(10)
@@ -79,7 +79,7 @@ func on_confirm(text: String) -> void:
 				response.show()
 	else:
 		textedit.release_focus()
-		Party.get_member("Alcine").FirstName = txt.capitalize()
+		Party.get_member("Alcine").first_name = txt.capitalize()
 		Textbox.open("naming", "what_about")
 	await get_tree().process_frame
 	textedit.set_caret_column(14)

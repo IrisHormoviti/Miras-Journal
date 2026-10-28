@@ -199,14 +199,15 @@ func setup_standalone_preview() -> void:
 
 	Party.set_to(PackedStringArray(PREVIEW_PARTY))
 
-	sequence = build_preview_sequence(int(request.get("targets", 1)))
+	sequence = build_preview_sequence(int(request.get("targets", 1)), str(request.get("enemy", "")))
 
 	battle_advantage = 0
 	attacker = null
 
 
-## Builds the standalone preview sequence with `targets` dummy enemies.
-static func build_preview_sequence(targets: int) -> BattleSequence:
+## Builds the standalone preview sequence with `targets` dummy enemies, or with
+## a single enemy caster when `enemy_path` is set.
+static func build_preview_sequence(targets: int, enemy_path := "") -> BattleSequence:
 	var template := load(PREVIEW_SEQUENCE_PATH) as BattleSequence
 
 	if template == null:
@@ -217,6 +218,15 @@ static func build_preview_sequence(targets: int) -> BattleSequence:
 	# The preview is about the action, not the opening, so skip the entrance.
 	preview.skip_entrance = true
 	preview.Enemies = []
+
+	if not enemy_path.is_empty():
+		var enemy := load(enemy_path) as Actor
+
+		if enemy != null:
+			preview.Enemies.append(enemy)
+			return preview
+
+		push_warning("Could not load the preview enemy: " + enemy_path)
 
 	var dummy := load(PREVIEW_DUMMY_PATH) as Actor
 
@@ -255,7 +265,7 @@ func _ready() -> void:
 		return
 
 	CurrentChar = Party.Leader
-	CurrentAbility = Party.Leader.StandardAttack
+	CurrentAbility = Party.Leader.standard_attack
 
 	if sequence == null:
 		sequence = load("res://database/BattleSeq/DebugDummy.tres")
@@ -298,33 +308,33 @@ func _ready() -> void:
 	for i in Party.current:
 		if not i: continue
 		match Party.current.find(i):
-			0: i.Speed = 8
-			1: i.Speed = 6
-			2: i.Speed = 4
-			3: i.Speed = 2
+			0: i.speed = 8
+			1: i.speed = 6
+			2: i.speed = 4
+			3: i.speed = 2
 
-		i.IsEnemy = false
+		i.is_enemy = false
 
 	for i in Troop.size():
 		var dub := await create_actor_node(Troop[i], "Enemy" + str(i))
-		dub.offset = Troop[i].Offset
+		dub.offset = Troop[i].offset
 		dub.play("Idle")
-		Troop[i].Health = Troop[i].MaxHP
-		Troop[i].Aura = Troop[i].MaxAura
+		Troop[i].health = Troop[i].max_hp
+		Troop[i].aura = Troop[i].max_aura
 
 	if battle_advantage == 1:
 		for i in TurnOrder:
-			if not i.IsEnemy: i.SpeedBoost += 5
+			if not i.is_enemy: i.speed_boost += 5
 	elif battle_advantage == 2:
 
 		for i in TurnOrder:
-			if i.IsEnemy: i.SpeedBoost += 10
+			if i.is_enemy: i.speed_boost += 10
 
-	act.get_node("Actor0").add_child(Party.Leader.SoundSet.instantiate())
+	act.get_node("Actor0").add_child(Party.Leader.sound_set.instantiate())
 	for i in TurnOrder:
 		sprite_init(i)
-		i.NextAction = Actor.BtAction.UNSET
-		i.BattleLog = [Actor.log_entry.new()]
+		i.next_action = Actor.BtAction.UNSET
+		i.battle_log = [Actor.log_entry.new()]
 		i.load_complimentaries()
 
 	if sequence.Music:
@@ -338,7 +348,7 @@ func _ready() -> void:
 	TurnOrder.sort_custom(speed_sort)
 	turn_ui_init()
 	for i in TurnOrder:
-		print(i.Speed + i.SpeedBoost, " - ", i.FirstName)
+		print(i.speed + i.speed_boost, " - ", i.first_name)
 
 	# Prepare the standalone battle before the entrance starts the turn loop, so
 	# the preview can run its action as a forced move instead of asking for
@@ -378,12 +388,22 @@ func prepare_standalone_preview() -> bool:
 		get_tree().quit(1)
 		return false
 
-	var caster := Party.get_member(StringName(request.get("actor", "Mira")))
+	var caster: Actor = null
+	var target: Actor = null
 
-	if caster == null:
-		caster = Party.Leader
+	if not str(request.get("enemy", "")).is_empty():
+		# Enemy previews put the chosen enemy in the troop and the party on the
+		# receiving end, so side-aware positions and target refs behave like the
+		# real fight.
+		caster = Troop[0] if not Troop.is_empty() else null
+		target = Party.Leader
+	else:
+		caster = Party.get_member(StringName(request.get("actor", "Mira")))
 
-	var target: Actor = Troop[0] if not Troop.is_empty() else null
+		if caster == null:
+			caster = Party.Leader
+
+		target = Troop[0] if not Troop.is_empty() else null
 
 	if caster == null or target == null:
 		push_error("Battle preview is missing a caster or target")
@@ -548,37 +568,37 @@ func create_actor_node(actor: Actor, node_name: String) -> AnimatedSprite2D:
 		sprite.get_node("SFX").queue_free()
 		await Event.wait()
 
-	if actor.SoundSet:
-		sprite.add_child(actor.SoundSet.instantiate())
+	if actor.sound_set:
+		sprite.add_child(actor.sound_set.instantiate())
 
 	return sprite
 
 
 func sprite_init(i: Actor) -> void:
 	i.node.sprite_frames = await i.get_BT()
-	i.node.flip_h = i.FlipH
+	i.node.flip_h = i.flip_h
 	i.node.get_node("State").play("None")
-	if not i.Shadow:
+	if not i.shadow:
 		i.node.get_child(0).hide()
 
-	if i.IsEnemy: i.node.get_node("Glow").energy = i.GlowDef
+	if i.is_enemy: i.node.get_node("Glow").energy = i.glow_def
 	else:
 		var t := create_tween()
-		t.tween_property(i.node.get_node("Glow"), "energy", i.GlowDef, 1)
+		t.tween_property(i.node.get_node("Glow"), "energy", i.glow_def, 1)
 
-	i.node.get_node("Glow").color = i.MainColor
+	i.node.get_node("Glow").color = i.main_color
 
-	if i.MaterialOverride != null:
-		i.node.material = i.MaterialOverride
+	if i.material_override != null:
+		i.node.material = i.material_override
 
 
 func speed_sort(a: Actor, b: Actor) -> bool:
-	var a_speed := a.Speed + a.SpeedBoost
-	var b_speed := b.Speed + b.SpeedBoost
+	var a_speed := a.speed + a.speed_boost
+	var b_speed := b.speed + b.speed_boost
 
 	if a_speed == b_speed:
 		# Ties are broken in favour of party members.
-		return not a.IsEnemy
+		return not a.is_enemy
 
 	return a_speed > b_speed
 
@@ -589,8 +609,8 @@ func turn_ui_init() -> void:
 	for i in $Canvas/TurnOrderPop/Margin/List.get_children(): i.queue_free()
 	for i in TurnOrder:
 		entr = entr.duplicate()
-		entr.get_node("Icon").texture = i.PartyIcon
-		entr.get_node("Name").text = i.FirstName
+		entr.get_node("Icon").texture = i.party_icon
+		entr.get_node("Name").text = i.first_name
 		entr.set_meta("Actor", i)
 		$Canvas/TurnOrderPop/Margin/List.add_child(entr)
 
@@ -643,8 +663,8 @@ func position_sprites() -> void:
 				enemy.position = enemy_positions[i]
 
 	for i in TurnOrder:
-		if i.CustomPosition != Vector2i.ZERO:
-			i.node.position = i.CustomPosition
+		if i.custom_position != Vector2i.ZERO:
+			i.node.position = i.custom_position
 
 		pixel_perfectize(i)
 
@@ -740,18 +760,18 @@ func _on_next_turn() -> void:
 
 	if CurrentChar in skipped_turns:
 		skipped_turns.erase(CurrentChar)
-		CurrentChar.NextAction = Actor.BtAction.UNSET
-		CurrentChar.NextMove = null
-		CurrentChar.NextTarget = null
+		CurrentChar.next_action = Actor.BtAction.UNSET
+		CurrentChar.next_move = null
+		CurrentChar.next_target = null
 		end_turn()
 		return
 
 	print("-------------------------------------------------")
-	print_rich("[color=cornflower-blue]Turn: ", Turn, " - Index: ", TurnInd, " - Name: ", CurrentChar.FirstName)
+	print_rich("[color=cornflower-blue]Turn: ", Turn, " - Index: ", TurnInd, " - Name: ", CurrentChar.first_name)
 	initial = CurrentChar.node.position
 
 	if CurrentChar.has_state("Knocked Out"):
-		if CurrentChar.IsEnemy:
+		if CurrentChar.is_enemy:
 			Troop.erase(CurrentChar)
 			TurnOrder.erase(CurrentChar)
 			if Troop.is_empty():
@@ -761,7 +781,7 @@ func _on_next_turn() -> void:
 				end_turn()
 				return
 
-	if CurrentChar.IsEnemy: enemy_ui._on_battle_ui_target_foc(CurrentChar)
+	if CurrentChar.is_enemy: enemy_ui._on_battle_ui_target_foc(CurrentChar)
 	else: enemy_ui.all_enemy_ui()
 	act.handle_states()
 
@@ -777,8 +797,8 @@ func check_for_victory() -> bool:
 
 func make_move() -> void:
 	if check_for_victory(): return
-	if CurrentChar.NextAction == Actor.BtAction.UNSET:
-		if CurrentChar.Controllable:
+	if CurrentChar.next_action == Actor.BtAction.UNSET:
+		if CurrentChar.controllable:
 			print_rich("[color=cornflower-blue]Control")
 			GetControl.emit()
 		else:
@@ -793,25 +813,25 @@ func _on_ai_chosen() -> void:
 
 
 func confirm_next(action_anim := true) -> void:
-	if CurrentChar.NextMove == null:
-		CurrentChar.NextMove = Ability.nothing()
+	if CurrentChar.next_move == null:
+		CurrentChar.next_move = Ability.nothing()
 
-	if CurrentChar.Controllable: ui.close()
+	if CurrentChar.controllable: ui.close()
 
-	if CurrentChar.NextMove == CurrentChar.StandardAttack:
-		CurrentChar.NextAction = Actor.BtAction.ACT
+	if CurrentChar.next_move == CurrentChar.standard_attack:
+		CurrentChar.next_action = Actor.BtAction.ACT
 
-	print_rich("[color=cornflower-blue]Action: ", CurrentChar.NextAction)
+	print_rich("[color=cornflower-blue]Action: ", CurrentChar.next_action)
 
 	if action_anim:
-		if CurrentChar.NextMove.show_cutin:
+		if CurrentChar.next_move.show_cutin:
 			cut_in(CurrentChar.codename)
 
-		match CurrentChar.NextAction:
+		match CurrentChar.next_action:
 			Actor.BtAction.MAGIC:
 				focus_cam(CurrentChar)
 				zoom(5.5)
-				callout(CurrentChar.NextMove)
+				callout(CurrentChar.next_move)
 				var timer := get_tree().create_timer(0.5)
 				await anim("Ability")
 				if timer.time_left != 0: await timer.timeout
@@ -820,13 +840,13 @@ func confirm_next(action_anim := true) -> void:
 				focus_cam(CurrentChar)
 				zoom(5.5)
 				var pos := CurrentChar.node.get_global_transform_with_canvas().origin
-				Item.use_animation(CurrentChar.NextMove.icon, CurrentChar.NextMove.name, pos)
+				Item.use_animation(CurrentChar.next_move.icon, CurrentChar.next_move.name, pos)
 				await Event.wait(2)
 
-	if CurrentChar.NextTarget == null:
-		CurrentChar.NextTarget = random_target(CurrentChar.NextMove)
+	if CurrentChar.next_target == null:
+		CurrentChar.next_target = random_target(CurrentChar.next_move)
 
-	_on_battle_ui_ability_returned(CurrentChar.NextMove, CurrentChar.NextTarget)
+	_on_battle_ui_ability_returned(CurrentChar.next_move, CurrentChar.next_target)
 
 
 func _input(event: InputEvent) -> void:
@@ -851,8 +871,8 @@ func _input(event: InputEvent) -> void:
 			end_battle()
 
 	if Input.is_action_just_pressed("DebugF"):
-		print(relation_to_dmg_modifier(color_relation(CurrentChar.MainColor,
-		ui.target.MainColor)))
+		print(relation_to_dmg_modifier(color_relation(CurrentChar.main_color,
+		ui.target.main_color)))
 
 
 func _on_battle_ui_ability() -> void:
@@ -888,7 +908,7 @@ func callout(ab: Ability = CurrentAbility) -> void:
 
 	callout_onscreen = true
 
-	if ab.color_same_as_actor: ab.wheel_color = CurrentChar.MainColor
+	if ab.color_same_as_actor: ab.wheel_color = CurrentChar.main_color
 	$Canvas/Callout.text = ab.name
 	$Canvas/Callout.add_theme_color_override("font_color", ab.wheel_color)
 	tc.tween_property(
@@ -900,7 +920,7 @@ func callout(ab: Ability = CurrentAbility) -> void:
 	#await tc.finished
 	#print_rich("[color=cornflower-blue]call")
 	tc.set_ease(Tween.EASE_IN)
-	if CurrentChar.Controllable:
+	if CurrentChar.controllable:
 		tc.tween_property(
 			$Canvas/Callout, "position", Vector2(-200, 636), 0.5).set_delay(1)
 	else: tc.tween_property(
@@ -915,22 +935,22 @@ func callout(ab: Ability = CurrentAbility) -> void:
 
 func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 	if not is_instance_valid(tar): return
-	print_rich("[color=cornflower-blue]Using ", ab.name, " on ", tar.FirstName)
+	print_rich("[color=cornflower-blue]Using ", ab.name, " on ", tar.first_name)
 
-	for i in CurrentChar.BattleLog: if i.turn == Turn:
+	for i in CurrentChar.battle_log: if i.turn == Turn:
 		print_rich("[color=cornflower-blue]Double turn detected, aborting")
 		return
 
 	var log_entry := Actor.log_entry.new()
 	log_entry.ability = ab; log_entry.target = tar; log_entry.turn = Turn
-	CurrentChar.BattleLog.append(log_entry)
-	CurrentChar.NextAction = Actor.BtAction.UNSET
-	CurrentChar.NextMove = null
-	CurrentChar.NextTarget = null
+	CurrentChar.battle_log.append(log_entry)
+	CurrentChar.next_action = Actor.BtAction.UNSET
+	CurrentChar.next_move = null
+	CurrentChar.next_target = null
 	CurrentAbility = ab
 	CurrentTarget = tar
 
-	if CurrentChar.has_state("Bound") and (CurrentAbility.uses_weapon() or CurrentAbility == CurrentChar.StandardAttack):
+	if CurrentChar.has_state("Bound") and (CurrentAbility.uses_weapon() or CurrentAbility == CurrentChar.standard_attack):
 		CurrentAbility = Ability.nothing()
 		battle_msg("struggle")
 		await shake_actor(CurrentChar)
@@ -945,19 +965,19 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 		return
 
 	if ab.color_same_as_actor:
-		ab.wheel_color = CurrentChar.MainColor
+		ab.wheel_color = CurrentChar.main_color
 
 	if ab.target == 1:
 		if tar and tar.has_state("Knocked Out"):
 			var i := -1
-			var oldtar := CurrentTarget.FirstName
+			var oldtar := CurrentTarget.first_name
 
-			while (CurrentTarget.FirstName == oldtar or
+			while (CurrentTarget.first_name == oldtar or
 			CurrentTarget.has_state("Knocked Out") or CurrentTarget.node == null):
 				i += 1
 
 				if i > get_ally_faction(CurrentTarget).size():
-					if get_ally_faction(CurrentTarget)[0].IsEnemy:
+					if get_ally_faction(CurrentTarget)[0].is_enemy:
 						victory()
 						return
 					else:
@@ -966,14 +986,14 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 
 				CurrentTarget = get_ally_faction(CurrentTarget)[i - 1]
 
-		if tar.IsEnemy:
+		if tar.is_enemy:
 			ui.emit_signal("targetFoc", tar)
 	elif ab.target == 0:
 
-		if CurrentChar.IsEnemy:
+		if CurrentChar.is_enemy:
 			ui.emit_signal("targetFoc", CurrentChar)
 
-	if CurrentChar.IsEnemy:
+	if CurrentChar.is_enemy:
 		ui.emit_signal("targetFoc", CurrentChar)
 	elif ab.target == 2: enemy_ui.all_enemy_ui()
 
@@ -981,7 +1001,7 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 
 	if has_sequence or ab.legacy_action_sequence != &"":
 		CurrentChar.add_aura(-CurrentAbility.aura_cost)
-		if CurrentAbility.callout and CurrentChar.Controllable:
+		if CurrentAbility.callout and CurrentChar.controllable:
 			callout()
 
 		if has_sequence:
@@ -998,8 +1018,8 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 func battle_msg(id: String, insert := "MISSING", insert2 := "MISSING2") -> String:
 	var target := CurrentTarget if CurrentTarget else Troop[0]
 	var text := BattleText[id]
-	text = text.replace("[cur]", CurrentChar.FirstName)
-	text = text.replace("[tar]", target.FirstName)
+	text = text.replace("[cur]", CurrentChar.first_name)
+	text = text.replace("[tar]", target.first_name)
 	text = text.replace("[insert]", insert)
 	text = text.replace("[insert2]", insert2)
 
@@ -1063,7 +1083,7 @@ func end_turn() -> void:
 		await resolve_traps()
 
 	for i in TurnOrder:
-		if i.Aura == 0 and i.Health != 0 and not (
+		if i.aura == 0 and i.health != 0 and not (
 			i.has_state("AuraBreak") or i.has_state("UnbreakingAura") or i.has_state("KnockedOut")
 		):
 			await i.add_state("AuraBreak")
@@ -1134,7 +1154,7 @@ func damage(
 	## Color of the offending ability
 	var color := (CurrentAbility.wheel_color if overwrite_color == Color.WHITE else overwrite_color)
 	## Relation from the ability to the target
-	var relation := color_relation(color, target.MainColor)
+	var relation := color_relation(color, target.main_color)
 
 	if elemental:
 		el_mod = relation_to_dmg_modifier(relation)
@@ -1148,7 +1168,7 @@ func damage(
 	var dmg: int = target.calc_dmg(x * el_mod, is_magic, offender)
 
 	# State specific modifications
-	for state in target.States:
+	for state in target.states:
 		# Mutiply with each state's modifiers
 		if is_magic:
 			dmg = int(dmg * state.magic_dmg_mult)
@@ -1158,7 +1178,7 @@ func damage(
 		match state.filename:
 			"Frozen":
 				target.remove_state("Frozen")
-				battle_msg("ice_breaks", target.FirstName)
+				battle_msg("ice_breaks", target.first_name)
 
 			"Guarding":
 				# With Guarding, you nothing is weak
@@ -1182,16 +1202,16 @@ func damage(
 
 	# Clutch damage, health should never go to 0
 	if (
-		((target.ClutchDmg and target.Health > 0.2*target.MaxHP)
-		or target.CantDie) and target.Health - dmg < 0
+		((target.clutch_dmg and target.health > 0.2*target.max_hp)
+		or target.cant_die) and target.health - dmg < 0
 	):
-		print("Damage on ", target.FirstName, " was clutched")
+		print("Damage on ", target.first_name, " was clutched")
 		limiter = true
-		queue_sequence_for_actor(target, target.DeathSequence)
+		queue_sequence_for_actor(target, target.death_sequence)
 
 	# Actual damage happens
 	target.damage(dmg, limiter)
-	print(CurrentChar.FirstName + " deals " + str(dmg) + " damage to " + target.FirstName)
+	print(CurrentChar.first_name + " deals " + str(dmg) + " damage to " + target.first_name)
 
 	# Effects!
 	if not is_magic and CurrentChar.has_state("AtkUp") and CurrentChar.get_state("AtkUp").turns == -2:
@@ -1203,16 +1223,16 @@ func damage(
 	damage_feedback(target, dmg, color, relation, elemental)
 
 	check_party.emit()
-	if target.Health == 0:
-		if target.CantDie:
-			target.Health = 1
+	if target.health == 0:
+		if target.cant_die:
+			target.health = 1
 		else:
 			# Fire and forget, the turn won't end until knockouts finish
 			death(target)
 			if target != CurrentChar and relation == Wheel.Relation.WEAK: follow_up_next = true
 			return dmg
 
-	if target.Health == 0 or target.has_state("Knocked Out"): return dmg
+	if target.health == 0 or target.has_state("Knocked Out"): return dmg
 
 	if target.has_state("Guarding"):
 		if relation == Wheel.Relation.RESIST: target.add_aura(dmg * 2)
@@ -1229,7 +1249,7 @@ func damage(
 			outline(target)
 			if part:
 				part.process_material.gravity = Vector3(offsetize(120), 0, 0)
-				part.process_material.color = target.MainColor
+				part.process_material.color = target.main_color
 
 			outline_remove(target)
 			Input.stop_joy_vibration(0)
@@ -1239,7 +1259,7 @@ func damage(
 	if dmg > 0 and target != CurrentChar and not in_trap:
 		queue_traps(target, is_magic, relation, dmg)
 
-	target.DamageRecivedThisTurn += dmg
+	target.damage_received_this_turn += dmg
 	return dmg
 
 
@@ -1247,9 +1267,9 @@ func damage(
 ## numbers, HUD shake and controller rumble
 func damage_feedback(target: Actor, dmg: int, color: Color, relation: Wheel.Relation, elemental: bool) -> void:
 	if elemental:
-		var base_dmg := int(dmg * target.Defence * 2 * target.DefenceMultiplier)
+		var base_dmg := int(dmg * target.defence * 2 * target.defence_multiplier)
 		var aur_dmg := relation_to_aura_dmg(relation, base_dmg)
-		print(target.FirstName, " takes ", aur_dmg, " aura damage")
+		print(target.first_name, " takes ", aur_dmg, " aura damage")
 		target.add_aura(-aur_dmg)
 		pop_num(target, dmg, color)
 
@@ -1260,17 +1280,17 @@ func damage_feedback(target: Actor, dmg: int, color: Color, relation: Wheel.Rela
 			Wheel.Relation.RESIST: pop_num(target, "RESIST")
 	else: pop_num(target, dmg)
 
-	if !target.IsEnemy:
-		Hud.hit_partybox(Party.current.find(target), int(dmg / 2), int(dmg * 100 / target.MaxHP * 100) / 300)
+	if !target.is_enemy:
+		Hud.hit_partybox(Party.current.find(target), int(dmg / 2), int(dmg * 100 / target.max_hp * 100) / 300)
 	else:
-		Event.node_shake(enemy_ui.get_node("EnemyFocus"), int(dmg), int(dmg * 100 / target.MaxHP * 100) / 300)
+		Event.node_shake(enemy_ui.get_node("EnemyFocus"), int(dmg), int(dmg * 100 / target.max_hp * 100) / 300)
 
-	if target.Controllable:
-		Controller.rumble(remap(dmg * 2, 0, target.MaxHP, 0, 1), remap(dmg, 0, 100, 0, 1), remap(dmg * 2, 0, target.MaxHP, 0, 1))
-	elif CurrentChar.Controllable:
-		Controller.rumble(remap(dmg, 0, target.MaxHP, 0, 0.5), remap(dmg, 0, 100, 0, 1), remap(dmg, 0, target.MaxHP, 0, 0.5))
+	if target.controllable:
+		Controller.rumble(remap(dmg * 2, 0, target.max_hp, 0, 1), remap(dmg, 0, 100, 0, 1), remap(dmg * 2, 0, target.max_hp, 0, 1))
+	elif CurrentChar.controllable:
+		Controller.rumble(remap(dmg, 0, target.max_hp, 0, 0.5), remap(dmg, 0, 100, 0, 1), remap(dmg, 0, target.max_hp, 0, 0.5))
 	else:
-		Controller.rumble(remap(dmg, 0, target.MaxHP, 0, 0.3), remap(dmg, 0, 100, 0, 0.5), remap(dmg, 0, 100, 0, 0.5))
+		Controller.rumble(remap(dmg, 0, target.max_hp, 0, 0.3), remap(dmg, 0, 100, 0, 0.5), remap(dmg, 0, 100, 0, 0.5))
 
 
 ## Checks a freshly hit actor for traps whose condition matches the incoming hit
@@ -1281,7 +1301,7 @@ func queue_traps(target: Actor, is_magic: bool, relation: Wheel.Relation, dmg: i
 	var sprung := false
 
 	# Iterate over a copy, since a consumed trap removes itself from the owner.
-	for state: State in target.States.duplicate():
+	for state: State in target.states.duplicate():
 		if not state is Trap: continue
 
 		var trap := state as Trap
@@ -1298,7 +1318,7 @@ func queue_traps(target: Actor, is_magic: bool, relation: Wheel.Relation, dmg: i
 
 		pending_traps.append({"trap": trap, "owner": target, "attacker": CurrentChar})
 		sprung = true
-		print_rich("[color=cornflower-blue]", target.FirstName, "'s ", trap.name, " trap springs")
+		print_rich("[color=cornflower-blue]", target.first_name, "'s ", trap.name, " trap springs")
 
 	# Cancel any further damage the interrupting ability would have dealt
 	if sprung:
@@ -1323,7 +1343,7 @@ func resolve_traps() -> void:
 			continue
 
 		# Playback was deferred to end_turn, skip owners that died in the meantime
-		if victim.Health <= 0 or victim.has_state("KnockedOut"):
+		if victim.health <= 0 or victim.has_state("KnockedOut"):
 			continue
 
 		await trigger_trap(trap, victim, hitter)
@@ -1331,10 +1351,10 @@ func resolve_traps() -> void:
 
 ## Springs a trap. The trap's owner performs the trap's ability
 func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
-	print_rich("[color=cornflower-blue]", victim.FirstName, "'s ", trap.name, " trap springs on ", hitter.FirstName if hitter else "?")
+	print_rich("[color=cornflower-blue]", victim.first_name, "'s ", trap.name, " trap springs on ", hitter.first_name if hitter else "?")
 
 	# Feedback
-	pop_num(victim, trap.name, trap.color if trap.color != Color.WHITE else victim.MainColor)
+	pop_num(victim, trap.name, trap.color if trap.color != Color.WHITE else victim.main_color)
 	await Event.wait(0.2)
 
 	# Preserve the surrounding context
@@ -1426,9 +1446,9 @@ func queue_action(actor: Actor, ability: Ability, target: Actor, action := Actor
 	if actor == null:
 		return
 
-	actor.NextAction = action
-	actor.NextMove = ability
-	actor.NextTarget = target
+	actor.next_action = action
+	actor.next_move = ability
+	actor.next_target = target
 
 
 ## Runs an ability through the same runner as a normal turn action.
@@ -1547,7 +1567,7 @@ func hit_animation(target: Actor) -> void:
 		anim("Idle", target)
 
 
-func outline(target: Actor, color: Color = target.MainColor) -> void:
+func outline(target: Actor, color: Color = target.main_color) -> void:
 	if target.node.material.get_shader_parameter("outline_enabled") != null:
 		target.node.material.set_shader_parameter("outline_enabled", true)
 		target.node.material.set_shader_parameter("outline_color", color)
@@ -1607,7 +1627,7 @@ func play_effect(animation: String, target: Variant, offset := Vector2.ZERO, fli
 
 		var ef: AnimatedSprite2D = effects.duplicate()
 
-		if flip_on_player_use and !CurrentChar.IsEnemy: ef.flip_h = true
+		if flip_on_player_use and !CurrentChar.is_enemy: ef.flip_h = true
 		ef.name = animation
 		act.add_child(ef)
 		ef.position = target + offset
@@ -1646,13 +1666,13 @@ func offsetize(num: float, target := CurrentChar) -> float:
 	#if CurrentAbility and CurrentAbility.target == 0:
 		#return 0
 
-	if target.IsEnemy:
+	if target.is_enemy:
 		return -num
 	else:
 		return num
 
 
-func is_valid_target(target: Actor, ability: Ability = CurrentChar.NextMove) -> bool:
+func is_valid_target(target: Actor, ability: Ability = CurrentChar.next_move) -> bool:
 	if ability == null: return true
 	if ability.target == Ability.T.ONE_ENEMY or ability.target == Ability.T.AOE_ENEMIES:
 		if target in get_ally_faction(): return false
@@ -1667,10 +1687,10 @@ func is_valid_target(target: Actor, ability: Ability = CurrentChar.NextMove) -> 
 
 
 func recover(chara: Actor) -> void:
-	battle_msg("recovers", chara.FirstName)
+	battle_msg("recovers", chara.first_name)
 	anim("Idle", chara)
-	chara.Health = max(10, chara.Health)
-	chara.Aura = chara.MaxAura
+	chara.health = max(10, chara.health)
+	chara.aura = chara.max_aura
 
 
 func pop_num(target: Actor, text: Variant, color: Color = Color.WHITE) -> void:
@@ -1745,20 +1765,20 @@ func death(target: Actor) -> void:
 
 	# TODO: Determine if this is balanced enough or not
 	if CurrentChar != null and CurrentChar != target:
-		CurrentChar.add_aura(target.Aura)
+		CurrentChar.add_aura(target.aura)
 
 	target.set_aura(0)
 	target.set_health(0)
 	# Rewards
-	if target.IsEnemy:
-		totalSP += target.RecivedSP
+	if target.is_enemy:
+		totalSP += target.received_sp
 
-		if target.DroppedItem:
-			ObtainedItems.append(target.DroppedItem)
+		if target.dropped_item:
+			ObtainedItems.append(target.dropped_item)
 
 	anim("KnockOut", target)
 
-	if not target.IsEnemy and filter_dead(Party.current).is_empty():
+	if not target.is_enemy and filter_dead(Party.current).is_empty():
 		game_over(target)
 
 	# Effects
@@ -1767,34 +1787,34 @@ func death(target: Actor) -> void:
 	if particle:
 		particle.emitting = true
 		particle.process_material.gravity = Vector3(offsetize(120), 0, 0)
-		particle.process_material.color = target.MainColor
+		particle.process_material.color = target.main_color
 
 	var td := create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUART)
 
 	if target.node.get_node_or_null("Shadow"):
 		td.tween_property(target.node.get_node("Shadow"), "modulate", Color.TRANSPARENT, 0.5)
 
-	if target.Disappear and target.node.get_node_or_null("Glow"):
+	if target.disappear and target.node.get_node_or_null("Glow"):
 		td.parallel().tween_property(target.node.get_node("Glow"), "energy", 0, 0.5)
 
 	outline_remove(target)
 
-	print(target.FirstName, " was defeated")
+	print(target.first_name, " was defeated")
 	target.add_state("KnockedOut")
 
 	await Event.wait(1)
 	if (
-		not target.DeathSequence.is_empty()
-		and not target.CantDie
-		and act.has_method(target.DeathSequence)
+		not target.death_sequence.is_empty()
+		and not target.cant_die
+		and act.has_method(target.death_sequence)
 	):
-		await act.call(target.DeathSequence, target)
+		await act.call(target.death_sequence, target)
 
 	release_turn()
 
 	# Wait for animations to finish, then delete character if applicable
 	if is_instance_valid(target) and is_instance_valid(target.node):
-		if target.Disappear and not target.CantDie:
+		if target.disappear and not target.cant_die:
 			queue_death_delete(target)
 
 
@@ -1844,7 +1864,7 @@ func delete_actor(target: Actor) -> void:
 		target.node.queue_free()
 		target.node = null
 
-		if target.IsEnemy:
+		if target.is_enemy:
 			Troop.erase(target)
 			TurnOrder.erase(target)
 
@@ -1866,12 +1886,12 @@ func get_faction(enemies: bool, filter_out_dead := true) -> Array[Actor]:
 
 ## The faction the given actor fights alongside.
 func get_ally_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
-	return get_faction(actor.IsEnemy, filter_out_dead)
+	return get_faction(actor.is_enemy, filter_out_dead)
 
 
 ## The faction the given actor fights against.
 func get_opposing_faction(actor: Actor = CurrentChar, filter_out_dead := true) -> Array[Actor]:
-	return get_faction(not actor.IsEnemy, filter_out_dead)
+	return get_faction(not actor.is_enemy, filter_out_dead)
 
 
 func get_target_faction(ab := CurrentAbility) -> Array[Actor]:
@@ -1890,14 +1910,14 @@ func get_any_faction(filter_out_dead := true) -> Array[Actor]:
 
 
 func hp_sort(a: Actor, b: Actor) -> bool:
-	return a.Health < b.Health
+	return a.health < b.health
 
 var t_glow: Tween
 
 
 func anim(animation: String = "", chara: Actor = CurrentChar) -> void:
 	if chara.node == null: return
-	if chara.FlipH:
+	if chara.flip_h:
 		chara.node.flip_h = true
 
 	if not is_instance_valid(chara):
@@ -1905,29 +1925,30 @@ func anim(animation: String = "", chara: Actor = CurrentChar) -> void:
 		return
 
 	if animation == "" or chara.has_state("KnockedOut"):
-		if chara.DontIdle: return
-		else:
-			animation = "Idle"
+		if chara.dont_idle: return
 
-			for i in chara.States:
-				if i.pose != "None" and i.pose in chara.node.sprite_frames.get_animation_names():
-					anim(i.pose, chara)
+		animation = "Idle"
+
+		# A state can replace the idle pose (Guard, Hurt, ...).
+		for i in chara.states:
+			if i.pose != "None" and i.pose in chara.node.sprite_frames.get_animation_names():
+				animation = i.pose
 
 	if animation not in chara.node.sprite_frames.get_animation_names():
 		return
 
-	if animation in chara.GlowAnims and chara.GlowSpecial != 0:
+	if animation in chara.glow_anims and chara.glow_special != 0:
 		t_glow = create_tween()
-		chara.node.get_node("Glow").color = chara.MainColor
-		t_glow.tween_property(chara.node.get_node("Glow"), "energy", chara.GlowSpecial, 0.3)
-	elif chara.node.animation in chara.GlowAnims and chara.GlowSpecial != 0:
+		chara.node.get_node("Glow").color = chara.main_color
+		t_glow.tween_property(chara.node.get_node("Glow"), "energy", chara.glow_special, 0.3)
+	elif chara.node.animation in chara.glow_anims and chara.glow_special != 0:
 
 		if is_instance_valid(t_glow):
 			t_glow.kill()
 
 		t_glow = create_tween()
-		chara.node.get_node("Glow").color = chara.MainColor
-		t_glow.tween_property(chara.node.get_node("Glow"), "energy", chara.GlowDef, 0.3)
+		chara.node.get_node("Glow").color = chara.main_color
+		t_glow.tween_property(chara.node.get_node("Glow"), "energy", chara.glow_def, 0.3)
 
 	chara.node.play(animation)
 	pixel_perfectize(chara)
@@ -1967,8 +1988,8 @@ func pixel_perfectize(chara: Actor, xy: int = 0) -> void:
 
 	if frame == null: return
 	if int(frame.get_size()[xy]) % 2 == 0:
-		chara.node.offset[xy] = chara.Offset[xy]
-	else: chara.node.offset[xy] = chara.Offset[xy] + 0.5
+		chara.node.offset[xy] = chara.offset[xy]
+	else: chara.node.offset[xy] = chara.offset[xy] + 0.5
 
 	if xy == 0: pixel_perfectize(chara, 1)
 
@@ -2049,16 +2070,16 @@ func show_state_effects(chara: Actor = null) -> void:
 				i.show()
 
 
-#int(max(Query.calc_num(), target.MaxHP*((Query.calc_num()*CurrentChar.Magic)*0.02)))
+#int(max(Query.calc_num(), target.max_hp*((Query.calc_num()*CurrentChar.magic)*0.02)))
 func heal(
 	target: Actor,
-	amount: int = Query.calc_num() * int(CurrentChar.Magic * CurrentChar.MagicMultiplier)
+	amount: int = Query.calc_num() * int(CurrentChar.magic * CurrentChar.magic_multiplier)
 ) -> void:
 	# Fallback for legacy abilities that have no sequence ValueRef yet.
 	if CurrentAbility.damage_variance:
 		amount = round(amount * randf_range(1, 1.5))
 
-	amount = min(amount, target.MaxHP - target.Health)
+	amount = min(amount, target.max_hp - target.health)
 	target.add_health(amount)
 	ui.targetFoc.emit(target)
 	check_party.emit()
@@ -2069,13 +2090,13 @@ func heal(
 
 func remove_queued_states(chara: Actor) -> void:
 	if not is_instance_valid(chara): return
-	for i in range(chara.States.size() - 1, -1, -1):
-		var state := chara.States[i]
+	for i in range(chara.states.size() - 1, -1, -1):
+		var state := chara.states[i]
 
 		if state.queue_remove:
 			chara.remove_state(state)
 
-	if chara.States.is_empty(): chara.node.get_node("State").play("None")
+	if chara.states.is_empty(): chara.node.get_node("State").play("None")
 
 
 func pop_aura(target: Actor, time: float = 0.5) -> void:
@@ -2205,19 +2226,19 @@ func hide_victory_stuff() -> void:
 func reset_all() -> void:
 	pending_traps.clear()
 	for i in TurnOrder:
-		for j in i.States: if j.removed_on_battle_end: i.States.erase(j)
-		i.AttackMultiplier = 1
-		i.DefenceMultiplier = 1
-		i.MagicMultiplier = 1
-		i.SpeedBoost = 0
+		for j in i.states: if j.removed_on_battle_end: i.states.erase(j)
+		i.attack_multiplier = 1
+		i.defence_multiplier = 1
+		i.magic_multiplier = 1
+		i.speed_boost = 0
 
 	for i in Party.members:
-		if i.AuraDefault != Color.WHITE:
-			i.MainColor = i.AuraDefault
-			i.AuraDefault = Color.WHITE
+		if i.aura_default != Color.WHITE:
+			i.main_color = i.aura_default
+			i.aura_default = Color.WHITE
 
-		i.Health = max(i.Health, 10)
-		i.Aura = max(i.Aura, 5)
+		i.health = max(i.health, 10)
+		i.aura = max(i.aura, 5)
 
 
 func victory_anim(chara: Actor) -> void:
@@ -2405,7 +2426,7 @@ func miss(target: Actor = CurrentTarget) -> void:
 	var prev := target.node.position
 	move(target, Vector2(target.node.position.x + offsetize(30), target.node.position.y), 0.3, Tween.EASE_OUT)
 	pop_num(target, "Miss")
-	if target.Controllable or CurrentChar.Controllable:
+	if target.controllable or CurrentChar.controllable:
 		Controller.rumble(0.3, 0, 0.3, 0.1)
 
 	await Event.wait(0.5)
@@ -2426,10 +2447,10 @@ func add_to_troop(en: Actor) -> Actor:
 	Troop.append(en)
 	var dub := await create_actor_node(en, "Enemy" + str(Troop.size() - 1))
 	TurnOrder.push_front(en)
-	dub.offset = en.Offset
+	dub.offset = en.offset
 	anim(&"Idle", en)
-	en.Health = en.MaxHP
-	en.Aura = en.MaxAura
+	en.health = en.max_hp
+	en.aura = en.max_aura
 	outline_remove(en)
 	TurnOrder.sort_custom(speed_sort)
 	TurnInd = TurnOrder.find(CurrentChar)
@@ -2457,7 +2478,7 @@ func color_relation(offender: Color, defender: Color) -> Wheel.Relation:
 
 func relation_to_dmg_modifier(relation: Wheel.Relation) -> float:
 	var base: float
-	var value_mod: float = remap(CurrentChar.MainColor.v, 0, 1, 2, 1)
+	var value_mod: float = remap(CurrentChar.main_color.v, 0, 1, 2, 1)
 
 	if relation == Wheel.Relation.OP: base = 1.5 * value_mod
 	elif relation == Wheel.Relation.WEAK: base = 1.25 * value_mod
@@ -2467,10 +2488,10 @@ func relation_to_dmg_modifier(relation: Wheel.Relation) -> float:
 
 
 func relation_to_aura_dmg(relation: Wheel.Relation, dmg: int) -> int:
-	print_rich("[color=cornflower-blue]Color value: ", CurrentChar.MainColor.v)
+	print_rich("[color=cornflower-blue]Color value: ", CurrentChar.main_color.v)
 
-	if relation == Wheel.Relation.OP: return int(dmg * CurrentChar.MainColor.v)
-	elif relation == Wheel.Relation.WEAK: return int(dmg * (CurrentChar.MainColor.v / 2))
+	if relation == Wheel.Relation.OP: return int(dmg * CurrentChar.main_color.v)
+	elif relation == Wheel.Relation.WEAK: return int(dmg * (CurrentChar.main_color.v / 2))
 	else: return 0
 
 
@@ -2500,9 +2521,9 @@ func stat_change(
 	else: updown = "Down"
 
 	match stat:
-		&"Atk": chara.AttackMultiplier += amount
-		&"Mag": chara.MagicMultiplier += amount
-		&"Def": chara.DefenceMultiplier += amount
+		&"Atk": chara.attack_multiplier += amount
+		&"Mag": chara.magic_multiplier += amount
+		&"Def": chara.defence_multiplier += amount
 
 	var state := await chara.add_state(stat + updown, turns, CurrentChar)
 	await Event.wait(1)
@@ -2513,7 +2534,7 @@ func stat_change(
 		Audio.ui_sound("powerup")
 	else: Audio.ui_sound("powerdown")
 
-	print(chara.FirstName, "'  ", stat, " was multiplied by ", str(amount + 1))
+	print(chara.first_name, "'  ", stat, " was multiplied by ", str(amount + 1))
 
 
 func stat_name(stat: StringName) -> String:
@@ -2525,7 +2546,7 @@ func stat_name(stat: StringName) -> String:
 
 
 func on_state_add(state: State, chara: Actor, effect := true) -> void:
-	if chara.Health != 0:
+	if chara.health != 0:
 		add_state_effect(state, chara)
 		match state.name:
 			"Guarding", "AuraOverwrite":
@@ -2535,7 +2556,7 @@ func on_state_add(state: State, chara: Actor, effect := true) -> void:
 				outline(chara, Color.WHITE)
 
 			"Aggro":
-				chara.NextTarget = state.inflicter
+				chara.next_target = state.inflicter
 
 		await Event.wait()
 		if not state.is_stat_change and effect: pop_num(chara, state.name, state.color)
@@ -2571,11 +2592,11 @@ func remove_state_effect(statename: String, chara: Actor) -> void:
 		"Guarding", "MagicShield":
 			outline_remove(chara)
 
-		"AtkUp": chara.AttackMultiplier -= (state.parameter if state else 0.0)
-		"DefUp": chara.DefenceMultiplier -= (state.parameter if state else 0.0)
-		"MagUp": chara.MagicMultiplier -= (state.parameter if state else 0.0)
+		"AtkUp": chara.attack_multiplier -= (state.parameter if state else 0.0)
+		"DefUp": chara.defence_multiplier -= (state.parameter if state else 0.0)
+		"MagUp": chara.magic_multiplier -= (state.parameter if state else 0.0)
 		"AuraOverwrite":
-			chara.MainColor = chara.AuraDefault
+			chara.main_color = chara.aura_default
 			outline_remove(chara)
 
 		"KnockedOut":
@@ -2644,19 +2665,19 @@ func filter_dead(arr: Array[Actor]) -> Array[Actor]:
 	var warr: Array[Actor] = []
 
 	for i in arr:
-		if not i.has_state("KnockedOut") and i.Health != 0: warr.append(i)
+		if not i.has_state("KnockedOut") and i.health != 0: warr.append(i)
 
 	return warr
 
 
 func clear_states(target: Actor) -> void:
-	for i in target.States:
+	for i in target.states:
 		target.remove_state(i)
 
 
 func aura_overwrite(tar: Actor, color: Color, turns: int = 1) -> void:
-	tar.AuraDefault = tar.MainColor
-	tar.MainColor = color
+	tar.aura_default = tar.main_color
+	tar.main_color = color
 	Global.check.emit()
 	var state := await tar.add_state("AuraOverwrite", turns)
 
@@ -2666,13 +2687,13 @@ func aura_overwrite(tar: Actor, color: Color, turns: int = 1) -> void:
 
 
 func confusion_msg() -> void:
-	var tar: Actor = CurrentChar.NextTarget
+	var tar: Actor = CurrentChar.next_target
 
 	if CurrentChar == tar:
 		battle_msg("confusion_hit_self")
-	elif tar in get_ally_faction(CurrentChar) and CurrentChar.NextMove.target == Ability.T.ONE_ENEMY:
+	elif tar in get_ally_faction(CurrentChar) and CurrentChar.next_move.target == Ability.T.ONE_ENEMY:
 		battle_msg("confusion_hit_ally")
-	elif CurrentChar.Controllable:
+	elif CurrentChar.controllable:
 		battle_msg("confusion_miss")
 
 
@@ -2681,7 +2702,7 @@ func follow_up_text() -> void:
 	$Canvas/FollowUp/Text.position = Vector2(-1000, 600)
 	var t := create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUINT)
 
-	if CurrentChar.IsEnemy:
+	if CurrentChar.is_enemy:
 		$Canvas/FollowUp.rotation_degrees = 15
 		t.tween_property($Canvas/FollowUp/Text, "position:x", 100, 0.5)
 		t.set_ease(Tween.EASE_IN)

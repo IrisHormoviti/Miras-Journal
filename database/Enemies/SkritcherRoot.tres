@@ -10,19 +10,19 @@
 
 [resource]
 script = ExtResource("2_8gv1j")
-FirstName = "Skritcher Root"
-MainColor = Color(0.698039, 0.815686, 0.356863, 1)
-PartyIcon = ExtResource("2_0pvgk")
-ActorClass = "Tank"
-RecivedSP = 10
-MaxHP = 90
-MaxAura = 10
-Attack = 0.5
-Magic = 0.9
-Defence = 1.5
-Speed = 4.0
-SkillLevel = 0
-Abilities = Array[ExtResource("1_oxflc")]([ExtResource("1_wkiio"), ExtResource("2_y7wux")])
-StandardAttack = ExtResource("5_orakj")
-Offset = Vector2(8, -16)
-CantDodge = true
+first_name = "Skritcher Root"
+main_color = Color(0.698039, 0.815686, 0.356863, 1)
+party_icon = ExtResource("2_0pvgk")
+actor_class = "Tank"
+received_sp = 10
+max_hp = 90
+max_aura = 10
+attack = 0.5
+magic = 0.9
+defence = 1.5
+speed = 4.0
+skill_level = 0
+abilities = Array[ExtResource("1_oxflc")]([ExtResource("1_wkiio"), ExtResource("2_y7wux")])
+standard_attack = ExtResource("5_orakj")
+offset = Vector2(8, -16)
+cant_dodge = true

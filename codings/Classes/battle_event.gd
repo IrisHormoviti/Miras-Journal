@@ -49,14 +49,14 @@ func check() -> bool:
 			push_warning("The event refrences " + actor + " who is not present")
 			return false
 
-		if actore.Health >= low_hp: return false
+		if actore.health >= low_hp: return false
 
 	if low_ap != -1 and low_ap >= 0:
 		if actor == &"" or actore == null:
 			push_warning("The event refrences " + actor + " who is not present")
 			return false
 
-		if actore.Aura > low_ap: return false
+		if actore.aura > low_ap: return false
 
 	if low_hp == 0:
 		if actore != null and not actore.has_state("KnockedOut"):
@@ -98,11 +98,11 @@ func run() -> void:
 						action = Actor.BtAction.COMMAND
 
 				var actor_data := Global.bt.get_actor(actor)
-				actor_data.NextAction = action
-				actor_data.NextMove = resource
+				actor_data.next_action = action
+				actor_data.next_move = resource
 				print("Forcing ", resource.name, " on ", actor)
 				if not parameter2.is_empty():
-					actor_data.NextTarget = Global.bt.get_actor(parameter2)
+					actor_data.next_target = Global.bt.get_actor(parameter2)
 
 			RES.VICTORY:
 				print("Event means win")
@@ -112,7 +112,7 @@ func run() -> void:
 				print("Defeating everyone but ", actor)
 				var actor_data := Global.bt.get_actor(actor, true)
 
-				if actor_data != null and actor_data.IsEnemy:
+				if actor_data != null and actor_data.is_enemy:
 					for i in Global.bt.Troop:
 						if actor_data != i:
 							Global.bt.death(i)

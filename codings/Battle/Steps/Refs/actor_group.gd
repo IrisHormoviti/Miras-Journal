@@ -40,7 +40,7 @@ static func resolve(ctx: ActionSequenceContext, kind: Kind, include_dead := fals
 	for actor in result:
 		if actor == null or not is_instance_valid(actor):
 			continue
-		if not include_dead and actor.Health <= 0:
+		if not include_dead and actor.health <= 0:
 			continue
 		if not clean.has(actor):
 			clean.append(actor)

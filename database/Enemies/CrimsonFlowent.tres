@@ -9,16 +9,16 @@
 
 [resource]
 script = ExtResource("6_ub8jc")
-FirstName = "Crimson Flowent"
-MainColor = Color(0.558524, 0.24453369, 0.12435416, 1)
-PartyIcon = ExtResource("3_w3tyq")
-ActorClass = "Mage"
-RecivedSP = 4
-MaxHP = 45
-Attack = 0.7
-Magic = 1.5
-Defence = 0.8
-Speed = 7.0
-Abilities = Array[ExtResource("1_5jymb")]([ExtResource("2_5jymb")])
-StandardAttack = ExtResource("5_2hxx8")
+first_name = "Crimson Flowent"
+main_color = Color(0.558524, 0.24453369, 0.12435416, 1)
+party_icon = ExtResource("3_w3tyq")
+actor_class = "Mage"
+received_sp = 4
+max_hp = 45
+attack = 0.7
+magic = 1.5
+defence = 0.8
+speed = 7.0
+abilities = Array[ExtResource("1_5jymb")]([ExtResource("2_5jymb")])
+standard_attack = ExtResource("5_2hxx8")
 metadata/_custom_type_script = "uid://msf7qb28ublo"

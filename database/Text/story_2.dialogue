@@ -1,6 +1,6 @@
 ~ nov3_morning
 $> Item.add_item("LightweightAxe", &"Key", false, false)
-$> Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/LightweightAxe.tres")
+$> Party.get_member("Mira").weapon = load("res://database/Items/KeyItems/LightweightAxe.tres")
 $> add_flag("Pyrson/LampInMirasRoom", false)
 $> travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(98, 424), 0, "", false)
 $> no_player()
@@ -244,7 +244,7 @@ As long as we have something to strive for, it'll all be fine...
 [hide]
 $> RoomMira.move_dir(Direction.RIGHT)
 $> Item.add_item("LightweightAxe", "Key")
-$> Party.get_member("Mira").Weapon = Item.get_item("LightweightAxe", "Key")
+$> Party.get_member("Mira").weapon = Item.get_item("LightweightAxe", "Key")
 Since my arm is all better, I guess I can use this again.
 It's time to leave now, the others should be waiting up at the gate.
 $> travel_to("Pyrson;HomeBuilding-MyRoom", Vector2(102, 440))
@@ -460,8 +460,8 @@ Mira.Neutral: What's wrong?
 Asteria.Neutral: So they can feel it too...
 Daze.Neutral: ?
 $> toast(alcine+ " hesitates.")
-$> Party.Member1.NextAction = "Attack"
-$> Party.Member1.NextMove = Ability.nothing()
+$> Party.Member1.next_action = "Attack"
+$> Party.Member1.next_move = Ability.nothing()
 => END!
 
 ~ lazulite_heart_3

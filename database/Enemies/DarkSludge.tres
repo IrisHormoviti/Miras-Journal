@@ -12,16 +12,16 @@
 
 [resource]
 script = ExtResource("2_o0ova")
-FirstName = "Dark Sludge"
-MainColor = Color(0.596078, 0.478431, 0.85098, 1)
-PartyIcon = ExtResource("1_l4uns")
-ActorClass = "Mage"
-SummonedAllies = Array[ExtResource("2_o0ova")]([ExtResource("7_dv84l"), ExtResource("9_28irp")])
-MaxHP = 45
-Attack = 0.6
-Defence = 0.7
-Speed = 2.0
-SkillLevel = 0
-Abilities = Array[ExtResource("1_llot4")]([ExtResource("1_od3rd"), ExtResource("2_wrolb")])
-StandardAttack = ExtResource("4_cony1")
-Offset = Vector2(3, -14)
+first_name = "Dark Sludge"
+main_color = Color(0.596078, 0.478431, 0.85098, 1)
+party_icon = ExtResource("1_l4uns")
+actor_class = "Mage"
+summoned_allies = Array[ExtResource("2_o0ova")]([ExtResource("7_dv84l"), ExtResource("9_28irp")])
+max_hp = 45
+attack = 0.6
+defence = 0.7
+speed = 2.0
+skill_level = 0
+abilities = Array[ExtResource("1_llot4")]([ExtResource("1_od3rd"), ExtResource("2_wrolb")])
+standard_attack = ExtResource("4_cony1")
+offset = Vector2(3, -14)

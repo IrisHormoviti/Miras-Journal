@@ -9,17 +9,17 @@
 
 [resource]
 script = ExtResource("3_af8c6")
-FirstName = "Bird Summon"
-MainColor = Color(0.3618105, 0.5630479, 0, 1)
-PartyIcon = ExtResource("2_af8c6")
-ActorClass = "Mage"
+first_name = "Bird Summon"
+main_color = Color(0.3618105, 0.5630479, 0, 1)
+party_icon = ExtResource("2_af8c6")
+actor_class = "Mage"
 codename = &"Bird"
-CustomPosition = Vector2i(35, -30)
-MaxHP = 50
-Attack = 0.8
-Magic = 2.0
-Defence = 0.7
-Abilities = Array[ExtResource("1_oqlrg")]([ExtResource("2_hs4by")])
-StandardAttack = ExtResource("5_nlnc3")
-BT = "AsteriaSummons/BirdBT"
+custom_position = Vector2i(35, -30)
+max_hp = 50
+attack = 0.8
+magic = 2.0
+defence = 0.7
+abilities = Array[ExtResource("1_oqlrg")]([ExtResource("2_hs4by")])
+standard_attack = ExtResource("5_nlnc3")
+bt = "AsteriaSummons/BirdBT"
 metadata/_custom_type_script = "uid://msf7qb28ublo"

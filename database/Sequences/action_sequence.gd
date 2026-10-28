@@ -54,7 +54,7 @@ func play_aoe(nam: String) -> void:
 		interrupted = false
 		roll_rng(i)
 		held(nam, i, true)
-		print("AOE sequence on ", i.FirstName)
+		print("AOE sequence on ", i.first_name)
 		await Event.wait(Bt.CurrentAbility.aoe_stagger)
 
 	while seq_running > 0: await Event.wait()
@@ -76,7 +76,7 @@ func roll_rng(tar: Actor) -> void:
 	miss = false
 	crit = false
 
-	if not tar.CantDodge or tar.has_state("Bound") or tar.has_state("Soaked"):
+	if not tar.cant_dodge or tar.has_state("Bound") or tar.has_state("Soaked"):
 		if randf_range(0, 1) > Bt.CurrentAbility.success_chance and not Bt.no_misses: miss = true
 
 	if randf_range(0, 1) < Bt.CurrentAbility.crit_chance and not Bt.no_crits and not miss: crit = true
@@ -87,7 +87,7 @@ func roll_rng(tar: Actor) -> void:
 func handle_states() -> void:
 	var chara := Bt.CurrentChar
 
-	for state: State in chara.States:
+	for state: State in chara.states:
 		print("Handling ", state.name)
 		if state.turns > -1:
 			state.turns -= 1
@@ -99,7 +99,7 @@ func handle_states() -> void:
 		if not state.queue_remove:
 			match state.filename:
 				"AuraBreak":
-					if chara.Aura != 0:
+					if chara.aura != 0:
 						state.queue_remove = true
 
 				"Burned":
@@ -122,19 +122,19 @@ func handle_states() -> void:
 					if luck < -1:
 						chara.remove_state(state.name)
 						Bt.battle_msg("confusion_recover")
-					elif luck == -1 or not chara.Controllable:
-						var choices: Array[Ability] = chara.Abilities.duplicate()
-						choices.append(chara.StandardAttack)
-						chara.NextMove = choices.pick_random()
-						chara.NextAction = Actor.BtAction.MAGIC
-						chara.NextTarget = TurnOrder.pick_random()
+					elif luck == -1 or not chara.controllable:
+						var choices: Array[Ability] = chara.abilities.duplicate()
+						choices.append(chara.standard_attack)
+						chara.next_move = choices.pick_random()
+						chara.next_action = Actor.BtAction.MAGIC
+						chara.next_target = TurnOrder.pick_random()
 
-						if chara.Controllable:
+						if chara.controllable:
 							Bt.battle_msg("confusion_lose_control")
 						else:
-							if chara == chara.NextTarget and chara.NextMove.target == Ability.T.ONE_ENEMY:
+							if chara == chara.next_target and chara.next_move.target == Ability.T.ONE_ENEMY:
 								Bt.battle_msg("confusion_hit_self")
-							elif chara.NextTarget in Bt.get_ally_faction(chara) and chara.NextMove.target == Ability.T.ONE_ENEMY:
+							elif chara.next_target in Bt.get_ally_faction(chara) and chara.next_move.target == Ability.T.ONE_ENEMY:
 								Bt.battle_msg("confusion_hit_ally")
 
 					state.turns -= 1
@@ -143,10 +143,10 @@ func handle_states() -> void:
 					if state.inflicter in TurnOrder:
 						Bt.play_effect("LeechGrab1", chara, Vector2.ZERO, false, true)
 						Bt.focus_cam(chara, 0.3)
-						if chara.DamageRecivedThisTurn == 0:
+						if chara.damage_received_this_turn == 0:
 							Bt.damage(chara, true, true, 4, false, true, true, Colorizer.ElementColor.get("natural"))
 
-						var dmg: int = chara.DamageRecivedThisTurn
+						var dmg: int = chara.damage_received_this_turn
 						await Bt.await_anim($LeechGrab1)
 						$LeechGrab1.play("LeechGrab2")
 						Bt.focus_cam(state.inflicter, 0.5, 40)
@@ -163,44 +163,44 @@ func handle_states() -> void:
 				"Aggro":
 					if state.inflicter not in TurnOrder or state.inflicter.has_state("KnockedOut"):
 						chara.remove_state(state)
-						chara.NextTarget = null
+						chara.next_target = null
 
 				"Zapped":
 					if randi_range(0, 6) > 1:
 						Bt.focus_cam(chara)
 						Bt.battle_msg("shock")
-						chara.NextAction = Actor.BtAction.ACT
-						chara.NextMove = Ability.nothing()
+						chara.next_action = Actor.BtAction.ACT
+						chara.next_move = Ability.nothing()
 						await Bt.shake_actor(chara)
 
 				"KnockedOut":
-					if chara.Health > 0:
+					if chara.health > 0:
 						var saving_throw := randf()
 						var revive_chance: float = chara.health_ratio()
-						print("Revive chance: %d / %d = %.2f " % [chara.Health, chara.MaxHP, revive_chance])
+						print("Revive chance: %d / %d = %.2f " % [chara.health, chara.max_hp, revive_chance])
 						print("Saving throw: %.2f" % [saving_throw])
 						if revive_chance == 0.0:
 							print("Character is knocked out, skip turn")
-							chara.NextAction = Actor.BtAction.ACT
-							chara.NextMove = Ability.nothing()
+							chara.next_action = Actor.BtAction.ACT
+							chara.next_move = Ability.nothing()
 						elif saving_throw <= (revive_chance):
 							chara.remove_state(state)
 						else:
 							Bt.focus_cam(chara, 0.5, 10)
 							Bt.battle_msg("cant_recover")
 							await Bt.shake_actor(chara)
-							chara.NextAction = Actor.BtAction.ACT
-							chara.NextMove = Ability.nothing()
+							chara.next_action = Actor.BtAction.ACT
+							chara.next_move = Ability.nothing()
 
 				"Frozen":
 					Bt.focus_cam(chara)
 					Bt.battle_msg("frozen")
-					chara.NextAction = Actor.BtAction.ACT
-					chara.NextMove = Ability.nothing()
+					chara.next_action = Actor.BtAction.ACT
+					chara.next_move = Ability.nothing()
 					await Bt.shake_actor(chara)
 
 	Bt.remove_queued_states(chara)
-	chara.DamageRecivedThisTurn = 0
+	chara.damage_received_this_turn = 0
 	states_handled.emit()
 
 
@@ -225,7 +225,6 @@ func StickAttack(target: Actor) -> void:
 	await get_tree().create_timer(0.4).timeout
 	Bt.return_cur()
 	Bt.anim()
-
 
 #endregion
 
@@ -254,10 +253,9 @@ func RedShift(target: Actor) -> void:
 	Bt.play_effect("ToxicSplash", target)
 	await Event.wait(0.8)
 	Bt.screen_shake(8, 0.1)
-	Bt.damage(target, true, true, Query.calc_num() + (Query.calc_num() * target.States.size()))
+	Bt.damage(target, true, true, Query.calc_num() + (Query.calc_num() * target.states.size()))
 	await Event.wait(1)
 	Bt.anim()
-
 
 #endregion
 
@@ -272,7 +270,7 @@ func FlyAway(chara: Actor) -> void:
 	await Event.wait(1, false)
 	chara.node.flip_h = true
 	Bt.anim("Fly", chara)
-	Bt.battle_msg("retreat", chara.FirstName)
+	Bt.battle_msg("retreat", chara.first_name)
 	Bt.move(chara, Vector2(150, -150), 2)
 	await Event.wait(2.5, false)
 	Bt.death(chara)
@@ -312,7 +310,7 @@ func FirstBattle1() -> void:
 	Bt.ui.disable_command = true
 	Bt.ui.disable_item = true
 	Event.flag_progress("Event/FirstBattle", 3)
-	Bt.get_actor("Mira").DontIdle = true
+	Bt.get_actor("Mira").dont_idle = true
 	Bt.end_turn()
 
 
@@ -342,7 +340,7 @@ func FirstBattle2(target: Actor) -> void:
 		await Event.wait(0.5)
 
 	await Event.wait(1.8)
-	target.Aura = 6
+	target.aura = 6
 	Hud._check_party()
 	Bt.glow(1.5, 0.5, Party.Leader)
 	Bt.zoom(7, 1)
@@ -357,12 +355,12 @@ func FirstBattle2(target: Actor) -> void:
 	CurrentChar.node.show()
 	Bt.move(CurrentChar, Vector2(40, CurrentChar.node.position.y), 0.5)
 	await Bt.await_anim(target.node)
-	target.Abilities[0].disabled = true
-	target.DontIdle = false
+	target.abilities[0].disabled = true
+	target.dont_idle = false
 	Bt.anim("", target)
 	Bt.ui.disable_ability = false
 	Bt.ui.disable_attack = true
-	CurrentChar.IgnoreStates = true
+	CurrentChar.ignore_states = true
 	await Event.wait(2)
 	Event.pop_tutorial("ability")
 	Bt.end_turn()
@@ -371,21 +369,21 @@ func FirstBattle2(target: Actor) -> void:
 func FirstBattle22() -> void:
 	Bt.hold_turn()
 	Event.pop_tutorial("aura1")
-	Bt.get_actor("CrawlingSludge").NextAction = Actor.BtAction.MAGIC
-	Bt.get_actor("CrawlingSludge").NextMove = load("res://database/Abilities/InnerFocus.tres")
+	Bt.get_actor("CrawlingSludge").next_action = Actor.BtAction.MAGIC
+	Bt.get_actor("CrawlingSludge").next_move = load("res://database/Abilities/InnerFocus.tres")
 
 
 func FirstBattle3() -> void:
-	Bt.get_actor("Mira").Abilities[0].disabled = false
-	Bt.get_actor("CrawlingSludge").NextAction = Actor.BtAction.MAGIC
-	Bt.get_actor("CrawlingSludge").NextMove = load("res://database/Abilities/SoulTap.tres")
+	Bt.get_actor("Mira").abilities[0].disabled = false
+	Bt.get_actor("CrawlingSludge").next_action = Actor.BtAction.MAGIC
+	Bt.get_actor("CrawlingSludge").next_move = load("res://database/Abilities/SoulTap.tres")
 	Bt.hold_turn()
 	Event.pop_tutorial("aura2")
 
 
 func FirstBattle4() -> void:
 	Bt.ui.disable_attack = false
-	Bt.get_actor("Mira").Aura = max(7, Bt.get_actor("Mira").Aura)
+	Bt.get_actor("Mira").aura = max(7, Bt.get_actor("Mira").aura)
 	Bt.hold_turn()
 	Event.pop_tutorial("aura3")
 
@@ -396,7 +394,7 @@ func FirstBattle5() -> void:
 	Bt.enemy_ui.hide()
 	get_tree().paused = false
 	Battle.in_battle = false
-	Bt.get_actor("Mira").DontIdle = false
+	Bt.get_actor("Mira").dont_idle = false
 	Party.Leader.node.get_node("Glow").hide()
 	Loader.battle_bars(0)
 	Bt.victory_anim(Party.Leader)
@@ -408,7 +406,7 @@ func FirstBattle5() -> void:
 
 
 func AlcineWoods1() -> void:
-	if Bt.get_actor("Mira").Health == 0: return
+	if Bt.get_actor("Mira").health == 0: return
 	Event.flag_progress("Event/AlcineFollow", 4)
 	Bt.hold_turn()
 	Bt.Action = true
@@ -422,11 +420,11 @@ func AlcineWoods2() -> void:
 
 	Global.bt.get_actor("Alcine").node.global_position = Vector2(1660, -1068)
 	Bt.focus_cam(Bt.get_actor("Alcine"))
-	Bt.get_actor("Alcine").SpeedBoost = +10
+	Bt.get_actor("Alcine").speed_boost = +10
 	Bt.TurnOrder.sort_custom(Bt.speed_sort)
-	Bt.get_actor("Alcine").NextAction = Actor.BtAction.MAGIC
-	Bt.get_actor("Alcine").NextMove = load("res://database/Abilities/SoothingSpray.tres")
-	Bt.get_actor("Alcine").NextTarget = Bt.get_actor("Mira")
+	Bt.get_actor("Alcine").next_action = Actor.BtAction.MAGIC
+	Bt.get_actor("Alcine").next_move = load("res://database/Abilities/SoothingSpray.tres")
+	Bt.get_actor("Alcine").next_target = Bt.get_actor("Mira")
 	Bt.get_actor("Alcine").node.show()
 	await Event.wait(2)
 	Hud.battle_state(true)
@@ -444,7 +442,7 @@ func ArenaGameOver() -> void:
 
 func StoneGuardianLoop() -> void:
 	if Bt.CurrentChar.codename == "Guardian" and Bt.Turn % 2 == 0 and not Event.check_flag("Event/StoneGuardianFinisher"):
-		if CurrentChar.BattleLog.back().ability.filename == "Gather":
+		if CurrentChar.battle_log.back().ability.filename == "Gather":
 			var rock_throw: Ability = load("res://database/Abilities/RockThrow.tres")
 			await Bt.use_ability_now(CurrentChar, rock_throw, Party.Member1)
 		else:
@@ -456,20 +454,20 @@ func StoneGuardianLoop() -> void:
 				await Passive.open("story_0", "anything_goes_comment")
 				Event.add_flag("Event/StoneGuardianComment")
 
-	if Bt.get_actor("Alcine").Health == 0 and Bt.CurrentChar.codename == "Mira" and Event.check_flag("Event/StoneGuardianFinisher"):
+	if Bt.get_actor("Alcine").health == 0 and Bt.CurrentChar.codename == "Mira" and Event.check_flag("Event/StoneGuardianFinisher"):
 		Event.add_flag("Event/BeatStoneGuardian")
 
 
 func StoneGuardian1() -> void:
-	Party.Leader.ClutchDmg = false
-	Party.Member1.ClutchDmg = false
+	Party.Leader.clutch_dmg = false
+	Party.Member1.clutch_dmg = false
 	var guardian := Bt.get_actor("Guardian")
 	Bt.zoom(7, 0)
-	guardian.MaterialOverride.set_shader_parameter("new_color", Color(0.235, 0.588, 0.498))
+	guardian.material_override.set_shader_parameter("new_color", Color(0.235, 0.588, 0.498))
 	await Bt.focus_cam(guardian, 0, 0)
 	Loader.battle_bars(2)
-	guardian.NextMove = await Query.get_ability("SturdyGuard")
-	guardian.NextAction = Actor.BtAction.MAGIC
+	guardian.next_move = await Query.get_ability("SturdyGuard")
+	guardian.next_action = Actor.BtAction.MAGIC
 	Bt.zoom(6, 2)
 	Bt.focus_cam(guardian, 2, Vector2(-20, -40))
 	await Passive.open("story_0", "stone_guardian_intro")
@@ -489,7 +487,7 @@ func StoneGuardian2(target: Actor = CurrentChar) -> void:
 	var alcine := Party.Member1
 	Bt.CurrentChar = guardian
 	CurrentChar = guardian
-	#if mira.Health > 0:
+	#if mira.health > 0:
 		#await Passive.open("story_0", "stone_guardian_still_standing")
 
 	Bt.callout(load("res://database/Abilities/Adaptation.tres"))
@@ -501,14 +499,14 @@ func StoneGuardian2(target: Actor = CurrentChar) -> void:
 	#Bt.pop_num(guardian, "Hue-Shift", Color(0.688, 0.636, 0.0, 1.0))
 	Global.check.emit()
 	await Event.wait(1)
-	Bt.get_actor("Guardian").AttackMultiplier = 2
-	Bt.get_actor("Guardian").MagicMultiplier = 2
-	guardian.NextAction = Actor.BtAction.MAGIC
-	guardian.NextMove = load("res://database/Abilities/Drill.tres")
-	guardian.MainColor = Color(0.688, 0.636, 0.0, 1.0)
+	Bt.get_actor("Guardian").attack_multiplier = 2
+	Bt.get_actor("Guardian").magic_multiplier = 2
+	guardian.next_action = Actor.BtAction.MAGIC
+	guardian.next_move = load("res://database/Abilities/Drill.tres")
+	guardian.main_color = Color(0.688, 0.636, 0.0, 1.0)
 
-	if alcine.Health > 0:
-		guardian.NextTarget = alcine
+	if alcine.health > 0:
+		guardian.next_target = alcine
 	else:
 		alcine.get_state("KnockedOut").turns = -1
 
@@ -520,7 +518,7 @@ func StoneGuardian2(target: Actor = CurrentChar) -> void:
 
 
 func StoneGuardian3() -> void:
-	if Party.Member1.Health > 0:
+	if Party.Member1.health > 0:
 		await Bt.death(Bt.get_actor("Alcine"))
 
 	Bt.hold_turn()
@@ -528,7 +526,7 @@ func StoneGuardian3() -> void:
 	var mira := Party.Leader
 	Bt.CurrentChar = guardian
 	CurrentChar = guardian
-	mira.CantDie = true
+	mira.cant_die = true
 	Bt.callout(load("res://database/Abilities/Adaptation.tres"))
 	Bt.zoom(6)
 	await Bt.focus_cam(mira)
@@ -536,11 +534,11 @@ func StoneGuardian3() -> void:
 	guardian.remove_state("AuraOverwrite")
 	await Bt.aura_overwrite(guardian, Color(0.498, 0.09, 1.0), -1)
 	Bt.pop_num(guardian, "Hue-Shift", Color(0.498, 0.09, 1.0))
-	guardian.MainColor = Color(0.498, 0.09, 1.0)
+	guardian.main_color = Color(0.498, 0.09, 1.0)
 	Global.check.emit()
 	await Event.wait(1)
-	mira.Aura = 0
-	mira.Health = min(mira.Health, 40)
+	mira.aura = 0
+	mira.health = min(mira.health, 40)
 	var drill: Ability = load("res://database/Abilities/Drill.tres")
 	Bt.callout(drill)
 	await Bt.use_ability_now(CurrentChar, drill, mira)
@@ -550,7 +548,7 @@ func StoneGuardian3() -> void:
 		await Event.wait(1)
 		Passive.open("story_0", "stone_guardian_guard")
 		await Event.wait(2)
-		mira.Aura = 0
+		mira.aura = 0
 		mira.remove_state("Guarding")
 		Bt.outline_remove(mira)
 		Bt.anim("Bleed", mira)
@@ -568,7 +566,7 @@ func StoneGuardian3() -> void:
 	Bt.zoom(6)
 	await Bt.focus_cam(mira, 3)
 	await Event.wait(1)
-	mira.CantDie = false
+	mira.cant_die = false
 	Transition.fade_in()
 	await Event.wait(1)
 	await Textbox.open("story_0", "placeholder_daze")
@@ -588,8 +586,8 @@ func ColorTutorialEnter() -> void:
 
 func AsteriaBoss2() -> void:
 	await Passive.open("story_1", "asteria_boss_2")
-	await Bt.add_to_troop(Bt.get_actor("Asteria").SummonedAllies[0])
-	await Bt.add_to_troop(Bt.get_actor("Asteria").SummonedAllies[1])
+	await Bt.add_to_troop(Bt.get_actor("Asteria").summoned_allies[0])
+	await Bt.add_to_troop(Bt.get_actor("Asteria").summoned_allies[1])
 	Bt.position_sprites()
 	for i in Bt.Troop: Bt.sprite_init(i)
 	Bt.get_actor("Asteria").add_health(90)
@@ -607,18 +605,18 @@ func AsteriaBoss3() -> void:
 		await Event.wait(0.3)
 		Bt.anim("", asteria)
 		if Bt.has_actor("Bird") or Bt.has_actor("Bird"):
-			asteria.Health = asteria.MaxHP
+			asteria.health = asteria.max_hp
 
 			for i in Bt.Troop:
 				match randi_range(0, 3):
-					0: i.Health += 20
+					0: i.health += 20
 					1: Bt.stat_change("Mag", 2, i)
 					2: Bt.stat_change("Def", 2, i)
 					3: Bt.stat_change("Atk", 2, i)
 		elif Event.f_past("Event/AsteriaBoss", 3):
 			await Textbox.open("story_1", "asteria_boss_4")
 			Event.add_flag("Event/AsteriaBoss", 4)
-			asteria.Health = asteria.MaxHP
+			asteria.health = asteria.max_hp
 			Bt.stat_change("Atk", 2, asteria, -1)
 			Bt.stat_change("Mag", 2, asteria, -1)
 			Bt.stat_change("Def", 2, asteria, -1)
@@ -626,7 +624,7 @@ func AsteriaBoss3() -> void:
 		elif Event.f_past("Event/AsteriaBoss", 2):
 			await Textbox.open("story_1", "asteria_boss_3")
 			Event.add_flag("Event/AsteriaBoss", 3)
-			asteria.Health = asteria.MaxHP
+			asteria.health = asteria.max_hp
 
 		Transition.fade_in_out(Color.WHITE, 0.5, 0, 0)
 	else:
@@ -648,12 +646,12 @@ func AsteriaBossFollowup() -> void:
 	if Event.get_flag("Event/AsteriaBoss") < 4:
 		for i in Bt.Troop:
 			match randi_range(0, 3):
-				0: i.Health += 20
+				0: i.health += 20
 				1: Bt.stat_change("Mag", 2, i)
 				2: Bt.stat_change("Def", 2, i)
 				3: Bt.stat_change("Atk", 2, i)
 	else:
-		asteria.Health += 15
+		asteria.health += 15
 
 
 func nov2_mira_dream() -> void:
@@ -680,12 +678,12 @@ func LazuliteHeartBoss1() -> void:
 	Loader.battle_bars(2)
 	await Passive.open("story_2", "lazulite_heart_intro")
 	#Bt.return_cur(mira)
-	mira.NextAction = Actor.BtAction.ACT
-	mira.NextMove = Ability.nothing()
+	mira.next_action = Actor.BtAction.ACT
+	mira.next_move = Ability.nothing()
 	var alcine := Bt.get_actor("Alcine")
-	alcine.NextAction = Actor.BtAction.ACT
-	alcine.NextMove = Bt.get_actor("Alcine").StandardAttack
-	alcine.NextTarget = Bt.get_actor("LHRight")
+	alcine.next_action = Actor.BtAction.ACT
+	alcine.next_move = Bt.get_actor("Alcine").standard_attack
+	alcine.next_target = Bt.get_actor("LHRight")
 	Bt.no_misses = true
 	Bt.end_turn()
 

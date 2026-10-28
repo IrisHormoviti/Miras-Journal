@@ -10,18 +10,18 @@
 
 [resource]
 script = ExtResource("2_jf3ey")
-FirstName = "Iron Hook"
-MainColor = Color(0.482353, 0.431373, 0.556863, 1)
-PartyIcon = ExtResource("2_ix1hr")
-ActorClass = "Attacker"
-RecivedSP = 6
-MaxHP = 47
-MaxAura = 31
-Attack = 1.2
-Magic = 0.6
-Defence = 0.8
-Speed = 8.0
-SkillLevel = 0
-Abilities = Array[ExtResource("1_sf34e")]([ExtResource("1_5d3ws"), ExtResource("2_fq2qt")])
-StandardAttack = ExtResource("4_tcrsf")
-Offset = Vector2(0, -2)
+first_name = "Iron Hook"
+main_color = Color(0.482353, 0.431373, 0.556863, 1)
+party_icon = ExtResource("2_ix1hr")
+actor_class = "Attacker"
+received_sp = 6
+max_hp = 47
+max_aura = 31
+attack = 1.2
+magic = 0.6
+defence = 0.8
+speed = 8.0
+skill_level = 0
+abilities = Array[ExtResource("1_sf34e")]([ExtResource("1_5d3ws"), ExtResource("2_fq2qt")])
+standard_attack = ExtResource("4_tcrsf")
+offset = Vector2(0, -2)

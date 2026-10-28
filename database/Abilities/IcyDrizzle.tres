@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="10_6ju1c"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="11_7em3r"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="11_223rs"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="11_of0ko"]
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="11_uxn6x"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_57mot"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="14_g7gta"]
@@ -47,10 +48,11 @@ script = ExtResource("5_dmjcc")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_of0ko"]
-resource_name = "(20.0, 0.0)"
+resource_name = "(20.0, 0.0) (side)"
 script = ExtResource("7_xvs4g")
 mode = 2
 position = Vector2(20, 0)
+side_aware = true
 
 [sub_resource type="Resource" id="Resource_127my"]
 script = ExtResource("4_uxn6x")
@@ -101,6 +103,18 @@ amount = 5.0
 resource_name = "Wheel Color"
 script = ExtResource("11_uxn6x")
 
+[sub_resource type="Resource" id="Resource_hoiqc"]
+script = ExtResource("4_shake")
+
+[sub_resource type="Resource" id="Resource_rxeyw"]
+resource_name = "Target"
+script = ExtResource("5_dmjcc")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_cax0t"]
+script = ExtResource("11_of0ko")
+actor = SubResource("Resource_rxeyw")
+
 [sub_resource type="Resource" id="Resource_d7tpd"]
 resource_name = "Target"
 script = ExtResource("5_dmjcc")
@@ -128,6 +142,7 @@ magic_mode = 1
 elemental = true
 color = SubResource("Resource_18uix")
 hit_branch = false
+hit_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_hoiqc"), SubResource("Resource_cax0t")])
 miss_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_h4iik")])
 
 [sub_resource type="Resource" id="Resource_lm64c"]
@@ -146,6 +161,18 @@ amount = 5.0
 [sub_resource type="Resource" id="Resource_gow1e"]
 resource_name = "Wheel Color"
 script = ExtResource("11_uxn6x")
+
+[sub_resource type="Resource" id="Resource_5uexj"]
+script = ExtResource("4_shake")
+
+[sub_resource type="Resource" id="Resource_wypt8"]
+resource_name = "Target"
+script = ExtResource("5_dmjcc")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_jpa7v"]
+script = ExtResource("11_of0ko")
+actor = SubResource("Resource_wypt8")
 
 [sub_resource type="Resource" id="Resource_qkavm"]
 resource_name = "Target"
@@ -175,6 +202,7 @@ reroll = true
 elemental = true
 color = SubResource("Resource_gow1e")
 hit_branch = false
+hit_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_5uexj"), SubResource("Resource_jpa7v")])
 miss_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_feshl")])
 
 [sub_resource type="Resource" id="Resource_s2mkv"]

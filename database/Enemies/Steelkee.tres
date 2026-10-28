@@ -8,14 +8,14 @@
 
 [resource]
 script = ExtResource("3_ncvkl")
-FirstName = "Steelkee"
-MainColor = Color(0.6901961, 0.24705882, 0.24705882, 1)
-PartyIcon = ExtResource("2_ncvkl")
-ActorClass = "Tank"
-RecivedSP = 4
-MaxHP = 60
-MaxAura = 15
-Magic = 1.6
-Defence = 1.4
-StandardAttack = ExtResource("4_ncvkl")
+first_name = "Steelkee"
+main_color = Color(0.6901961, 0.24705882, 0.24705882, 1)
+party_icon = ExtResource("2_ncvkl")
+actor_class = "Tank"
+received_sp = 4
+max_hp = 60
+max_aura = 15
+magic = 1.6
+defence = 1.4
+standard_attack = ExtResource("4_ncvkl")
 metadata/_custom_type_script = "uid://msf7qb28ublo"

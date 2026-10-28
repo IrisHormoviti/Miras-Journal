@@ -9,16 +9,16 @@
 
 [resource]
 script = ExtResource("3_iqcmx")
-FirstName = "Pirce Parasite"
-MainColor = Color(0.835294, 0.788235, 0.439216, 1)
-PartyIcon = ExtResource("2_iqcmx")
-RecivedSP = 6
-MaxHP = 100
-MaxAura = 22
-Attack = 1.9
-Magic = 0.7
-Speed = 3.0
-Abilities = Array[ExtResource("1_fb2dv")]([ExtResource("2_m8tav")])
-StandardAttack = ExtResource("5_up2d6")
-Offset = Vector2(2, -16)
+first_name = "Pirce Parasite"
+main_color = Color(0.835294, 0.788235, 0.439216, 1)
+party_icon = ExtResource("2_iqcmx")
+received_sp = 6
+max_hp = 100
+max_aura = 22
+attack = 1.9
+magic = 0.7
+speed = 3.0
+abilities = Array[ExtResource("1_fb2dv")]([ExtResource("2_m8tav")])
+standard_attack = ExtResource("5_up2d6")
+offset = Vector2(2, -16)
 metadata/_custom_type_script = "uid://msf7qb28ublo"

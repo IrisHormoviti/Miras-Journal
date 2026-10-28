@@ -237,7 +237,7 @@ func check() -> void:
 	if not check_flag():
 		destroy()
 
-	#print(Global.Controllable, CanInteract)
+	#print(Global.controllable, CanInteract)
 	if not can_interact:
 		disappear()
 	elif player_is_near():

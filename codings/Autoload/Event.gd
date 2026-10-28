@@ -198,7 +198,7 @@ func node_shake(node: CanvasItem, amount := 10, repeat := randi_range(4, 8), tim
 func heal_in_overworld(target: Actor, ab: Ability) -> void:
 	var amount := (
 		int(max(Query.calc_num(ab),
-		target.MaxHP * ((Query.calc_num(ab) * target.Magic) * 0.02)))
+		target.max_hp * ((Query.calc_num(ab) * target.magic) * 0.02)))
 	)
 	target.add_health(amount)
 	Global.check.emit()

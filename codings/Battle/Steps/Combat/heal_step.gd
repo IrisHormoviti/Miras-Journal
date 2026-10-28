@@ -16,7 +16,7 @@ func run(ctx: ActionSequenceContext) -> void:
 	if subject == null:
 		return
 
-	var value := int(round(amount.resolve(ctx))) if amount != null else Query.calc_num(ctx.ability, ctx.caster) * int(ctx.caster.Magic * ctx.caster.MagicMultiplier)
+	var value := int(round(amount.resolve(ctx))) if amount != null else Query.calc_num(ctx.ability, ctx.caster) * int(ctx.caster.magic * ctx.caster.magic_multiplier)
 
 	if variance:
 		value = int(round(value * randf_range(variance_min, variance_max)))

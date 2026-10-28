@@ -11,17 +11,17 @@
 
 [resource]
 script = ExtResource("3_3fqbs")
-FirstName = "Flow Parasite"
-MainColor = Color(0.258824, 0.392157, 0.541176, 1)
-PartyIcon = ExtResource("3_sinrd")
-ActorClass = "Mage"
-RecivedSP = 6
-MaxHP = 63
-Attack = 0.4
-Magic = 1.4
-Defence = 0.7
-Speed = 7.0
-Abilities = Array[ExtResource("1_aaqm5")]([ExtResource("2_mpd0n"), ExtResource("3_mf60o"), ExtResource("4_mf60o")])
-StandardAttack = ExtResource("5_sinrd")
-Offset = Vector2(4, -4)
+first_name = "Flow Parasite"
+main_color = Color(0.258824, 0.392157, 0.541176, 1)
+party_icon = ExtResource("3_sinrd")
+actor_class = "Mage"
+received_sp = 6
+max_hp = 63
+attack = 0.4
+magic = 1.4
+defence = 0.7
+speed = 7.0
+abilities = Array[ExtResource("1_aaqm5")]([ExtResource("2_mpd0n"), ExtResource("3_mf60o"), ExtResource("4_mf60o")])
+standard_attack = ExtResource("5_sinrd")
+offset = Vector2(4, -4)
 metadata/_custom_type_script = "uid://msf7qb28ublo"

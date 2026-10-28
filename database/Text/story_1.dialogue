@@ -36,7 +36,7 @@ $> Event.spawn("Mira", Vector2(770, -211), "SitLeft")
 $> Event.spawn("Daze", Vector2(670, -211), Direction.RIGHT)
 $> Party.set_to(["Mira", 'Daze'])
 $> Item.remove_item("LightweightAxe", &"Key")
-$> Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
+$> Party.get_member("Mira").weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
 Daze.Neutral: The food I have really won't last us long, I really didn't prepare for this situation.
 Mira.Smile: Hey, my supplies weren't even enough to take a step outside my village!
 [hide]
@@ -149,7 +149,7 @@ $> add_flag("Player/NoBag")
 $> add_flag("Event/AlcineAlone")
 $> Party.reset_party()
 $> Party.Leader = Party.get_member("Alcine")
-$> Party.Leader.Controllable = true
+$> Party.Leader.controllable = true
 $> Loader.travel_to("WitheredLeaves", Vector2(-976, 167), 0, "")
 $> give_control()
 $> save()

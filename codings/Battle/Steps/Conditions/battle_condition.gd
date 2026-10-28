@@ -103,7 +103,7 @@ func check(ctx: ActionSequenceContext) -> bool:
 			if target == null or not is_instance_valid(target):
 				return not alive
 
-			return(target.Health > 0) == alive
+			return(target.health > 0) == alive
 
 		Mode.HIT_OUTCOME:
 			return(outcomes & (1 << ctx.roll)) != 0
@@ -117,11 +117,11 @@ func check(ctx: ActionSequenceContext) -> bool:
 
 		Mode.STATES_EMPTY:
 			var states_target := _subject(ctx)
-			return states_target != null and states_target.States.is_empty() == empty
+			return states_target != null and states_target.states.is_empty() == empty
 
 		Mode.SUMMONED_ALLIES:
 			var summon_target := _subject(ctx)
-			return summon_target != null and summon_target.SummonedAllies.is_empty() == empty
+			return summon_target != null and summon_target.summoned_allies.is_empty() == empty
 
 		Mode.ACTOR_EQUALS:
 			return _left(ctx) == _right(ctx)
@@ -206,13 +206,13 @@ func _check_health(ctx: ActionSequenceContext) -> bool:
 		return false
 
 	var expected := value
-	var current := float(target.Health)
+	var current := float(target.health)
 
 	if compare_to_max:
-		expected = float(target.MaxHP)
+		expected = float(target.max_hp)
 
 	if percent:
-		current = float(target.Health) / float(target.MaxHP) * 100.0
+		current = float(target.health) / float(target.max_hp) * 100.0
 
 	return compare(current, comparator, expected)
 
@@ -220,10 +220,10 @@ func _check_health(ctx: ActionSequenceContext) -> bool:
 func _check_last_ability(ctx: ActionSequenceContext) -> bool:
 	var subject := _subject(ctx)
 
-	if subject == null or subject.BattleLog.is_empty():
+	if subject == null or subject.battle_log.is_empty():
 		return false
 
-	var entry: Variant = subject.BattleLog.back()
+	var entry: Variant = subject.battle_log.back()
 
 	if entry.ability == null or entry.ability.filename != ability_filename:
 		return false

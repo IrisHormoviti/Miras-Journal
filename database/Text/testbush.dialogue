@@ -122,7 +122,7 @@ What to do?
 - Full heal
 	$> Party.heal_party()
 - Give Mira lots of HP
-	$> Party.Leader.Health = 9999
+	$> Party.Leader.health = 9999
 - Reset all members
 	$> Party.reset_all_members()
 $> give_control()
@@ -138,7 +138,7 @@ Mira.Neutral: My hp is low
 => END!
 
 ~ debug_battle_begin
-$> Party.Leader.Health = 9999
+$> Party.Leader.health = 9999
 Debug battle begin!
 => END!
 

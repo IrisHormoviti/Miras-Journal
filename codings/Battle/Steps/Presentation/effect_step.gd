@@ -71,6 +71,11 @@ func run(ctx: ActionSequenceContext) -> void:
 func _play(ctx: ActionSequenceContext) -> void:
 	var effect_target: Variant = ctx.target
 
+	var offsetized: Vector2 = Vector2(
+		ctx.battle.offsetize(offset.x, ctx.caster) if flip_on_player_use else offset.x,
+		offset.y
+	)
+
 	if target != null:
 		effect_target = target.resolve(ctx)
 
@@ -78,9 +83,9 @@ func _play(ctx: ActionSequenceContext) -> void:
 		effect_target = position.resolve(ctx, ctx.target)
 
 	if wait:
-		await ctx.battle.play_effect(str(effect_name), effect_target, offset, flip_on_player_use, true)
+		await ctx.battle.play_effect(str(effect_name), effect_target, offsetized, flip_on_player_use, true)
 	else:
-		ctx.battle.play_effect(str(effect_name), effect_target, offset, flip_on_player_use, true)
+		ctx.battle.play_effect(str(effect_name), effect_target, offsetized, flip_on_player_use, true)
 
 	if ctx.battle.act != null:
 		ctx.last_effect = ctx.battle.act.get_node_or_null(str(effect_name))

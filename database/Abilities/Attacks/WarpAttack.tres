@@ -17,33 +17,6 @@
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="13_0fjia"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="14_k3582"]
 
-[sub_resource type="Resource" id="Resource_nqg7u"]
-resource_name = "Target"
-script = ExtResource("3_7ocar")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_usw3n"]
-script = ExtResource("4_lu2nb")
-zoom_enabled = true
-actor = SubResource("Resource_nqg7u")
-
-[sub_resource type="Resource" id="Resource_7ocar"]
-resource_name = "Caster"
-script = ExtResource("3_7ocar")
-
-[sub_resource type="Resource" id="Resource_lu2nb"]
-resource_name = "x 30.0"
-script = ExtResource("5_554vl")
-mode = 3
-x = 30.0
-
-[sub_resource type="Resource" id="Resource_554vl"]
-script = ExtResource("6_mxcaf")
-actor = SubResource("Resource_7ocar")
-destination = SubResource("Resource_lu2nb")
-duration = 0.4
-wait = false
-
 [sub_resource type="Resource" id="Resource_mxcaf"]
 resource_name = "Target"
 script = ExtResource("3_7ocar")
@@ -51,9 +24,28 @@ mode = 1
 
 [sub_resource type="Resource" id="Resource_syd4m"]
 script = ExtResource("4_lu2nb")
+zoom_enabled = true
 move_enabled = true
 actor = SubResource("Resource_mxcaf")
 duration = 0.6
+
+[sub_resource type="Resource" id="Resource_7ocar"]
+resource_name = "Caster"
+script = ExtResource("3_7ocar")
+
+[sub_resource type="Resource" id="Resource_lu2nb"]
+resource_name = "x 30.0 (side)"
+script = ExtResource("5_554vl")
+mode = 3
+x = 30.0
+side_aware = true
+
+[sub_resource type="Resource" id="Resource_554vl"]
+script = ExtResource("6_mxcaf")
+actor = SubResource("Resource_7ocar")
+destination = SubResource("Resource_lu2nb")
+duration = 0.4
+wait = false
 
 [sub_resource type="Resource" id="Resource_ycjgy"]
 resource_name = "Caster"
@@ -85,12 +77,13 @@ resource_name = "Target Position"
 script = ExtResource("5_554vl")
 mode = 9
 offset = Vector2(-30, 0)
+side_aware = true
 
 [sub_resource type="Resource" id="Resource_k3582"]
-script = ExtResource("7_syd4m")
-mode = 2
+script = ExtResource("6_mxcaf")
+mode = 3
 actor = SubResource("Resource_ru3of")
-position = SubResource("Resource_0fjia")
+destination = SubResource("Resource_0fjia")
 
 [sub_resource type="Resource" id="Resource_ee4hd"]
 resource_name = "Caster"
@@ -134,6 +127,27 @@ sound_name = &"Attack2"
 [sub_resource type="Resource" id="Resource_rgdts"]
 script = ExtResource("10_pdqju")
 
+[sub_resource type="Resource" id="Resource_urusl"]
+script = ExtResource("10_pdqju")
+
+[sub_resource type="Resource" id="Resource_kfmb5"]
+resource_name = "Target"
+script = ExtResource("3_7ocar")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_p4tdp"]
+script = ExtResource("9_1c6ta")
+actor = SubResource("Resource_kfmb5")
+
+[sub_resource type="Resource" id="Resource_16lv1"]
+resource_name = "Target"
+script = ExtResource("3_7ocar")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ba32t"]
+script = ExtResource("13_0fjia")
+target = SubResource("Resource_16lv1")
+
 [sub_resource type="Resource" id="Resource_u6vb7"]
 resource_name = "weapon"
 script = ExtResource("11_sghhj")
@@ -149,6 +163,8 @@ script = ExtResource("12_ru3of")
 target = SubResource("Resource_wohxd")
 power = SubResource("Resource_u6vb7")
 hit_branch = false
+hit_steps = Array[ExtResource("2_usw3n")]([SubResource("Resource_urusl"), SubResource("Resource_p4tdp")])
+miss_steps = Array[ExtResource("2_usw3n")]([SubResource("Resource_ba32t")])
 
 [sub_resource type="Resource" id="Resource_yavl0"]
 resource_name = "Target"
@@ -168,6 +184,18 @@ else_steps = Array[ExtResource("2_usw3n")]([SubResource("Resource_1h7p7"), SubRe
 [sub_resource type="Resource" id="Resource_dc4vi"]
 script = ExtResource("8_ycjgy")
 duration = 0.7
+
+[sub_resource type="Resource" id="Resource_home"]
+resource_name = "Home"
+script = ExtResource("5_554vl")
+mode = 0
+
+[sub_resource type="Resource" id="Resource_teleport_return"]
+script = ExtResource("6_mxcaf")
+mode = 3
+actor = SubResource("Resource_j18xc")
+destination = SubResource("Resource_home")
+offset = Vector2(-50, 0)
 
 [sub_resource type="Resource" id="Resource_yaml2"]
 resource_name = "Caster"
@@ -217,7 +245,7 @@ animation = &"Idle"
 
 [sub_resource type="Resource" id="Resource_lqltm"]
 script = ExtResource("1_nqg7u")
-steps = Array[ExtResource("2_usw3n")]([SubResource("Resource_usw3n"), SubResource("Resource_554vl"), SubResource("Resource_syd4m"), SubResource("Resource_1c6ta"), SubResource("Resource_sghhj"), SubResource("Resource_k3582"), SubResource("Resource_xvdgi"), SubResource("Resource_rc0tw"), SubResource("Resource_khtl8"), SubResource("Resource_s6ac0"), SubResource("Resource_dc4vi"), SubResource("Resource_85dff"), SubResource("Resource_gxgph"), SubResource("Resource_u74ig"), SubResource("Resource_i6utr")])
+steps = Array[ExtResource("2_usw3n")]([SubResource("Resource_syd4m"), SubResource("Resource_554vl"), SubResource("Resource_1c6ta"), SubResource("Resource_sghhj"), SubResource("Resource_k3582"), SubResource("Resource_xvdgi"), SubResource("Resource_rc0tw"), SubResource("Resource_khtl8"), SubResource("Resource_s6ac0"), SubResource("Resource_dc4vi"), SubResource("Resource_teleport_return"), SubResource("Resource_85dff"), SubResource("Resource_gxgph"), SubResource("Resource_u74ig"), SubResource("Resource_i6utr")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q46ei"]
 atlas = ExtResource("1_y4dh8")

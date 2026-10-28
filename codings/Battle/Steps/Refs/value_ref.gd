@@ -142,8 +142,8 @@ static func weapon_power_of(caster: Actor) -> float:
 	if caster == null and is_instance_valid(Global.bt) and Global.bt.CurrentChar != null:
 		caster = Global.bt.CurrentChar
 
-	if caster != null and caster.Weapon != null:
-		return float(caster.Weapon.power)
+	if caster != null and caster.weapon != null:
+		return float(caster.weapon.power)
 
 	return 0.0
 
@@ -172,40 +172,40 @@ func stat_value(ctx: ActionSequenceContext) -> float:
 
 	match stat:
 		Stat.MAX_HP:
-			return float(subject.MaxHP)
+			return float(subject.max_hp)
 
 		Stat.CURRENT_HP:
-			return float(subject.Health)
+			return float(subject.health)
 
 		Stat.MISSING_HP:
-			return float(subject.MaxHP - subject.Health)
+			return float(subject.max_hp - subject.health)
 
 		Stat.MAX_HP_PERCENT:
-			return float(subject.MaxHP) * value / 100.0
+			return float(subject.max_hp) * value / 100.0
 
 		Stat.CURRENT_HP_PERCENT:
-			return float(subject.Health) * value / 100.0
+			return float(subject.health) * value / 100.0
 
 		Stat.MISSING_HP_PERCENT:
-			return float(subject.MaxHP - subject.Health) * value / 100.0
+			return float(subject.max_hp - subject.health) * value / 100.0
 
 		Stat.MAX_AURA:
-			return float(subject.MaxAura)
+			return float(subject.max_aura)
 
 		Stat.CURRENT_AURA:
-			return float(subject.Aura)
+			return float(subject.aura)
 
 		Stat.MAX_AURA_PERCENT:
-			return float(subject.MaxAura) * value / 100.0
+			return float(subject.max_aura) * value / 100.0
 
 		Stat.CURRENT_AURA_PERCENT:
-			return float(subject.Aura) * value / 100.0
+			return float(subject.aura) * value / 100.0
 
 		Stat.STATE_COUNT:
-			return float(subject.States.size())
+			return float(subject.states.size())
 
 		Stat.DAMAGE_TAKEN:
-			return float(subject.DamageRecivedThisTurn)
+			return float(subject.damage_received_this_turn)
 
 	return 0.0
 

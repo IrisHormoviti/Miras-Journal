@@ -41,10 +41,11 @@ resource_name = "Caster"
 script = ExtResource("3_gdunc")
 
 [sub_resource type="Resource" id="Resource_2npnd"]
-resource_name = "(-20.0, 0.0)"
+resource_name = "(-20.0, 0.0) (side)"
 script = ExtResource("6_2npnd")
 mode = 2
 position = Vector2(-20, 0)
+side_aware = true
 
 [sub_resource type="Resource" id="Resource_vqu6n"]
 script = ExtResource("7_vqu6n")
@@ -63,10 +64,11 @@ script = ExtResource("3_gdunc")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_2h4dx"]
-resource_name = "(20.0, 0.0)"
+resource_name = "(20.0, 0.0) (side)"
 script = ExtResource("6_2npnd")
 mode = 2
 position = Vector2(20, 0)
+side_aware = true
 
 [sub_resource type="Resource" id="Resource_fo6yx"]
 script = ExtResource("4_p7s5k")
@@ -152,6 +154,15 @@ script = ExtResource("11_fo6yx")
 effect_name = &"SimpleHit"
 target = SubResource("Resource_sshvk")
 
+[sub_resource type="Resource" id="Resource_7h4pk"]
+resource_name = "Target"
+script = ExtResource("3_gdunc")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_bkdby"]
+script = ExtResource("14_4fpcf")
+target = SubResource("Resource_7h4pk")
+
 [sub_resource type="Resource" id="Resource_qvu3c"]
 resource_name = "weapon"
 script = ExtResource("12_bujx0")
@@ -167,6 +178,7 @@ script = ExtResource("13_adupg")
 target = SubResource("Resource_8k1ib")
 power = SubResource("Resource_qvu3c")
 hit_steps = Array[ExtResource("2_x5sw2")]([SubResource("Resource_u4bdf")])
+miss_steps = Array[ExtResource("2_x5sw2")]([SubResource("Resource_bkdby")])
 
 [sub_resource type="Resource" id="Resource_1aos5"]
 resource_name = "Target"

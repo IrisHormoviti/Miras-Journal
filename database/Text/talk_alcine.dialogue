@@ -8,7 +8,7 @@ Alcine.Upset: Wheew...
 {{nametag_to_be_used}}: {{line_to_be_used}}
 - Cancel
 - Ask for healing
-	if Query.find_ability(Query.mem("Alcine"), Ability.TP.HEALING, true).AuraCost < Query.mem("Alcine").Aura:
+	if Query.find_ability(Query.mem("Alcine"), Ability.TP.HEALING, true).aura_cost < Query.mem("Alcine").aura:
 		Alcine.Neutral: *nod*
 		$>> use_ability_overworld(Query.find_ability(Query.mem("Alcine"), Ability.TP.HEALING, true), Query.mem("Alcine"))
 		=> END

@@ -35,32 +35,32 @@ func run(ctx: ActionSequenceContext) -> void:
 
 	match mode:
 		Mode.CANT_DIE:
-			subject.CantDie = enabled
+			subject.cant_die = enabled
 
 		Mode.IGNORE_STATES:
-			subject.IgnoreStates = enabled
+			subject.ignore_states = enabled
 
 		Mode.DONT_IDLE:
-			subject.DontIdle = enabled
+			subject.dont_idle = enabled
 
 		Mode.CLUTCH_DAMAGE:
-			subject.ClutchDmg = enabled
+			subject.clutch_dmg = enabled
 
 		Mode.ABILITY_DISABLED:
-			if ability_index >= 0 and ability_index < subject.Abilities.size():
-				subject.Abilities[ability_index].disabled = not enabled
+			if ability_index >= 0 and ability_index < subject.abilities.size():
+				subject.abilities[ability_index].disabled = not enabled
 
 		Mode.CONTROLLABLE:
-			subject.Controllable = enabled
+			subject.controllable = enabled
 
 		Mode.NEXT_ACTION:
-			subject.NextAction = next_action
+			subject.next_action = next_action
 
 			if next_move != null:
-				subject.NextMove = next_move
+				subject.next_move = next_move
 
 			if next_target != null:
-				subject.NextTarget = next_target.resolve(ctx)
+				subject.next_target = next_target.resolve(ctx)
 
 
 ## The actor this step acts on. Scripting a turn defaults to the caster, since a

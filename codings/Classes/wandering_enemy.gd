@@ -38,6 +38,7 @@ func add_nodes() -> void:
 		this_sprite.owner = $".."
 
 	var esc_marker: Marker2D = get_node_or_null("EscapePosition")
+
 	if esc_marker == null:
 		esc_marker = Marker2D.new()
 		esc_marker.name = "EscapePosition"
@@ -45,6 +46,7 @@ func add_nodes() -> void:
 		esc_marker.owner = $".."
 
 	var scn_marker: Marker2D = get_node_or_null("ScenePosition")
+
 	if scn_marker == null:
 		scn_marker = Marker2D.new()
 		scn_marker.name = "ScenePosition"
@@ -59,16 +61,19 @@ func add_nodes() -> void:
 
 func set_positions() -> void:
 	var scn_marker: Marker2D = get_node_or_null("ScenePosition")
+
 	if scn_marker != null and battle_sequence != null:
 		battle_sequence.ScenePosition = scn_marker.global_position
 
 	var esc_marker: Marker2D = get_node_or_null("EscapePosition")
+
 	if esc_marker != null and battle_sequence != null:
 		battle_sequence.EscPosition = Vector2i(esc_marker.global_position / 24)
 
 
 func default() -> void:
 	Nav = $Nav
+
 	if is_instance_valid(Nav):
 		Nav.simplify_path = false
 		Nav.path_desired_distance = 4.0
@@ -91,6 +96,7 @@ func default() -> void:
 	homepoints.clear()
 	if has_node("PatrolPath"):
 		var path: Path2D = get_node("PatrolPath")
+
 		if path.curve:
 			for i in range(path.curve.point_count):
 				homepoints.append(path.to_global(path.curve.get_point_position(i)))
@@ -127,11 +133,14 @@ func patrol() -> void:
 	if not homepoints.is_empty():
 		var nearest_idx := 0
 		var nearest_dist := INF
+
 		for i in range(homepoints.size()):
 			var dist := global_position.distance_to(homepoints[i])
+
 			if dist < nearest_dist:
 				nearest_dist = dist
 				nearest_idx = i
+
 		current_path_index = nearest_idx
 
 		# If the enemy strayed somewhere it cannot patrol back from (for example
@@ -162,14 +171,17 @@ func extended_process() -> void:
 				Nav.set_target_position(Global.player.global_position)
 
 				var dist_to_player := global_position.distance_to(Global.player.global_position)
+
 				if dist_to_player <= max_chase_distance and Nav.is_target_reachable():
 					tmr.start(give_up_after)
 					var next_pos := Nav.get_next_path_position()
+
 					if next_pos.distance_to(global_position) > 1.0:
 						direction = to_local(next_pos).normalized()
 		else:
 			if not Battle.in_battle:
 				Loader.battle_bars(0)
+
 			patrol()
 			if Battle.attacker == self:
 				Battle.attacker = null
@@ -200,6 +212,7 @@ func extended_process() -> void:
 				if is_instance_valid(Nav):
 					Nav.set_target_position(cur_homepoint)
 					var next_pos := Nav.get_next_path_position()
+
 					if next_pos.distance_to(global_position) > 1.0:
 						direction = to_local(next_pos).normalized()
 					else:
@@ -283,7 +296,12 @@ func _on_finder_body_entered(body: Node2D) -> void:
 
 
 func _on_catch_area_body_entered(body: Node2D) -> void:
-	if body == Global.player and not lock and not Battle.in_battle and not Battle.prevent_battles and (not Global.player.attacking or Global.player.winding_attack):
+	if (
+		body == Global.player and not lock
+		and Global.controllable
+		and not Battle.in_battle and not Battle.prevent_battles
+		and(not Global.player.attacking or Global.player.winding_attack)
+	):
 		if has_node("EnemyStrike"):
 			$EnemyStrike.disappear()
 

@@ -16,7 +16,7 @@ else:
 ~ rank1
 if check_flag("Event/LindeDoor"):
 	you know dispel now
-	$> Party.Leader.Abilities.append(load("res://database/Abilities/Dispel.tres"))
+	$> Party.Leader.abilities.append(load("res://database/Abilities/Dispel.tres"))
 	$> add_flag("SocialLink/Linde", 1)
 	$> Event.progress_by_time(1)
 	$> Event.time_transition()

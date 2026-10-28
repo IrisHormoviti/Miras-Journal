@@ -114,7 +114,7 @@ func _lowest_health(actors: Array[Actor], caster: Actor, exclude: bool) -> Actor
 	if candidates.is_empty():
 		return null
 
-	candidates.sort_custom(func(a: Actor, b: Actor) -> bool: return a.Health < b.Health)
+	candidates.sort_custom(func(a: Actor, b: Actor) -> bool: return a.health < b.health)
 	return candidates[0]
 
 
@@ -137,14 +137,14 @@ func _random(actors: Array[Actor], caster: Actor, exclude: bool) -> Actor:
 
 
 func _summon(ctx: ActionSequenceContext, random: bool) -> Actor:
-	if ctx.caster == null or ctx.caster.SummonedAllies.is_empty():
+	if ctx.caster == null or ctx.caster.summoned_allies.is_empty():
 		return null
 
 	if random:
-		return ctx.caster.SummonedAllies.pick_random()
+		return ctx.caster.summoned_allies.pick_random()
 
-	var index := clampi(summon_index, 0, ctx.caster.SummonedAllies.size() - 1)
-	return ctx.caster.SummonedAllies[index]
+	var index := clampi(summon_index, 0, ctx.caster.summoned_allies.size() - 1)
+	return ctx.caster.summoned_allies[index]
 
 
 func _validate_property(property: Dictionary) -> void:

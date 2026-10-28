@@ -9,24 +9,24 @@ func ai() -> void:
 	print("AI")
 	Char = Bt.CurrentChar
 
-	if Char.has_state("KnockedOut") or Char.Health == 0:
+	if Char.has_state("KnockedOut") or Char.health == 0:
 		print("Cannot move, skip turn")
-		Char.NextAction = Actor.BtAction.ACT
+		Char.next_action = Actor.BtAction.ACT
 		choose(Ability.nothing())
 		return
 
-	if Char.NextAction != Actor.BtAction.UNSET:
+	if Char.next_action != Actor.BtAction.UNSET:
 		print("Forced move")
-		choose(Char.NextMove, Char.NextTarget)
+		choose(Char.next_move, Char.next_target)
 		return
 
 	var best_ability: Ability = null
 	var best_target: Actor = null
 	var highest_score: float = -1.0
 
-	var available_abilities: Array[Ability] = Char.Abilities.duplicate()
+	var available_abilities: Array[Ability] = Char.abilities.duplicate()
 
-	if Char.StandardAttack: available_abilities.append(Char.StandardAttack)
+	if Char.standard_attack: available_abilities.append(Char.standard_attack)
 
 	print("Available options:")
 
@@ -77,7 +77,7 @@ func ai() -> void:
 				# Add slight variance
 				score += randf_range(-0.15, 0.15)
 
-				print("	%s = %.2f" % [target.FirstName, score])
+				print("	%s = %.2f" % [target.first_name, score])
 
 				if score > highest_score:
 					highest_score = score
@@ -88,7 +88,7 @@ func ai() -> void:
 
 	if best_ability == null:
 		print("Nothing else to do, using Standard Attack")
-		best_ability = Char.StandardAttack
+		best_ability = Char.standard_attack
 		best_target = Bt.random_target(best_ability)
 
 	choose(best_ability, best_target)
@@ -117,7 +117,7 @@ func evaluate_action(ab: Ability, tar: Actor) -> float:
 			Ability.TP.CHEAP_ATTACK:
 				if is_enemy(tar):
 					# Prioritize an attack that will finish off the enemy
-					if tar.Health <= (Char.Weapon.power * Char.get_attack() * tar.get_defence()):
+					if tar.health <= (Char.weapon.power * Char.get_attack() * tar.get_defence()):
 						score = 1
 					else:
 						score += 0.5
@@ -144,26 +144,26 @@ func evaluate_action(ab: Ability, tar: Actor) -> float:
 					if not tar.has_state(str(ab.inflicts_state())): score += 0.75 * crit_mult
 			Ability.TP.ATK_BUFF:
 				if is_ally(tar):
-					if tar.AttackMultiplier <= 1.0:
+					if tar.attack_multiplier <= 1.0:
 						score += 0.2
 
-					if tar.ActorClass == "Attacker":
+					if tar.actor_class == "Attacker":
 						score += 0.4
 
 			Ability.TP.MAG_BUFF:
 				if is_ally(tar):
-					if tar.MagicMultiplier <= 1.0:
+					if tar.magic_multiplier <= 1.0:
 						score += 0.2
 
-					if tar.ActorClass == "Mage":
+					if tar.actor_class == "Mage":
 						score += 0.4
 
 			Ability.TP.DEF_BUFF:
 				if is_ally(tar):
-					if tar.DefenceMultiplier <= 1.0:
+					if tar.defence_multiplier <= 1.0:
 						score += 0.2
 
-					if tar.ActorClass == "Tank":
+					if tar.actor_class == "Tank":
 						score += 0.4
 
 			Ability.TP.AGGRO:
@@ -172,13 +172,13 @@ func evaluate_action(ab: Ability, tar: Actor) -> float:
 						score += 0.5
 
 			Ability.TP.DEFENSIVE:
-				if Char.Health < Char.MaxHP * 0.6:
+				if Char.health < Char.max_hp * 0.6:
 					score += 0.3
 
-				if Char.Aura < Char.MaxAura * 0.6:
+				if Char.aura < Char.max_aura * 0.6:
 					score += 0.4
 
-				if Char.Aura < Char.MaxAura * 0.2:
+				if Char.aura < Char.max_aura * 0.2:
 					score += 0.5
 
 			_:
@@ -195,18 +195,18 @@ func get_ability_score_modifiers(ab: Ability) -> float:
 	var total_cost: float = (ab.aura_cost + (ab.hp_cost / 2))
 
 	if total_cost > 0:
-		var penalty: float = (total_cost / float(Char.Aura)) * 0.3
+		var penalty: float = (total_cost / float(Char.aura)) * 0.3
 		score -= penalty
 		print(" - Cost penalty: -%.2f" % [penalty])
 
 	# More likely to use aura recovery when low on AP
-	if ab.recover_aura and not Char.Aura == Char.MaxAura:
+	if ab.recover_aura and not Char.aura == Char.max_aura:
 		var bonus: float = (1 - Char.aura_ratio()) / 2
 		score += bonus
 		print(" - Recovery bonus: +%.2f" % [bonus])
 
 	# Discourage spamming the same thing
-	if Char.BattleLog.back().ability == ab:
+	if Char.battle_log.back().ability == ab:
 		score -= 0.3
 		print(" - Avoid using the same thing again: -0.3")
 
@@ -219,8 +219,8 @@ func can_afford(ab: Ability) -> bool:
 	# Can't use magic when deflected
 	if Char.has_state("Deflected") and ab.wheel_color != Color.WHITE: return false
 	# Handle cost
-	if ab.aura_cost != 0 and ab.aura_cost > Char.Aura: return false
-	if ab.hp_cost > Char.Health: return false
+	if ab.aura_cost != 0 and ab.aura_cost > Char.aura: return false
+	if ab.hp_cost > Char.health: return false
 	return true
 
 
@@ -244,7 +244,7 @@ func get_valid_targets(ab: Ability) -> Array[Actor]:
 
 
 func is_ally(tar: Actor) -> bool:
-	return Char.IsEnemy == tar.IsEnemy
+	return Char.is_enemy == tar.is_enemy
 
 
 func is_enemy(tar: Actor) -> bool:
@@ -258,23 +258,23 @@ func choose(ab: Ability, tar: Actor = null) -> void:
 
 	if ab.target == Ability.T.SELF:
 		tar = Char
-	elif Char.NextTarget == null:
+	elif Char.next_target == null:
 
 		if tar == null:
-			Char.NextTarget = Bt.random_target(ab)
+			Char.next_target = Bt.random_target(ab)
 
-		Char.NextTarget = tar
+		Char.next_target = tar
 
-	if Char.NextAction == Actor.BtAction.UNSET:
-		if ab in Char.Abilities:
-			Char.NextAction = Actor.BtAction.MAGIC
+	if Char.next_action == Actor.BtAction.UNSET:
+		if ab in Char.abilities:
+			Char.next_action = Actor.BtAction.MAGIC
 		else:
-			Char.NextAction = Actor.BtAction.ACT
+			Char.next_action = Actor.BtAction.ACT
 
-		Char.NextMove = ab
+		Char.next_move = ab
 
 	if (Char.has_state("Confused") and not ab.is_aoe()):
-		Char.NextTarget = Bt.TurnOrder.pick_random()
+		Char.next_target = Bt.TurnOrder.pick_random()
 		Bt.confusion_msg()
 
 	ai_chosen.emit()

@@ -11,18 +11,18 @@
 
 [resource]
 script = ExtResource("4_7ifqy")
-FirstName = "Right Arm"
-MainColor = Color(0.943278, 0.879228, 0.469971, 1)
-PartyIcon = ExtResource("3_7ifqy")
+first_name = "Right Arm"
+main_color = Color(0.943278, 0.879228, 0.469971, 1)
+party_icon = ExtResource("3_7ifqy")
 codename = &"LHRight"
-RecivedSP = 0
-CustomPosition = Vector2i(22, 0)
-MaxAura = 35
-Attack = 1.6
-Magic = 0.7
-Defence = 0.6
-Speed = 3.0
-Abilities = Array[ExtResource("1_a8rpr")]([ExtResource("3_mpd6k"), ExtResource("4_mpd6k"), ExtResource("4_3pclf")])
-StandardAttack = ExtResource("5_n2qf8")
-BT = "LazuliteHeart/LazuliteHeartBTRight"
+received_sp = 0
+custom_position = Vector2i(22, 0)
+max_aura = 35
+attack = 1.6
+magic = 0.7
+defence = 0.6
+speed = 3.0
+abilities = Array[ExtResource("1_a8rpr")]([ExtResource("3_mpd6k"), ExtResource("4_mpd6k"), ExtResource("4_3pclf")])
+standard_attack = ExtResource("5_n2qf8")
+bt = "LazuliteHeart/LazuliteHeartBTRight"
 metadata/_custom_type_script = "uid://msf7qb28ublo"

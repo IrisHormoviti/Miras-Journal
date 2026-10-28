@@ -58,7 +58,7 @@ func run(ctx: ActionSequenceContext) -> void:
 			ctx.last_state = await ctx.battle.apply_trap(place, subject, ctx.caster, wait)
 
 		Mode.AURA_OVERWRITE:
-			var overwrite := color.resolve(ctx) if color != null else subject.MainColor
+			var overwrite := color.resolve(ctx) if color != null else subject.main_color
 			await ctx.battle.aura_overwrite(subject, overwrite, turns)
 
 		Mode.SET_TURNS:
@@ -68,8 +68,8 @@ func run(ctx: ActionSequenceContext) -> void:
 				current.turns = turns
 
 		Mode.REMOVE_RANDOM:
-			if not subject.States.is_empty():
-				var random_state: State = subject.States.pick_random()
+			if not subject.states.is_empty():
+				var random_state: State = subject.states.pick_random()
 				ctx.last_state = random_state
 				subject.remove_state(random_state)
 

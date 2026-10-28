@@ -7,7 +7,11 @@ const StepCatalog = preload("res://addons/action_sequence_editor/step_catalog.gd
 const PREVIEW_BATTLE_SCENE := "res://codings/Battle/Battle.tscn"
 const PREVIEW_ACTORS := ["Mira", "Alcine", "Asteria", "Daze"]
 const PREVIEW_TARGETS := ["Single dummy", "Three dummies"]
+const PREVIEW_ENEMY_TARGETS := ["Party leader", "Whole party"]
+const PREVIEW_TARGET_COUNTS := [1, 3]
 const PREVIEW_OUTCOME_BASE := 100
+const PREVIEW_CHOOSE_ENEMY := 50
+const PREVIEW_ENEMY_SELECTED := 51
 
 signal steps_changed(property: StringName, steps: Array)
 
@@ -35,6 +39,8 @@ var reorder_accum := 0.0
 var reorder_changed := false
 var preview_actor := "Mira"
 var preview_targets := 1
+var preview_enemy_path := ""
+var preview_enemy_name := ""
 
 
 func _ready() -> void:
@@ -379,10 +385,28 @@ func update_preview_tooltip() -> void:
 	if preview_button == null:
 		return
 
+	var targets := preview_target_labels()
+	var index := preview_target_index()
 	preview_button.tooltip_text = "Preview as %s on %s" % [
-		preview_actor,
-		PREVIEW_TARGETS[preview_targets - 1],
+		preview_caster_name(),
+		targets[index] if index >= 0 else targets[0],
 	]
+
+
+func is_enemy_preview() -> bool:
+	return not preview_enemy_path.is_empty()
+
+
+func preview_caster_name() -> String:
+	return preview_enemy_name if is_enemy_preview() else preview_actor
+
+
+func preview_target_labels() -> Array:
+	return PREVIEW_ENEMY_TARGETS if is_enemy_preview() else PREVIEW_TARGETS
+
+
+func preview_target_index() -> int:
+	return PREVIEW_TARGET_COUNTS.find(preview_targets)
 
 
 func build_preview_menu() -> void:
@@ -395,18 +419,33 @@ func build_preview_menu() -> void:
 
 	for i in PREVIEW_ACTORS.size():
 		actor_menu.add_radio_check_item(PREVIEW_ACTORS[i], i)
-		actor_menu.set_item_checked(i, PREVIEW_ACTORS[i] == preview_actor)
+		actor_menu.set_item_checked(i, not is_enemy_preview() and PREVIEW_ACTORS[i] == preview_actor)
 
 	actor_menu.id_pressed.connect(on_preview_actor)
 	popup.add_submenu_node_item("Actor", actor_menu)
+
+	var enemy_menu := PopupMenu.new()
+	enemy_menu.name = "PreviewEnemyMenu"
+	popup.add_child(enemy_menu)
+
+	if is_enemy_preview():
+		enemy_menu.add_radio_check_item(preview_enemy_name, PREVIEW_ENEMY_SELECTED)
+		enemy_menu.set_item_checked(0, true)
+		enemy_menu.add_separator()
+
+	enemy_menu.add_item("Choose enemy...", PREVIEW_CHOOSE_ENEMY)
+	enemy_menu.id_pressed.connect(on_preview_enemy)
+	popup.add_submenu_node_item("Enemy", enemy_menu)
 
 	var target_menu := PopupMenu.new()
 	target_menu.name = "PreviewTargetMenu"
 	popup.add_child(target_menu)
 
-	for i in PREVIEW_TARGETS.size():
-		target_menu.add_radio_check_item(PREVIEW_TARGETS[i], i)
-		target_menu.set_item_checked(i, i + 1 == preview_targets)
+	var target_labels := preview_target_labels()
+
+	for i in target_labels.size():
+		target_menu.add_radio_check_item(target_labels[i], i)
+		target_menu.set_item_checked(i, PREVIEW_TARGET_COUNTS[i] == preview_targets)
 
 	target_menu.id_pressed.connect(on_preview_target)
 	popup.add_submenu_node_item("Target", target_menu)
@@ -422,14 +461,43 @@ func on_preview_actor(id: int) -> void:
 		return
 
 	preview_actor = PREVIEW_ACTORS[id]
+	preview_enemy_path = ""
+	preview_enemy_name = ""
+	update_preview_tooltip()
+
+
+func on_preview_enemy(id: int) -> void:
+	if id == PREVIEW_CHOOSE_ENEMY:
+		choose_preview_enemy()
+
+
+func choose_preview_enemy() -> void:
+	if not Engine.is_editor_hint():
+		return
+
+	EditorInterface.popup_quick_open(on_preview_enemy_selected, [&"Actor"])
+
+
+func on_preview_enemy_selected(path: String) -> void:
+	if path.is_empty():
+		return
+
+	var actor := ResourceLoader.load(path) as Actor
+
+	if actor == null:
+		push_warning("The preview enemy is not an Actor: " + path)
+		return
+
+	preview_enemy_path = path
+	preview_enemy_name = actor.first_name
 	update_preview_tooltip()
 
 
 func on_preview_target(id: int) -> void:
-	if id < 0 or id >= PREVIEW_TARGETS.size():
+	if id < 0 or id >= PREVIEW_TARGET_COUNTS.size():
 		return
 
-	preview_targets = id + 1
+	preview_targets = PREVIEW_TARGET_COUNTS[id]
 	update_preview_tooltip()
 
 
@@ -448,6 +516,9 @@ func preview(outcome: int) -> void:
 		"targets": preview_targets,
 		"wheel_color": preview_wheel_color(sequence).to_html(),
 	}
+
+	if is_enemy_preview():
+		request["enemy"] = preview_enemy_path
 
 	if not Battle.write_preview(Battle.preview_shared_dir_static(), typed_steps(get_steps()), request):
 		return

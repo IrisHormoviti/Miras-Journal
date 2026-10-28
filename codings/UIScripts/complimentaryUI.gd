@@ -13,11 +13,11 @@ func _init() -> void:
 func draw_character(character: Actor) -> void:
 	chara = character
 	##Test
-	#Global.Complimentaries = ["FluidBlast", "RedShift", "Dispel"]
-	#chara.SkillLevel = 10
-	#chara.ComplimentaryList = {"FluidBlast":1, "RedShift":1}
+	#Global.complimentaries = ["FluidBlast", "RedShift", "Dispel"]
+	#chara.skill_level = 10
+	#chara.complimentary_list = {"FluidBlast":1, "RedShift":1}
 
-	slots = chara.SkillLevel / 10 + 1
+	slots = chara.skill_level / 10 + 1
 	await chara.load_complimentaries()
 	await fetch_equiped_abilities()
 	await fetch_all_abilities()
@@ -28,7 +28,7 @@ func draw_character(character: Actor) -> void:
 		grd.rotation_degrees = randf_range(0, 360)
 	for i in $Background.get_children(): i.modulate = Color.TRANSPARENT
 	$Background.self_modulate = Color.TRANSPARENT
-	$Title/Member.text = "[img width=58]%s[/img] %s %s" % [chara.PartyIcon.resource_path, chara.FirstName, chara.LastName]
+	$Title/Member.text = "[img width=58]%s[/img] %s %s" % [chara.party_icon.resource_path, chara.first_name, chara.last_name]
 	refresh()
 	show()
 	%Equipped.get_child(0).grab_focus()
@@ -68,9 +68,9 @@ func fetch_all_abilities() -> void:
 
 func fetch_equiped_abilities() -> void:
 	await chara.load_complimentaries()
-	while chara.Complimentaries.size() > slots:
-		chara.Complimentaries.remove_at(-1)
-	var Abilities := chara.Complimentaries
+	while chara.complimentaries.size() > slots:
+		chara.complimentaries.remove_at(-1)
+	var Abilities := chara.complimentaries
 	while slots > %Equipped.get_child_count():
 		var dub: Button = %Slot0.duplicate()
 		dub.show()
@@ -104,17 +104,17 @@ func refresh() -> void:
 	$Back.icon = Controller.get_scheme().CancelIcon
 	for i in %AbilityList.get_children():
 		if not i is Button: continue
-		if i.get_meta("Ability") in chara.Complimentaries:
+		if i.get_meta("Ability") in chara.complimentaries:
 			i.disabled = true
 		else: i.disabled = false
 	var t := create_tween().set_parallel().set_ease(Tween.EASE_IN_OUT).set_trans(Tween.TRANS_QUART)
-	t.tween_property($Background, "self_modulate", chara.MainColor, 0.3)
+	t.tween_property($Background, "self_modulate", chara.main_color, 0.3)
 	for i in $Background.get_child_count():
-		if chara.Complimentaries.size() <= i:
+		if chara.complimentaries.size() <= i:
 			t.tween_property($Background.get_child(i), "modulate", Color.TRANSPARENT, 1)
 		else:
-			var color := chara.Complimentaries[i].wheel_color
-			if chara.Complimentaries[i].wheel_color == Color.WHITE: color.a = 0.3
+			var color := chara.complimentaries[i].wheel_color
+			if chara.complimentaries[i].wheel_color == Color.WHITE: color.a = 0.3
 			else: color.a = 0.6
 			t.tween_property($Background.get_child(i), "modulate", color, randf_range(0.5, 3))
 
@@ -211,11 +211,11 @@ func _list_ability_pressed() -> void:
 		var ab: Ability = foc.get_meta("Ability")
 		var slot: Button = $Equipped.get_child(active_slot)
 		var prev_ab: Ability = slot.get_meta("Ability") if slot.has_meta("Ability") and slot.get_meta("Ability") != null else null
-		if ab.filename in chara.ComplimentaryList:
-			chara.ComplimentaryList.set(ab.filename, abs(chara.ComplimentaryList.get(ab.filename)))
-		else: chara.ComplimentaryList.set(ab.filename, 1)
+		if ab.filename in chara.complimentary_list:
+			chara.complimentary_list.set(ab.filename, abs(chara.complimentary_list.get(ab.filename)))
+		else: chara.complimentary_list.set(ab.filename, 1)
 		if prev_ab != null:
-			chara.ComplimentaryList.set(prev_ab.filename, -abs(chara.ComplimentaryList.get(prev_ab.filename)))
+			chara.complimentary_list.set(prev_ab.filename, -abs(chara.complimentary_list.get(prev_ab.filename)))
 
 		slot.set_meta("Ability", ab)
 		update_equipped()

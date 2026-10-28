@@ -38,9 +38,9 @@ func resolve(ctx: ActionSequenceContext) -> Color:
 			return color
 
 		Mode.ACTOR_COLOR:
-			return subject.MainColor if subject != null else color
+			return subject.main_color if subject != null else color
 		Mode.SECONDARY_COLOR:
-			return subject.SecondaryColor if subject != null else color
+			return subject.secondary_color if subject != null else color
 		Mode.WHEEL_COLOR:
 			return ctx.ability.wheel_color if ctx.ability != null else color
 		Mode.RANDOM:

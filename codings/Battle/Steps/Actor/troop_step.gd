@@ -13,6 +13,8 @@ enum Mode {
 		mode = value
 		notify_property_list_changed()
 @export var actor: ActorRef
+## When false, a kill starts the death sequence without waiting for it to finish.
+@export var wait := true
 
 
 func run(ctx: ActionSequenceContext) -> void:
@@ -34,7 +36,10 @@ func run(ctx: ActionSequenceContext) -> void:
 			ctx.battle.resort_turn_order()
 
 		Mode.KILL:
-			await ctx.battle.death(subject)
+			if wait:
+				await ctx.battle.death(subject)
+			else:
+				ctx.battle.death(subject)
 
 
 func _to_string() -> String:

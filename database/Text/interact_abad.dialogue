@@ -271,10 +271,10 @@ Mira.Neutral: I should be able to make that jump!
 => END
 
 ~ hurt_1
-$> Party.Leader.Health -= 1
+$> Party.Leader.health -= 1
 $>> Audio.ui_sound("Crunch")
 $>> Hud.hit_partybox(0, 4, 3)
-if Party.Leader.Health < 10:
+if Party.Leader.health < 10:
 	if not check_flag("Event/ShardsLowHP") and Party.has_member("Asteria"):
 		$> take_control(false, true, true)
 		$> add_flag("Event/ShardsLowHP")
@@ -284,7 +284,7 @@ if Party.Leader.Health < 10:
 		Mira.Neutral: No, I'm fine.
 		Asteria.Neutral: Okay, just be careful.
 		$> give_control()
-	$> Party.Leader.Health += 1
+	$> Party.Leader.health += 1
 $> check.emit()
 => END
 

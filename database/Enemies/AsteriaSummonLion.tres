@@ -9,16 +9,16 @@
 
 [resource]
 script = ExtResource("3_f6gkn")
-FirstName = "Lion Summon"
-MainColor = Color(0.2924576, 0.00070675195, 0.7316276, 1)
-PartyIcon = ExtResource("2_f6gkn")
+first_name = "Lion Summon"
+main_color = Color(0.2924576, 0.00070675195, 0.7316276, 1)
+party_icon = ExtResource("2_f6gkn")
 codename = &"Lion"
-CustomPosition = Vector2i(30, 30)
-MaxHP = 30
-Attack = 1.6
-Magic = 0.8
-Defence = 1.2
-Abilities = Array[ExtResource("1_vhj2c")]([ExtResource("2_gam0d")])
-StandardAttack = ExtResource("5_p2j87")
-BT = "AsteriaSummons/LionBT"
+custom_position = Vector2i(30, 30)
+max_hp = 30
+attack = 1.6
+magic = 0.8
+defence = 1.2
+abilities = Array[ExtResource("1_vhj2c")]([ExtResource("2_gam0d")])
+standard_attack = ExtResource("5_p2j87")
+bt = "AsteriaSummons/LionBT"
 metadata/_custom_type_script = "uid://msf7qb28ublo"

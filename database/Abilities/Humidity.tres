@@ -18,6 +18,7 @@
 [ext_resource type="Resource" uid="uid://c5vyc5fu4kgon" path="res://database/States/Soaked.tres" id="14_1d3wg"]
 [ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="15_uhsx5"]
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="16_3jmqu"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="16_tjvsu"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="17_3jvyu"]
 
 [sub_resource type="Resource" id="Resource_30ss0"]
@@ -85,10 +86,11 @@ script = ExtResource("3_5vnmy")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_vfi1t"]
-resource_name = "(40.0, 0.0)"
+resource_name = "(40.0, 0.0) (side)"
 script = ExtResource("7_hivcc")
 mode = 2
 position = Vector2(40, 0)
+side_aware = true
 
 [sub_resource type="Resource" id="Resource_1d3wg"]
 script = ExtResource("4_yhm8m")
@@ -200,6 +202,27 @@ script = ExtResource("9_5bkub")
 actor = SubResource("Resource_pmmrc")
 sound_name = &"BurnWoosh"
 
+[sub_resource type="Resource" id="Resource_2o37o"]
+script = ExtResource("15_uhsx5")
+
+[sub_resource type="Resource" id="Resource_srkgo"]
+resource_name = "Target"
+script = ExtResource("3_5vnmy")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_vtx37"]
+script = ExtResource("9_5bkub")
+actor = SubResource("Resource_srkgo")
+
+[sub_resource type="Resource" id="Resource_x26k0"]
+resource_name = "Target"
+script = ExtResource("3_5vnmy")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_73a6w"]
+script = ExtResource("16_tjvsu")
+target = SubResource("Resource_x26k0")
+
 [sub_resource type="Resource" id="Resource_ygary"]
 resource_name = "weak"
 script = ExtResource("16_3jmqu")
@@ -217,6 +240,8 @@ power = SubResource("Resource_ygary")
 magic_mode = 2
 elemental = true
 hit_branch = false
+hit_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_2o37o"), SubResource("Resource_vtx37")])
+miss_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_73a6w")])
 
 [sub_resource type="Resource" id="Resource_g0pvd"]
 script = ExtResource("12_t2psb")

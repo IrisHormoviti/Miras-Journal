@@ -77,7 +77,7 @@ func roll(ctx: ActionSequenceContext, target: Actor) -> void:
 	if ability == null or target == null:
 		return
 
-	if not target.CantDodge or target.has_state("Bound") or target.has_state("Soaked"):
+	if not target.cant_dodge or target.has_state("Bound") or target.has_state("Soaked"):
 		if randf_range(0, 1) > ability.success_chance and not battle.no_misses:
 			ctx.roll = HitOutcome.MISS
 

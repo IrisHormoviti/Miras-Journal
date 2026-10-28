@@ -174,8 +174,8 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	Party.set_to(data.party)
 	for mem in Party.members:
 		mem.reset_static_info()
-		mem.Health = min(mem.Health, mem.MaxHP)
-		mem.Aura = min(mem.Aura, mem.MaxAura)
+		mem.health = min(mem.health, mem.max_hp)
+		mem.aura = min(mem.aura, mem.max_aura)
 
 	if !data:
 		UI.error("This save file doen't exist", "WHERE FILE")

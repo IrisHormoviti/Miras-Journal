@@ -5,8 +5,9 @@ class_name ActorSpriteStep
 enum Mode {
 	ANIMATION,
 	VISIBLE,
-	POSITION,
-	FRAME,
+	# Value 2 used to be POSITION. Instant actor movement now lives on
+	# MoveStep.Mode.TELEPORT, so keep the remaining serialized values stable.
+	FRAME = 3,
 	FLIP,
 	COLOR,
 	SHADER_PARAM,
@@ -48,7 +49,6 @@ const ANIMATION_PRESETS: Array[StringName] = [
 @export var animation: StringName = &""
 @export_storage var wait := false
 @export var visible := true
-@export var position: PositionRef
 @export var frame := 0
 @export var pause := false
 @export var flip := false
@@ -88,10 +88,6 @@ func run(ctx: ActionSequenceContext) -> void:
 		Mode.VISIBLE:
 			subject.node.visible = visible
 
-		Mode.POSITION:
-			if position != null:
-				subject.node.position = position.resolve(ctx, subject)
-
 		Mode.FRAME:
 			if animation != &"":
 				subject.node.animation = animation
@@ -102,15 +98,15 @@ func run(ctx: ActionSequenceContext) -> void:
 				subject.node.pause()
 
 		Mode.FLIP:
-			subject.FlipH = flip
+			subject.flip_h = flip
 			subject.node.flip_h = flip
 
 		Mode.COLOR:
 			if color != null:
-				subject.MainColor = color.resolve(ctx)
+				subject.main_color = color.resolve(ctx)
 
 		Mode.SHADER_PARAM:
-			var material := subject.MaterialOverride if use_material_override else subject.node.material
+			var material := subject.material_override if use_material_override else subject.node.material
 
 			if material is ShaderMaterial:
 				if shader_value_is_color:
@@ -128,7 +124,7 @@ func run(ctx: ActionSequenceContext) -> void:
 				else:
 					ctx.battle.outline_remove(subject, outline_time)
 			else:
-				ctx.battle.outline(subject, color.resolve(ctx) if color != null else subject.MainColor)
+				ctx.battle.outline(subject, color.resolve(ctx) if color != null else subject.main_color)
 		Mode.SHAKE:
 			if wait:
 				await ctx.battle.shake_actor(subject, shake_amount, shake_repeat, shake_time)
@@ -169,9 +165,6 @@ func _to_string() -> String:
 
 		Mode.VISIBLE:
 			return "%s %s" % ["Show" if visible else "Hide", who]
-
-		Mode.POSITION:
-			return "Move %s to a position" % who
 
 		Mode.FRAME:
 			return "Set %s to frame %d" % [who, frame]
@@ -216,9 +209,6 @@ func _validate_property(property: Dictionary) -> void:
 
 		Mode.VISIBLE:
 			fields.append("visible")
-
-		Mode.POSITION:
-			fields.append("position")
 
 		Mode.FRAME:
 			fields.append_array(["animation", "frame", "pause"])

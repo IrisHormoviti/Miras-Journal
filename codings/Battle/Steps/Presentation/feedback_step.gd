@@ -53,11 +53,11 @@ func run(ctx: ActionSequenceContext) -> void:
 			if insert != null:
 				var first_actor := insert.resolve(ctx)
 				if first_actor != null:
-					first = first_actor.FirstName
+					first = first_actor.first_name
 			if insert2 != null:
 				var second_actor := insert2.resolve(ctx)
 				if second_actor != null:
-					second = second_actor.FirstName
+					second = second_actor.first_name
 			ctx.battle.battle_msg(message, first, second)
 
 

@@ -12,19 +12,19 @@
 
 [resource]
 script = ExtResource("2_iy5kn")
-FirstName = "Crawling Sludge"
-MainColor = Color(0.560784, 1, 0.886275, 1)
-PartyIcon = ExtResource("1_u1o0b")
-ActorClass = "Attacker"
-DroppedItem = ExtResource("4_n0njt")
-SummonedAllies = Array[ExtResource("2_iy5kn")]([ExtResource("8_t44b1")])
-MaxHP = 40
-MaxAura = 30
-Attack = 0.4
-Magic = 0.5
-Defence = 0.9
-Speed = 3.0
-SkillLevel = 0
-Abilities = Array[ExtResource("1_keytb")]([ExtResource("2_pm52f"), ExtResource("3_xe4iy")])
-StandardAttack = ExtResource("4_rtvyb")
-Offset = Vector2(0, -17)
+first_name = "Crawling Sludge"
+main_color = Color(0.560784, 1, 0.886275, 1)
+party_icon = ExtResource("1_u1o0b")
+actor_class = "Attacker"
+dropped_item = ExtResource("4_n0njt")
+summoned_allies = Array[ExtResource("2_iy5kn")]([ExtResource("8_t44b1")])
+max_hp = 40
+max_aura = 30
+attack = 0.4
+magic = 0.5
+defence = 0.9
+speed = 3.0
+skill_level = 0
+abilities = Array[ExtResource("1_keytb")]([ExtResource("2_pm52f"), ExtResource("3_xe4iy")])
+standard_attack = ExtResource("4_rtvyb")
+offset = Vector2(0, -17)

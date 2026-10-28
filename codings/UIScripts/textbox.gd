@@ -173,7 +173,7 @@ func show_dialog_line() -> void:
 
 	if not Query.member_exists(char_name):
 		character_label.text = char_name
-	else: character_label.text = Party.get_member(char_name).FirstName
+	else: character_label.text = Party.get_member(char_name).first_name
 
 	input_indicator.hide()
 	character_panel.visible = not (character_label.text.is_empty() or no_nametag)

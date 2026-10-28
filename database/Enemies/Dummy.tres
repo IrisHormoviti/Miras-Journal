@@ -9,15 +9,15 @@
 
 [resource]
 script = ExtResource("1_xk7u8")
-FirstName = "Dummy"
-MainColor = Color(1, 0.25098, 1, 1)
-PartyIcon = ExtResource("2_g2uxp")
-ActorClass = "Unknown"
-RecivedSP = 99
-SummonedAllies = Array[ExtResource("1_xk7u8")]([ExtResource("8_s38ka")])
-MaxHP = 200
-MaxAura = 50
-SkillLevel = 0
-Abilities = Array[ExtResource("1_ji43p")]([ExtResource("2_s38ka")])
-Offset = Vector2(3, -6)
-GlowDef = 0.0
+first_name = "Dummy"
+main_color = Color(1, 0.25098, 1, 1)
+party_icon = ExtResource("2_g2uxp")
+actor_class = "Unknown"
+received_sp = 99
+summoned_allies = Array[ExtResource("1_xk7u8")]([ExtResource("8_s38ka")])
+max_hp = 200
+max_aura = 50
+skill_level = 0
+abilities = Array[ExtResource("1_ji43p")]([ExtResource("2_s38ka")])
+offset = Vector2(3, -6)
+glow_def = 0.0

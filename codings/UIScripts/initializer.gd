@@ -103,7 +103,7 @@ func you_can_now_play_as(chara: String) -> void:
 	data.party[0] = chara
 
 	for i in data.members:
-		if i.get("codename") == chara: i.set("Controllable", true)
+		if i.get("codename") == chara: i.set("controllable", true)
 
 	ResourceSaver.save(data, "user://Autosave.tres")
 	UI.warning("You can now play as [img height=64]res://art/Icons/Party/" + chara + ".png[/img] " + chara + ".", "CONGRATS", ["A"])

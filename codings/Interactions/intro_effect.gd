@@ -3,7 +3,7 @@ extends CanvasLayer
 var ref: Node2D
 
 
-func _ready() -> void:
+func _init() -> void:
 	hide()
 
 

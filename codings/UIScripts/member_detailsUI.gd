@@ -18,40 +18,40 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	actor = chara
 	chara.load_complimentaries()
 	Audio.confirm_sound()
-	$Name/Icon.texture = chara.PartyIcon
-	$Name.text = chara.FirstName + " " + chara.LastName
+	$Name/Icon.texture = chara.party_icon
+	$Name.text = chara.first_name + " " + chara.last_name
 
-	if chara.SkillCurve != null:
-		$StatPanel/LvBox/Vbox/LvBar/Number.text = str(chara.SkillLevel)
-		$StatPanel/LvBox/Vbox/LvBar/SPNum.text = str(chara.SkillPoints)
-		$StatPanel/LvBox/Vbox/ExpBar.max_value = chara.skill_points_for(chara.SkillLevel)
-		$StatPanel/LvBox/Vbox/ExpBar.value = chara.SkillPoints
-		$StatPanel/LvBox/Vbox/ToNextLv/Number.text = str(chara.skill_points_for(chara.SkillLevel) - chara.SkillPoints)
+	if chara.skill_curve != null:
+		$StatPanel/LvBox/Vbox/LvBar/Number.text = str(chara.skill_level)
+		$StatPanel/LvBox/Vbox/LvBar/SPNum.text = str(chara.skill_points)
+		$StatPanel/LvBox/Vbox/ExpBar.max_value = chara.skill_points_for(chara.skill_level)
+		$StatPanel/LvBox/Vbox/ExpBar.value = chara.skill_points
+		$StatPanel/LvBox/Vbox/ToNextLv/Number.text = str(chara.skill_points_for(chara.skill_level) - chara.skill_points)
 
-	$StatPanel/HPAura/HPText.text = str(chara.MaxHP)
-	$StatPanel/HPAura/APText.text = str(chara.MaxAura)
+	$StatPanel/HPAura/HPText.text = str(chara.max_hp)
+	$StatPanel/HPAura/APText.text = str(chara.max_aura)
 	$StatPanel/HPAura/Health.max_value = 300
 	$StatPanel/HPAura/Aura.max_value = 100
-	$StatPanel/HPAura/Health.value = chara.MaxHP
-	$StatPanel/HPAura/Aura.value = chara.MaxAura
+	$StatPanel/HPAura/Health.value = chara.max_hp
+	$StatPanel/HPAura/Aura.value = chara.max_aura
 
-	$StatPanel/HPAura/HPText.add_theme_color_override("font_color", chara.MainColor)
-	$StatPanel/HPAura/APText.add_theme_color_override("font_color", chara.SecondaryColor)
+	$StatPanel/HPAura/HPText.add_theme_color_override("font_color", chara.main_color)
+	$StatPanel/HPAura/APText.add_theme_color_override("font_color", chara.secondary_color)
 	var hbox: StyleBoxFlat = $StatPanel/HPAura/Health.get_theme_stylebox("fill")
-	hbox.bg_color = chara.MainColor
+	hbox.bg_color = chara.main_color
 	$StatPanel/HPAura/Health.add_theme_stylebox_override("fill", hbox.duplicate())
 	var abox: StyleBoxFlat = $StatPanel/HPAura/Aura.get_theme_stylebox("fill")
-	abox.bg_color = chara.SecondaryColor
+	abox.bg_color = chara.secondary_color
 	$StatPanel/HPAura/Aura.add_theme_stylebox_override("fill", abox.duplicate())
-	if chara.CharacterBoxProfile != null:
+	if chara.character_box_profile != null:
 		var bord1: StyleBoxFlat = $StatPanel/Border1.get_theme_stylebox("panel")
-		bord1.border_color = chara.CharacterBoxProfile.Bord1
+		bord1.border_color = chara.character_box_profile.Bord1
 		$StatPanel/Border1.add_theme_stylebox_override("panel", bord1.duplicate())
 		var bord2: StyleBoxFlat = $StatPanel/Border1/Border2.get_theme_stylebox("panel")
-		bord2.border_color = chara.CharacterBoxProfile.Bord2
+		bord2.border_color = chara.character_box_profile.Bord2
 		$StatPanel/Border1/Border2.add_theme_stylebox_override("panel", bord2.duplicate())
 		var bord3: StyleBoxFlat = $StatPanel/Border1/Border2/Border3.get_theme_stylebox("panel")
-		bord3.border_color = chara.CharacterBoxProfile.Bord3
+		bord3.border_color = chara.character_box_profile.Bord3
 		$StatPanel/Border1/Border2/Border3.add_theme_stylebox_override("panel", bord3.duplicate())
 
 	#$StatPanel/LvBox/Vbox/ExpBar.add_theme_stylebox_override("fill", hbox.duplicate())
@@ -59,27 +59,27 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	#xbox.bg_color = chara.BoxProfile.Bord3
 	#$StatPanel/LvBox/Vbox/ExpBar.add_theme_stylebox_o]verride("background", xbox)
 
-		$Line1.color = chara.CharacterBoxProfile.Bord1
-		$Line1/Line2.color = chara.CharacterBoxProfile.Bord2
-		$Line1/Line2/Line3.color = chara.CharacterBoxProfile.Bord3
+		$Line1.color = chara.character_box_profile.Bord1
+		$Line1/Line2.color = chara.character_box_profile.Bord2
+		$Line1/Line2/Line3.color = chara.character_box_profile.Bord3
 
-	$StatPanel/StatBars/Attack.value = chara.Attack
-	$StatPanel/StatBars/Defence.value = chara.Defence
-	$StatPanel/StatBars/Magic.value = chara.Magic
-	$StatPanel/Weapon/WeaponName.text = chara.Weapon.name
-	$StatPanel/Weapon/Icon.texture = chara.Weapon.icon
-	$StatPanel/Weapon/Icon/WeaponRating.text = "Power rating: " + Query.get_power_rating(chara.Weapon.power)
+	$StatPanel/StatBars/Attack.value = chara.attack
+	$StatPanel/StatBars/Defence.value = chara.defence
+	$StatPanel/StatBars/Magic.value = chara.magic
+	$StatPanel/Weapon/WeaponName.text = chara.weapon.name
+	$StatPanel/Weapon/Icon.texture = chara.weapon.icon
+	$StatPanel/Weapon/Icon/WeaponRating.text = "Power rating: " + Query.get_power_rating(chara.weapon.power)
 
-	$StatPanel/Wheel.color = chara.MainColor
+	$StatPanel/Wheel.color = chara.main_color
 	$StatPanel/Wheel.draw_wheel()
-	$Render.texture = await Loader.load_res(chara.RenderArtwork) if not chara.RenderArtwork.is_empty() else null
+	$Render.texture = await Loader.load_res(chara.render_artwork) if not chara.render_artwork.is_empty() else null
 	$Render/Shadow.texture = await chara.RenderShadow()
 	$Render.global_position = Hud.get_node("%Pages/Page" + str(Hud.focus) + "/Render").global_position
 
 	fetch_abilities(chara)
 
 	for i in $Line1/NameChain.get_children():
-		i.text = chara.FirstName.to_upper() + " " + chara.LastName.to_upper() + " "
+		i.text = chara.first_name.to_upper() + " " + chara.last_name.to_upper() + " "
 		#i.add_theme_color_override("font_color", chara.BoxProfile.Bord3)
 
 	await Event.wait(0.1, false)
@@ -182,7 +182,7 @@ func _on_back_pressed() -> void:
 
 func fetch_abilities(chara: Actor) -> void:
 	var Abilities := chara.get_abilities()
-	Abilities.push_front(chara.StandardAttack)
+	Abilities.push_front(chara.standard_attack)
 	for n in %AbilityList.get_children():
 		if n is Button:
 			%AbilityList.remove_child(n)
@@ -204,7 +204,7 @@ func fetch_abilities(chara: Actor) -> void:
 		dub.name = "Item" + str(dub.get_index(true))
 		dub.set_meta("Ability", i)
 
-	%AbilityList.move_child(%AbilityList/CompTxt, chara.Abilities.size() + 3)
+	%AbilityList.move_child(%AbilityList/CompTxt, chara.abilities.size() + 3)
 	%AbilityList.move_child(%AbilityList/AbilitiesTxt, 2)
 
 

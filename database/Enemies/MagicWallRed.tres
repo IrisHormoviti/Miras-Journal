@@ -8,19 +8,19 @@
 
 [resource]
 script = ExtResource("4_sbxyk")
-FirstName = "Magic Wall"
-MainColor = Color(0.86307806, 0.23938107, 0.15813053, 1)
-PartyIcon = ExtResource("2_gnglx")
-ActorClass = "Tank"
+first_name = "Magic Wall"
+main_color = Color(0.86307806, 0.23938107, 0.15813053, 1)
+party_icon = ExtResource("2_gnglx")
+actor_class = "Tank"
 codename = &"MagicWall"
-HealthBar = true
-RecivedSP = 10
-MaxHP = 100
-MaxAura = 40
-Attack = 0.0
-Speed = 0.0
-StandardAttack = ExtResource("3_hjcr8")
-BT = "Object/MagicWallRed"
-Offset = Vector2(10, 10)
-CantDodge = true
+health_bar = true
+received_sp = 10
+max_hp = 100
+max_aura = 40
+attack = 0.0
+speed = 0.0
+standard_attack = ExtResource("3_hjcr8")
+bt = "Object/MagicWallRed"
+offset = Vector2(10, 10)
+cant_dodge = true
 metadata/_custom_type_script = "uid://msf7qb28ublo"

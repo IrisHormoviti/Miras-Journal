@@ -8,16 +8,16 @@
 
 [resource]
 script = ExtResource("3_c3tjn")
-FirstName = "Burst Parasite"
-MainColor = Color(0.262745, 0.345098, 0.176471, 1)
-PartyIcon = ExtResource("3_6gxsa")
-ActorClass = "Attacker"
-RecivedSP = 3
-MaxHP = 20
-MaxAura = 30
-Attack = 1.5
-Magic = 1.3
-Defence = 0.5
-Speed = 8.0
-StandardAttack = ExtResource("5_ox88c")
-BT = "res://database/Enemies/BurstParasite.tres"
+first_name = "Burst Parasite"
+main_color = Color(0.262745, 0.345098, 0.176471, 1)
+party_icon = ExtResource("3_6gxsa")
+actor_class = "Attacker"
+received_sp = 3
+max_hp = 20
+max_aura = 30
+attack = 1.5
+magic = 1.3
+defence = 0.5
+speed = 8.0
+standard_attack = ExtResource("5_ox88c")
+bt = "res://database/Enemies/BurstParasite.tres"

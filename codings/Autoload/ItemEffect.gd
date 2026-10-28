@@ -26,7 +26,7 @@ func use(item_data: ItemData, battle_target: Actor = null) -> void:
 		UI.get_node("MainMenu").stage = "item"
 	elif item.used_in_battle:
 		if battle_target == null: battle_target = Global.bt.CurrentChar
-		battle_target.NextMove = item.battle_effect
+		battle_target.next_move = item.battle_effect
 
 
 func _on_item_manager_return_member(mem: Actor) -> void:

@@ -108,30 +108,30 @@ func levelup(chara: Actor) -> void:
 	$Line1.position = Vector2(0, 243)
 	$Line1.rotation_degrees = 0
 	$LevelupText.position = Vector2(-52, 364)
-	$Line1.color = chara.CharacterBoxProfile.Bord1
-	$Line1/Line3.color = chara.CharacterBoxProfile.Bord1
-	$Line1/Line2.color = chara.CharacterBoxProfile.Bord2
-	$Line1/Line3/Line2.color = chara.CharacterBoxProfile.Bord2
-	$Line1/Line2/Line3.color = chara.CharacterBoxProfile.Bord3
-	$Line1/Line3/Line2/Line3.color = chara.CharacterBoxProfile.Bord3
+	$Line1.color = chara.character_box_profile.Bord1
+	$Line1/Line3.color = chara.character_box_profile.Bord1
+	$Line1/Line2.color = chara.character_box_profile.Bord2
+	$Line1/Line3/Line2.color = chara.character_box_profile.Bord2
+	$Line1/Line2/Line3.color = chara.character_box_profile.Bord3
+	$Line1/Line3/Line2/Line3.color = chara.character_box_profile.Bord3
 	$Line1/Bg.size.y = 10
-	$LevelupText.add_theme_color_override("default_color", chara.CharacterBoxProfile.Bord1)
+	$LevelupText.add_theme_color_override("default_color", chara.character_box_profile.Bord1)
 	$ChooseUpgrade.modulate = Color.TRANSPARENT
 	$ChooseUpgrade.position.y = 500
 	$ChooseUpgrade/HPCont.modulate = Color.TRANSPARENT
 	$ChooseUpgrade/APCont.modulate = Color.TRANSPARENT
 	$ChooseUpgrade/NewAb.modulate = Color.TRANSPARENT
-	$ChooseUpgrade/HPCont/HPBox/HPText.text = str(chara.MaxHP)
-	$ChooseUpgrade/APCont/APBox/APText.text = str(chara.MaxAura)
+	$ChooseUpgrade/HPCont/HPBox/HPText.text = str(chara.max_hp)
+	$ChooseUpgrade/APCont/APBox/APText.text = str(chara.max_aura)
 	$ChooseUpgrade/Cursor.modulate = Color.TRANSPARENT
 	var hbox: StyleBoxFlat = $ChooseUpgrade/HPCont/HPBox/Health.get_theme_stylebox("fill")
-	hbox.bg_color = chara.MainColor
+	hbox.bg_color = chara.main_color
 	$ChooseUpgrade/HPCont/HPBox/Health.add_theme_stylebox_override("fill", hbox.duplicate())
 	var abox: StyleBoxFlat = $ChooseUpgrade/APCont/APBox/Aura.get_theme_stylebox("fill")
-	abox.bg_color = chara.SecondaryColor
+	abox.bg_color = chara.secondary_color
 	$ChooseUpgrade/APCont/APBox/Aura.add_theme_stylebox_override("fill", abox.duplicate())
-	$ChooseUpgrade/HPCont/HPBox/Health.value = chara.MaxHP
-	$ChooseUpgrade/APCont/APBox/Aura.value = chara.MaxAura
+	$ChooseUpgrade/HPCont/HPBox/Health.value = chara.max_hp
+	$ChooseUpgrade/APCont/APBox/Aura.value = chara.max_aura
 	$ChooseUpgrade/Desc.modulate = Color.TRANSPARENT
 	level_cutin(chara)
 	await Event.wait(2, false)
@@ -189,12 +189,12 @@ func level_cutin(chara: Actor) -> void:
 	scale.y = 0.1
 
 	for i in $Line1/NameChain.get_children():
-		i.text = (chara.FirstName + " " + chara.LastName + " ").to_upper()
-		i.add_theme_color_override("font_color", chara.CharacterBoxProfile.Bord3)
+		i.text = (chara.first_name + " " + chara.last_name + " ").to_upper()
+		i.add_theme_color_override("font_color", chara.character_box_profile.Bord3)
 
 	for i in $Line1/NameChain2.get_children():
-		i.text = (chara.FirstName + " " + chara.LastName + " ").to_upper()
-		i.add_theme_color_override("font_color", chara.CharacterBoxProfile.Bord3)
+		i.text = (chara.first_name + " " + chara.last_name + " ").to_upper()
+		i.add_theme_color_override("font_color", chara.character_box_profile.Bord3)
 
 	var t := create_tween()
 	show()
@@ -306,16 +306,16 @@ func _confirm() -> void:
 			t.tween_property($ChooseUpgrade/NewAb, "position:x", 400, 0.3)
 			t.tween_property($ChooseUpgrade/NewAb, "modulate", Color.TRANSPARENT, 0.3)
 			await t.finished
-			working_chara.MaxHP += working_chara.HpOnSLvUp
-			working_chara.Health = working_chara.MaxHP
+			working_chara.max_hp += working_chara.hp_on_level_up
+			working_chara.health = working_chara.max_hp
 			t = create_tween()
 			t.set_ease(Tween.EASE_OUT)
 			t.set_trans(Tween.TRANS_SINE)
 			t.set_parallel()
 			count = $ChooseUpgrade/HPCont/HPBox/Health.value
-			t.tween_property(self, "count", working_chara.MaxHP, 1)
-			t.tween_property($ChooseUpgrade/HPCont/HPBox/Health, "value", working_chara.MaxHP, 1)
-			while $ChooseUpgrade/HPCont/HPBox/HPText.text != str(working_chara.MaxHP):
+			t.tween_property(self, "count", working_chara.max_hp, 1)
+			t.tween_property($ChooseUpgrade/HPCont/HPBox/Health, "value", working_chara.max_hp, 1)
+			while $ChooseUpgrade/HPCont/HPBox/HPText.text != str(working_chara.max_hp):
 				$ChooseUpgrade/HPCont/HPBox/HPText.text = str(count)
 				await Event.wait()
 
@@ -326,16 +326,16 @@ func _confirm() -> void:
 			t.tween_property($ChooseUpgrade/NewAb, "position:x", 400, 0.3)
 			t.tween_property($ChooseUpgrade/NewAb, "modulate", Color.TRANSPARENT, 0.3)
 			await t.finished
-			working_chara.MaxAura += working_chara.ApOnSLvUP
-			working_chara.Aura = working_chara.MaxAura
+			working_chara.max_aura += working_chara.ap_on_level_up
+			working_chara.aura = working_chara.max_aura
 			t = create_tween()
 			t.set_ease(Tween.EASE_OUT)
 			t.set_trans(Tween.TRANS_SINE)
 			t.set_parallel()
 			count = $ChooseUpgrade/APCont/APBox/Aura.value
-			t.tween_property(self, "count", working_chara.MaxAura, 1)
-			t.tween_property($ChooseUpgrade/APCont/APBox/Aura, "value", working_chara.MaxAura, 1)
-			while $ChooseUpgrade/APCont/APBox/APText.text != str(working_chara.MaxAura):
+			t.tween_property(self, "count", working_chara.max_aura, 1)
+			t.tween_property($ChooseUpgrade/APCont/APBox/Aura, "value", working_chara.max_aura, 1)
+			while $ChooseUpgrade/APCont/APBox/APText.text != str(working_chara.max_aura):
 				$ChooseUpgrade/APCont/APBox/APText.text = str(count)
 				await Event.wait()
 
@@ -354,7 +354,7 @@ func _confirm() -> void:
 			t.tween_property($ChooseUpgrade/NewAb/Hbox, "modulate", Color.TRANSPARENT, 1.5)
 			t.tween_property($ChooseUpgrade/NewAb, "scale", Vector2(1.8, 1.8), 1.5)
 			await t.finished
-			working_chara.Abilities.append(learnable)
+			working_chara.abilities.append(learnable)
 			$ChooseUpgrade/NewAb/Hbox/Icon.texture = learnable.icon
 			$ChooseUpgrade/NewAb/Hbox/Text.text = learnable.name
 			t = create_tween()

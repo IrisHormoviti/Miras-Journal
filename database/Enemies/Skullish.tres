@@ -8,12 +8,12 @@
 
 [resource]
 script = ExtResource("3_5hrse")
-FirstName = "Skullish"
-MainColor = Color(0.09622771, 0.49119478, 0.6041429, 1)
-PartyIcon = ExtResource("2_5hrse")
-ActorClass = "Attacker"
-RecivedSP = 4
-MaxHP = 35
-Attack = 1.7
-StandardAttack = ExtResource("4_5hrse")
+first_name = "Skullish"
+main_color = Color(0.09622771, 0.49119478, 0.6041429, 1)
+party_icon = ExtResource("2_5hrse")
+actor_class = "Attacker"
+received_sp = 4
+max_hp = 35
+attack = 1.7
+standard_attack = ExtResource("4_5hrse")
 metadata/_custom_type_script = "uid://msf7qb28ublo"

@@ -6,6 +6,7 @@ enum Mode {
 	WALK,
 	JUMP,
 	RETURN,
+	TELEPORT,
 }
 
 @export var mode: Mode = Mode.WALK:
@@ -51,11 +52,18 @@ func run(ctx: ActionSequenceContext) -> void:
 			else:
 				ctx.battle.return_cur(subject)
 
+		Mode.TELEPORT:
+			var teleport_target := destination.resolve(ctx, subject) + offsetized if destination != null else subject.node.position + offsetized
+			subject.node.position = teleport_target
+
 
 func _to_string() -> String:
 	var what := str(Mode.find_key(mode)).capitalize()
 	var who := str(actor) if actor != null else "Caster"
 	var where := str(destination)
+
+	if mode == Mode.TELEPORT:
+		return "Teleport %s to %s" % [who, where]
 
 	return "%s %s to %s" % [what, who, where]
 
@@ -72,6 +80,9 @@ func _validate_property(property: Dictionary) -> void:
 
 		Mode.RETURN:
 			visible.append("wait")
+
+		Mode.TELEPORT:
+			visible.append_array(["destination", "offset"])
 
 	StepEditor.only(property, visible)
 

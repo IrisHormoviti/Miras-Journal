@@ -127,7 +127,7 @@ func add(member: String) -> void:
 
 
 func member_name(x: int) -> String:
-	if has_member_index(x): return current[x].FirstName
+	if has_member_index(x): return current[x].first_name
 	return "Nobody"
 
 
@@ -149,7 +149,7 @@ func size() -> int:
 
 func make_everyone_controllable() -> void:
 	for i in current:
-		if i: i.Controllable = true
+		if i: i.controllable = true
 
 ## Complimentary abilities available
 var complimentaries: Array[String] = []
@@ -169,19 +169,19 @@ func add_test_state(chara: Actor) -> void:
 		var ab: Ability = load("res://database/Abilities/Debug/TestState.tres").duplicate()
 		ab.name += state
 		ab.InflictsState = state
-		chara.Abilities.append(ab)
+		chara.abilities.append(ab)
 
 
 func unlock_all_abilities() -> void:
 	for mem in members:
-		for ab in mem.LearnableAbilities:
-			if ab not in mem.Abilities: mem.Abilities.append(ab)
+		for ab in mem.learnable_abilities:
+			if ab not in mem.abilities: mem.abilities.append(ab)
 
 
 func give_every_ability() -> void:
 	for i in ResourceLoader.list_directory("res://database/Abilities/"):
 		var ab: Ability = load("res://database/Abilities/" + i).duplicate()
-		Leader.Abilities.append(ab)
+		Leader.abilities.append(ab)
 
 
 func add_complimentary(ability: String, from_name: String = "Mira Levenor", popup := true) -> void:

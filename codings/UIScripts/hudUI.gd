@@ -196,29 +196,29 @@ func check_member(mem: Actor, node: Panel, ind: int) -> void:
 	t.set_parallel()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)
-	node.get_node("Name").text = mem.FirstName
+	node.get_node("Name").text = mem.first_name
 
 	if ui_visible and not expanded:
 		node.position.y = def_pos_partybox[ind].y
 
-	var txt_color := mem.MainColor
+	var txt_color := mem.main_color
 	txt_color.v = min(txt_color.v, 0.75)
 	get_node("%Pages/Page" + str(ind) + "/Label").add_theme_color_override("font_color", txt_color)
-	get_node("%Pages/Page" + str(ind) + "/Label").text = mem.FirstName + " " + mem.LastName
-	t.tween_property(node.get_node("Health"), "value", mem.Health, 1)
-	node.get_node("Health").max_value = mem.MaxHP
+	get_node("%Pages/Page" + str(ind) + "/Label").text = mem.first_name + " " + mem.last_name
+	t.tween_property(node.get_node("Health"), "value", mem.health, 1)
+	node.get_node("Health").max_value = mem.max_hp
 	draw_bar(mem, node)
-	node.get_node("Aura").max_value = mem.MaxAura
-	node.get_node("Level/ExpBar").max_value = mem.skill_points_for(mem.SkillLevel)
-	t.tween_property(node.get_node("Aura"), "value", mem.Aura, 1)
-	node.get_node("Icon").texture = mem.PartyIcon
+	node.get_node("Aura").max_value = mem.max_aura
+	node.get_node("Level/ExpBar").max_value = mem.skill_points_for(mem.skill_level)
+	t.tween_property(node.get_node("Aura"), "value", mem.aura, 1)
+	node.get_node("Icon").texture = mem.party_icon
 	cycle_states(mem, node.get_node("Icon/State"))
-	node.get_node("Health/HpText").text = str(mem.Health)
-	node.get_node("Aura/ApText").text = str(mem.Aura)
-	node.get_node("Level/Number").text = str(mem.SkillLevel)
+	node.get_node("Health/HpText").text = str(mem.health)
+	node.get_node("Aura/ApText").text = str(mem.aura)
+	node.get_node("Level/Number").text = str(mem.skill_level)
 	var timer: Timer = node.get_node("ReviveFlashTimer") as Timer
 
-	if mem.has_state("KnockedOut") and mem.Health > 0:
+	if mem.has_state("KnockedOut") and mem.health > 0:
 		timer.wait_time = 1 - mem.health_ratio()
 
 		if timer.is_stopped():
@@ -229,12 +229,12 @@ func check_member(mem: Actor, node: Panel, ind: int) -> void:
 
 	if expanded:
 		# Loads render
-		if get_node("%Pages/Page" + str(ind) + "/Render").texture == null and mem.RenderArtwork != null:
-			get_node("%Pages/Page" + str(ind) + "/Render").texture = await Loader.load_res(mem.RenderArtwork)
+		if get_node("%Pages/Page" + str(ind) + "/Render").texture == null and mem.render_artwork != null:
+			get_node("%Pages/Page" + str(ind) + "/Render").texture = await Loader.load_res(mem.render_artwork)
 
 		# Loads Aura doodle
-		if get_node("%Pages/Page" + str(ind) + "/AuraDoodle").texture == null and mem.PartyPage != null:
-			get_node("%Pages/Page" + str(ind) + "/AuraDoodle").texture = await Loader.load_res(mem.PartyPage)
+		if get_node("%Pages/Page" + str(ind) + "/AuraDoodle").texture == null and mem.party_page != null:
+			get_node("%Pages/Page" + str(ind) + "/AuraDoodle").texture = await Loader.load_res(mem.party_page)
 
 		# Loads Shadow
 		if get_node("%Pages/Page" + str(ind) + "/Render/Shadow").texture == null:
@@ -701,31 +701,31 @@ func only_current() -> void:
 
 
 func check_for_levelups(mem: Actor, node: Panel) -> void:
-	if mem.SkillCurve == null:
+	if mem.skill_curve == null:
 		return
 
 	t = create_tween()
 	t.set_parallel()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)
-	if (mem.SkillCurve != null and mem.SkillPoints < mem.skill_points_for(mem.SkillLevel)) or mem.codename in levelup_chain:
-		t.tween_property(node.get_node("Level/ExpBar"), "value", mem.SkillPoints, 1)
+	if (mem.skill_curve != null and mem.skill_points < mem.skill_points_for(mem.skill_level)) or mem.codename in levelup_chain:
+		t.tween_property(node.get_node("Level/ExpBar"), "value", mem.skill_points, 1)
 	else:
-		t.tween_property(node.get_node("Level/ExpBar"), "value", mem.skill_points_for(mem.SkillLevel), 1)
+		t.tween_property(node.get_node("Level/ExpBar"), "value", mem.skill_points_for(mem.skill_level), 1)
 		await t.finished
-		mem.SkillPoints -= mem.skill_points_for(mem.SkillLevel)
-		mem.SkillPoints = max(mem.SkillPoints, 0)
+		mem.skill_points -= mem.skill_points_for(mem.skill_level)
+		mem.skill_points = max(mem.skill_points, 0)
 		t = create_tween()
 		t.tween_property(node.get_node("Level/ExpBar"), "value", 0, 0.3)
 		await t.finished
 		if not mem.codename in levelup_chain:
-			mem.SkillLevel += 1
+			mem.skill_level += 1
 			levelup_chain.append(mem.codename)
-			print(mem.FirstName + " grows to level ", mem.SkillLevel, ", ", mem.SkillPoints, "SP remain")
-			node.get_node("Level/Number").text = str(mem.SkillLevel)
+			print(mem.first_name + " grows to level ", mem.skill_level, ", ", mem.skill_points, "SP remain")
+			node.get_node("Level/Number").text = str(mem.skill_level)
 
-			if mem.SkillCurve != null:
-				node.get_node("Level/ExpBar").max_value = mem.skill_points_for(mem.SkillLevel)
+			if mem.skill_curve != null:
+				node.get_node("Level/ExpBar").max_value = mem.skill_points_for(mem.skill_level)
 
 			check_for_levelups(mem, node)
 
@@ -745,35 +745,35 @@ func make_shadow(texture: Texture2D) -> Texture2D:
 func draw_bar(mem: Actor, node: Panel) -> void:
 	var HpText: Label = node.get_node("Health/HpText")
 	# Probably nothing has changed, so skip doing this
-	if HpText.get_theme_color("font_color") == mem.MainColor:
+	if HpText.get_theme_color("font_color") == mem.main_color:
 		return
-	HpText.add_theme_color_override("font_color", mem.AuraDefault if mem.has_state("AuraOverwrite") else mem.MainColor)
+	HpText.add_theme_color_override("font_color", mem.aura_default if mem.has_state("AuraOverwrite") else mem.main_color)
 
 	var ApText: Label = node.get_node("Aura/ApText")
-	ApText.add_theme_color_override("font_color", mem.SecondaryColor)
+	ApText.add_theme_color_override("font_color", mem.secondary_color)
 
 	# Health
 	var hbox: StyleBoxFlat = node.get_node("Health").get_theme_stylebox("fill")
 	var alpha := hbox.bg_color.a
-	hbox.bg_color = mem.AuraDefault if mem.has_state("AuraOverwrite") else mem.MainColor
+	hbox.bg_color = mem.aura_default if mem.has_state("AuraOverwrite") else mem.main_color
 	hbox.bg_color.a = alpha
 	node.get_node("Health").add_theme_stylebox_override("fill", hbox.duplicate())
 
 	# Aura
 	var abox: StyleBoxFlat = node.get_node("Aura").get_theme_stylebox("fill")
-	abox.bg_color = mem.SecondaryColor
+	abox.bg_color = mem.secondary_color
 	node.get_node("Aura").add_theme_stylebox_override("fill", abox.duplicate())
 	var bord1: StyleBoxFlat = node.get_node("Border1").get_theme_stylebox("panel")
-	bord1.border_color = mem.MainColor
+	bord1.border_color = mem.main_color
 
 	# Borders
-	if mem.CharacterBoxProfile:
+	if mem.character_box_profile:
 		node.get_node("Border1").add_theme_stylebox_override("panel", bord1.duplicate())
 		var bord2: StyleBoxFlat = node.get_node("Border1/Border2").get_theme_stylebox("panel")
-		bord2.border_color = mem.CharacterBoxProfile.Bord2
+		bord2.border_color = mem.character_box_profile.Bord2
 		node.get_node("Border1/Border2").add_theme_stylebox_override("panel", bord2.duplicate())
 		var bord3: StyleBoxFlat = node.get_node("Border1/Border2/Border3").get_theme_stylebox("panel")
-		bord3.border_color = mem.CharacterBoxProfile.Bord3
+		bord3.border_color = mem.character_box_profile.Bord3
 		node.get_node("Border1/Border2/Border3").add_theme_stylebox_override("panel", bord3.duplicate())
 
 
@@ -819,7 +819,7 @@ func choose_member(artifact: Resource, user: Actor = Party.Leader) -> void:
 func _on_item_preview_pressed() -> void:
 	if member_choosing_artifact is ItemData:
 		if Item.count(member_choosing_artifact) != 0:
-			if Party.current[focus].Health >= Party.current[focus].MaxHP:
+			if Party.current[focus].health >= Party.current[focus].max_hp:
 				UI.toast("HP is already maxed out")
 				Audio.buzzer_sound()
 
@@ -831,7 +831,7 @@ func _on_item_preview_pressed() -> void:
 		%Cursor/ItemPreview.text = (member_choosing_artifact.name + " x" + str(Item.count(member_choosing_artifact)))
 
 	if member_choosing_artifact is Ability:
-		if Party.current[focus].Health >= Party.current[focus].MaxHP:
+		if Party.current[focus].health >= Party.current[focus].max_hp:
 			UI.toast("HP is already maxed out")
 			Audio.buzzer_sound()
 		else:
@@ -980,15 +980,15 @@ func main_menu() -> void:
 
 
 func cycle_states(chara: Actor, rect: TextureRect, reclude := true) -> void:
-	if chara.States.is_empty():
+	if chara.states.is_empty():
 		rect.texture = null
-	elif chara.States.size() == 1:
-		rect.texture = chara.States[0].icon
+	elif chara.states.size() == 1:
+		rect.texture = chara.states[0].icon
 	else:
-		var index := wrapi($StateTimer.time_left, 0, chara.States.size())
-		rect.texture = chara.States[index].icon
+		var index := wrapi($StateTimer.time_left, 0, chara.states.size())
+		rect.texture = chara.states[index].icon
 
-		while chara.States.size() > 1 and reclude:
+		while chara.states.size() > 1 and reclude:
 			cycle_states(chara, rect, false)
 			await Event.wait(0.3, false)
 

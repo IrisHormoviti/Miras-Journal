@@ -59,7 +59,7 @@ func _on_battle_get_control() -> void:
 		Bt.victory()
 		return
 
-	if Bt.CurrentChar.Health == 0:
+	if Bt.CurrentChar.health == 0:
 		Bt.death(Bt.CurrentChar)
 		Bt.next_turn.emit()
 		return
@@ -102,28 +102,28 @@ func _on_battle_get_control() -> void:
 	if disable_command: $Command.disabled = true
 	if disable_item or Event.check_flag("Player/NoBag"): $Item.disabled = true
 
-	$BaseRing/Ring2.texture.gradient.set_color(0, CurrentChar.MainColor)
-	if CurrentChar.CharacterBoxProfile != null:
+	$BaseRing/Ring2.texture.gradient.set_color(0, CurrentChar.main_color)
+	if CurrentChar.character_box_profile != null:
 		var mem := CurrentChar
-		$BaseRing/Ring1.texture.gradient.set_color(0, CurrentChar.CharacterBoxProfile.Bord3)
+		$BaseRing/Ring1.texture.gradient.set_color(0, CurrentChar.character_box_profile.Bord3)
 		var bord1: StyleBoxFlat = $Inventory/Border1.get_theme_stylebox("panel")
-		bord1.border_color = mem.CharacterBoxProfile.Bord1
+		bord1.border_color = mem.character_box_profile.Bord1
 		$Inventory/Border1.add_theme_stylebox_override("panel", bord1.duplicate())
 		var bord2: StyleBoxFlat = $Inventory/Border1/Border2.get_theme_stylebox("panel")
-		bord2.border_color = mem.CharacterBoxProfile.Bord2
+		bord2.border_color = mem.character_box_profile.Bord2
 		$Inventory/Border1/Border2.add_theme_stylebox_override("panel", bord2.duplicate())
 		var bord3: StyleBoxFlat = $Inventory/Border1/Border2/Border3.get_theme_stylebox("panel")
-		bord3.border_color = mem.CharacterBoxProfile.Bord3
+		bord3.border_color = mem.character_box_profile.Bord3
 		$Inventory/Border1/Border2/Border3.add_theme_stylebox_override("panel", bord3.duplicate())
 
 		bord1 = $AbilityUI/Border2/Border1.get_theme_stylebox("panel")
-		bord1.border_color = mem.CharacterBoxProfile.Bord1
+		bord1.border_color = mem.character_box_profile.Bord1
 		$AbilityUI/Border2/Border1.add_theme_stylebox_override("panel", bord1.duplicate())
 		bord2 = $AbilityUI/Border2.get_theme_stylebox("panel")
-		bord2.border_color = mem.CharacterBoxProfile.Bord2
+		bord2.border_color = mem.character_box_profile.Bord2
 		$AbilityUI/Border2.add_theme_stylebox_override("panel", bord2.duplicate())
 		bord3 = $AbilityUI.get_theme_stylebox("panel")
-		bord3.border_color = mem.CharacterBoxProfile.Bord3
+		bord3.border_color = mem.character_box_profile.Bord3
 		$AbilityUI.add_theme_stylebox_override("panel", bord3.duplicate())
 
 	fetch_abilities()
@@ -301,8 +301,8 @@ func _on_root() -> void:
 	Bt.zoom(4, 0.3)
 	move_to(CurrentChar.node.position)
 
-	CurrentChar.NextMove = null
-	CurrentChar.NextTarget = null
+	CurrentChar.next_move = null
+	CurrentChar.next_target = null
 	tweendone = false
 	active = true
 	analyzing = false
@@ -328,19 +328,19 @@ func _on_attack() -> void:
 	Audio.confirm_sound()
 	stage = "attack"
 	PrevStage = "root"
-	CurrentChar.NextAction = Actor.BtAction.ACT
-	CurrentChar.NextMove = CurrentChar.StandardAttack
+	CurrentChar.next_action = Actor.BtAction.ACT
+	CurrentChar.next_move = CurrentChar.standard_attack
 	get_target(Bt.get_opposing_faction())
 
 
 func _on_ability() -> void:
-	if CurrentChar.Abilities.is_empty(): return
+	if CurrentChar.abilities.is_empty(): return
 	stage = &"ability"
 	PrevStage = &"root"
 
 	canvas.get_node("Confirm").text = "Confirm"
 	canvas.get_node("Back").text = "Back"
-	CurrentChar.NextAction = Actor.BtAction.MAGIC
+	CurrentChar.next_action = Actor.BtAction.MAGIC
 
 	Hud.only_current()
 	Audio.confirm_sound()
@@ -363,7 +363,7 @@ func _on_ability() -> void:
 	%AbilityList.get_child(MenuIndex).grab_focus()
 	var color: Color = Abilities[MenuIndex].wheel_color
 
-	if Abilities[MenuIndex].color_same_as_actor: color = CurrentChar.MainColor
+	if Abilities[MenuIndex].color_same_as_actor: color = CurrentChar.main_color
 	$DescPaper/Title.add_theme_color_override("font_color", color - Color(0.2, 0.2, 0.2, 0))
 	$DescPaper/Desc.text = Colorizer.colorize(Abilities[0].description)
 
@@ -374,7 +374,7 @@ func _on_ability() -> void:
 		$DescPaper/Cost.hide()
 
 	$DescPaper/Title.text = Abilities[foc.get_index()].name
-	CurrentChar.NextMove = CurrentChar.get_abilities()[foc.get_index()]
+	CurrentChar.next_move = CurrentChar.get_abilities()[foc.get_index()]
 	await animation.animation_finished
 	move_menu()
 
@@ -384,7 +384,7 @@ func _on_command() -> void:
 	PrevStage = &"root"
 
 	Bt.get_node("Canvas/Back").text = "Back"
-	CurrentChar.NextAction = Actor.BtAction.COMMAND
+	CurrentChar.next_action = Actor.BtAction.COMMAND
 	analyzing = false
 	animation.play("command")
 
@@ -415,9 +415,9 @@ func _on_item() -> void:
 	Bt.get_node("Canvas/Give").text = "Give"
 	Bt.get_node("Canvas/Confirm").text = "Use"
 
-	CurrentChar.NextAction = Actor.BtAction.ITEM
-	CurrentChar.NextMove = null
-	CurrentChar.NextTarget = null
+	CurrentChar.next_action = Actor.BtAction.ITEM
+	CurrentChar.next_move = null
+	CurrentChar.next_target = null
 	$Item.icon = null
 	$Item.mouse_filter = MouseFilter.MOUSE_FILTER_IGNORE
 	move_to(CurrentChar.node.position)
@@ -497,7 +497,7 @@ func _on_command_pressed() -> void:
 	command.emit()
 
 
-func get_target(faction: Array[Actor], ab := CurrentChar.NextMove) -> void:
+func get_target(faction: Array[Actor], ab := CurrentChar.next_move) -> void:
 	if faction.is_empty(): return
 	if Bt.Action: return
 
@@ -512,12 +512,12 @@ func get_target(faction: Array[Actor], ab := CurrentChar.NextMove) -> void:
 		Bt.victory()
 		return
 
-	CurrentChar.NextMove = ab
+	CurrentChar.next_move = ab
 	stage = &"target"
 
 	TargetFaction = faction
 
-	if CurrentChar.NextTarget != null and CurrentChar.NextTarget in faction and not analyzing:
+	if CurrentChar.next_target != null and CurrentChar.next_target in faction and not analyzing:
 		stage = &"inactive"
 		close()
 		Bt.confirm_next()
@@ -535,7 +535,7 @@ func get_target(faction: Array[Actor], ab := CurrentChar.NextMove) -> void:
 
 	if ab != null:
 		if (
-			CurrentChar.NextAction != Actor.BtAction.ACT
+			CurrentChar.next_action != Actor.BtAction.ACT
 			and ab.wheel_color.s > 0 and ab.deals_damage()
 		):
 			wheel.show()
@@ -557,7 +557,7 @@ func get_target(faction: Array[Actor], ab := CurrentChar.NextMove) -> void:
 
 	if analyzing:
 		wheel.show()
-		wheel.show_atk_color(CurrentTarget.MainColor)
+		wheel.show_atk_color(CurrentTarget.main_color)
 		move_menu()
 
 	animation.play("target")
@@ -567,7 +567,7 @@ func get_target(faction: Array[Actor], ab := CurrentChar.NextMove) -> void:
 	Bt.zoom(4.5, 0.6)
 
 	emit_signal('targetFoc', CurrentTarget)
-	wheel.show_trg_color(CurrentTarget.MainColor)
+	wheel.show_trg_color(CurrentTarget.main_color)
 	Hud.show_all()
 
 
@@ -602,21 +602,21 @@ func move_menu() -> void:
 		var wheel: Wheel = canvas.get_node("AttackTitle/Wheel")
 
 		if analyzing:
-			wheel.show_atk_color(CurrentTarget.MainColor)
+			wheel.show_atk_color(CurrentTarget.main_color)
 			await Event.wait()
-			wheel.show_trg_color(CurrentTarget.MainColor)
+			wheel.show_trg_color(CurrentTarget.main_color)
 			canvas.get_node("AttackTitle/RichTextLabel").text = "HP: %d		AP: %d\nAttack: %.1f \nDefence: %.1f \nMagic: %.1f " % [
 
-				CurrentTarget.MaxHP,
-				CurrentTarget.MaxAura,
-				CurrentTarget.Attack,
-				CurrentTarget.Defence,
-				CurrentTarget.Magic
+				CurrentTarget.max_hp,
+				CurrentTarget.max_aura,
+				CurrentTarget.attack,
+				CurrentTarget.defence,
+				CurrentTarget.magic
 			]
-			canvas.get_node("AttackTitle").icon = CurrentTarget.PartyIcon
-			canvas.get_node("AttackTitle").text = CurrentTarget.FirstName
+			canvas.get_node("AttackTitle").icon = CurrentTarget.party_icon
+			canvas.get_node("AttackTitle").text = CurrentTarget.first_name
 		else:
-			wheel.show_trg_color(CurrentTarget.MainColor)
+			wheel.show_trg_color(CurrentTarget.main_color)
 
 		await get_tree().create_timer(0.1).timeout
 		active = true
@@ -649,11 +649,11 @@ func move_menu() -> void:
 		$DescPaper/Desc.text = Colorizer.colorize(ab.description)
 		var color: Color = ab.wheel_color
 
-		if ab.color_same_as_actor or color == Color.WHITE: color = CurrentChar.MainColor
+		if ab.color_same_as_actor or color == Color.WHITE: color = CurrentChar.main_color
 		$DescPaper/Title.add_theme_color_override("font_color",
 		color - Color(0.2, 0.2, 0.2, 0))
 		$DescPaper/Title.text = ab.name
-		CurrentChar.NextMove = foc.get_meta("Ability")
+		CurrentChar.next_move = foc.get_meta("Ability")
 
 		if ab.aura_cost != 0:
 			$DescPaper/Cost.text = str("Cost ", str(ab.aura_cost))
@@ -661,17 +661,17 @@ func move_menu() -> void:
 		else:
 			$DescPaper/Cost.hide()
 
-		if CurrentChar.NextMove.wheel_color.s > 0 and CurrentChar.NextMove.deals_damage():
+		if CurrentChar.next_move.wheel_color.s > 0 and CurrentChar.next_move.deals_damage():
 			$DescPaper/ShowWheel.show()
-			$DescPaper/ShowWheel/Wheel.show_atk_color(CurrentChar.NextMove.wheel_color)
+			$DescPaper/ShowWheel/Wheel.show_atk_color(CurrentChar.next_move.wheel_color)
 		else:
 			$DescPaper/ShowWheel.hide()
 
 		if (
-			ab.aura_cost > CurrentChar.Aura or ab.disabled or
+			ab.aura_cost > CurrentChar.aura or ab.disabled or
 			(CurrentChar.has_state("Bound") and ab.uses_weapon())
 		):
-			if ab.aura_cost > CurrentChar.Aura:
+			if ab.aura_cost > CurrentChar.aura:
 				foc.get_node("Label").add_theme_color_override("font_color", Color(1, 0.25, 0.32, 0.5))
 
 			foc.disabled = true
@@ -707,24 +707,24 @@ func move_target(direction: Vector2) -> void:
 
 func _on_battle_next_turn() -> void:
 	if CurrentChar == null: return
-	if not Bt.CurrentChar.Controllable:
+	if not Bt.CurrentChar.controllable:
 		hide()
 		active = false
 
 
 func _on_targeted() -> void:
 	if analyzing:
-		UI.member_details(CurrentChar.NextTarget)
+		UI.member_details(CurrentChar.next_target)
 		stage = "analyze"
 		PrevStage = "analyze"
-	elif CurrentChar.NextAction == Actor.BtAction.ITEM_GIVE:
+	elif CurrentChar.next_action == Actor.BtAction.ITEM_GIVE:
 		give_item(given_item)
 	else:
 		PrevStage = "targeted"
 
-		if CurrentChar.NextMove == null: return
-		if CurrentChar.NextTarget == null or CurrentChar.NextTarget not in TargetFaction:
-			CurrentChar.NextTarget = CurrentTarget
+		if CurrentChar.next_move == null: return
+		if CurrentChar.next_target == null or CurrentChar.next_target not in TargetFaction:
+			CurrentChar.next_target = CurrentTarget
 
 		#stage = "inactive"
 
@@ -736,7 +736,7 @@ func _on_targeted() -> void:
 			while CurrentTarget == proper_tar:
 				CurrentTarget = TargetFaction.pick_random()
 
-			CurrentChar.NextTarget = CurrentTarget
+			CurrentChar.next_target = CurrentTarget
 			await move_menu()
 			Bt.confusion_msg()
 
@@ -810,8 +810,8 @@ func _on_ability_entry() -> void:
 				get_target(fact)
 
 			_:
-				CurrentChar.NextTarget = CurrentChar
-				CurrentChar.NextMove = ab
+				CurrentChar.next_target = CurrentChar
+				CurrentChar.next_move = ab
 				Bt.confirm_next(false)
 				close()
 
@@ -820,7 +820,7 @@ func _on_confirm_pressed() -> void:
 	if active:
 		if stage == &"target":
 			Audio.confirm_sound()
-			CurrentChar.NextTarget = CurrentTarget
+			CurrentChar.next_target = CurrentTarget
 			targeted.emit()
 
 		if stage == &"item":
@@ -837,14 +837,14 @@ func use_item() -> void:
 		aitem.battle_effect.icon = aitem.icon
 		aitem.battle_effect.remove_item_on_use = foc.get_meta("ItemData")
 		PrevStage = &"item"
-		CurrentChar.NextAction = Actor.BtAction.ITEM
+		CurrentChar.next_action = Actor.BtAction.ITEM
 
 		if aitem.battle_effect.target == Ability.T.SELF or aitem.battle_effect.target == Ability.T.ONE_ALLY:
-			CurrentChar.NextMove = aitem.battle_effect
+			CurrentChar.next_move = aitem.battle_effect
 			get_target([CurrentChar])
 
 		if aitem.battle_effect.target == Ability.T.ONE_ENEMY:
-			CurrentChar.NextMove = aitem.battle_effect
+			CurrentChar.next_move = aitem.battle_effect
 			get_target(Bt.get_opposing_faction())
 
 
@@ -957,10 +957,10 @@ func fetch_abilities() -> void:
 
 	for i in %AbilityList.get_children():
 		if (
-			i.get_meta("Ability").aura_cost > CurrentChar.Aura or i.get_meta("Ability").disabled or
+			i.get_meta("Ability").aura_cost > CurrentChar.aura or i.get_meta("Ability").disabled or
 			(CurrentChar.has_state("Bound") and i.get_meta("Ability").uses_weapon())
 		):
-			if i.get_meta("Ability").aura_cost > CurrentChar.Aura:
+			if i.get_meta("Ability").aura_cost > CurrentChar.aura:
 				i.get_node("Label").add_theme_color_override("font_color", Color(1, 0.25, 0.32, 0.5))
 
 			i.disabled = true
@@ -973,7 +973,7 @@ func update_ab(dub: Button) -> void:
 
 	if dub is WaveButton:
 		if ab.color_same_as_actor:
-			dub.theme_color = CurrentChar.MainColor
+			dub.theme_color = CurrentChar.main_color
 		else:
 			dub.theme_color = ab.wheel_color
 
@@ -1044,8 +1044,8 @@ func _on_give_pressed() -> void:
 			return
 
 		Audio.confirm_sound()
-		CurrentChar.NextMove = null
-		CurrentChar.NextAction = Actor.BtAction.ITEM_GIVE
+		CurrentChar.next_move = null
+		CurrentChar.next_action = Actor.BtAction.ITEM_GIVE
 		var item_dat: ItemData = foc.get_meta("ItemData")
 		item_dat.battle_effect.name = item_dat.name
 		item_dat.battle_effect.description = item_dat.description
@@ -1063,23 +1063,23 @@ func give_item(item_dat: ItemData = given_item) -> void:
 	if CurrentTarget != null:
 		Bt.CurrentTarget = CurrentTarget
 
-		if CurrentTarget.NextAction == Actor.BtAction.UNSET:
+		if CurrentTarget.next_action == Actor.BtAction.UNSET:
 			close()
 			Bt.focus_cam(CurrentTarget)
 			Bt.zoom(5)
-			CurrentTarget.NextAction = Actor.BtAction.ITEM
-			CurrentTarget.NextMove = item_dat.battle_effect
+			CurrentTarget.next_action = Actor.BtAction.ITEM
+			CurrentTarget.next_move = item_dat.battle_effect
 			Item.remove_item(item_dat)
 			Bt.battle_msg("use_on_turn", item_dat.name)
 			await Event.wait(1)
 			fetch_inventory()
 			root.emit()
 			Audio.ui_sound("expand")
-			CurrentChar.NextAction = Actor.BtAction.UNSET
-			CurrentChar.NextMove = null
-			CurrentChar.NextTarget = null
+			CurrentChar.next_action = Actor.BtAction.UNSET
+			CurrentChar.next_move = null
+			CurrentChar.next_target = null
 		else:
-			Bt.battle_msg("busy", CurrentTarget.FirstName)
+			Bt.battle_msg("busy", CurrentTarget.first_name)
 
 
 func _analyze() -> void:

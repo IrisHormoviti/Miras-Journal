@@ -120,6 +120,7 @@ script = ExtResource("4_ws484")
 script = ExtResource("12_rmr3a")
 mode = 2
 actor = SubResource("Resource_vbp8x")
+wait = false
 
 [sub_resource type="Resource" id="Resource_rxp4d"]
 resource_name = "Caster"
@@ -236,6 +237,7 @@ script = ExtResource("4_ws484")
 script = ExtResource("12_rmr3a")
 mode = 2
 actor = SubResource("Resource_yuya7")
+wait = false
 
 [sub_resource type="Resource" id="Resource_wnj6f"]
 resource_name = "Caster"

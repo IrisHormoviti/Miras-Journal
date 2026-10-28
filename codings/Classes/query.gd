@@ -206,13 +206,13 @@ static func _calc_qbezier(ti: float, p0: Vector2, p1: Vector2, p2: Vector2) -> V
 #Finds an ability of a certain type
 static func find_abilities(Char: Actor, type: Ability.TP, ignore_cost := false, targets: Ability.T = Ability.T.ANY) -> Array[Ability]:
 	#print("Chosing a ", type, " ability")
-	var AblilityList: Array[Ability] = Char.Abilities.duplicate()
-	AblilityList.push_front(Char.StandardAttack)
+	var AblilityList: Array[Ability] = Char.abilities.duplicate()
+	AblilityList.push_front(Char.standard_attack)
 	var Choices: Array[Ability] = []
 
 	for i in AblilityList:
 		if (type in i.types and (targets == Ability.T.ANY or i.target == targets)):
-			if ((i.aura_cost < Char.Aura or i.aura_cost == 0) and i.hp_cost < Char.Health) or ignore_cost:
+			if ((i.aura_cost < Char.aura or i.aura_cost == 0) and i.hp_cost < Char.health) or ignore_cost:
 				Choices.push_front(i)
 				print(i.name, " AP: ", i.aura_cost, " Targets: ", i.target)
 			else: print("Not enough resources")

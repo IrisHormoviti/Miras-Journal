@@ -51,10 +51,15 @@ func _ready() -> void:
 	await _test_action()
 	await _test_damage_and_state()
 	await _test_state_wait()
+	await _test_shared_state()
+	await _test_teleport()
+	await _test_side_aware_positions()
 	await _test_aoe()
 	await _test_trap_interrupt()
 	await _test_miss()
 	await _test_auto_idle()
+	await _test_state_pose()
+	_test_enemy_preview_setup()
 	_test_branch_outcomes()
 
 	print("BATTLE_TEST_DONE failed=", failed)
@@ -108,9 +113,9 @@ func _test_action() -> void:
 	sequence.steps.append(_damage_step(TEST_DAMAGE))
 	ability.action_sequence = sequence
 
-	var before := target.Health
+	var before := target.health
 	await battle.use_ability_now(caster, ability, target)
-	var after := target.Health
+	var after := target.health
 	print("BATTLE_TEST_HIT before=", before, " after=", after)
 
 	if after >= before:
@@ -139,9 +144,9 @@ func _test_damage_and_state() -> void:
 	sequence.steps.append(_state_step(ZAPPED))
 	ability.action_sequence = sequence
 
-	var before := target.Health
+	var before := target.health
 	await battle.use_ability_now(Party.Leader, ability, target)
-	var after := target.Health
+	var after := target.health
 	print("BATTLE_TEST_DAMAGE_STATE before=", before, " after=", after, " state=", target.has_state("Zapped"))
 
 	if after >= before:
@@ -187,6 +192,181 @@ func _measure_add_state(target: Actor, state: State, wait: bool) -> int:
 	return Time.get_ticks_msec() - started
 
 
+func _test_shared_state() -> void:
+	if battle.Troop.size() < 2:
+		_fail("Battle harness needs two enemies for the shared state test")
+		return
+
+	var first := battle.Troop[0]
+	var second := battle.Troop[1]
+	var burned: State = load("res://database/States/Burned.tres")
+	await first.add_state(burned, -1, Party.Leader, false, false)
+	await second.add_state(burned, -1, Party.Leader, false, false)
+
+	var first_state := first.get_state("Burned")
+	var second_state := second.get_state("Burned")
+	var distinct := first_state != second_state
+	print("BATTLE_TEST_SHARED_STATE distinct=", distinct)
+
+	if not distinct:
+		_fail("Two actors share the same State instance")
+
+	# Expiring the state on one actor must not queue it for removal on another.
+	first_state.queue_remove = true
+	battle.remove_queued_states(first)
+
+	if not second.has_state("Burned"):
+		_fail("Removing a state from one actor removed it from another")
+
+	battle.remove_queued_states(second)
+
+	if not second.has_state("Burned"):
+		_fail("A shared queue_remove flag removed the state on the second actor")
+
+	# Removing through the ability's own resource must still find the copy.
+	second.remove_state(burned)
+
+	if second.has_state("Burned"):
+		_fail("Removing a state by resource did not remove the actor's copy")
+
+	if battle.lock_turn or battle.lock_count != 0:
+		_fail("Shared state test left the turn locked")
+
+
+func _test_teleport() -> void:
+	var caster := Party.Leader
+
+	if caster == null or caster.node == null:
+		_fail("Battle harness has no caster for the teleport test")
+		return
+
+	var start := caster.node.position
+	var expected := start + Vector2(20, -5)
+	var step := MoveStep.new()
+	step.mode = MoveStep.Mode.TELEPORT
+	step.destination = PositionRef.new(PositionRef.Mode.ABSOLUTE)
+	step.destination.position = expected
+
+	var ability := Ability.nothing().duplicate() as Ability
+	ability.name = "BattleTestTeleport"
+	var sequence := ActionSequence.new()
+	sequence.steps.append(step)
+	ability.action_sequence = sequence
+
+	await battle.use_ability_now(caster, ability, battle.Troop[0])
+	print("BATTLE_TEST_TELEPORT at=", caster.node.position, " expected=", expected)
+
+	if caster.node.position != expected:
+		_fail("MoveStep teleport did not snap the actor to the destination")
+
+	caster.node.position = start
+
+	if battle.lock_turn or battle.lock_count != 0:
+		_fail("Teleport test left the turn locked")
+
+
+func _test_side_aware_positions() -> void:
+	var ability: Ability = load("res://database/Abilities/Attacks/WarpAttack.tres")
+	var walk: MoveStep = null
+	var teleports: Array[MoveStep] = []
+
+	for step in ability.action_sequence.walk():
+		if step is MoveStep and step.mode == MoveStep.Mode.WALK and walk == null:
+			walk = step
+		elif step is MoveStep and step.mode == MoveStep.Mode.TELEPORT:
+			teleports.append(step)
+
+	if walk == null or teleports.size() < 2:
+		_fail("Warp Attack is missing its walk or teleport steps")
+		return
+
+	var ally := Party.Leader
+	var enemy := battle.Troop[0]
+
+	if ally == null or enemy == null:
+		_fail("Battle harness has no ally or enemy for the side-aware test")
+		return
+
+	var home := Vector2(-100, -40)
+	var ally_context := _position_context(ally, enemy, home)
+	var enemy_context := _position_context(enemy, ally, home)
+
+	var ally_walk := _move_target(walk, ally_context, ally)
+	var enemy_walk := _move_target(walk, enemy_context, enemy)
+	var ally_teleport := _move_target(teleports[0], ally_context, ally)
+	var enemy_teleport := _move_target(teleports[0], enemy_context, enemy)
+	var ally_return := _move_target(teleports[1], ally_context, ally)
+	var enemy_return := _move_target(teleports[1], enemy_context, enemy)
+
+	print(
+		"BATTLE_TEST_SIDE_AWARE walk=", ally_walk.x, "/", enemy_walk.x,
+		" teleport=", ally_teleport.x, "/", enemy_teleport.x,
+		" return=", ally_return.x, "/", enemy_return.x
+	)
+
+	if not is_equal_approx(ally_walk.x, 30.0) or not is_equal_approx(enemy_walk.x, -30.0):
+		_fail("Warp Attack opening move is not mirrored for the caster's side")
+
+	if not is_equal_approx(ally_teleport.x, enemy.node.position.x - 30.0):
+		_fail("Warp Attack teleport is not mirrored for an ally caster")
+
+	if not is_equal_approx(enemy_teleport.x, ally.node.position.x + 30.0):
+		_fail("Warp Attack teleport is not mirrored for an enemy caster")
+
+	if not is_equal_approx(ally_return.x, home.x - 50.0):
+		_fail("Warp Attack return teleport is not mirrored for an ally caster")
+
+	if not is_equal_approx(enemy_return.x, home.x + 50.0):
+		_fail("Warp Attack return teleport is not mirrored for an enemy caster")
+
+	var aoe: Ability = load("res://database/Abilities/Attacks/AOEAttack.tres")
+	var aoe_walk: MoveStep = null
+	var aoe_camera: PositionRef = null
+
+	for step in aoe.action_sequence.walk():
+		if step is MoveStep and step.mode == MoveStep.Mode.WALK and aoe_walk == null:
+			aoe_walk = step
+		elif step is CameraStep and step.position != null and aoe_camera == null:
+			aoe_camera = step.position
+
+	if aoe_walk == null or aoe_camera == null:
+		_fail("AOE Attack is missing its walk or camera position")
+		return
+
+	var ally_aoe_walk := _move_target(aoe_walk, ally_context, ally)
+	var enemy_aoe_walk := _move_target(aoe_walk, enemy_context, enemy)
+	var ally_aoe_camera := aoe_camera.resolve(ally_context)
+	var enemy_aoe_camera := aoe_camera.resolve(enemy_context)
+	print(
+		"BATTLE_TEST_SIDE_AWARE_AOE walk=", ally_aoe_walk.x, "/", enemy_aoe_walk.x,
+		" camera=", ally_aoe_camera.x, "/", enemy_aoe_camera.x
+	)
+
+	if not is_equal_approx(ally_aoe_walk.x, -20.0) or not is_equal_approx(enemy_aoe_walk.x, 20.0):
+		_fail("AOE Attack opening move is not mirrored for the caster's side")
+
+	if not is_equal_approx(ally_aoe_camera.x, 20.0) or not is_equal_approx(enemy_aoe_camera.x, -20.0):
+		_fail("AOE Attack camera position is not mirrored for the caster's side")
+
+
+func _position_context(caster: Actor, target: Actor, home: Vector2) -> ActionSequenceContext:
+	var context := ActionSequenceContext.new()
+	context.battle = battle
+	context.caster = caster
+	context.target = target
+	context.home_position = home
+	return context
+
+
+func _move_target(step: MoveStep, context: ActionSequenceContext, subject: Actor) -> Vector2:
+	var offsetized := Vector2(context.battle.offsetize(step.offset.x, subject), step.offset.y)
+
+	if step.destination == null:
+		return subject.node.position + offsetized
+
+	return step.destination.resolve(context, subject) + offsetized
+
+
 func _test_aoe() -> void:
 	if battle.Troop.size() < 2:
 		_fail("Battle harness needs two enemies for AOE")
@@ -201,12 +381,12 @@ func _test_aoe() -> void:
 
 	var first := battle.Troop[0]
 	var second := battle.Troop[1]
-	var first_before := first.Health
-	var second_before := second.Health
+	var first_before := first.health
+	var second_before := second.health
 	await battle.use_ability_now(Party.Leader, ability, first)
-	print("BATTLE_TEST_ICY_DRIZZLE first=", first_before, "->", first.Health, " second=", second_before, "->", second.Health)
+	print("BATTLE_TEST_ICY_DRIZZLE first=", first_before, "->", first.health, " second=", second_before, "->", second.health)
 
-	if first.Health >= first_before or second.Health >= second_before:
+	if first.health >= first_before or second.health >= second_before:
 		_fail("Icy Drizzle did not damage every target")
 
 	if not first.has_state("Frozen") or not second.has_state("Frozen"):
@@ -249,11 +429,11 @@ func _test_trap_interrupt() -> void:
 	ability.aoe_sequence = sequence
 	battle.no_misses = true
 
-	var first_before := first.Health
-	var second_before := second.Health
+	var first_before := first.health
+	var second_before := second.health
 	await battle.use_ability_now(Party.Leader, ability, first)
-	var first_damage := first_before - first.Health
-	var second_damage := second_before - second.Health
+	var first_damage := first_before - first.health
+	var second_damage := second_before - second.health
 	print("BATTLE_TEST_TRAP first=", first_damage, " second=", second_damage, " pending=", battle.pending_traps.size())
 
 	if first_damage <= 0 or second_damage <= first_damage:
@@ -266,11 +446,11 @@ func _test_trap_interrupt() -> void:
 		_fail("Trap test left the turn locked")
 
 	var caster := Party.Leader
-	var caster_before := caster.Health
+	var caster_before := caster.health
 	await battle.resolve_traps()
-	print("BATTLE_TEST_TRAP_COUNTER caster=", caster_before, "->", caster.Health)
+	print("BATTLE_TEST_TRAP_COUNTER caster=", caster_before, "->", caster.health)
 
-	if caster.Health >= caster_before:
+	if caster.health >= caster_before:
 		_fail("Trap counterattack did not damage the attacker")
 
 	if not battle.pending_traps.is_empty():
@@ -300,11 +480,11 @@ func _test_miss() -> void:
 	sequence.steps.append(damage)
 	ability.action_sequence = sequence
 
-	var before := target.Health
+	var before := target.health
 	await battle.use_ability_now(Party.Leader, ability, target)
-	print("BATTLE_TEST_MISS before=", before, " after=", target.Health)
+	print("BATTLE_TEST_MISS before=", before, " after=", target.health)
 
-	if target.Health != before:
+	if target.health != before:
 		_fail("Battle harness miss dealt damage")
 
 	if battle.lock_turn or battle.lock_count != 0:
@@ -330,6 +510,63 @@ func _test_auto_idle() -> void:
 
 	if caster.node.animation != "Idle":
 		_fail("Turn did not return the caster to idle")
+
+
+func _test_state_pose() -> void:
+	var caster := Party.Leader
+
+	if caster == null or caster.node == null:
+		_fail("Battle harness has no caster for the state pose test")
+		return
+
+	var original_frames := caster.node.sprite_frames
+	caster.node.sprite_frames = load("res://art/BT/StoneGuardian/StoneGuardianBT.tres")
+
+	var pose_state := State.new()
+	pose_state.name = "BattleTestPose"
+	pose_state.pose = "Guard"
+	caster.states.append(pose_state)
+
+	battle.anim("", caster)
+	print("BATTLE_TEST_STATE_POSE animation=", caster.node.animation)
+
+	if caster.node.animation != "Guard":
+		_fail("A state pose did not replace the idle animation")
+
+	caster.states.erase(pose_state)
+
+	var sturdy: Ability = load("res://database/Abilities/SturdyGuard.tres")
+	await battle.use_ability_now(caster, sturdy, caster)
+	battle.anim("", caster)
+	print("BATTLE_TEST_STATE_POSE_ABILITY animation=", caster.node.animation, " barrier=", caster.has_state("Barrier"))
+
+	if not caster.has_state("Barrier"):
+		_fail("Sturdy Guard did not apply Barrier")
+
+	if caster.node.animation != "Guard":
+		_fail("Sturdy Guard did not keep the Barrier pose")
+
+	caster.remove_state("Barrier")
+	caster.node.sprite_frames = original_frames
+	caster.node.play("Idle")
+
+
+func _test_enemy_preview_setup() -> void:
+	var enemy_sequence := Battle.build_preview_sequence(1, "res://database/Enemies/Pterogon.tres")
+
+	if enemy_sequence == null or enemy_sequence.Enemies.size() != 1:
+		_fail("Enemy preview did not build a single-enemy sequence")
+		return
+
+	print("BATTLE_TEST_ENEMY_PREVIEW enemy=", enemy_sequence.Enemies[0].first_name)
+
+	if enemy_sequence.Enemies[0].first_name != "Pterogon":
+		_fail("Enemy preview did not use the chosen enemy")
+
+	var dummy_sequence := Battle.build_preview_sequence(3, "")
+
+	if dummy_sequence == null or dummy_sequence.Enemies.size() != 3:
+		_fail("Preview target count did not build three dummies")
 
 
 func _test_branch_outcomes() -> void:

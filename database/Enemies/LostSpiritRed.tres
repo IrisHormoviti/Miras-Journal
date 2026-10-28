@@ -8,16 +8,16 @@
 
 [resource]
 script = ExtResource("3_422f2")
-FirstName = "Lost Spirit"
-MainColor = Color(0.68235296, 0.23921569, 0.23921569, 1)
-PartyIcon = ExtResource("2_422f2")
-ActorClass = "Attacker"
-RecivedSP = 12
-MaxHP = 30
-MaxAura = 30
-Attack = 1.3
-Magic = 0.8
-Defence = 0.7
-StandardAttack = ExtResource("4_422f2")
-BT = "Red"
+first_name = "Lost Spirit"
+main_color = Color(0.68235296, 0.23921569, 0.23921569, 1)
+party_icon = ExtResource("2_422f2")
+actor_class = "Attacker"
+received_sp = 12
+max_hp = 30
+max_aura = 30
+attack = 1.3
+magic = 0.8
+defence = 0.7
+standard_attack = ExtResource("4_422f2")
+bt = "Red"
 metadata/_custom_type_script = "uid://msf7qb28ublo"

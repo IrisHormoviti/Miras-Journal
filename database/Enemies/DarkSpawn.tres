@@ -10,19 +10,19 @@
 
 [resource]
 script = ExtResource("2_nskis")
-FirstName = "Dark Spawn"
-MainColor = Color(0.768627, 0.654902, 0.929412, 1)
-PartyIcon = ExtResource("1_gfcpg")
-ActorClass = "Support"
-RecivedSP = 3
-MaxHP = 20
-MaxAura = 15
-Attack = 0.3
-Magic = 0.4
-Defence = 0.4
-Speed = 3.0
-SkillLevel = 0
-Abilities = Array[ExtResource("1_tn5j1")]([ExtResource("1_ge8t8"), ExtResource("2_pmj1l")])
-StandardAttack = ExtResource("4_bmd5k")
-Offset = Vector2(2, -15)
-GlowDef = 0.5
+first_name = "Dark Spawn"
+main_color = Color(0.768627, 0.654902, 0.929412, 1)
+party_icon = ExtResource("1_gfcpg")
+actor_class = "Support"
+received_sp = 3
+max_hp = 20
+max_aura = 15
+attack = 0.3
+magic = 0.4
+defence = 0.4
+speed = 3.0
+skill_level = 0
+abilities = Array[ExtResource("1_tn5j1")]([ExtResource("1_ge8t8"), ExtResource("2_pmj1l")])
+standard_attack = ExtResource("4_bmd5k")
+offset = Vector2(2, -15)
+glow_def = 0.5

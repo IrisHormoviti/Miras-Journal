@@ -38,7 +38,7 @@ var save_time := 0.0
 
 ## Shortcut to alcine's name
 static var alcine: String:
-	get(): return Party.get_member("Alcine").FirstName
+	get(): return Party.get_member("Alcine").first_name
 
 ## For updating info like the party
 signal check

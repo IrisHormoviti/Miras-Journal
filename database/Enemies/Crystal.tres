@@ -8,17 +8,17 @@
 
 [resource]
 script = ExtResource("3_1fp2h")
-FirstName = "Crystal"
-MainColor = Color(0, 0.72549, 0.239216, 1)
-PartyIcon = ExtResource("2_1fp2h")
-ActorClass = "Support"
-RecivedSP = 1
-MaxHP = 40
-MaxAura = 10
-Attack = 0.0
-Magic = 0.0
-Defence = 1.5
-Speed = 4.0
-StandardAttack = ExtResource("5_yd7wc")
-Offset = Vector2(0, -4)
+first_name = "Crystal"
+main_color = Color(0, 0.72549, 0.239216, 1)
+party_icon = ExtResource("2_1fp2h")
+actor_class = "Support"
+received_sp = 1
+max_hp = 40
+max_aura = 10
+attack = 0.0
+magic = 0.0
+defence = 1.5
+speed = 4.0
+standard_attack = ExtResource("5_yd7wc")
+offset = Vector2(0, -4)
 metadata/_custom_type_script = "uid://msf7qb28ublo"

@@ -11,17 +11,17 @@
 
 [resource]
 script = ExtResource("4_okcgo")
-FirstName = "Left Arm"
-MainColor = Color(0.137255, 0.411765, 0.909804, 1)
-PartyIcon = ExtResource("3_okcgo")
+first_name = "Left Arm"
+main_color = Color(0.137255, 0.411765, 0.909804, 1)
+party_icon = ExtResource("3_okcgo")
 codename = &"LHLeft"
-RecivedSP = 0
-CustomPosition = Vector2i(82, 48)
-MaxAura = 40
-Attack = 0.2
-Magic = 1.5
-Speed = 6.0
-Abilities = Array[ExtResource("1_stamu")]([ExtResource("3_wbo3k"), ExtResource("4_7xn8o"), ExtResource("4_mbsok")])
-StandardAttack = ExtResource("5_pfxhc")
-BT = "LazuliteHeart/LazuliteHeartBTLeft"
+received_sp = 0
+custom_position = Vector2i(82, 48)
+max_aura = 40
+attack = 0.2
+magic = 1.5
+speed = 6.0
+abilities = Array[ExtResource("1_stamu")]([ExtResource("3_wbo3k"), ExtResource("4_7xn8o"), ExtResource("4_mbsok")])
+standard_attack = ExtResource("5_pfxhc")
+bt = "LazuliteHeart/LazuliteHeartBTLeft"
 metadata/_custom_type_script = "uid://msf7qb28ublo"

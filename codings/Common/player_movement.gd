@@ -250,7 +250,7 @@ func _check_party() -> void:
 	check_flame()
 	if get_node_or_null("%Base") == null: return
 	elif is_instance_valid(Party.Leader):
-		if not %Base.sprite_frames.resource_path.ends_with(Party.Leader.codename + Party.Leader.OV + ".tres"):
+		if not %Base.sprite_frames.resource_path.ends_with(Party.Leader.codename + Party.Leader.ov + ".tres"):
 			%Base.sprite_frames = await Party.Leader.get_OV()
 
 
@@ -340,7 +340,7 @@ func bag_anim() -> void:
 	state = S.NONE
 
 	if get_node_or_null("%Base") == null: return
-	Party.get_member("Mira").OV = "Bag"
+	Party.get_member("Mira").ov = "Bag"
 	Global.check.emit()
 	await set_anim("BagOpen", true)
 	set_anim("BagIdle")

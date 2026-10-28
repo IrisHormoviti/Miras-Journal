@@ -151,7 +151,7 @@ $> Loader.save()
 => END
 
 ~ approach
-$> Party.Leader.ClutchDmg = true
+$> Party.Leader.clutch_dmg = true
 $> player.collision(false)
 $> player.look_to(Direction.RIGHT)
 $> Alcine.set_anim("Scared")
@@ -245,7 +245,7 @@ Alcine.Happy: Whieaaa!
 => END
 
 ~ got_through_that
-$> Party.Leader.ClutchDmg = false
+$> Party.Leader.clutch_dmg = false
 Mira.Neutral: We should be safe now.
 Mira.Neutral: If it wasn't for you, I'd be done for.
 Mira.Neutral: We should stick together for now, [wait=0.5]umm...
@@ -457,8 +457,8 @@ Mira.Neutral: Because it's so close to my own attack's color, inside the X mark,
 $> picture_clear()
 Mira.Neutral: Let's give it a try!
 [hide]
-$> Party.Leader.NextAction = Actor.BtAction.MAGIC
-$> Party.Leader.NextMove = Query.get_ability("FlameSpark")
+$> Party.Leader.next_action = Actor.BtAction.MAGIC
+$> Party.Leader.next_move = Query.get_ability("FlameSpark")
 $> bt.confirm_next()
 $> bt.lock_turn = true
 $> wait(3)
@@ -473,10 +473,10 @@ Mira.Smile: The enemy's color is on the [b]O[/b] mark![br][small](The double O m
 $> picture_clear()
 Mira.Smile: So try out one of your attacks!
 [hide]
-$> Party.Member1.NextAction = Actor.BtAction.MAGIC
-$> Party.Member1.NextMove = Query.get_ability("IcyNail")
-$> Party.Leader.NextAction = Actor.BtAction.ACT
-$> Party.Leader.NextMove = Ability.nothing()
+$> Party.Member1.next_action = Actor.BtAction.MAGIC
+$> Party.Member1.next_move = Query.get_ability("IcyNail")
+$> Party.Leader.next_action = Actor.BtAction.ACT
+$> Party.Leader.next_move = Ability.nothing()
 $> bt.lock_turn = false
 $> bt.confirm_next()
 $> wait(1)
@@ -484,8 +484,8 @@ $> bt.lock_turn = true
 $> wait(4)
 Mira.Smile: See? That was a direct hit to its weakness!
 Mira.Smile: Just keep it up!
-$> Party.Member1.NextAction = Actor.BtAction.MAGIC
-$> Party.Member1.NextMove = Query.get_ability("IcyNail")
+$> Party.Member1.next_action = Actor.BtAction.MAGIC
+$> Party.Member1.next_move = Query.get_ability("IcyNail")
 $> bt.lock_turn = false
 => END
 
@@ -522,7 +522,7 @@ Mira.Worried: Careful {{alcine}}![br]Your attacks might only be effective when i
 => END
 
 ~ stone_guardian_still_standing
-if Party.Leader.Health > 0:
+if Party.Leader.health > 0:
 	Mira.Neutral: This thing just won't go down..!
 else:
 	Mira.Upset: It's.... pointless.....
@@ -545,7 +545,7 @@ $> add_to_diary("oct31")
 I open my eyes and see im somewhere else. Is this a tent?
 I get up and look around. My clothes are all ripped and I have a bandage on my left arm.
 Ow, it hurts quite a bit to move it around.
-$> Party.get_member("Daze").FirstName = ""
+$> Party.get_member("Daze").first_name = ""
 Daze.Neutral: Oh Ms. Levenor, you're finally up!
 A human..?
 I'm not that sure what to say, and I just stare silent for a bit. 
@@ -558,7 +558,7 @@ What do I ask?
 - Who is he?
 	Mira.Neutral: So... who are you?
 	Daze.Neutral: The name is Daze.
-	$> Party.get_member("Daze").FirstName = "Daze"
+	$> Party.get_member("Daze").first_name = "Daze"
 	Daze.Neutral: I'm from Elmethin, a city to the north of the Capital, but I've been traveling around for a while now.
 	Mira.Neutral: A traveller? Where are you going?
 	Daze.Neutral: That's a long story... and doesn't really matter.
@@ -651,12 +651,12 @@ Daze.Neutral: I've been wanting to explore this place further, but... let's leav
 Daze.Neutral: I'll go scout around here for monsters.
 Daze.Neutral: Just stay here and rest while I'm away, alright?
 Mira.Neutral: Alright.
-if Party.get_member("Daze").FirstName != "Daze":
+if Party.get_member("Daze").first_name != "Daze":
 	Mira.Neutral: Oh by the way, I didn't ask. What's your name?
 	if get_flag("Event/DazeQuestions") < 3:
 		Daze.Neutral: Oh, so you did have more things to ask.
 	Daze.Neutral: It's Daze.
-	$> Party.get_member("Daze").FirstName = "Daze"
+	$> Party.get_member("Daze").first_name = "Daze"
 	Mira.Neutral: Daze...
 	Mira.Neutral: Is that a first or last name?
 	Daze.Neutral: It's... more of a nickname.
@@ -665,7 +665,7 @@ if Party.get_member("Daze").FirstName != "Daze":
 
 ~ bag_seq
 $> remove_flag(&"Player/NoBag")
-$> Party.Leader.OV = "Bag"
+$> Party.Leader.ov = "Bag"
 $> player.state = NPC.S.CUSTOM
 $> player.direction = Vector2.ZERO
 $> player.set_anim("BagGet", true)
@@ -685,7 +685,7 @@ $> save()
 ~ AlcineFollowHelp
 $> Alcine.set_anim("IdleRight")
 $> Alcine.bubble("Surprise")
-$> temp.pterogon_hp = bt.get_actor("Pterogon").Health
+$> temp.pterogon_hp = bt.get_actor("Pterogon").health
 if temp.pterogon_hp < 5:
 	$> temp.pterogon_hp = 5
 $> Alcine.z_index = 9
@@ -694,12 +694,12 @@ $> Alcine.jump_to(Vector2(1660, -1068), 7, 0.5)
 $>> bt.end_battle()
 $> wait_for_battle()
 $> Party.add("Alcine")
-$> Party.Member1.FirstName = "Spirit"
+$> Party.Member1.first_name = "Spirit"
 $> Alcine.hide()
 $> wait(0.5, false)
 $> Battle.start("AlcineFollow2")
 $> wait(1)
-$> bt.get_actor("Pterogon", true).Health = temp.pterogon_hp
+$> bt.get_actor("Pterogon", true).health = temp.pterogon_hp
 $> wait_for_battle()
 => AlcineFollow4
 
@@ -709,9 +709,9 @@ $> take_control()
 while Battle.in_battle:
 	$> wait(0.1)
 $> take_control()
-$> Party.Member1.FirstName = "Alcine"
+$> Party.Member1.first_name = "Alcine"
 $> Alcine.z_index = 0
-$> Party.get_member("Mira").OV = "Bag"
+$> Party.get_member("Mira").ov = "Bag"
 $> Alcine.position = Global.room.followers[0].position
 $> player.go_to(Vector2(67, -45), true)
 $> Global.room.followers[0].dont_follow = true
@@ -805,7 +805,7 @@ if Battle.battle_result == 1:
 
 ~ oct31_night
 $> Item.remove_item("LightweightAxe", &"Key")
-$> Party.get_member("Mira").Weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
+$> Party.get_member("Mira").weapon = load("res://database/Items/KeyItems/NoWeapon.tres")
 $> add_flag("Event/BeatStoneGuardian")
 $> travel_to("WitheredLeaves", Vector2(750, -211), 0, "none", false)
 $> no_player()
@@ -816,7 +816,7 @@ $> Item.remove_item("LightweightAxe", &"Key")
 $> add_flag("Meta/Veinet/Disable")
 $> remove_flag("UI/HideDate")
 $> Party.set_to(["Mira"])
-$> Party.Leader.ClutchDmg = false
+$> Party.Leader.clutch_dmg = false
 $> travel_to("WitheredLeaves", Vector2(775, -211))
 $> save()
 => END

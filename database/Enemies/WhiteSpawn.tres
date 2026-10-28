@@ -10,20 +10,20 @@
 
 [resource]
 script = ExtResource("2_a457n")
-FirstName = "White Spawn"
-MainColor = Color(0.768627, 1, 0.85098, 1)
-PartyIcon = ExtResource("1_udw1f")
-ActorClass = "Support"
-DroppedItem = ExtResource("3_r050w")
-RecivedSP = 2
-MaxHP = 20
-MaxAura = 8
-Attack = 0.1
-Magic = 0.3
-Defence = 0.6
-Speed = 8.0
-SkillLevel = 0
-Abilities = Array[ExtResource("1_f06dm")]([ExtResource("1_p3tw5")])
-StandardAttack = ExtResource("4_cbmb1")
-Offset = Vector2(0, -15)
-GlowDef = 0.5
+first_name = "White Spawn"
+main_color = Color(0.768627, 1, 0.85098, 1)
+party_icon = ExtResource("1_udw1f")
+actor_class = "Support"
+dropped_item = ExtResource("3_r050w")
+received_sp = 2
+max_hp = 20
+max_aura = 8
+attack = 0.1
+magic = 0.3
+defence = 0.6
+speed = 8.0
+skill_level = 0
+abilities = Array[ExtResource("1_f06dm")]([ExtResource("1_p3tw5")])
+standard_attack = ExtResource("4_cbmb1")
+offset = Vector2(0, -15)
+glow_def = 0.5

@@ -76,8 +76,8 @@ func control_process() -> void:
 	z_index = Global.player.z_index
 	collision_layer = Global.player.collision_layer
 	collision_mask = Global.player.collision_mask
-	$Glow.color = actor.MainColor
-	$Glow.energy = actor.GlowDef / 2.0
+	$Glow.color = actor.main_color
+	$Glow.energy = actor.glow_def / 2.0
 
 	var old_position: Vector2 = global_position
 	var player_dist: float = to_local(Global.player.position).length()
@@ -148,8 +148,8 @@ func update() -> void:
 
 	actor = Party.get_member_index(member)
 
-	if actor != null and sprite.sprite_frames and sprite.sprite_frames.resource_path != actor.OV:
+	if actor != null and sprite.sprite_frames and sprite.sprite_frames.resource_path != actor.ov:
 		sprite.sprite_frames = await actor.get_OV()
 
 		if actor and shadow_sprite:
-			shadow(actor.Shadow)
+			shadow(actor.shadow)
