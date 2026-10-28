@@ -1561,22 +1561,19 @@ func outline_remove(target: Actor, time := 0.5) -> void:
 		target.node.material.set_shader_parameter("outline_enabled", false)
 
 
-func screen_shake(amount: float = 15, times: float = 7, duration: float = 0.2) -> void:
-	var t := create_tween()
+func screen_shake(amount: float = 15.0, times: int = 7, duration: float = 0.2) -> void:
+	var t: Tween = create_tween()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)
-	var dur := duration / times
-	var am := amount
+	var dur: float = duration / (times * 2.0)
+	var am: float = amount
 
 	if Input.get_joy_vibration_strength(0) == Vector2.ZERO:
-		Controller.rumble(amount / 20, times / 10, duration)
+		Controller.rumble(amount / 20.0, float(times) / 10.0, duration)
 
-	for i in range(0, times):
-		am = am - (amount / times)
-		#print(am)
-		#print(amount, " / ", times, " = ",amount/times)
-		t.tween_property(cam, "offset",
-		Vector2(randf_range(-am, am), randf_range(-am, am)), dur).as_relative()
+	for i: int in range(times):
+		am -= amount / times
+		t.tween_property(cam, "offset", Vector2(randf_range(-am, am), randf_range(-am, am)), dur)
 		t.tween_property(cam, "offset", Vector2.ZERO, dur)
 
 	await t.finished

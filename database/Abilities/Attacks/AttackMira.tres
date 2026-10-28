@@ -1,7 +1,216 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://cu3k0uyihyv24"]
 
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_bdinl"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_lgoi2"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_kfuua"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_ox74t"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_nty7n"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_c6hwl"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_pp761"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="6_f30u2"]
+[ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_1cqst"]
+[ext_resource type="Script" uid="uid://bx8uo7d4ycpyy" path="res://codings/Battle/Steps/Actor/move_step.gd" id="8_hc643"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="9_3pwn8"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_87jb6"]
+[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="10_u8pbm"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="11_u8pbm"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="12_f2p68"]
+[ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="13_3pwn8"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_hc643"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="15_87jb6"]
+
+[sub_resource type="Resource" id="Resource_1cqst"]
+resource_name = "Target"
+script = ExtResource("3_nty7n")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_hc643"]
+script = ExtResource("4_c6hwl")
+zoom_enabled = true
+move_enabled = true
+actor = SubResource("Resource_1cqst")
+
+[sub_resource type="Resource" id="Resource_3pwn8"]
+resource_name = "Caster"
+script = ExtResource("3_nty7n")
+
+[sub_resource type="Resource" id="Resource_87jb6"]
+script = ExtResource("5_pp761")
+actor = SubResource("Resource_3pwn8")
+animation = &"Attack1"
+
+[sub_resource type="Resource" id="Resource_j5n4u"]
+resource_name = "Caster"
+script = ExtResource("3_nty7n")
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_u8pbm"]
+script = ExtResource("6_f30u2")
+actor = SubResource("Resource_j5n4u")
+sound_name = &"Attack1"
+
+[sub_resource type="Resource" id="Resource_slehr"]
+resource_name = "Caster"
+script = ExtResource("3_nty7n")
+
+[sub_resource type="Resource" id="Resource_lp4jo"]
+resource_name = "Target"
+script = ExtResource("7_1cqst")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_dqhor"]
+script = ExtResource("8_hc643")
+mode = 1
+actor = SubResource("Resource_slehr")
+destination = SubResource("Resource_lp4jo")
+offset = Vector2(-30, 0)
+duration = 4.0
+
+[sub_resource type="Resource" id="Resource_e3s6r"]
+resource_name = "Caster"
+script = ExtResource("3_nty7n")
+
+[sub_resource type="Resource" id="Resource_6t8h7"]
+script = ExtResource("5_pp761")
+actor = SubResource("Resource_e3s6r")
+animation = &"Attack2"
+
+[sub_resource type="Resource" id="Resource_sww3w"]
+script = ExtResource("9_3pwn8")
+
+[sub_resource type="Resource" id="Resource_7ic4d"]
+resource_name = "Target"
+script = ExtResource("3_nty7n")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_fpaye"]
+script = ExtResource("10_u8pbm")
+effect_name = &"SimpleHit"
+target = SubResource("Resource_7ic4d")
+
+[sub_resource type="Resource" id="Resource_kjwpa"]
+resource_name = "Target"
+script = ExtResource("3_nty7n")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_hylco"]
+script = ExtResource("6_f30u2")
+actor = SubResource("Resource_kjwpa")
+
+[sub_resource type="Resource" id="Resource_yijn3"]
+resource_name = "Caster"
+script = ExtResource("3_nty7n")
+
+[sub_resource type="Resource" id="Resource_yed4x"]
+script = ExtResource("6_f30u2")
+actor = SubResource("Resource_yijn3")
+sound_name = &"Attack2"
+
+[sub_resource type="Resource" id="Resource_pma7b"]
+resource_name = "Target"
+script = ExtResource("3_nty7n")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_12wet"]
+script = ExtResource("10_87jb6")
+target = SubResource("Resource_pma7b")
+
+[sub_resource type="Resource" id="Resource_awxaf"]
+resource_name = "weapon"
+script = ExtResource("11_u8pbm")
+
+[sub_resource type="Resource" id="Resource_hvi5e"]
+resource_name = "Target"
+script = ExtResource("3_nty7n")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_cag3l"]
+script = ExtResource("12_f2p68")
+target = SubResource("Resource_hvi5e")
+power = SubResource("Resource_awxaf")
+contact = true
+miss_branch = true
+hit_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_sww3w"), SubResource("Resource_fpaye"), SubResource("Resource_hylco"), SubResource("Resource_yed4x")])
+miss_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_12wet")])
+
+[sub_resource type="Resource" id="Resource_861s2"]
+script = ExtResource("15_87jb6")
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_662ba"]
+resource_name = "Actor Color"
+script = ExtResource("13_3pwn8")
+mode = 1
+metadata/_custom_type_script = "uid://chy73ndgt66nv"
+
+[sub_resource type="Resource" id="Resource_f2p68"]
+script = ExtResource("9_3pwn8")
+
+[sub_resource type="Resource" id="Resource_5b4xc"]
+resource_name = "Target"
+script = ExtResource("3_nty7n")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_v07kw"]
+script = ExtResource("6_f30u2")
+actor = SubResource("Resource_5b4xc")
+
+[sub_resource type="Resource" id="Resource_1i20v"]
+resource_name = "Target"
+script = ExtResource("3_nty7n")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ob716"]
+script = ExtResource("10_87jb6")
+target = SubResource("Resource_1i20v")
+
+[sub_resource type="Resource" id="Resource_82mxm"]
+resource_name = "weapon"
+script = ExtResource("11_u8pbm")
+
+[sub_resource type="Resource" id="Resource_4inb6"]
+resource_name = "Target"
+script = ExtResource("3_nty7n")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_jfhuf"]
+script = ExtResource("12_f2p68")
+target = SubResource("Resource_4inb6")
+power = SubResource("Resource_82mxm")
+magic_mode = 1
+contact = true
+elemental = true
+color = SubResource("Resource_662ba")
+hit_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_f2p68"), SubResource("Resource_v07kw")])
+miss_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_ob716")])
+
+[sub_resource type="Resource" id="Resource_pgdtc"]
+script = ExtResource("13_hc643")
+if_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_861s2"), SubResource("Resource_jfhuf")])
+
+[sub_resource type="Resource" id="Resource_aku36"]
+script = ExtResource("15_87jb6")
+duration = 0.6
+
+[sub_resource type="Resource" id="Resource_t3gm7"]
+resource_name = "Caster"
+script = ExtResource("3_nty7n")
+
+[sub_resource type="Resource" id="Resource_b1cty"]
+resource_name = "Target"
+script = ExtResource("7_1cqst")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_7jqbn"]
+script = ExtResource("8_hc643")
+mode = 2
+actor = SubResource("Resource_t3gm7")
+destination = SubResource("Resource_b1cty")
+
+[sub_resource type="Resource" id="Resource_ch88p"]
+script = ExtResource("1_lgoi2")
+steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_hc643"), SubResource("Resource_87jb6"), SubResource("Resource_u8pbm"), SubResource("Resource_dqhor"), SubResource("Resource_6t8h7"), SubResource("Resource_cag3l"), SubResource("Resource_pgdtc"), SubResource("Resource_aku36"), SubResource("Resource_7jqbn")])
+metadata/_custom_type_script = "uid://cn5b836p1hs1k"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ibuoa"]
 atlas = ExtResource("1_bdinl")
@@ -13,14 +222,15 @@ script = ExtResource("2_kfuua")
 name = "Axe Swing"
 description = "A fairly reliable attack that deals damage with a low chance of missing."
 icon = SubResource("AtlasTexture_ibuoa")
-legacy_action_sequence = &"AttackMira"
-types = Array[int]([1])
-Damage = 6
-target = 1
-color_same_as_actor = true
 wheel_color = Color(0.878431, 0.682353, 0.517647, 1)
-callout = false
+color_same_as_actor = true
+target = 1
+action_sequence = SubResource("Resource_ch88p")
 success_chance = 0.95
 crit_chance = 0.2
+types = Array[int]([1])
+callout = false
 recover_aura = true
+Damage = 6
 damage_variance = true
+legacy_action_sequence = &"AttackMira"

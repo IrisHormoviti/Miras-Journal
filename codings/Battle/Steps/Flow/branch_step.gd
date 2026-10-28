@@ -10,7 +10,7 @@ enum Mode {
 }
 
 ## Branch on a resource condition or on the current hit outcome.
-@export var mode: Mode = Mode.CONDITION:
+@export var mode: Mode = Mode.CRIT:
 	set(value):
 		mode = value
 		notify_property_list_changed()

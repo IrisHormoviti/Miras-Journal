@@ -40,6 +40,16 @@ script = ExtResource("5_lp4d3")
 actor = SubResource("Resource_6m1ul")
 animation = &"Attack1"
 
+[sub_resource type="Resource" id="Resource_aqdhg"]
+resource_name = "Caster"
+script = ExtResource("3_mpgjr")
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_y3qkm"]
+script = ExtResource("9_877xx")
+actor = SubResource("Resource_aqdhg")
+sound_name = &"Attack1"
+
 [sub_resource type="Resource" id="Resource_syklk"]
 resource_name = "Caster"
 script = ExtResource("3_mpgjr")
@@ -56,7 +66,7 @@ script = ExtResource("7_lp4d3")
 mode = 1
 actor = SubResource("Resource_syklk")
 destination = SubResource("Resource_y0u2e")
-offset = Vector2(-30, 0)
+offset = Vector2(-20, 0)
 duration = 4.0
 
 [sub_resource type="Resource" id="Resource_vc1j4"]
@@ -69,6 +79,8 @@ duration = 0.5
 
 [sub_resource type="Resource" id="Resource_526p4"]
 script = ExtResource("4_shake")
+amount = 8.0
+duration = 0.5
 
 [sub_resource type="Resource" id="Resource_salct"]
 script = ExtResource("9_877xx")
@@ -117,6 +129,16 @@ script = ExtResource("10_vc1j4")
 effect_name = &"SimpleHit"
 target = SubResource("Resource_to117")
 
+[sub_resource type="Resource" id="Resource_1nrxn"]
+resource_name = "Caster"
+script = ExtResource("3_mpgjr")
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_81jhf"]
+script = ExtResource("9_877xx")
+actor = SubResource("Resource_1nrxn")
+sound_name = &"Attack2"
+
 [sub_resource type="Resource" id="Resource_rmp0x"]
 resource_name = "Target"
 script = ExtResource("3_mpgjr")
@@ -141,7 +163,7 @@ script = ExtResource("11_vc1j4")
 target = SubResource("Resource_265y4")
 power = SubResource("Resource_rlkp1")
 color = SubResource("Resource_vc1j4")
-hit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_ch88p"), SubResource("Resource_j5n4u"), SubResource("Resource_cmgul")])
+hit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_ch88p"), SubResource("Resource_j5n4u"), SubResource("Resource_cmgul"), SubResource("Resource_81jhf")])
 miss_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_cswqf")])
 crit_steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_58b5n"), SubResource("Resource_heoag")])
 
@@ -227,7 +249,7 @@ destination = SubResource("Resource_u86ep")
 
 [sub_resource type="Resource" id="Resource_4s4h3"]
 script = ExtResource("1_syklk")
-steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_vyxv4"), SubResource("Resource_jd6b1"), SubResource("Resource_877xx"), SubResource("Resource_ag65b"), SubResource("Resource_jiraw"), SubResource("Resource_ahlgc"), SubResource("Resource_2uo6l"), SubResource("Resource_uwxh6")])
+steps = Array[ExtResource("3_eod7o")]([SubResource("Resource_vyxv4"), SubResource("Resource_jd6b1"), SubResource("Resource_y3qkm"), SubResource("Resource_877xx"), SubResource("Resource_ag65b"), SubResource("Resource_jiraw"), SubResource("Resource_ahlgc"), SubResource("Resource_2uo6l"), SubResource("Resource_uwxh6")])
 metadata/_custom_type_script = "uid://cn5b836p1hs1k"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q46ei"]

@@ -3,9 +3,9 @@ extends BattleStep
 class_name CameraShakeStep
 
 ## How far the camera shakes.
-@export var amount := 8.0
-@export var repeat := 7
-@export var duration := 0.5
+@export var amount: float = 15
+@export var repeat: int = 7
+@export var duration: float = 0.2
 ## When false, the next step starts while the camera is still shaking.
 @export var wait := false
 

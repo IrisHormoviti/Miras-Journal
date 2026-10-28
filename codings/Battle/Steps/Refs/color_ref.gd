@@ -4,7 +4,7 @@ class_name ColorRef
 
 enum Mode {
 	FIXED,
-	MAIN_COLOR,
+	ACTOR_COLOR,
 	SECONDARY_COLOR,
 	WHEEL_COLOR,
 	RANDOM,
@@ -37,7 +37,7 @@ func resolve(ctx: ActionSequenceContext) -> Color:
 		Mode.FIXED:
 			return color
 
-		Mode.MAIN_COLOR:
+		Mode.ACTOR_COLOR:
 			return subject.MainColor if subject != null else color
 		Mode.SECONDARY_COLOR:
 			return subject.SecondaryColor if subject != null else color
@@ -63,7 +63,7 @@ func _validate_property(property: Dictionary) -> void:
 		Mode.FIXED:
 			visible.append("color")
 
-		Mode.MAIN_COLOR, Mode.SECONDARY_COLOR:
+		Mode.ACTOR_COLOR, Mode.SECONDARY_COLOR:
 			visible.append("actor")
 
 		Mode.WHEEL_COLOR:

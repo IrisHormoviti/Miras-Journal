@@ -42,12 +42,17 @@ const SOUND_PRESETS: Array[StringName] = [
 		mode = value
 		notify_property_list_changed()
 ## Who the sound is played on, used for positioning and for their own sound set.
-@export var actor: ActorRef
+@export var actor: ActorRef = ActorRef.new(ActorRef.Mode.CASTER)
 @export var sound_name: StringName = &"Hit"
 ## Volume in decibels, where `0` is unaltered.
 @export_range(-40, 12, 0.5) var volume := 0.0
 ## When false, the next step starts while the sound finishes.
 @export var wait := false
+
+
+func _init(actor_mode: ActorRef.Mode = ActorRef.Mode.CASTER, sound_n := &"Hit") -> void:
+	actor = ActorRef.new(actor_mode)
+	sound_name = sound_n
 
 
 func run(ctx: ActionSequenceContext) -> void:

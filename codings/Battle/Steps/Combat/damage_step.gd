@@ -23,7 +23,7 @@ enum MagicMode {
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var elemental := false
 @export var color: ColorRef
 @export var hit_branch := true
-@export var miss_branch := true
+@export var miss_branch := false
 @export var crit_branch := false
 @export var hit_steps: Array[BattleStep] = []
 @export var miss_steps: Array[BattleStep] = []
@@ -31,7 +31,7 @@ enum MagicMode {
 
 
 func _init() -> void:
-	hit_steps = [CameraShakeStep.new(), SoundStep.new()]
+	hit_steps = [CameraShakeStep.new(), SoundStep.new(target.mode, &"Hit")]
 	miss_steps = [MissStep.new()]
 
 
@@ -44,10 +44,8 @@ func run(ctx: ActionSequenceContext) -> void:
 	if reroll:
 		ctx.runner.roll(ctx, subject)
 
-	if ctx.roll == HitOutcome.MISS:
-		if miss_branch:
-			await ctx.runner.run_steps(miss_steps, ctx)
-
+	if miss_branch and ctx.roll == HitOutcome.MISS:
+		await ctx.runner.run_steps(miss_steps, ctx)
 		return
 
 	var amount := int(round(power.resolve(ctx))) if power != null else 0
@@ -59,9 +57,8 @@ func run(ctx: ActionSequenceContext) -> void:
 	var overwrite_color := color.resolve(ctx) if color != null else Color.WHITE
 	ctx.battle.damage(subject, is_magic, elemental, amount, effect, limiter, ignore_stats, overwrite_color)
 
-	if ctx.roll == HitOutcome.CRIT:
-		if crit_branch:
-			await ctx.runner.run_steps(crit_steps, ctx)
+	if crit_branch and ctx.roll == HitOutcome.CRIT:
+		await ctx.runner.run_steps(crit_steps, ctx)
 	elif hit_branch:
 		await ctx.runner.run_steps(hit_steps, ctx)
 

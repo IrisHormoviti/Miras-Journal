@@ -23,13 +23,14 @@ enum Mode {
 
 func run(ctx: ActionSequenceContext) -> void:
 	var subject := actor.resolve(ctx) if actor != null else ctx.caster
+	var offsetized := Vector2(ctx.battle.offsetize(offset.x, subject), offset.y)
 
 	if subject == null or subject.node == null:
 		return
 
 	match mode:
 		Mode.WALK:
-			var walk_target := destination.resolve(ctx, subject) + offset if destination != null else subject.node.position + offset
+			var walk_target := destination.resolve(ctx, subject) + offsetized if destination != null else subject.node.position + offsetized
 
 			if wait:
 				await ctx.battle.move(subject, walk_target, duration, easing)
@@ -37,7 +38,7 @@ func run(ctx: ActionSequenceContext) -> void:
 				ctx.battle.move(subject, walk_target, duration, easing)
 
 		Mode.JUMP:
-			var jump_target := destination.resolve(ctx, subject) + offset if destination != null else subject.node.position + offset
+			var jump_target := destination.resolve(ctx, subject) + offsetized if destination != null else subject.node.position + offsetized
 
 			if wait:
 				await ctx.battle.jump_to(subject, jump_target, duration, height)

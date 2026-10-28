@@ -256,24 +256,6 @@ func AttackMira(target: Actor) -> void:
 	Bt.anim()
 
 
-func JumpAttack(target: Actor) -> void:
-	Bt.zoom(5)
-	Bt.focus_cam(target, 0.5, 30)
-	Bt.anim("Attack1")
-	Bt.jump_to_target(CurrentChar, target, Vector2(Bt.offsetize(-30), 0), 4)
-	await Bt.anim_done
-	if not miss:
-		Bt.play_sound("Attack2", CurrentChar)
-		Bt.screen_shake(15, 7, 0.2)
-		Bt.damage(target, false, false)
-		Bt.anim("Attack2")
-		Bt.play_effect("SimpleHit", target)
-	else: Bt.miss()
-	await Event.wait(0.4)
-	Bt.return_cur()
-	Bt.anim("Idle")
-
-
 func AttackAlcine(target: Actor) -> void:
 	Bt.zoom()
 	Bt.focus_cam(target, 0.5, 30)
