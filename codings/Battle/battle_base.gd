@@ -1354,7 +1354,6 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 	print_rich("[color=cornflower-blue]", victim.first_name, "'s ", trap.name, " trap springs on ", hitter.first_name if hitter else "?")
 
 	# Feedback
-	pop_num(victim, trap.name, trap.color if trap.color != Color.WHITE else victim.main_color)
 	await Event.wait(0.2)
 
 	# Preserve the surrounding context
@@ -1384,8 +1383,8 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 
 	## Cutin
 	callout(trap.ability)
-	if trap.inflicter:
-		await cut_in(trap.inflicter.codename)
+	#if trap.inflicter:
+		#await cut_in(trap.inflicter.codename)
 
 	CurrentChar = victim
 	CurrentAbility = trap.ability

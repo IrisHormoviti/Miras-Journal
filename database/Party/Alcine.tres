@@ -8,7 +8,7 @@
 [ext_resource type="Resource" uid="uid://dadlaa3lk8441" path="res://database/Abilities/Guard.tres" id="2_kbab6"]
 [ext_resource type="Resource" uid="uid://ckpvp3a14lvi" path="res://database/Abilities/IcyNail.tres" id="4_72ylq"]
 [ext_resource type="Resource" uid="uid://dxr8psmfxx8ve" path="res://database/Text/Profiles/AlcineBox.tres" id="4_roarn"]
-[ext_resource type="Resource" uid="uid://cy60md5f5cblk" path="res://database/Abilities/IcyDrizzle.tres" id="5_fp5sq"]
+[ext_resource type="Resource" uid="uid://fjn4ct8t7w41" path="res://database/Abilities/IcyDrizzle.tres" id="5_fp5sq"]
 [ext_resource type="Resource" uid="uid://glraxorvlv4r" path="res://database/Abilities/SoothingRain.tres" id="6_82uy0"]
 [ext_resource type="Resource" uid="uid://d2p8t0dmhxotw" path="res://database/Items/KeyItems/ArmWhip.tres" id="10_h1qhr"]
 
@@ -23,7 +23,7 @@ script = ExtResource("1_o1wey")
 health = 90
 aura = 90
 first_name = "Alcine"
-main_color = Color(0.498039, 0.768627, 0.768627, 1)
+main_color = Color(0.34432322, 0.8054822, 0.69785404, 1)
 party_icon = ExtResource("1_by5ga")
 actor_class = "Support"
 codename = &"Alcine"
