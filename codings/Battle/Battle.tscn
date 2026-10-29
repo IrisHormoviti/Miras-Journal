@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://chjrhe4gw1iu6"]
 
 [ext_resource type="Script" uid="uid://b78l65ulag6e2" path="res://codings/Battle/battle_base.gd" id="1_mokeb"]
-[ext_resource type="SpriteFrames" uid="uid://08nk40b6v8vc" path="res://art/BT/Daze/DazeBT.tres" id="6_iolcm"]
+[ext_resource type="SpriteFrames" uid="uid://bmbis13j145si" path="res://art/BT/Alcine/AlcineBT.tres" id="4_0enhy"]
 [ext_resource type="Material" uid="uid://bk3wcarpqpgmi" path="res://codings/Shaders/Pixelart.tres" id="7_ef2go"]
 [ext_resource type="Texture2D" uid="uid://da4wno1fcym1u" path="res://art/Backgrounds/Debug.png" id="8_4wnfp"]
 [ext_resource type="Script" uid="uid://dipdumn1x0rxq" path="res://database/Sequences/action_sequence.gd" id="8_7y1ke"]
@@ -4339,9 +4339,9 @@ y_sort_enabled = true
 texture_filter = 1
 material = SubResource("ShaderMaterial_bwtm7")
 position = Vector2(-60.5, -39.5)
-sprite_frames = ExtResource("6_iolcm")
-animation = &"Entrance"
-frame = 10
+sprite_frames = ExtResource("4_0enhy")
+animation = &"KnockOut"
+frame = 14
 frame_progress = 1.0
 offset = Vector2(0.5, -15.5)
 
