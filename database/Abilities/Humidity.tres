@@ -11,7 +11,6 @@
 [ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_hivcc"]
 [ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="8_nbewq"]
 [ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_5bkub"]
-[ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="10_imca0"]
 [ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="11_3iuey"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="12_t2psb"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_vfi1t"]
@@ -20,6 +19,9 @@
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="16_3jmqu"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="16_tjvsu"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="17_3jvyu"]
+[ext_resource type="Script" uid="uid://bkir2j2h5fpw6" path="res://codings/Battle/Steps/Conditions/state_condition.gd" id="cond_4"]
+[ext_resource type="Script" uid="uid://dutktdwdox6d2" path="res://codings/Battle/Steps/Conditions/group_state_condition.gd" id="cond_10"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_30ss0"]
 resource_name = "Caster"
@@ -119,11 +121,10 @@ script = ExtResource("6_lkeey")
 duration = 0.3
 
 [sub_resource type="Resource" id="Resource_w6nrb"]
-script = ExtResource("10_imca0")
-mode = 10
+script = ExtResource("cond_10")
+group = 4
 state = &"Soaked"
 present = false
-group = 4
 
 [sub_resource type="Resource" id="Resource_paxrb"]
 script = ExtResource("11_3iuey")
@@ -135,7 +136,6 @@ script = ExtResource("6_lkeey")
 
 [sub_resource type="Resource" id="Resource_2uw0b"]
 script = ExtResource("12_t2psb")
-mode = 0
 condition = SubResource("Resource_w6nrb")
 if_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_paxrb"), SubResource("Resource_r41da")])
 
@@ -157,10 +157,13 @@ script = ExtResource("3_5vnmy")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_4tx4j"]
-script = ExtResource("10_imca0")
-mode = 4
+script = ExtResource("cond_4")
 actor = SubResource("Resource_v8apa")
 state = &"Soaked"
+
+[sub_resource type="Resource" id="Resource_hit_1fdnj"]
+script = ExtResource("cond_hit")
+outcomes = 2
 
 [sub_resource type="Resource" id="Resource_5g1q5"]
 resource_name = "Target"
@@ -175,6 +178,7 @@ wait = false
 
 [sub_resource type="Resource" id="Resource_1fdnj"]
 script = ExtResource("12_t2psb")
+condition = SubResource("Resource_hit_1fdnj")
 if_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_x2dy8")])
 
 [sub_resource type="Resource" id="Resource_e3wyc"]
@@ -245,7 +249,6 @@ miss_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_73a6w")])
 
 [sub_resource type="Resource" id="Resource_g0pvd"]
 script = ExtResource("12_t2psb")
-mode = 0
 condition = SubResource("Resource_4tx4j")
 if_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_p2r0k"), SubResource("Resource_45sl6"), SubResource("Resource_mkuwu"), SubResource("Resource_ij2ip")])
 else_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_1fdnj")])

@@ -1,0 +1,338 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3]
+
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_gt3ts"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_8gymi"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_k6su2"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_wfhmn"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="6_8cbfk"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="7_n8a33"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="8_bgc5p"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Meta/event_step.gd" id="9_j33xh"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/overlay_step.gd" id="10_u3koe"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="11_mv4is"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="12_hai3k"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="13_pweaq"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="14_eps13"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_llb75"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="16_x75ik"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/random_step.gd" id="17_yhs48"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/flag_condition.gd" id="cond_1"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/has_actor_condition.gd" id="cond_14"]
+
+[sub_resource type="Resource" id="Resource_5r8m0"]
+resource_name = "Asteria"
+script = ExtResource("3_k6su2")
+mode = 2
+codename = &"Asteria"
+
+[sub_resource type="Resource" id="Resource_2ggwk"]
+script = ExtResource("4_wfhmn")
+move_enabled = true
+actor = SubResource("Resource_5r8m0")
+wait = true
+
+[sub_resource type="Resource" id="Resource_sb6og"]
+resource_name = "Target"
+script = ExtResource("3_k6su2")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_e0vlu"]
+script = ExtResource("4_wfhmn")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_sb6og")
+
+[sub_resource type="Resource" id="Resource_oybmv"]
+script = ExtResource("cond_1")
+expression = &"Event/AsteriaBoss < 4"
+
+[sub_resource type="Resource" id="Resource_6nfjg"]
+script = ExtResource("6_8cbfk")
+mode = 7
+
+[sub_resource type="Resource" id="Resource_4w62q"]
+script = ExtResource("7_n8a33")
+actor = SubResource("Resource_5r8m0")
+
+[sub_resource type="Resource" id="Resource_duho2"]
+script = ExtResource("8_bgc5p")
+file = &"story_1"
+cue = &"asteria_boss_5"
+passive = true
+
+[sub_resource type="Resource" id="Resource_y842r"]
+script = ExtResource("9_j33xh")
+flag = &"Event/AsteriaBoss"
+value = 5
+
+[sub_resource type="Resource" id="Resource_mcbsc"]
+script = ExtResource("6_8cbfk")
+
+[sub_resource type="Resource" id="Resource_btbuq"]
+script = ExtResource("10_u3koe")
+mode = 1
+actor = SubResource("Resource_5r8m0")
+image = &"Asteria"
+wait = true
+
+[sub_resource type="Resource" id="Resource_quvhe"]
+script = ExtResource("7_n8a33")
+actor = SubResource("Resource_5r8m0")
+animation = &"Ability"
+wait = true
+
+[sub_resource type="Resource" id="Resource_ofa76"]
+script = ExtResource("11_mv4is")
+mode = 1
+fade_mode = 2
+color = Color(1, 1, 1, 1)
+in_time = 0.5
+out_time = 0.0
+
+[sub_resource type="Resource" id="Resource_m76oc"]
+script = ExtResource("12_hai3k")
+duration = 0.3
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_u540x"]
+script = ExtResource("7_n8a33")
+actor = SubResource("Resource_5r8m0")
+
+[sub_resource type="Resource" id="Resource_o1b81"]
+script = ExtResource("cond_14")
+codename = &"Bird"
+
+[sub_resource type="Resource" id="Resource_uc6gn"]
+script = ExtResource("cond_1")
+expression = &"Event/AsteriaBoss >= 4"
+
+[sub_resource type="Resource" id="Resource_shy56"]
+script = ExtResource("cond_1")
+expression = &"Event/AsteriaBoss >= 3"
+
+[sub_resource type="Resource" id="Resource_442np"]
+script = ExtResource("8_bgc5p")
+file = &"story_1"
+cue = &"asteria_boss_3"
+
+[sub_resource type="Resource" id="Resource_2comv"]
+script = ExtResource("9_j33xh")
+flag = &"Event/AsteriaBoss"
+value = 3
+
+[sub_resource type="Resource" id="Resource_xvfff"]
+resource_name = "max hp"
+script = ExtResource("14_eps13")
+source = 2
+actor = SubResource("Resource_5r8m0")
+
+[sub_resource type="Resource" id="Resource_xr34o"]
+script = ExtResource("13_pweaq")
+mode = 0
+actor = SubResource("Resource_5r8m0")
+value = SubResource("Resource_xvfff")
+
+[sub_resource type="Resource" id="Resource_4t4bg"]
+script = ExtResource("15_llb75")
+condition = SubResource("Resource_shy56")
+if_steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_442np"), SubResource("Resource_2comv"), SubResource("Resource_xr34o")])
+
+[sub_resource type="Resource" id="Resource_b8a26"]
+script = ExtResource("8_bgc5p")
+file = &"story_1"
+cue = &"asteria_boss_4"
+
+[sub_resource type="Resource" id="Resource_25xo7"]
+script = ExtResource("9_j33xh")
+flag = &"Event/AsteriaBoss"
+value = 4
+
+[sub_resource type="Resource" id="Resource_h3xth"]
+resource_name = "max hp"
+script = ExtResource("14_eps13")
+source = 2
+actor = SubResource("Resource_5r8m0")
+
+[sub_resource type="Resource" id="Resource_wiltx"]
+script = ExtResource("13_pweaq")
+mode = 0
+actor = SubResource("Resource_5r8m0")
+value = SubResource("Resource_h3xth")
+
+[sub_resource type="Resource" id="Resource_hglsf"]
+resource_name = "2.0"
+script = ExtResource("14_eps13")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_64xqf"]
+script = ExtResource("13_pweaq")
+stat = 2
+actor = SubResource("Resource_5r8m0")
+value = SubResource("Resource_hglsf")
+turns = -1
+
+[sub_resource type="Resource" id="Resource_b6h88"]
+resource_name = "2.0"
+script = ExtResource("14_eps13")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_bwkvb"]
+script = ExtResource("13_pweaq")
+stat = 3
+actor = SubResource("Resource_5r8m0")
+value = SubResource("Resource_b6h88")
+turns = -1
+
+[sub_resource type="Resource" id="Resource_myd6w"]
+resource_name = "2.0"
+script = ExtResource("14_eps13")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_buw0j"]
+script = ExtResource("13_pweaq")
+stat = 4
+actor = SubResource("Resource_5r8m0")
+value = SubResource("Resource_myd6w")
+turns = -1
+
+[sub_resource type="Resource" id="Resource_c8kcl"]
+script = ExtResource("12_hai3k")
+duration = 3.0
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_b7yf7"]
+script = ExtResource("15_llb75")
+condition = SubResource("Resource_uc6gn")
+if_steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_b8a26"), SubResource("Resource_25xo7"), SubResource("Resource_wiltx"), SubResource("Resource_64xqf"), SubResource("Resource_bwkvb"), SubResource("Resource_buw0j"), SubResource("Resource_c8kcl")])
+else_steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_4t4bg")])
+
+[sub_resource type="Resource" id="Resource_r1ehs"]
+resource_name = "max hp"
+script = ExtResource("14_eps13")
+source = 2
+actor = SubResource("Resource_5r8m0")
+
+[sub_resource type="Resource" id="Resource_a067c"]
+script = ExtResource("13_pweaq")
+mode = 0
+actor = SubResource("Resource_5r8m0")
+value = SubResource("Resource_r1ehs")
+
+[sub_resource type="Resource" id="Resource_ux2j3"]
+resource_name = "Loop Actor"
+script = ExtResource("3_k6su2")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_wp7e7"]
+resource_name = "20.0"
+script = ExtResource("14_eps13")
+source = 0
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_hxnl3"]
+script = ExtResource("13_pweaq")
+actor = SubResource("Resource_ux2j3")
+value = SubResource("Resource_wp7e7")
+
+[sub_resource type="Resource" id="Resource_lksvk"]
+script = ExtResource("1_gt3ts")
+steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_hxnl3")])
+
+[sub_resource type="Resource" id="Resource_3ugwf"]
+resource_name = "Loop Actor"
+script = ExtResource("3_k6su2")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_btlux"]
+resource_name = "2.0"
+script = ExtResource("14_eps13")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_dpcg2"]
+script = ExtResource("13_pweaq")
+stat = 3
+actor = SubResource("Resource_3ugwf")
+value = SubResource("Resource_btlux")
+
+[sub_resource type="Resource" id="Resource_jh4io"]
+script = ExtResource("1_gt3ts")
+steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_dpcg2")])
+
+[sub_resource type="Resource" id="Resource_piohd"]
+resource_name = "Loop Actor"
+script = ExtResource("3_k6su2")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_3y3yq"]
+resource_name = "2.0"
+script = ExtResource("14_eps13")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_1wul0"]
+script = ExtResource("13_pweaq")
+stat = 4
+actor = SubResource("Resource_piohd")
+value = SubResource("Resource_3y3yq")
+
+[sub_resource type="Resource" id="Resource_k68ny"]
+script = ExtResource("1_gt3ts")
+steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_1wul0")])
+
+[sub_resource type="Resource" id="Resource_ogmvx"]
+resource_name = "Loop Actor"
+script = ExtResource("3_k6su2")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_b2iq1"]
+resource_name = "2.0"
+script = ExtResource("14_eps13")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_ogqyf"]
+script = ExtResource("13_pweaq")
+stat = 2
+actor = SubResource("Resource_ogmvx")
+value = SubResource("Resource_b2iq1")
+
+[sub_resource type="Resource" id="Resource_fdwn4"]
+script = ExtResource("1_gt3ts")
+steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_ogqyf")])
+
+[sub_resource type="Resource" id="Resource_cvhcg"]
+script = ExtResource("17_yhs48")
+options = Array[ExtResource("1_gt3ts")]([SubResource("Resource_lksvk"), SubResource("Resource_jh4io"), SubResource("Resource_k68ny"), SubResource("Resource_fdwn4")])
+
+[sub_resource type="Resource" id="Resource_t40k2"]
+script = ExtResource("16_x75ik")
+include_dead = true
+steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_cvhcg")])
+
+[sub_resource type="Resource" id="Resource_4idl2"]
+script = ExtResource("15_llb75")
+condition = SubResource("Resource_o1b81")
+if_steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_a067c"), SubResource("Resource_t40k2")])
+else_steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_b7yf7")])
+
+[sub_resource type="Resource" id="Resource_m22fu"]
+script = ExtResource("11_mv4is")
+mode = 1
+fade_mode = 2
+color = Color(1, 1, 1, 1)
+in_time = 0.5
+out_time = 0.0
+
+[sub_resource type="Resource" id="Resource_2apvx"]
+script = ExtResource("15_llb75")
+condition = SubResource("Resource_oybmv")
+if_steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_btbuq"), SubResource("Resource_quvhe"), SubResource("Resource_ofa76"), SubResource("Resource_m76oc"), SubResource("Resource_u540x"), SubResource("Resource_4idl2"), SubResource("Resource_m22fu")])
+else_steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_6nfjg"), SubResource("Resource_4w62q"), SubResource("Resource_duho2"), SubResource("Resource_y842r"), SubResource("Resource_mcbsc")])
+
+[resource]
+script = ExtResource("1_gt3ts")
+steps = Array[ExtResource("2_8gymi")]([SubResource("Resource_2ggwk"), SubResource("Resource_e0vlu"), SubResource("Resource_2apvx")])

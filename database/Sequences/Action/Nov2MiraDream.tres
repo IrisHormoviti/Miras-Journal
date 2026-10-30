@@ -1,0 +1,48 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3]
+
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_xscw1"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_666em"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="3_y3m6y"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="4_cdlju"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Meta/world_step.gd" id="5_3a582"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="6_mcoqh"]
+
+[sub_resource type="Resource" id="Resource_bebx3"]
+script = ExtResource("3_y3m6y")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_x7llu"]
+script = ExtResource("4_cdlju")
+duration = 0.7
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_xqtkk"]
+script = ExtResource("5_3a582")
+mode = 5
+party = PackedStringArray()
+day = 2
+
+[sub_resource type="Resource" id="Resource_7qk3i"]
+script = ExtResource("5_3a582")
+mode = 6
+party = PackedStringArray()
+time = 2
+
+[sub_resource type="Resource" id="Resource_tb2w4"]
+script = ExtResource("3_y3m6y")
+mode = 1
+fade_mode = 1
+wait = false
+
+[sub_resource type="Resource" id="Resource_j1s0k"]
+script = ExtResource("5_3a582")
+mode = 7
+party = PackedStringArray()
+
+[sub_resource type="Resource" id="Resource_n1ysj"]
+script = ExtResource("6_mcoqh")
+mode = 2
+
+[resource]
+script = ExtResource("1_xscw1")
+steps = Array[ExtResource("2_666em")]([SubResource("Resource_bebx3"), SubResource("Resource_x7llu"), SubResource("Resource_xqtkk"), SubResource("Resource_7qk3i"), SubResource("Resource_tb2w4"), SubResource("Resource_j1s0k"), SubResource("Resource_n1ysj")])

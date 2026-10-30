@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_7jf5s"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="14_d8asv"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_5hcc5"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_6thnr"]
 resource_name = "Target"
@@ -74,6 +75,10 @@ animation = &"Attack2"
 [sub_resource type="Resource" id="Resource_np5mp"]
 script = ExtResource("8_lrsee")
 duration = 0.2
+
+[sub_resource type="Resource" id="Resource_hit_jig3p"]
+script = ExtResource("cond_hit")
+outcomes = 4
 
 [sub_resource type="Resource" id="Resource_7jf5s"]
 resource_name = "Caster"
@@ -135,7 +140,7 @@ target = SubResource("Resource_04yqx")
 
 [sub_resource type="Resource" id="Resource_jig3p"]
 script = ExtResource("15_5hcc5")
-mode = 3
+condition = SubResource("Resource_hit_jig3p")
 if_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_awfyx")])
 else_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_d8asv"), SubResource("Resource_5hcc5"), SubResource("Resource_ceyk6")])
 

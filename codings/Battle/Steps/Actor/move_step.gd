@@ -20,6 +20,8 @@ enum Mode {
 @export var height := 0.5
 @export var easing: Tween.EaseType = Tween.EASE_IN_OUT
 @export var wait := true
+## Move to a world position instead of a position relative to the battle scene.
+@export var global := false
 
 
 func run(ctx: ActionSequenceContext) -> void:
@@ -54,7 +56,11 @@ func run(ctx: ActionSequenceContext) -> void:
 
 		Mode.TELEPORT:
 			var teleport_target := destination.resolve(ctx, subject) + offsetized if destination != null else subject.node.position + offsetized
-			subject.node.position = teleport_target
+
+			if global:
+				subject.node.global_position = teleport_target
+			else:
+				subject.node.position = teleport_target
 
 
 func _to_string() -> String:
@@ -82,7 +88,7 @@ func _validate_property(property: Dictionary) -> void:
 			visible.append("wait")
 
 		Mode.TELEPORT:
-			visible.append_array(["destination", "offset"])
+			visible.append_array(["destination", "offset", "global"])
 
 	StepEditor.only(property, visible)
 

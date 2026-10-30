@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_7w110"]
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_344ti"]
 [ext_resource type="Script" uid="uid://1out28n0606o" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="5_3u2es"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="5_p4pb2"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="6_i3aux"]
 
 [sub_resource type="Resource" id="Resource_uueab"]
@@ -30,6 +31,12 @@ move_enabled = true
 actor = SubResource("Resource_7w110")
 duration = 1.0
 
+[sub_resource type="Resource" id="Resource_0enhy"]
+resource_name = "medium"
+script = ExtResource("5_p4pb2")
+damage_scale = 1
+metadata/_custom_type_script = "uid://bauq2mkx5erh8"
+
 [sub_resource type="Resource" id="Resource_3u2es"]
 resource_name = "Target"
 script = ExtResource("3_7w110")
@@ -38,6 +45,7 @@ mode = 1
 [sub_resource type="Resource" id="Resource_i3aux"]
 script = ExtResource("5_3u2es")
 target = SubResource("Resource_3u2es")
+amount = SubResource("Resource_0enhy")
 variance = true
 
 [sub_resource type="Resource" id="Resource_wbr1t"]

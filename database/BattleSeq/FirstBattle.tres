@@ -7,11 +7,19 @@
 [ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="2_68ui3"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_kk4y6"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_afpnf"]
+[ext_resource type="Texture2D" uid="uid://cj2ohe8qn3uph" path="res://art/Icons/Items.tres" id="6_hflgg"]
+[ext_resource type="Resource" uid="uid://d0c732ym2t8xh" path="res://database/Sequences/Action/FirstBattleEntrance.tres" id="10_entr"]
+[ext_resource type="Resource" uid="uid://w8wltqoqw8dd" path="res://database/Sequences/Action/FirstBattleVictory.tres" id="11_vict"]
+[ext_resource type="Resource" uid="uid://wfe1i5u7d8j2" path="res://database/Sequences/Action/FirstBattleJumpSucc.tres" id="12_jump"]
+[ext_resource type="Resource" uid="uid://dni1n5366ogl1" path="res://database/Sequences/Action/FirstBattleAura1.tres" id="13_aura1"]
+[ext_resource type="Resource" uid="uid://c80uk7o0lcc8y" path="res://database/Sequences/Action/FirstBattleAura2.tres" id="14_aura2"]
+[ext_resource type="Resource" uid="uid://dxgmdc611fm3x" path="res://database/Sequences/Action/FirstBattleAura3.tres" id="15_aura3"]
 
 [sub_resource type="Resource" id="Resource_kgu6i"]
 script = ExtResource("2_kk4y6")
 name = "JumpSucc"
-legacy_action_sequence = &"FirstBattle2"
+icon = ExtResource("6_hflgg")
+action_sequence = ExtResource("12_jump")
 callout = false
 
 [sub_resource type="Resource" id="Resource_6vdia"]
@@ -26,23 +34,23 @@ add_flag = false
 [sub_resource type="Resource" id="Resource_g722f"]
 script = ExtResource("2_68ui3")
 after_turn = 3
-result = 1
-parameter1 = "FirstBattle22"
+result = 6
 add_flag = false
+sequence = ExtResource("13_aura1")
 
 [sub_resource type="Resource" id="Resource_baynq"]
 script = ExtResource("2_68ui3")
 after_turn = 4
-result = 1
-parameter1 = "FirstBattle3"
+result = 6
 add_flag = false
+sequence = ExtResource("14_aura2")
 
 [sub_resource type="Resource" id="Resource_d4pnn"]
 script = ExtResource("2_68ui3")
 after_turn = 6
-result = 1
-parameter1 = "FirstBattle4"
+result = 6
 add_flag = false
+sequence = ExtResource("15_aura3")
 
 [resource]
 script = ExtResource("1_e62gl")
@@ -50,6 +58,6 @@ Enemies = Array[ExtResource("2_44rbb")]([ExtResource("1_qsrni")])
 ScenePosition = Vector2(1470, 420)
 CanEscape = false
 DeleteAttacker = false
-EntranceSequence = "FirstBattle1"
-VictorySequence = "FirstBattle5"
+entrance_sequence = ExtResource("10_entr")
+victory_sequence = ExtResource("11_vict")
 Events = Array[ExtResource("2_68ui3")]([SubResource("Resource_6vdia"), SubResource("Resource_g722f"), SubResource("Resource_baynq"), SubResource("Resource_d4pnn")])

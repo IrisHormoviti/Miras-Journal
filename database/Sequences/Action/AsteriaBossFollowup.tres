@@ -1,0 +1,182 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3 uid="uid://de7xdor7dk4bu"]
+
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_ldeuk"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_gojo8"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_gkkdu"]
+[ext_resource type="Script" uid="uid://brx0s8klhefbi" path="res://codings/Battle/Steps/Presentation/overlay_step.gd" id="4_8fl7j"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_plw6h"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="6_hhycy"]
+[ext_resource type="Script" uid="uid://btnsdsi8rjqnj" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="7_gkq65"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="8_7s4ke"]
+[ext_resource type="Script" uid="uid://cy7rvxnxpkw50" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="10_gopuc"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="11_qjieg"]
+[ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="12_t84g4"]
+[ext_resource type="Script" uid="uid://div6ippuwwmdo" path="res://codings/Battle/Steps/Flow/random_step.gd" id="13_1chwc"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="14_2swa2"]
+[ext_resource type="Script" uid="uid://cfuw4m52tqwxx" path="res://codings/Battle/Steps/Conditions/flag_condition.gd" id="cond_1"]
+
+[sub_resource type="Resource" id="Resource_5r8m0"]
+resource_name = "Asteria"
+script = ExtResource("3_gkkdu")
+mode = 2
+codename = &"Asteria"
+
+[sub_resource type="Resource" id="Resource_r7jl8"]
+script = ExtResource("4_8fl7j")
+mode = 1
+actor = SubResource("Resource_5r8m0")
+image = &"Asteria"
+wait = true
+
+[sub_resource type="Resource" id="Resource_47m1k"]
+script = ExtResource("5_plw6h")
+move_enabled = true
+actor = SubResource("Resource_5r8m0")
+wait = true
+
+[sub_resource type="Resource" id="Resource_veblf"]
+resource_name = "Target"
+script = ExtResource("3_gkkdu")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_jwo48"]
+script = ExtResource("5_plw6h")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_veblf")
+
+[sub_resource type="Resource" id="Resource_q2ryg"]
+script = ExtResource("6_hhycy")
+actor = SubResource("Resource_5r8m0")
+animation = &"Ability"
+wait = true
+
+[sub_resource type="Resource" id="Resource_kiocy"]
+script = ExtResource("7_gkq65")
+mode = 1
+fade_mode = 2
+color = Color(1, 1, 1, 1)
+in_time = 0.5
+out_time = 0.0
+
+[sub_resource type="Resource" id="Resource_if8as"]
+script = ExtResource("8_7s4ke")
+duration = 0.5
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_fbfme"]
+script = ExtResource("cond_1")
+expression = &"Event/AsteriaBoss < 4"
+
+[sub_resource type="Resource" id="Resource_4vdsw"]
+resource_name = "15.0"
+script = ExtResource("11_qjieg")
+source = 0
+value = 15.0
+
+[sub_resource type="Resource" id="Resource_l5hax"]
+script = ExtResource("10_gopuc")
+actor = SubResource("Resource_5r8m0")
+value = SubResource("Resource_4vdsw")
+
+[sub_resource type="Resource" id="Resource_7p7ga"]
+resource_name = "Loop Actor"
+script = ExtResource("3_gkkdu")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_frkds"]
+resource_name = "20.0"
+script = ExtResource("11_qjieg")
+source = 0
+value = 20.0
+
+[sub_resource type="Resource" id="Resource_okrsr"]
+script = ExtResource("10_gopuc")
+actor = SubResource("Resource_7p7ga")
+value = SubResource("Resource_frkds")
+
+[sub_resource type="Resource" id="Resource_288nm"]
+script = ExtResource("1_ldeuk")
+steps = Array[ExtResource("2_gojo8")]([SubResource("Resource_okrsr")])
+
+[sub_resource type="Resource" id="Resource_nijn0"]
+resource_name = "Loop Actor"
+script = ExtResource("3_gkkdu")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_ebgkn"]
+resource_name = "2.0"
+script = ExtResource("11_qjieg")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_63ogq"]
+script = ExtResource("10_gopuc")
+stat = 3
+actor = SubResource("Resource_nijn0")
+value = SubResource("Resource_ebgkn")
+
+[sub_resource type="Resource" id="Resource_g7eke"]
+script = ExtResource("1_ldeuk")
+steps = Array[ExtResource("2_gojo8")]([SubResource("Resource_63ogq")])
+
+[sub_resource type="Resource" id="Resource_etwbo"]
+resource_name = "Loop Actor"
+script = ExtResource("3_gkkdu")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_h0ltx"]
+resource_name = "2.0"
+script = ExtResource("11_qjieg")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_q3ids"]
+script = ExtResource("10_gopuc")
+stat = 4
+actor = SubResource("Resource_etwbo")
+value = SubResource("Resource_h0ltx")
+
+[sub_resource type="Resource" id="Resource_emfqn"]
+script = ExtResource("1_ldeuk")
+steps = Array[ExtResource("2_gojo8")]([SubResource("Resource_q3ids")])
+
+[sub_resource type="Resource" id="Resource_lncoc"]
+resource_name = "Loop Actor"
+script = ExtResource("3_gkkdu")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_umyus"]
+resource_name = "2.0"
+script = ExtResource("11_qjieg")
+source = 0
+value = 2.0
+
+[sub_resource type="Resource" id="Resource_gdjmo"]
+script = ExtResource("10_gopuc")
+stat = 2
+actor = SubResource("Resource_lncoc")
+value = SubResource("Resource_umyus")
+
+[sub_resource type="Resource" id="Resource_rxnge"]
+script = ExtResource("1_ldeuk")
+steps = Array[ExtResource("2_gojo8")]([SubResource("Resource_gdjmo")])
+
+[sub_resource type="Resource" id="Resource_i088e"]
+script = ExtResource("13_1chwc")
+options = Array[ExtResource("1_ldeuk")]([SubResource("Resource_288nm"), SubResource("Resource_g7eke"), SubResource("Resource_emfqn"), SubResource("Resource_rxnge")])
+
+[sub_resource type="Resource" id="Resource_2umtx"]
+script = ExtResource("12_t84g4")
+include_dead = true
+steps = Array[ExtResource("2_gojo8")]([SubResource("Resource_i088e")])
+
+[sub_resource type="Resource" id="Resource_sfgwe"]
+script = ExtResource("14_2swa2")
+condition = SubResource("Resource_fbfme")
+if_steps = Array[ExtResource("2_gojo8")]([SubResource("Resource_2umtx")])
+else_steps = Array[ExtResource("2_gojo8")]([SubResource("Resource_l5hax")])
+
+[resource]
+script = ExtResource("1_ldeuk")
+steps = Array[ExtResource("2_gojo8")]([SubResource("Resource_r7jl8"), SubResource("Resource_47m1k"), SubResource("Resource_jwo48"), SubResource("Resource_q2ryg"), SubResource("Resource_kiocy"), SubResource("Resource_if8as"), SubResource("Resource_sfgwe")])

@@ -13,6 +13,7 @@
 [ext_resource type="Resource" uid="uid://c22qro3ss1nuy" path="res://database/States/Leeched.tres" id="9_vo2mk"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_ohkqj"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="11_5gecq"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_np4ie"]
 resource_name = "Caster"
@@ -58,6 +59,10 @@ target = SubResource("Resource_nxc74")
 [sub_resource type="Resource" id="Resource_vo2mk"]
 script = ExtResource("7_nxc74")
 
+[sub_resource type="Resource" id="Resource_hit_av6b6"]
+script = ExtResource("cond_hit")
+outcomes = 4
+
 [sub_resource type="Resource" id="Resource_ohkqj"]
 resource_name = "Target"
 script = ExtResource("3_gx4rj")
@@ -79,7 +84,7 @@ target = SubResource("Resource_i36ud")
 
 [sub_resource type="Resource" id="Resource_av6b6"]
 script = ExtResource("11_5gecq")
-mode = 3
+condition = SubResource("Resource_hit_av6b6")
 if_steps = Array[ExtResource("2_g1wkf")]([SubResource("Resource_4g5jg")])
 else_steps = Array[ExtResource("2_g1wkf")]([SubResource("Resource_5gecq")])
 

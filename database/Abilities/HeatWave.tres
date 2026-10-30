@@ -11,7 +11,6 @@
 [ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_uxigr"]
 [ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="8_xqkxe"]
 [ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_1e42v"]
-[ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="10_gunsq"]
 [ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="11_4lbc1"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="12_s66qm"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_o4p8u"]
@@ -20,6 +19,9 @@
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="16_pkae1"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="16_utvg2"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="17_oxyx4"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/state_condition.gd" id="cond_4"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/group_state_condition.gd" id="cond_10"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_bn283"]
 resource_name = "Caster"
@@ -115,8 +117,7 @@ script = ExtResource("6_2q0l8")
 duration = 0.5
 
 [sub_resource type="Resource" id="Resource_4whjw"]
-script = ExtResource("10_gunsq")
-mode = 10
+script = ExtResource("cond_10")
 state = &"Burned"
 present = false
 group = 6
@@ -136,7 +137,6 @@ duration = 2.0
 
 [sub_resource type="Resource" id="Resource_b1ka8"]
 script = ExtResource("12_s66qm")
-mode = 0
 condition = SubResource("Resource_4whjw")
 if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_fav82"), SubResource("Resource_segoe"), SubResource("Resource_knols")])
 
@@ -162,8 +162,7 @@ script = ExtResource("3_gbfn6")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_45bnt"]
-script = ExtResource("10_gunsq")
-mode = 4
+script = ExtResource("cond_4")
 actor = SubResource("Resource_0kj46")
 state = &"Burned"
 
@@ -178,9 +177,14 @@ actor = SubResource("Resource_uml4w")
 state = ExtResource("14_ro02p")
 wait = false
 
+[sub_resource type="Resource" id="Resource_hit_l556m"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_l556m"]
 script = ExtResource("12_s66qm")
 if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_juahq")])
+condition = SubResource("Resource_hit_l556m")
 
 [sub_resource type="Resource" id="Resource_olrtf"]
 resource_name = "Target"
@@ -250,7 +254,6 @@ miss_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_30j72")])
 
 [sub_resource type="Resource" id="Resource_agcte"]
 script = ExtResource("12_s66qm")
-mode = 0
 condition = SubResource("Resource_45bnt")
 if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_ancd5"), SubResource("Resource_2emxm"), SubResource("Resource_awjk0"), SubResource("Resource_6e8rt")])
 else_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_l556m")])

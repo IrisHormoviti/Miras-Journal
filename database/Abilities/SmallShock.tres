@@ -16,6 +16,7 @@
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_p05qe"]
 [ext_resource type="Resource" uid="uid://d1yept33qk7oe" path="res://database/States/Zapped.tres" id="14_24akk"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_ayreo"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_b685w"]
 resource_name = "Caster"
@@ -81,6 +82,10 @@ color = SubResource("Resource_cl5dn")
 hit_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_25802")])
 miss_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_4yan4")])
 
+[sub_resource type="Resource" id="Resource_hit_j5knt"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_js25u"]
 resource_name = "Target"
 script = ExtResource("3_8hdyw")
@@ -93,6 +98,7 @@ state = ExtResource("14_24akk")
 
 [sub_resource type="Resource" id="Resource_j5knt"]
 script = ExtResource("15_ayreo")
+condition = SubResource("Resource_hit_j5knt")
 if_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_8gdv3")])
 
 [sub_resource type="Resource" id="Resource_aku36"]

@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="12_f2p68"]
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="13_3pwn8"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_hc643"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="14_f2p68"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="15_87jb6"]
 
 [sub_resource type="Resource" id="Resource_1cqst"]
@@ -134,6 +135,10 @@ miss_branch = true
 hit_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_sww3w"), SubResource("Resource_fpaye"), SubResource("Resource_hylco"), SubResource("Resource_yed4x")])
 miss_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_12wet")])
 
+[sub_resource type="Resource" id="Resource_3js2q"]
+script = ExtResource("14_f2p68")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_861s2"]
 script = ExtResource("15_87jb6")
 duration = 0.5
@@ -166,8 +171,9 @@ script = ExtResource("10_87jb6")
 target = SubResource("Resource_1i20v")
 
 [sub_resource type="Resource" id="Resource_82mxm"]
-resource_name = "weapon"
+resource_name = "weapon x0.5"
 script = ExtResource("11_u8pbm")
+multiplier = 0.5
 
 [sub_resource type="Resource" id="Resource_4inb6"]
 resource_name = "Target"
@@ -188,6 +194,7 @@ miss_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_ob716")])
 
 [sub_resource type="Resource" id="Resource_pgdtc"]
 script = ExtResource("13_hc643")
+condition = SubResource("Resource_3js2q")
 if_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_861s2"), SubResource("Resource_jfhuf")])
 
 [sub_resource type="Resource" id="Resource_aku36"]
@@ -229,7 +236,7 @@ color_same_as_actor = true
 target = 1
 action_sequence = SubResource("Resource_ch88p")
 success_chance = 0.95
-crit_chance = 0.2
+crit_chance = 0.1
 types = Array[int]([1])
 callout = false
 recover_aura = true

@@ -18,6 +18,7 @@
 [ext_resource type="Resource" uid="uid://d05eisax2ikpg" path="res://database/States/Frozen.tres" id="13_n8xm3"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="14_14ep7"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="15_1yv0e"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_w5an1"]
 resource_name = "Target"
@@ -118,9 +119,14 @@ script = ExtResource("12_gyae5")
 actor = SubResource("Resource_14ep7")
 state = ExtResource("13_n8xm3")
 
+[sub_resource type="Resource" id="Resource_hit_2bjga"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_2bjga"]
 script = ExtResource("14_14ep7")
 if_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_1yv0e")])
+condition = SubResource("Resource_hit_2bjga")
 
 [sub_resource type="Resource" id="Resource_oqbvb"]
 resource_name = "Target"
@@ -132,11 +138,15 @@ script = ExtResource("15_1yv0e")
 target = SubResource("Resource_oqbvb")
 wait = true
 
+[sub_resource type="Resource" id="Resource_hit_2405i"]
+script = ExtResource("cond_hit")
+outcomes = 4
+
 [sub_resource type="Resource" id="Resource_2405i"]
 script = ExtResource("14_14ep7")
-mode = 3
 if_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_krl4x")])
 else_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_vvwbg"), SubResource("Resource_lyfci"), SubResource("Resource_ewjm6"), SubResource("Resource_n8xm3"), SubResource("Resource_2bjga")])
+condition = SubResource("Resource_hit_2405i")
 
 [sub_resource type="Resource" id="Resource_sc07r"]
 script = ExtResource("6_vomdx")

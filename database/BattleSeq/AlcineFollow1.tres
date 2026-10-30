@@ -8,6 +8,7 @@
 [ext_resource type="Resource" uid="uid://dsel12nodt7a6" path="res://database/Abilities/Sharpen.tres" id="3_bbvgb"]
 [ext_resource type="Resource" uid="uid://dmm26g6xg665u" path="res://database/Abilities/Attacks/WarpAttack.tres" id="6_jshqw"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="7_82jg0"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/AlcineFollow1Victory.tres" id="8_vict"]
 
 [sub_resource type="Resource" id="Resource_eg56s"]
 script = ExtResource("2_yeq0t")
@@ -16,8 +17,8 @@ flag_should_be = true
 after_turn = 5
 actor = &"Mira"
 low_hp = 60
-result = 1
-parameter1 = "AlcineWoods1"
+result = 6
+sequence = ExtResource("8_vict")
 hold_turn = true
 add_flag = false
 
@@ -54,6 +55,6 @@ transition = false
 return_control = false
 CanEscape = false
 DeleteAttacker = false
-VictorySequence = "AlcineWoods1"
+victory_sequence = ExtResource("8_vict")
 PartyOverride = ["Mira"]
 Events = Array[ExtResource("2_yeq0t")]([SubResource("Resource_eg56s"), SubResource("Resource_cbbvb"), SubResource("Resource_jw6e0"), SubResource("Resource_82jg0")])

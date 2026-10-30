@@ -11,8 +11,8 @@
 [ext_resource type="Resource" uid="uid://xkuji6v3lk6" path="res://database/Abilities/Indestructible.tres" id="9_mo6wr"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="10_4pxea"]
 [ext_resource type="Resource" uid="uid://dbs3pn78pvpuc" path="res://database/Abilities/Glimmer.tres" id="10_x75j7"]
-[ext_resource type="Resource" uid="uid://c03xu7k23kclm" path="res://database/Sequences/LazuliteHeartBossEntrance.tres" id="11_entr"]
-[ext_resource type="Resource" uid="uid://clol06pt2bego" path="res://database/Sequences/LazuliteHeartBossVictory.tres" id="12_vict"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/LazuliteHeartBossEntrance.tres" id="11_entr"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/LazuliteHeartBossVictory.tres" id="12_vict"]
 
 [sub_resource type="Resource" id="Resource_0ymhv"]
 script = ExtResource("3_4g4ty")
@@ -84,8 +84,6 @@ DeleteAttacker = false
 entrance_sequence = ExtResource("11_entr")
 victory_sequence = ExtResource("12_vict")
 EntranceBanterIsPassive = false
-EntranceSequence = "LazuliteHeartBoss1"
-VictorySequence = "LazuliteHeartBoss2"
 PartyOverride = ["Mira", "Alcine", "Asteria", "Daze"]
 Events = Array[ExtResource("3_4g4ty")]([SubResource("Resource_0ymhv"), SubResource("Resource_mo6wr"), SubResource("Resource_fmg4r"), SubResource("Resource_x75j7"), SubResource("Resource_v5s8n"), SubResource("Resource_ewt77"), SubResource("Resource_4pxea")])
 metadata/_custom_type_script = "uid://blx6fs34ughqo"

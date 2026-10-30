@@ -1,0 +1,377 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3]
+
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_vp25o"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_rjxs2"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_24jx6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/troop_step.gd" id="5_xpb57"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="6_krvn4"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="7_cyhxs"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/battle_flow_step.gd" id="8_a1k85"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="9_r0tyd"]
+[ext_resource type="Resource" path="res://database/Abilities/Adaptation.tres" id="10_cir87"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/overlay_step.gd" id="11_w6ttg"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="12_kqehf"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_vmxim"]
+[ext_resource type="Resource" path="res://database/States/AuraOverwrite.tres" id="14_au8ni"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="15_5arkc"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="16_ikmkb"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="17_ypoje"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Meta/ui_state_step.gd" id="18_qf3pp"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="19_g16o1"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="20_qxvrp"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="21_yc5xq"]
+[ext_resource type="Resource" path="res://database/Abilities/Drill.tres" id="22_fi1cq"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/turn_step.gd" id="23_qi6cw"]
+[ext_resource type="Resource" path="res://database/States/AuraBreak.tres" id="24_6vla5"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="25_3wum1"]
+[ext_resource type="Resource" path="res://database/States/Guarding.tres" id="26_loej2"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="27_rjc4t"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Meta/world_step.gd" id="28_uujt3"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Meta/event_step.gd" id="29_3ahqy"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/health_condition.gd" id="cond_3"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/state_condition.gd" id="cond_4"]
+
+[sub_resource type="Resource" id="Resource_gl2jn"]
+resource_name = "Party Member 1"
+script = ExtResource("3_24jx6")
+mode = 3
+party_index = 1
+
+[sub_resource type="Resource" id="Resource_coddm"]
+script = ExtResource("cond_3")
+actor = SubResource("Resource_gl2jn")
+comparator = 2
+
+[sub_resource type="Resource" id="Resource_jkd7u"]
+script = ExtResource("5_xpb57")
+mode = 2
+actor = SubResource("Resource_gl2jn")
+
+[sub_resource type="Resource" id="Resource_mq4vn"]
+script = ExtResource("6_krvn4")
+condition = SubResource("Resource_coddm")
+if_steps = Array[ExtResource("2_rjxs2")]([SubResource("Resource_jkd7u")])
+
+[sub_resource type="Resource" id="Resource_mvmnu"]
+script = ExtResource("7_cyhxs")
+mode = 7
+
+[sub_resource type="Resource" id="Resource_5k74c"]
+resource_name = "Guardian"
+script = ExtResource("3_24jx6")
+mode = 2
+codename = &"Guardian"
+
+[sub_resource type="Resource" id="Resource_paafi"]
+script = ExtResource("8_a1k85")
+mode = 10
+actor = SubResource("Resource_5k74c")
+
+[sub_resource type="Resource" id="Resource_50d23"]
+resource_name = "Party Leader"
+script = ExtResource("3_24jx6")
+mode = 3
+
+[sub_resource type="Resource" id="Resource_a24u1"]
+script = ExtResource("9_r0tyd")
+actor = SubResource("Resource_50d23")
+
+[sub_resource type="Resource" id="Resource_p1dq3"]
+script = ExtResource("11_w6ttg")
+ability = ExtResource("10_cir87")
+
+[sub_resource type="Resource" id="Resource_jdanv"]
+resource_name = "Target"
+script = ExtResource("3_24jx6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ro0na"]
+script = ExtResource("12_kqehf")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_jdanv")
+
+[sub_resource type="Resource" id="Resource_ysvru"]
+script = ExtResource("12_kqehf")
+move_enabled = true
+actor = SubResource("Resource_50d23")
+wait = true
+
+[sub_resource type="Resource" id="Resource_nef2f"]
+script = ExtResource("12_kqehf")
+move_enabled = true
+actor = SubResource("Resource_5k74c")
+offset = Vector2(0, 0)
+wait = true
+
+[sub_resource type="Resource" id="Resource_6j6kl"]
+script = ExtResource("13_vmxim")
+mode = 1
+actor = SubResource("Resource_5k74c")
+state = ExtResource("14_au8ni")
+
+[sub_resource type="Resource" id="Resource_1anby"]
+resource_name = "ffffff"
+script = ExtResource("15_5arkc")
+mode = 0
+color = Color(0.498, 0.09, 1, 1)
+
+[sub_resource type="Resource" id="Resource_pt7jj"]
+script = ExtResource("13_vmxim")
+mode = 4
+actor = SubResource("Resource_5k74c")
+color = SubResource("Resource_1anby")
+
+[sub_resource type="Resource" id="Resource_yg8cu"]
+resource_name = "ffffff"
+script = ExtResource("15_5arkc")
+mode = 0
+color = Color(0.498, 0.09, 1, 1)
+
+[sub_resource type="Resource" id="Resource_yilg6"]
+script = ExtResource("16_ikmkb")
+mode = 1
+actor = SubResource("Resource_5k74c")
+value = &"Hue-Shift"
+color = SubResource("Resource_yg8cu")
+
+[sub_resource type="Resource" id="Resource_jqxr7"]
+resource_name = "ffffff"
+script = ExtResource("15_5arkc")
+mode = 0
+color = Color(0.498, 0.09, 1, 1)
+
+[sub_resource type="Resource" id="Resource_tcrwm"]
+script = ExtResource("17_ypoje")
+mode = 5
+actor = SubResource("Resource_5k74c")
+color = SubResource("Resource_jqxr7")
+
+[sub_resource type="Resource" id="Resource_0qrom"]
+script = ExtResource("18_qf3pp")
+mode = 4
+
+[sub_resource type="Resource" id="Resource_c6xyv"]
+script = ExtResource("19_g16o1")
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_sd1ht"]
+resource_name = "0.0"
+script = ExtResource("21_yc5xq")
+source = 0
+
+[sub_resource type="Resource" id="Resource_m23s8"]
+script = ExtResource("20_qxvrp")
+mode = 0
+stat = 1
+actor = SubResource("Resource_50d23")
+value = SubResource("Resource_sd1ht")
+
+[sub_resource type="Resource" id="Resource_vl0wm"]
+resource_name = "40.0"
+script = ExtResource("21_yc5xq")
+source = 0
+value = 40.0
+
+[sub_resource type="Resource" id="Resource_mqytq"]
+script = ExtResource("20_qxvrp")
+mode = 3
+actor = SubResource("Resource_50d23")
+value = SubResource("Resource_vl0wm")
+
+[sub_resource type="Resource" id="Resource_c47ga"]
+script = ExtResource("11_w6ttg")
+ability = ExtResource("22_fi1cq")
+
+[sub_resource type="Resource" id="Resource_7epxi"]
+script = ExtResource("23_qi6cw")
+actor = SubResource("Resource_5k74c")
+ability = ExtResource("22_fi1cq")
+target = SubResource("Resource_50d23")
+
+[sub_resource type="Resource" id="Resource_okodj"]
+script = ExtResource("19_g16o1")
+duration = 0.1
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_pwy77"]
+script = ExtResource("cond_4")
+actor = SubResource("Resource_50d23")
+state = &"Guarding"
+
+[sub_resource type="Resource" id="Resource_0ahv8"]
+script = ExtResource("17_ypoje")
+actor = SubResource("Resource_50d23")
+animation = &"Bleed"
+
+[sub_resource type="Resource" id="Resource_w52qm"]
+script = ExtResource("13_vmxim")
+actor = SubResource("Resource_50d23")
+state = ExtResource("24_6vla5")
+wait = false
+
+[sub_resource type="Resource" id="Resource_i42d6"]
+script = ExtResource("19_g16o1")
+duration = 2.0
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_k2yjx"]
+script = ExtResource("25_3wum1")
+file = &"story_0"
+cue = &"stone_guardian_my_arm"
+passive = true
+
+[sub_resource type="Resource" id="Resource_2x8cy"]
+script = ExtResource("13_vmxim")
+mode = 1
+actor = SubResource("Resource_50d23")
+state = ExtResource("26_loej2")
+
+[sub_resource type="Resource" id="Resource_35qi8"]
+script = ExtResource("19_g16o1")
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_mptor"]
+script = ExtResource("25_3wum1")
+file = &"story_0"
+cue = &"stone_guardian_guard"
+passive = true
+wait = false
+
+[sub_resource type="Resource" id="Resource_co3xu"]
+script = ExtResource("19_g16o1")
+duration = 2.0
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_ven7d"]
+resource_name = "0.0"
+script = ExtResource("21_yc5xq")
+source = 0
+
+[sub_resource type="Resource" id="Resource_o4ef3"]
+script = ExtResource("20_qxvrp")
+mode = 0
+stat = 1
+actor = SubResource("Resource_50d23")
+value = SubResource("Resource_ven7d")
+
+[sub_resource type="Resource" id="Resource_cmotu"]
+script = ExtResource("13_vmxim")
+mode = 1
+actor = SubResource("Resource_50d23")
+state = ExtResource("26_loej2")
+
+[sub_resource type="Resource" id="Resource_6jrch"]
+script = ExtResource("17_ypoje")
+mode = 8
+actor = SubResource("Resource_50d23")
+outline_remove = true
+
+[sub_resource type="Resource" id="Resource_ix3ys"]
+script = ExtResource("17_ypoje")
+actor = SubResource("Resource_50d23")
+animation = &"Bleed"
+
+[sub_resource type="Resource" id="Resource_p0ky5"]
+script = ExtResource("13_vmxim")
+actor = SubResource("Resource_50d23")
+state = ExtResource("24_6vla5")
+wait = false
+
+[sub_resource type="Resource" id="Resource_uv63x"]
+script = ExtResource("19_g16o1")
+duration = 8.0
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_727kd"]
+script = ExtResource("6_krvn4")
+condition = SubResource("Resource_pwy77")
+if_steps = Array[ExtResource("2_rjxs2")]([SubResource("Resource_2x8cy"), SubResource("Resource_35qi8"), SubResource("Resource_mptor"), SubResource("Resource_co3xu"), SubResource("Resource_o4ef3"), SubResource("Resource_cmotu"), SubResource("Resource_6jrch"), SubResource("Resource_ix3ys"), SubResource("Resource_p0ky5"), SubResource("Resource_uv63x")])
+else_steps = Array[ExtResource("2_rjxs2")]([SubResource("Resource_0ahv8"), SubResource("Resource_w52qm"), SubResource("Resource_i42d6"), SubResource("Resource_k2yjx")])
+
+[sub_resource type="Resource" id="Resource_rxsj5"]
+script = ExtResource("18_qf3pp")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_fey6j"]
+resource_name = "Target"
+script = ExtResource("3_24jx6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_4rd3f"]
+script = ExtResource("12_kqehf")
+zoom_enabled = true
+amount = 7.0
+actor = SubResource("Resource_fey6j")
+
+[sub_resource type="Resource" id="Resource_yyk55"]
+script = ExtResource("12_kqehf")
+move_enabled = true
+actor = SubResource("Resource_5k74c")
+wait = true
+
+[sub_resource type="Resource" id="Resource_2ykq7"]
+resource_name = "Target"
+script = ExtResource("3_24jx6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ghlrb"]
+script = ExtResource("12_kqehf")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_2ykq7")
+
+[sub_resource type="Resource" id="Resource_x7gfq"]
+script = ExtResource("12_kqehf")
+move_enabled = true
+actor = SubResource("Resource_50d23")
+duration = 3.0
+wait = true
+
+[sub_resource type="Resource" id="Resource_awcsp"]
+script = ExtResource("19_g16o1")
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_qn7fh"]
+script = ExtResource("9_r0tyd")
+actor = SubResource("Resource_50d23")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_hfeiu"]
+script = ExtResource("27_rjc4t")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_4a0u0"]
+script = ExtResource("19_g16o1")
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_deni0"]
+script = ExtResource("25_3wum1")
+file = &"story_0"
+cue = &"placeholder_daze"
+
+[sub_resource type="Resource" id="Resource_ebp2d"]
+script = ExtResource("18_qf3pp")
+mode = 5
+layer = 3
+
+[sub_resource type="Resource" id="Resource_0pfg7"]
+script = ExtResource("28_uujt3")
+mode = 0
+party = PackedStringArray("Mira")
+
+[sub_resource type="Resource" id="Resource_fdj5o"]
+script = ExtResource("7_cyhxs")
+silent = true
+
+[sub_resource type="Resource" id="Resource_tgr0k"]
+script = ExtResource("8_a1k85")
+mode = 5
+
+[sub_resource type="Resource" id="Resource_fsiev"]
+script = ExtResource("29_3ahqy")
+flag = &"Event/BeatStoneGuardian"
+
+[resource]
+script = ExtResource("1_vp25o")
+steps = Array[ExtResource("2_rjxs2")]([SubResource("Resource_mq4vn"), SubResource("Resource_mvmnu"), SubResource("Resource_paafi"), SubResource("Resource_a24u1"), SubResource("Resource_p1dq3"), SubResource("Resource_ro0na"), SubResource("Resource_ysvru"), SubResource("Resource_nef2f"), SubResource("Resource_6j6kl"), SubResource("Resource_pt7jj"), SubResource("Resource_yilg6"), SubResource("Resource_tcrwm"), SubResource("Resource_0qrom"), SubResource("Resource_c6xyv"), SubResource("Resource_m23s8"), SubResource("Resource_mqytq"), SubResource("Resource_c47ga"), SubResource("Resource_7epxi"), SubResource("Resource_okodj"), SubResource("Resource_727kd"), SubResource("Resource_rxsj5"), SubResource("Resource_4rd3f"), SubResource("Resource_yyk55"), SubResource("Resource_ghlrb"), SubResource("Resource_x7gfq"), SubResource("Resource_awcsp"), SubResource("Resource_qn7fh"), SubResource("Resource_hfeiu"), SubResource("Resource_4a0u0"), SubResource("Resource_deni0"), SubResource("Resource_ebp2d"), SubResource("Resource_0pfg7"), SubResource("Resource_fdj5o"), SubResource("Resource_tgr0k"), SubResource("Resource_fsiev")])

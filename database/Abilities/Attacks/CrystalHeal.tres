@@ -4,7 +4,6 @@
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_yny17"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_2k873"]
 [ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_kqsjt"]
-[ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="3_slc5a"]
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_ws484"]
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_raoow"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="6_vry3c"]
@@ -15,12 +14,13 @@
 [ext_resource type="Script" uid="uid://1out28n0606o" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="11_dkbbn"]
 [ext_resource type="Script" uid="uid://b2viaujc062mm" path="res://codings/Battle/Steps/Actor/troop_step.gd" id="12_rmr3a"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_yqefk"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/health_condition.gd" id="cond_3"]
+[ext_resource type="Script" uid="uid://dpqi4c4kik5r8" path="res://codings/Battle/Steps/Conditions/group_size_condition.gd" id="cond_9"]
 
 [sub_resource type="Resource" id="Resource_h0e5d"]
-script = ExtResource("3_slc5a")
-mode = 9
-value = 1.0
+script = ExtResource("cond_9")
 comparator = 2
+value = 1.0
 
 [sub_resource type="Resource" id="Resource_kqsjt"]
 resource_name = "Target"
@@ -28,8 +28,7 @@ script = ExtResource("4_ws484")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_slc5a"]
-script = ExtResource("3_slc5a")
-mode = 3
+script = ExtResource("cond_3")
 actor = SubResource("Resource_kqsjt")
 comparator = 4
 compare_to_max = true
@@ -134,7 +133,6 @@ visible = false
 
 [sub_resource type="Resource" id="Resource_gd24u"]
 script = ExtResource("13_yqefk")
-mode = 0
 condition = SubResource("Resource_slc5a")
 if_steps = Array[ExtResource("2_kqsjt")]([SubResource("Resource_raoow"), SubResource("Resource_v8um4"), SubResource("Resource_akhk6"), SubResource("Resource_q5xqu"), SubResource("Resource_rmr3a"), SubResource("Resource_thjis"), SubResource("Resource_tv8hf"), SubResource("Resource_6r8yw"), SubResource("Resource_plunu"), SubResource("Resource_8w5xf"), SubResource("Resource_i0aa4"), SubResource("Resource_g0xd1")])
 
@@ -145,8 +143,7 @@ mode = 4
 exclude_caster = true
 
 [sub_resource type="Resource" id="Resource_0rkk6"]
-script = ExtResource("3_slc5a")
-mode = 3
+script = ExtResource("cond_3")
 actor = SubResource("Resource_osvy4")
 comparator = 4
 compare_to_max = true
@@ -251,13 +248,11 @@ visible = false
 
 [sub_resource type="Resource" id="Resource_pcawg"]
 script = ExtResource("13_yqefk")
-mode = 0
 condition = SubResource("Resource_0rkk6")
 if_steps = Array[ExtResource("2_kqsjt")]([SubResource("Resource_1bwin"), SubResource("Resource_8nqja"), SubResource("Resource_7w1g4"), SubResource("Resource_eljrj"), SubResource("Resource_ev6wv"), SubResource("Resource_ymlgg"), SubResource("Resource_1o35m"), SubResource("Resource_yr8da"), SubResource("Resource_1j4xn"), SubResource("Resource_ttxh6"), SubResource("Resource_37pbr"), SubResource("Resource_7v2t1")])
 
 [sub_resource type="Resource" id="Resource_echis"]
 script = ExtResource("13_yqefk")
-mode = 0
 condition = SubResource("Resource_h0e5d")
 if_steps = Array[ExtResource("2_kqsjt")]([SubResource("Resource_pcawg")])
 else_steps = Array[ExtResource("2_kqsjt")]([SubResource("Resource_gd24u")])

@@ -13,6 +13,7 @@
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="9_qqq4g"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_ik2w3"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="11_go6sa"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_fejub"]
 resource_name = "Target"
@@ -91,11 +92,15 @@ script = ExtResource("10_ik2w3")
 target = SubResource("Resource_q5h32")
 wait = true
 
+[sub_resource type="Resource" id="Resource_hit_xs1kd"]
+script = ExtResource("cond_hit")
+outcomes = 4
+
 [sub_resource type="Resource" id="Resource_xs1kd"]
 script = ExtResource("11_go6sa")
-mode = 3
 if_steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_s845q")])
 else_steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_dyguj"), SubResource("Resource_ik2w3"), SubResource("Resource_k3kyl")])
+condition = SubResource("Resource_hit_xs1kd")
 
 [sub_resource type="Resource" id="Resource_3eb40"]
 script = ExtResource("1_fejub")

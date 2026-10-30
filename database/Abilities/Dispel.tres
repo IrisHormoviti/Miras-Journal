@@ -6,12 +6,12 @@
 [ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_8nqti"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_lsuvv"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_an2b7"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="6_i4hp5"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="7_dn8hs"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="8_d5xic"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="9_q6byp"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="10_qriw3"]
 [ext_resource type="Texture2D" path="res://art/Icons/Items.tres" id="11_6h25g"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/states_empty_condition.gd" id="cond_11"]
 
 [sub_resource type="Resource" id="Resource_wgwrg"]
 resource_name = "Target"
@@ -49,8 +49,7 @@ script = ExtResource("3_8nqti")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_d5xic"]
-script = ExtResource("6_i4hp5")
-mode = 11
+script = ExtResource("cond_11")
 actor = SubResource("Resource_dn8hs")
 
 [sub_resource type="Resource" id="Resource_q6byp"]
@@ -76,7 +75,6 @@ message = "dispel_fail"
 
 [sub_resource type="Resource" id="Resource_l1t8c"]
 script = ExtResource("9_q6byp")
-mode = 0
 condition = SubResource("Resource_d5xic")
 if_steps = Array[ExtResource("2_36wto")]([SubResource("Resource_ymogk")])
 else_steps = Array[ExtResource("2_36wto")]([SubResource("Resource_qriw3"), SubResource("Resource_6h25g")])

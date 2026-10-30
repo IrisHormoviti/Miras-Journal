@@ -6,12 +6,14 @@
 [ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="2_xpmoy"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="4_7uopt"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="5_aalrw"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/AlcineFollow2Entrance.tres" id="6_entr"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/AlcineFollow3.tres" id="7_seq"]
 
 [sub_resource type="Resource" id="Resource_7bvd2"]
 script = ExtResource("2_xpmoy")
 after_turn = 1
-result = 1
-parameter1 = "AlcineWoods3"
+result = 6
+sequence = ExtResource("7_seq")
 hold_turn = true
 add_flag = false
 
@@ -23,7 +25,7 @@ transition = false
 return_control = false
 CanEscape = false
 DeleteAttacker = false
-EntranceSequence = "AlcineWoods2"
+entrance_sequence = ExtResource("6_entr")
 VictoryBanter = "it_flew_away"
 PartyOverride = ["Mira", "Alcine"]
 Events = Array[ExtResource("2_xpmoy")]([SubResource("Resource_7bvd2")])

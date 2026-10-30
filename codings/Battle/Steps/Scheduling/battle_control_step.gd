@@ -10,6 +10,8 @@ enum Mode {
 	NO_MISSES,
 	NO_CRITS,
 	AWAIT_VICTORY,
+	HOLD_TURN,
+	RELEASE_TURN,
 }
 
 @export var mode: Mode = Mode.VICTORY:
@@ -38,6 +40,10 @@ func run(ctx: ActionSequenceContext) -> void:
 			ctx.battle.no_crits = value
 		Mode.AWAIT_VICTORY:
 			await Global.battle_end
+		Mode.HOLD_TURN:
+			ctx.battle.hold_turn()
+		Mode.RELEASE_TURN:
+			ctx.battle.release_turn()
 
 
 func _to_string() -> String:
@@ -63,6 +69,12 @@ func _to_string() -> String:
 		Mode.AWAIT_VICTORY:
 			return "Await the victory screen"
 
+		Mode.HOLD_TURN:
+			return "Hold the turn"
+
+		Mode.RELEASE_TURN:
+			return "Release the turn"
+
 	return ""
 
 
@@ -75,7 +87,7 @@ func _validate_property(property: Dictionary) -> void:
 			visible.append("actor")
 		Mode.NO_MISSES, Mode.NO_CRITS:
 			visible.append("value")
-		Mode.END, Mode.END_TURN, Mode.AWAIT_VICTORY:
+		Mode.END, Mode.END_TURN, Mode.AWAIT_VICTORY, Mode.HOLD_TURN, Mode.RELEASE_TURN:
 			pass
 	StepEditor.only(property, visible)
 

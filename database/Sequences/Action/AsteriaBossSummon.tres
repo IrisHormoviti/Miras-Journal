@@ -1,0 +1,82 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3]
+
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_acq8x"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_5vr54"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="3_045aa"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_trfph"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/troop_step.gd" id="5_885nd"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/battle_flow_step.gd" id="6_6gub2"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="7_6ajyt"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="8_5oj2i"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="9_68q8b"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Meta/event_step.gd" id="10_0d420"]
+
+[sub_resource type="Resource" id="Resource_vnjkk"]
+script = ExtResource("3_045aa")
+file = &"story_1"
+cue = &"asteria_boss_2"
+passive = true
+
+[sub_resource type="Resource" id="Resource_5yydu"]
+resource_name = "Summoned Ally"
+script = ExtResource("4_trfph")
+mode = 11
+
+[sub_resource type="Resource" id="Resource_d3cas"]
+script = ExtResource("5_885nd")
+actor = SubResource("Resource_5yydu")
+
+[sub_resource type="Resource" id="Resource_llbpp"]
+resource_name = "Summoned Ally"
+script = ExtResource("4_trfph")
+mode = 11
+summon_index = 1
+
+[sub_resource type="Resource" id="Resource_lgdjw"]
+script = ExtResource("5_885nd")
+actor = SubResource("Resource_llbpp")
+
+[sub_resource type="Resource" id="Resource_lkhfd"]
+script = ExtResource("6_6gub2")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_714ck"]
+resource_name = "Loop Actor"
+script = ExtResource("4_trfph")
+mode = 8
+
+[sub_resource type="Resource" id="Resource_el17y"]
+script = ExtResource("6_6gub2")
+mode = 9
+actor = SubResource("Resource_714ck")
+
+[sub_resource type="Resource" id="Resource_brije"]
+script = ExtResource("7_6ajyt")
+include_dead = true
+steps = Array[ExtResource("2_5vr54")]([SubResource("Resource_el17y")])
+
+[sub_resource type="Resource" id="Resource_5r8m0"]
+resource_name = "Asteria"
+script = ExtResource("4_trfph")
+mode = 2
+codename = &"Asteria"
+
+[sub_resource type="Resource" id="Resource_pm37t"]
+resource_name = "90.0"
+script = ExtResource("9_68q8b")
+source = 0
+value = 90.0
+
+[sub_resource type="Resource" id="Resource_0uo8b"]
+script = ExtResource("8_5oj2i")
+actor = SubResource("Resource_5r8m0")
+value = SubResource("Resource_pm37t")
+
+[sub_resource type="Resource" id="Resource_mry2j"]
+script = ExtResource("10_0d420")
+flag = &"Event/AsteriaBoss"
+value = 2
+
+[resource]
+script = ExtResource("1_acq8x")
+steps = Array[ExtResource("2_5vr54")]([SubResource("Resource_vnjkk"), SubResource("Resource_d3cas"), SubResource("Resource_lgdjw"), SubResource("Resource_lkhfd"), SubResource("Resource_brije"), SubResource("Resource_0uo8b"), SubResource("Resource_mry2j")])

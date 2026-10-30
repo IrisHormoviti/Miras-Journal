@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="12_fk6ed"]
 [ext_resource type="Resource" path="res://database/States/Zapped.tres" id="13_rcvox"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="14_k2dpy"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_ivchh"]
 resource_name = "Caster"
@@ -121,9 +122,14 @@ script = ExtResource("12_fk6ed")
 actor = SubResource("Resource_0x48k")
 state = ExtResource("13_rcvox")
 
+[sub_resource type="Resource" id="Resource_hit_lu38k"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_lu38k"]
 script = ExtResource("14_k2dpy")
 if_steps = Array[ExtResource("2_l54jq")]([SubResource("Resource_1vfjh")])
+condition = SubResource("Resource_hit_lu38k")
 
 [sub_resource type="Resource" id="Resource_jwxt2"]
 resource_name = "Caster"

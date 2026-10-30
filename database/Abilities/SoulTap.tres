@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="12_x1tim"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="13_kl732"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_xxon8"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_001u0"]
 resource_name = "Target"
@@ -63,6 +64,10 @@ target = SubResource("Resource_mtt7f")
 script = ExtResource("7_mtt7f")
 duration = 0.8
 
+[sub_resource type="Resource" id="Resource_hit_0xv3p"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_evpc0"]
 resource_name = "Target"
 script = ExtResource("3_x1tim")
@@ -76,6 +81,7 @@ wait = false
 
 [sub_resource type="Resource" id="Resource_0xv3p"]
 script = ExtResource("10_evpc0")
+condition = SubResource("Resource_hit_0xv3p")
 if_steps = Array[ExtResource("2_8scni")]([SubResource("Resource_ua2mm")])
 
 [sub_resource type="Resource" id="Resource_xxon8"]

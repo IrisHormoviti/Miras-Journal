@@ -7,12 +7,12 @@
 [ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_n4kvo"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_soumj"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_h3lnf"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="5_3mmfl"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="6_1yyx7"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="7_xcsrq"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="8_4y0gu"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="9_hlddx"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="10_r03x7"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/ability_type_condition.gd" id="cond_15"]
 
 [sub_resource type="Resource" id="Resource_vltek"]
 resource_name = "Caster"
@@ -36,8 +36,7 @@ amount = 5.5
 actor = SubResource("Resource_soumj")
 
 [sub_resource type="Resource" id="Resource_3mmfl"]
-script = ExtResource("5_3mmfl")
-mode = 15
+script = ExtResource("cond_15")
 ability_type = 5
 
 [sub_resource type="Resource" id="Resource_1yyx7"]
@@ -57,7 +56,6 @@ variance = true
 
 [sub_resource type="Resource" id="Resource_hlddx"]
 script = ExtResource("8_4y0gu")
-mode = 0
 condition = SubResource("Resource_3mmfl")
 if_steps = Array[ExtResource("2_h7ma8")]([SubResource("Resource_4y0gu")])
 

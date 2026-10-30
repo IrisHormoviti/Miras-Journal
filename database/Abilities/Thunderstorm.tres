@@ -16,6 +16,7 @@
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="12_84y1k"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_0kl73"]
 [ext_resource type="Resource" path="res://database/States/Soaked.tres" id="14_4m45y"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_fow0g"]
 resource_name = "Caster"
@@ -151,10 +152,14 @@ magic_mode = 2
 elemental = true
 hit_branch = false
 
+[sub_resource type="Resource" id="Resource_hit_7u7cv"]
+script = ExtResource("cond_hit")
+outcomes = 4
+
 [sub_resource type="Resource" id="Resource_7u7cv"]
 script = ExtResource("12_84y1k")
-mode = 3
 else_steps = Array[ExtResource("2_bn8a5")]([SubResource("Resource_0vj0h"), SubResource("Resource_q4mlx"), SubResource("Resource_17qbq"), SubResource("Resource_3n3h7")])
+condition = SubResource("Resource_hit_7u7cv")
 
 [sub_resource type="Resource" id="Resource_lkmuc"]
 resource_name = "Target"

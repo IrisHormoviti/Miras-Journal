@@ -1,0 +1,148 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3]
+
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_1uslq"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_gvfh0"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_cfuk0"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="4_35alj"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_djda4"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="6_u8ial"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="7_qp122"]
+[ext_resource type="Resource" path="res://database/Abilities/SturdyGuard.tres" id="8_4ykrd"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="9_otph2"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/battle_flow_step.gd" id="10_g0a27"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="11_fq27k"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Meta/event_step.gd" id="12_b021j"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="13_rxooq"]
+
+[sub_resource type="Resource" id="Resource_50d23"]
+resource_name = "Party Leader"
+script = ExtResource("3_cfuk0")
+mode = 3
+
+[sub_resource type="Resource" id="Resource_rjokp"]
+script = ExtResource("4_35alj")
+mode = 3
+actor = SubResource("Resource_50d23")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_gl2jn"]
+resource_name = "Party Member 1"
+script = ExtResource("3_cfuk0")
+mode = 3
+party_index = 1
+
+[sub_resource type="Resource" id="Resource_7qieo"]
+script = ExtResource("4_35alj")
+mode = 3
+actor = SubResource("Resource_gl2jn")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_yfeli"]
+resource_name = "Target"
+script = ExtResource("3_cfuk0")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_m81ri"]
+script = ExtResource("5_djda4")
+zoom_enabled = true
+amount = 7.0
+actor = SubResource("Resource_yfeli")
+duration = 0.0
+
+[sub_resource type="Resource" id="Resource_5k74c"]
+resource_name = "Guardian"
+script = ExtResource("3_cfuk0")
+mode = 2
+codename = &"Guardian"
+
+[sub_resource type="Resource" id="Resource_xm2ff"]
+script = ExtResource("6_u8ial")
+mode = 6
+actor = SubResource("Resource_5k74c")
+shader_param = &"new_color"
+shader_color = Color(0.235, 0.588, 0.498, 1)
+shader_value_is_color = true
+use_material_override = true
+
+[sub_resource type="Resource" id="Resource_8dhgb"]
+script = ExtResource("5_djda4")
+move_enabled = true
+actor = SubResource("Resource_5k74c")
+offset = Vector2(0, 0)
+duration = 0.0
+wait = true
+
+[sub_resource type="Resource" id="Resource_k2uns"]
+script = ExtResource("7_qp122")
+count = 2
+
+[sub_resource type="Resource" id="Resource_mbtw5"]
+script = ExtResource("4_35alj")
+mode = 6
+actor = SubResource("Resource_5k74c")
+next_action = 2
+next_move = ExtResource("8_4ykrd")
+
+[sub_resource type="Resource" id="Resource_rhjwb"]
+resource_name = "Target"
+script = ExtResource("3_cfuk0")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_7wej2"]
+script = ExtResource("5_djda4")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_rhjwb")
+duration = 2.0
+
+[sub_resource type="Resource" id="Resource_k1ckc"]
+script = ExtResource("5_djda4")
+move_enabled = true
+actor = SubResource("Resource_5k74c")
+offset = Vector2(-20, -40)
+duration = 2.0
+wait = true
+
+[sub_resource type="Resource" id="Resource_85jd3"]
+script = ExtResource("9_otph2")
+file = &"story_0"
+cue = &"stone_guardian_intro"
+passive = true
+
+[sub_resource type="Resource" id="Resource_wjr3m"]
+script = ExtResource("10_g0a27")
+actor = SubResource("Resource_50d23")
+wait = false
+
+[sub_resource type="Resource" id="Resource_ublpt"]
+script = ExtResource("10_g0a27")
+actor = SubResource("Resource_gl2jn")
+wait = false
+
+[sub_resource type="Resource" id="Resource_tsnnf"]
+script = ExtResource("11_fq27k")
+duration = 0.2
+
+[sub_resource type="Resource" id="Resource_2e3xy"]
+script = ExtResource("5_djda4")
+move_enabled = true
+actor = SubResource("Resource_50d23")
+wait = true
+
+[sub_resource type="Resource" id="Resource_5t0bc"]
+script = ExtResource("12_b021j")
+mode = 1
+flag = &"Event/StoneGuardianFinisher"
+
+[sub_resource type="Resource" id="Resource_f02c5"]
+script = ExtResource("12_b021j")
+mode = 1
+flag = &"Event/BeatStoneGuardian"
+
+[sub_resource type="Resource" id="Resource_d18mm"]
+script = ExtResource("13_rxooq")
+mode = 3
+
+[resource]
+script = ExtResource("1_1uslq")
+steps = Array[ExtResource("2_gvfh0")]([SubResource("Resource_rjokp"), SubResource("Resource_7qieo"), SubResource("Resource_m81ri"), SubResource("Resource_xm2ff"), SubResource("Resource_8dhgb"), SubResource("Resource_k2uns"), SubResource("Resource_mbtw5"), SubResource("Resource_7wej2"), SubResource("Resource_k1ckc"), SubResource("Resource_85jd3"), SubResource("Resource_wjr3m"), SubResource("Resource_ublpt"), SubResource("Resource_tsnnf"), SubResource("Resource_2e3xy"), SubResource("Resource_5t0bc"), SubResource("Resource_f02c5"), SubResource("Resource_d18mm")])

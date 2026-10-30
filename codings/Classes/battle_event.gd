@@ -18,7 +18,7 @@ class_name BattleEvent
 @export var low_ap: int = -1
 @export_group("Result")
 
-enum RES {PASSIVE_DIALOG, CALL_FUNCTION, REGULAR_DIALOG, FORCE_MOVE, VICTORY, DEFEAT_OTHERS}
+enum RES {PASSIVE_DIALOG, CALL_FUNCTION, REGULAR_DIALOG, FORCE_MOVE, VICTORY, DEFEAT_OTHERS, SEQUENCE}
 @export var result: RES = RES.PASSIVE_DIALOG
 
 ##Used as text file for dialog, function name for call function, move type for force move
@@ -30,6 +30,14 @@ enum RES {PASSIVE_DIALOG, CALL_FUNCTION, REGULAR_DIALOG, FORCE_MOVE, VICTORY, DE
 @export var hold_turn := false
 ##set [member flag] to the oposite of [member flag_should_be] after running
 @export var add_flag: bool = true
+
+@export_group("Sequence")
+## The sequence played by [constant RES.SEQUENCE].
+@export var sequence: ActionSequence
+## Codename of the actor that runs the sequence. Empty uses the current actor.
+@export var sequence_caster: StringName = &""
+## Codename of the actor the sequence targets. Empty uses the current target.
+@export var sequence_target: StringName = &""
 var ran_this_turn := false
 
 
@@ -117,6 +125,9 @@ func run() -> void:
 						if actor_data != i:
 							Global.bt.death(i)
 
+			RES.SEQUENCE:
+				run_sequence()
+
 	if add_flag and flag != "": Event.add_flag(flag, !flag_should_be)
 
 
@@ -125,4 +136,24 @@ func run_with_await() -> void:
 		0: await Passive.open(parameter1, parameter2)
 		1: await Global.bt.act.call(parameter1)
 		2: await Textbox.open(parameter1, parameter2)
+		RES.SEQUENCE: await run_sequence()
 		_: OS.alert("Battle event error: This action cannot hold the turn")
+
+
+## Runs the event's sequence with the event's caster and target. Sequences hold
+## the turn themselves when they need to, so the event never adds a second lock.
+func run_sequence() -> void:
+	if sequence == null:
+		return
+
+	var seq_caster: Actor = Global.bt.CurrentChar
+
+	if not sequence_caster.is_empty():
+		seq_caster = Global.bt.get_actor(sequence_caster, true)
+
+	var seq_target: Actor = Global.bt.CurrentTarget
+
+	if not sequence_target.is_empty():
+		seq_target = Global.bt.get_actor(sequence_target, true)
+
+	await Global.bt.run_battle_sequence(sequence, seq_caster, seq_target, false)

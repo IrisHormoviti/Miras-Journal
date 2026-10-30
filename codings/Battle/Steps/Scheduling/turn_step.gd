@@ -18,6 +18,8 @@ enum Mode {
 @export var ability: Ability
 @export var target: ActorRef
 @export var consume_turn := false
+## Keep the current actor at the same turn slot when resorting.
+@export var preserve_current := true
 
 
 func run(ctx: ActionSequenceContext) -> void:
@@ -32,7 +34,7 @@ func run(ctx: ActionSequenceContext) -> void:
 		Mode.SKIP:
 			ctx.battle.skip_next_turn(subject)
 		Mode.RESORT:
-			ctx.battle.resort_turn_order()
+			ctx.battle.resort_turn_order(preserve_current)
 		Mode.CANCEL_FOLLOW_UP:
 			ctx.battle.cancel_follow_up()
 
@@ -66,7 +68,9 @@ func _validate_property(property: Dictionary) -> void:
 	match mode:
 		Mode.USE_ABILITY:
 			visible.append_array(["ability", "target", "consume_turn"])
-		Mode.FORCE_NEXT, Mode.SKIP, Mode.RESORT, Mode.CANCEL_FOLLOW_UP:
+		Mode.RESORT:
+			visible.append("preserve_current")
+		Mode.FORCE_NEXT, Mode.SKIP, Mode.CANCEL_FOLLOW_UP:
 			pass
 	StepEditor.only(property, visible)
 

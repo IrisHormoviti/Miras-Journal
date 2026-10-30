@@ -20,6 +20,7 @@
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_6omso"]
 [ext_resource type="Texture2D" path="res://art/Icons/Items.tres" id="16_rkq5n"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="20_s7lcy"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_5r6ys"]
 resource_name = "Target"
@@ -125,11 +126,15 @@ mode = 1
 script = ExtResource("14_7tvlw")
 target = SubResource("Resource_wjkhw")
 
+[sub_resource type="Resource" id="Resource_hit_royfu"]
+script = ExtResource("cond_hit")
+outcomes = 4
+
 [sub_resource type="Resource" id="Resource_royfu"]
 script = ExtResource("15_6omso")
-mode = 3
 if_steps = Array[ExtResource("2_65mu3")]([SubResource("Resource_a0yog")])
 else_steps = Array[ExtResource("2_65mu3")]([SubResource("Resource_7tvlw"), SubResource("Resource_6omso"), SubResource("Resource_0b236")])
+condition = SubResource("Resource_hit_royfu")
 
 [sub_resource type="Resource" id="Resource_6mpjl"]
 script = ExtResource("8_qdoaj")

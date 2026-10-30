@@ -7,6 +7,10 @@
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="4_t20i2"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_d2kvd"]
 [ext_resource type="Resource" uid="uid://8slcowrx21ki" path="res://database/Abilities/Gather.tres" id="6_t20i2"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/StoneGuardianEntrance.tres" id="7_entr"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/StoneGuardianAdapt.tres" id="8_adapt"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/StoneGuardianLoop.tres" id="9_loop"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/StoneGuardianVictory.tres" id="10_vict"]
 
 [sub_resource type="Resource" id="Resource_d2kvd"]
 script = ExtResource("3_oponu")
@@ -22,8 +26,8 @@ script = ExtResource("3_oponu")
 repeatable = true
 actor = &"Guardian"
 low_hp = 100
-result = 1
-parameter1 = "StoneGuardian2"
+result = 6
+sequence = ExtResource("8_adapt")
 hold_turn = true
 add_flag = false
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
@@ -31,8 +35,8 @@ metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 [sub_resource type="Resource" id="Resource_87ic2"]
 script = ExtResource("3_oponu")
 repeatable = true
-result = 1
-parameter1 = "StoneGuardianLoop"
+result = 6
+sequence = ExtResource("9_loop")
 hold_turn = true
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
@@ -41,8 +45,8 @@ script = ExtResource("3_oponu")
 repeatable = true
 flag = &"StoneGuardianFinisher"
 flag_should_be = true
-result = 1
-parameter1 = "StoneGuardian3"
+result = 6
+sequence = ExtResource("10_vict")
 hold_turn = true
 add_flag = false
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
@@ -61,9 +65,9 @@ script = ExtResource("4_t20i2")
 Enemies = Array[ExtResource("2_s2u2d")]([ExtResource("3_s2u2d")])
 ScenePosition = Vector2(2543, -145)
 CanEscape = false
-EntranceSequence = "StoneGuardian1"
+entrance_sequence = ExtResource("7_entr")
 EntranceBanterIsPassive = false
-VictorySequence = "StoneGuardian3"
+victory_sequence = ExtResource("10_vict")
 VictoryText = "Victory?"
 PartyOverride = ["Mira", "Alcine"]
 Events = Array[ExtResource("3_oponu")]([SubResource("Resource_d2kvd"), SubResource("Resource_t20i2"), SubResource("Resource_87ic2"), SubResource("Resource_yttu5"), SubResource("Resource_oponu")])

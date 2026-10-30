@@ -6,14 +6,17 @@
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_ym1rv"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="4_6tm4s"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="5_bg0et"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/AsteriaBossSummon.tres" id="6_summon"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/AsteriaBossPhase.tres" id="7_phase"]
 
 [sub_resource type="Resource" id="Resource_ym1rv"]
 script = ExtResource("3_bg0et")
 after_turn = 3
 actor = &"Asteria"
 low_hp = 50
-result = 1
-parameter1 = "AsteriaBoss2"
+result = 6
+sequence = ExtResource("6_summon")
+sequence_caster = &"Asteria"
 hold_turn = true
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
@@ -22,8 +25,9 @@ script = ExtResource("3_bg0et")
 repeatable = true
 actor = &"Asteria"
 low_hp = 15
-result = 1
-parameter1 = "AsteriaBoss3"
+result = 6
+sequence = ExtResource("7_phase")
+sequence_caster = &"Asteria"
 hold_turn = true
 add_flag = false
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"

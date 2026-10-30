@@ -1,0 +1,51 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3]
+
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_hyurp"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_e71rt"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_f84gf"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Meta/event_step.gd" id="5_voj5l"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="6_ibiui"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="7_argoe"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="8_q21i7"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/health_condition.gd" id="cond_3"]
+
+[sub_resource type="Resource" id="Resource_o8v2u"]
+resource_name = "Party Leader"
+script = ExtResource("3_f84gf")
+mode = 3
+
+[sub_resource type="Resource" id="Resource_7qej7"]
+script = ExtResource("cond_3")
+actor = SubResource("Resource_o8v2u")
+comparator = 2
+
+[sub_resource type="Resource" id="Resource_k1ktd"]
+script = ExtResource("5_voj5l")
+mode = 2
+flag = &"Event/AlcineFollow"
+value = 4
+
+[sub_resource type="Resource" id="Resource_x1rqy"]
+script = ExtResource("6_ibiui")
+mode = 7
+
+[sub_resource type="Resource" id="Resource_n3ry7"]
+script = ExtResource("7_argoe")
+file = &"story_0"
+cue = &"going_nowhere"
+passive = true
+
+[sub_resource type="Resource" id="Resource_72l8x"]
+script = ExtResource("5_voj5l")
+mode = 4
+file = &"story_0"
+cue = &"AlcineFollowHelp"
+
+[sub_resource type="Resource" id="Resource_ghqaw"]
+script = ExtResource("8_q21i7")
+condition = SubResource("Resource_7qej7")
+if_steps = Array[ExtResource("2_e71rt")]([SubResource("Resource_k1ktd"), SubResource("Resource_x1rqy"), SubResource("Resource_n3ry7"), SubResource("Resource_72l8x")])
+
+[resource]
+script = ExtResource("1_hyurp")
+steps = Array[ExtResource("2_e71rt")]([SubResource("Resource_ghqaw")])

@@ -1,0 +1,227 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3 uid="uid://d0c732ym2t8xh"]
+
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_x1vsa"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_dxevn"]
+[ext_resource type="Script" uid="uid://brxod1kfeknjs" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="3_clu0s"]
+[ext_resource type="Script" uid="uid://bhb42mpxxarv" path="res://codings/Battle/Steps/Meta/world_step.gd" id="4_81f3i"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="5_xduxt"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="6_p42u6"]
+[ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_6yekv"]
+[ext_resource type="Script" uid="uid://bx8uo7d4ycpyy" path="res://codings/Battle/Steps/Actor/move_step.gd" id="8_a2gea"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="9_26ei7"]
+[ext_resource type="Script" uid="uid://dbfmyyanaru1b" path="res://codings/Battle/Steps/Scheduling/battle_flow_step.gd" id="10_nmlyw"]
+[ext_resource type="Script" uid="uid://btnsdsi8rjqnj" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="11_b7jqv"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="12_ftkgq"]
+[ext_resource type="Script" uid="uid://1lgh0kqkf2x5" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="13_avb0t"]
+[ext_resource type="Script" uid="uid://bte654s5nh6vn" path="res://codings/Battle/Steps/Meta/ui_state_step.gd" id="14_n8pcg"]
+[ext_resource type="Script" uid="uid://dxycvdv0l12r3" path="res://codings/Battle/Steps/Meta/event_step.gd" id="15_k7u5i"]
+[ext_resource type="Script" uid="uid://qj0kal4v0pn4" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="16_s7ln4"]
+
+[sub_resource type="Resource" id="Resource_fuhkd"]
+script = ExtResource("3_clu0s")
+mode = 4
+
+[sub_resource type="Resource" id="Resource_6m2bv"]
+script = ExtResource("3_clu0s")
+mode = 5
+
+[sub_resource type="Resource" id="Resource_e3gdg"]
+script = ExtResource("4_81f3i")
+mode = 2
+party = PackedStringArray()
+position = Vector2(1470, 400)
+
+[sub_resource type="Resource" id="Resource_4gck0"]
+script = ExtResource("5_xduxt")
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_r7y57"]
+script = ExtResource("4_81f3i")
+mode = 4
+party = PackedStringArray()
+enabled = false
+
+[sub_resource type="Resource" id="Resource_b12s0"]
+resource_name = "CrawlingSludge"
+script = ExtResource("6_p42u6")
+mode = 2
+codename = &"CrawlingSludge"
+
+[sub_resource type="Resource" id="Resource_dd3mx"]
+resource_name = "x 50.0"
+script = ExtResource("7_6yekv")
+mode = 3
+x = 50.0
+
+[sub_resource type="Resource" id="Resource_1vqej"]
+script = ExtResource("8_a2gea")
+mode = 3
+actor = SubResource("Resource_b12s0")
+destination = SubResource("Resource_dd3mx")
+
+[sub_resource type="Resource" id="Resource_3lfid"]
+script = ExtResource("9_26ei7")
+move_enabled = true
+actor = SubResource("Resource_b12s0")
+offset = Vector2(0, 0)
+duration = 0.1
+wait = true
+
+[sub_resource type="Resource" id="Resource_wqoog"]
+resource_name = "Target"
+script = ExtResource("6_p42u6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_e84kq"]
+script = ExtResource("9_26ei7")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_wqoog")
+
+[sub_resource type="Resource" id="Resource_tl8ib"]
+script = ExtResource("10_nmlyw")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_6k5ia"]
+script = ExtResource("11_b7jqv")
+count = 4
+
+[sub_resource type="Resource" id="Resource_ylrjx"]
+script = ExtResource("4_81f3i")
+mode = 3
+party = PackedStringArray()
+visible = false
+
+[sub_resource type="Resource" id="Resource_3bk8s"]
+script = ExtResource("5_xduxt")
+duration = 0.5
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_nynd4"]
+script = ExtResource("11_b7jqv")
+mode = 1
+fade_mode = 1
+wait = false
+
+[sub_resource type="Resource" id="Resource_vb2f8"]
+script = ExtResource("5_xduxt")
+duration = 0.3
+process_while_paused = true
+
+[sub_resource type="Resource" id="Resource_2aqal"]
+script = ExtResource("11_b7jqv")
+count = 3
+
+[sub_resource type="Resource" id="Resource_3prco"]
+resource_name = "Mira"
+script = ExtResource("6_p42u6")
+mode = 2
+codename = &"Mira"
+
+[sub_resource type="Resource" id="Resource_ugx8g"]
+script = ExtResource("12_ftkgq")
+mode = 3
+actor = SubResource("Resource_3prco")
+animation = &"Entrance"
+frame = 2
+
+[sub_resource type="Resource" id="Resource_286yt"]
+resource_name = "Mira"
+script = ExtResource("6_p42u6")
+mode = 2
+codename = &"Mira"
+
+[sub_resource type="Resource" id="Resource_nspdk"]
+script = ExtResource("9_26ei7")
+move_enabled = true
+actor = SubResource("Resource_286yt")
+offset = Vector2(40, 0)
+duration = 3.0
+wait = true
+
+[sub_resource type="Resource" id="Resource_4d4u7"]
+script = ExtResource("5_xduxt")
+
+[sub_resource type="Resource" id="Resource_518k7"]
+script = ExtResource("13_avb0t")
+file = &"story_0"
+cue = &"sstay_back"
+passive = true
+wait = false
+
+[sub_resource type="Resource" id="Resource_4eo1a"]
+script = ExtResource("5_xduxt")
+
+[sub_resource type="Resource" id="Resource_mtr8d"]
+script = ExtResource("10_nmlyw")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_o1i3l"]
+resource_name = "CrawlingSludge"
+script = ExtResource("6_p42u6")
+mode = 2
+codename = &"CrawlingSludge"
+
+[sub_resource type="Resource" id="Resource_kpj0i"]
+resource_name = "(40.0, 0.0)"
+script = ExtResource("7_6yekv")
+mode = 2
+position = Vector2(40, 0)
+
+[sub_resource type="Resource" id="Resource_73ouy"]
+script = ExtResource("8_a2gea")
+actor = SubResource("Resource_o1i3l")
+destination = SubResource("Resource_kpj0i")
+duration = 1.0
+easing = 1
+
+[sub_resource type="Resource" id="Resource_slra1"]
+resource_name = "CrawlingSludge"
+script = ExtResource("6_p42u6")
+mode = 2
+codename = &"CrawlingSludge"
+
+[sub_resource type="Resource" id="Resource_veiou"]
+resource_name = "(40.0, 0.0)"
+script = ExtResource("7_6yekv")
+mode = 2
+position = Vector2(40, 0)
+
+[sub_resource type="Resource" id="Resource_7jm2g"]
+script = ExtResource("8_a2gea")
+actor = SubResource("Resource_slra1")
+destination = SubResource("Resource_veiou")
+duration = 1.0
+easing = 1
+
+[sub_resource type="Resource" id="Resource_kiev4"]
+script = ExtResource("14_n8pcg")
+mode = 3
+ability = false
+command = false
+item = false
+
+[sub_resource type="Resource" id="Resource_tww4w"]
+script = ExtResource("15_k7u5i")
+mode = 2
+flag = &"Event/FirstBattle"
+value = 3
+
+[sub_resource type="Resource" id="Resource_xuo8a"]
+resource_name = "Mira"
+script = ExtResource("6_p42u6")
+mode = 2
+codename = &"Mira"
+
+[sub_resource type="Resource" id="Resource_iwptb"]
+script = ExtResource("16_s7ln4")
+mode = 2
+actor = SubResource("Resource_xuo8a")
+
+[sub_resource type="Resource" id="Resource_ta727"]
+script = ExtResource("3_clu0s")
+mode = 3
+
+[resource]
+script = ExtResource("1_x1vsa")
+steps = Array[ExtResource("2_dxevn")]([SubResource("Resource_fuhkd"), SubResource("Resource_6m2bv"), SubResource("Resource_e3gdg"), SubResource("Resource_4gck0"), SubResource("Resource_r7y57"), SubResource("Resource_1vqej"), SubResource("Resource_3lfid"), SubResource("Resource_e84kq"), SubResource("Resource_tl8ib"), SubResource("Resource_6k5ia"), SubResource("Resource_ylrjx"), SubResource("Resource_3bk8s"), SubResource("Resource_nynd4"), SubResource("Resource_vb2f8"), SubResource("Resource_2aqal"), SubResource("Resource_ugx8g"), SubResource("Resource_nspdk"), SubResource("Resource_4d4u7"), SubResource("Resource_518k7"), SubResource("Resource_4eo1a"), SubResource("Resource_mtr8d"), SubResource("Resource_73ouy"), SubResource("Resource_7jm2g"), SubResource("Resource_kiev4"), SubResource("Resource_tww4w"), SubResource("Resource_iwptb"), SubResource("Resource_ta727")])

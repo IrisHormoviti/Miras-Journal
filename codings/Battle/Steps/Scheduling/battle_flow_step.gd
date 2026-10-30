@@ -13,6 +13,7 @@ enum Mode {
 	PAUSE,
 	POSITION_SPRITES,
 	SPRITE_INIT,
+	SET_CURRENT,
 }
 
 @export var mode: Mode = Mode.ENTRANCE_ANIM:
@@ -21,6 +22,8 @@ enum Mode {
 		notify_property_list_changed()
 @export var actor: ActorRef
 @export var enabled := true
+## When false, entrance and victory animations play in the background.
+@export var wait := true
 
 
 func run(ctx: ActionSequenceContext) -> void:
@@ -29,10 +32,16 @@ func run(ctx: ActionSequenceContext) -> void:
 	match mode:
 		Mode.ENTRANCE_ANIM:
 			if subject != null:
-				await ctx.battle.entrance_anim(subject)
+				if wait:
+					await ctx.battle.entrance_anim(subject)
+				else:
+					ctx.battle.entrance_anim(subject)
 		Mode.VICTORY_ANIM:
 			if subject != null:
-				await ctx.battle.victory_anim(subject)
+				if wait:
+					await ctx.battle.victory_anim(subject)
+				else:
+					ctx.battle.victory_anim(subject)
 		Mode.VICTORY_MUSIC:
 			ctx.battle.victory_music()
 		Mode.FOLLOW_UP_TEXT:
@@ -50,6 +59,13 @@ func run(ctx: ActionSequenceContext) -> void:
 		Mode.SPRITE_INIT:
 			if subject != null:
 				ctx.battle.sprite_init(subject)
+
+		Mode.SET_CURRENT:
+			if subject != null:
+				ctx.battle.CurrentChar = subject
+
+				if ctx.battle.act != null:
+					ctx.battle.act.CurrentChar = subject
 
 
 func _to_string() -> String:
@@ -86,13 +102,18 @@ func _to_string() -> String:
 		Mode.SPRITE_INIT:
 			return "Initialize the sprite for %s" % who
 
+		Mode.SET_CURRENT:
+			return "Make %s the current actor" % who
+
 	return ""
 
 
 func _validate_property(property: Dictionary) -> void:
 	var visible: Array[String] = ["mode"]
 	match mode:
-		Mode.ENTRANCE_ANIM, Mode.VICTORY_ANIM, Mode.SPRITE_INIT:
+		Mode.ENTRANCE_ANIM, Mode.VICTORY_ANIM:
+			visible.append_array(["actor", "wait"])
+		Mode.SPRITE_INIT, Mode.SET_CURRENT:
 			visible.append("actor")
 		Mode.IN_BATTLE, Mode.PAUSE:
 			visible.append("enabled")

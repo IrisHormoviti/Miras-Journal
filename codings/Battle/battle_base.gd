@@ -1514,9 +1514,9 @@ func cancel_follow_up() -> void:
 	follow_up_next = false
 
 
-## Runs a named sequence from database/Sequences for dialogue cues and events.
+## Runs a named sequence from database/Sequences/Action for dialogue cues and events.
 func run_action_sequence(sequence_name: StringName) -> void:
-	var path := "res://database/Sequences/" + str(sequence_name) + ".tres"
+	var path := "res://database/Sequences/Action/" + str(sequence_name) + ".tres"
 
 	if not ResourceLoader.exists(path):
 		push_warning("Action sequence not found: " + path)

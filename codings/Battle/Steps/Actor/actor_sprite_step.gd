@@ -17,6 +17,7 @@ enum Mode {
 	NODE_VISIBLE,
 	Z_INDEX,
 	PLAY_BACKWARDS,
+	AWAIT_ANIMATION,
 }
 
 ## Standard battle animation names, offered as a dropdown in the inspector.
@@ -145,6 +146,9 @@ func run(ctx: ActionSequenceContext) -> void:
 			if wait:
 				await ctx.battle.await_anim(subject.node, animation)
 
+		Mode.AWAIT_ANIMATION:
+			await ctx.battle.await_anim(subject.node)
+
 
 func _actor(ctx: ActionSequenceContext) -> Actor:
 	if actor != null:
@@ -162,6 +166,9 @@ func _to_string() -> String:
 
 		Mode.PLAY_BACKWARDS:
 			return "Play '%s' backwards on %s" % [animation, who]
+
+		Mode.AWAIT_ANIMATION:
+			return "Wait for %s's animation" % who
 
 		Mode.VISIBLE:
 			return "%s %s" % ["Show" if visible else "Hide", who]

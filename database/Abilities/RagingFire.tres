@@ -15,6 +15,7 @@
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="11_mmymp"]
 [ext_resource type="Resource" path="res://database/States/Burned.tres" id="12_aa4l8"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_v7r2m"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_nvsyy"]
 resource_name = "Target"
@@ -124,9 +125,14 @@ script = ExtResource("11_mmymp")
 actor = SubResource("Resource_ivyc6")
 state = ExtResource("12_aa4l8")
 
+[sub_resource type="Resource" id="Resource_hit_vo44c"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_vo44c"]
 script = ExtResource("13_v7r2m")
 if_steps = Array[ExtResource("2_ou0em")]([SubResource("Resource_7qbjh")])
+condition = SubResource("Resource_hit_vo44c")
 
 [sub_resource type="Resource" id="Resource_j8jk8"]
 script = ExtResource("6_puufq")

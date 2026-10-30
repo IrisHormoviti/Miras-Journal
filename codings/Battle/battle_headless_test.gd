@@ -16,6 +16,20 @@ const BATTLE_SCENE := preload("res://codings/Battle/Battle.tscn")
 const ZAPPED := preload("res://database/States/Zapped.tres")
 const ICY_DRIZZLE := preload("res://database/Abilities/IcyDrizzle.tres")
 const TEST_DAMAGE := 5
+const AlwaysConditionScript = preload("res://codings/Battle/Steps/Conditions/always_condition.gd")
+const FlagConditionScript = preload("res://codings/Battle/Steps/Conditions/flag_condition.gd")
+const HealthConditionScript = preload("res://codings/Battle/Steps/Conditions/health_condition.gd")
+const NotConditionScript = preload("res://codings/Battle/Steps/Conditions/not_condition.gd")
+const AllConditionScript = preload("res://codings/Battle/Steps/Conditions/all_condition.gd")
+const AnyConditionScript = preload("res://codings/Battle/Steps/Conditions/any_condition.gd")
+const TurnConditionScript = preload("res://codings/Battle/Steps/Conditions/turn_condition.gd")
+const StateConditionScript = preload("res://codings/Battle/Steps/Conditions/state_condition.gd")
+const HasActorConditionScript = preload("res://codings/Battle/Steps/Conditions/has_actor_condition.gd")
+const ActorEqualsConditionScript = preload("res://codings/Battle/Steps/Conditions/actor_equals_condition.gd")
+const HitOutcomeConditionScript = preload("res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd")
+const GroupSizeConditionScript = preload("res://codings/Battle/Steps/Conditions/group_size_condition.gd")
+const GroupStateConditionScript = preload("res://codings/Battle/Steps/Conditions/group_state_condition.gd")
+const SummonedAlliesConditionScript = preload("res://codings/Battle/Steps/Conditions/summoned_allies_condition.gd")
 
 var battle: Battle
 var failed := false
@@ -61,6 +75,13 @@ func _ready() -> void:
 	await _test_state_pose()
 	_test_enemy_preview_setup()
 	_test_branch_outcomes()
+	_test_migrated_sequences_load()
+	_test_migrated_sequence_wiring()
+	await _test_stone_guardian_adapt()
+	await _test_asteria_followup()
+	await _test_new_step_modes()
+	await _test_battle_event_sequence()
+	await _test_conditions()
 
 	print("BATTLE_TEST_DONE failed=", failed)
 	get_tree().quit(1 if failed else 0)
@@ -573,42 +594,458 @@ func _test_branch_outcomes() -> void:
 	var ctx := ActionSequenceContext.new()
 	var branch := BranchStep.new()
 
-	branch.mode = BranchStep.Mode.HIT
+	if branch.condition == null or branch.condition.get_script() != HitOutcomeConditionScript:
+		_fail("A new branch was not preset with a hit outcome condition")
+
+	# A fresh branch comes preset with a hit-outcome condition that matches
+	# every roll, so it can be narrowed down from there.
+	for outcome in [HitOutcome.HIT, HitOutcome.CRIT, HitOutcome.MISS]:
+		ctx.roll = outcome
+
+		if not branch._matches(ctx):
+			_fail("Default branch did not match every hit outcome")
+
+	var hit := HitOutcomeConditionScript.new()
+	hit.outcomes = 3
+	branch.condition = hit
 	ctx.roll = HitOutcome.HIT
 
 	if not branch._matches(ctx):
-		_fail("Hit branch did not match a hit")
+		_fail("Hit condition did not match a hit")
 
 	ctx.roll = HitOutcome.CRIT
 
 	if not branch._matches(ctx):
-		_fail("Hit branch did not match a crit")
+		_fail("Hit condition did not match a crit")
 
 	ctx.roll = HitOutcome.MISS
 
 	if branch._matches(ctx):
-		_fail("Hit branch matched a miss")
+		_fail("Hit condition matched a miss")
 
-	branch.mode = BranchStep.Mode.CRIT
-	ctx.roll = HitOutcome.HIT
-
-	if branch._matches(ctx):
-		_fail("Crit branch matched a normal hit")
-
-	ctx.roll = HitOutcome.CRIT
-
-	if not branch._matches(ctx):
-		_fail("Crit branch did not match a crit")
-
-	branch.mode = BranchStep.Mode.MISS
+	var miss := HitOutcomeConditionScript.new()
+	miss.outcomes = 4
+	branch.condition = miss
 	ctx.roll = HitOutcome.CRIT
 
 	if branch._matches(ctx):
-		_fail("Miss branch matched a crit")
+		_fail("Miss condition matched a crit")
 
 	ctx.roll = HitOutcome.MISS
 
 	if not branch._matches(ctx):
-		_fail("Miss branch did not match a miss")
+		_fail("Miss condition did not match a miss")
 
 	print("BATTLE_TEST_BRANCH_OUTCOMES ok")
+
+
+const MIGRATED_SEQUENCES := [
+	"FirstBattleEntrance.tres",
+	"FirstBattleJumpSucc.tres",
+	"FirstBattleAura1.tres",
+	"FirstBattleAura2.tres",
+	"FirstBattleAura3.tres",
+	"FirstBattleVictory.tres",
+	"AlcineFollow1Victory.tres",
+	"AlcineFollow2Entrance.tres",
+	"AlcineFollow3.tres",
+	"ArenaGameOver.tres",
+	"StoneGuardianEntrance.tres",
+	"StoneGuardianLoop.tres",
+	"StoneGuardianAdapt.tres",
+	"StoneGuardianVictory.tres",
+	"AsteriaBossSummon.tres",
+	"AsteriaBossPhase.tres",
+	"AsteriaBossFollowup.tres",
+	"Nov2MiraDream.tres",
+]
+
+const MIGRATED_BATTLE_SEQUENCES := [
+	"res://database/BattleSeq/FirstBattle.tres",
+	"res://database/BattleSeq/AlcineFollow1.tres",
+	"res://database/BattleSeq/AlcineFollow2.tres",
+	"res://database/BattleSeq/AsteriaBoss.tres",
+	"res://database/BattleSeq/ColorTutorial.tres",
+	"res://database/BattleSeq/LazuliteHeartBoss.tres",
+	"res://database/BattleSeq/StoneGuardianBoss.tres",
+	"res://database/BattleSeq/ArenaBattles/Round1.tres",
+	"res://database/BattleSeq/ArenaBattles/Round2.tres",
+	"res://database/BattleSeq/ArenaBattles/Round3.tres",
+	"res://database/BattleSeq/ArenaBattles/Round4.tres",
+	"res://database/BattleSeq/ArenaBattles/Round5.tres",
+	"res://database/BattleSeq/ArenaBattles/Round6.tres",
+]
+
+
+func _test_migrated_sequences_load() -> void:
+	for file in MIGRATED_SEQUENCES:
+		var path: String = "res://database/Sequences/Action/" + str(file)
+		var sequence := load(path) as ActionSequence
+
+		if sequence == null:
+			_fail("Could not load migrated sequence " + file)
+			continue
+
+		if sequence.steps.is_empty():
+			_fail("Migrated sequence is empty: " + file)
+			continue
+
+		var walked := sequence.walk()
+
+		for step in walked:
+			if step == null:
+				_fail("Migrated sequence has a null step: " + file)
+				break
+
+		print("BATTLE_TEST_SEQUENCE ", file, " steps=", walked.size())
+
+
+func _test_migrated_sequence_wiring() -> void:
+	for path in MIGRATED_BATTLE_SEQUENCES:
+		var sequence := load(path) as BattleSequence
+
+		if sequence == null:
+			_fail("Could not load battle sequence " + path)
+			continue
+
+		if sequence.EntranceSequence != "" or sequence.VictorySequence != "" or sequence.DefeatSequence != "":
+			_fail("Battle sequence still uses a legacy named sequence: " + path)
+
+		for event in sequence.Events:
+			if event == null:
+				continue
+
+			if event.result == BattleEvent.RES.CALL_FUNCTION:
+				_fail("Battle event still calls a legacy function: " + path + " " + event.parameter1)
+
+			if event.result == BattleEvent.RES.SEQUENCE and event.sequence == null:
+				_fail("Battle event has no sequence: " + path)
+
+		print("BATTLE_TEST_WIRING ", path.get_file())
+
+	if (load("res://database/BattleSeq/FirstBattle.tres") as BattleSequence).entrance_sequence == null:
+		_fail("First battle has no entrance sequence")
+
+	if (load("res://database/BattleSeq/StoneGuardianBoss.tres") as BattleSequence).victory_sequence == null:
+		_fail("Stone Guardian has no victory sequence")
+
+	if (load("res://database/BattleSeq/ArenaBattles/Round1.tres") as BattleSequence).defeat_sequence == null:
+		_fail("Arena round has no defeat sequence")
+
+	var first_battle := load("res://database/BattleSeq/FirstBattle.tres") as BattleSequence
+
+	for event in first_battle.Events:
+		if event.result == BattleEvent.RES.FORCE_MOVE and event.resource is Ability:
+			if (event.resource as Ability).name == "JumpSucc" and (event.resource as Ability).action_sequence == null:
+				_fail("The scripted JumpSucc ability was not migrated to a sequence")
+
+
+func _test_stone_guardian_adapt() -> void:
+	var guardian_data: Actor = load("res://database/Enemies/StoneGuardian.tres").duplicate()
+	var guardian := await battle.add_to_troop(guardian_data)
+
+	if guardian == null:
+		_fail("Could not add the Stone Guardian for the sequence test")
+		return
+
+	var alcine := Party.Member1
+
+	if alcine == null:
+		_fail("The Stone Guardian sequence test needs Alcine in the party")
+		return
+
+	var drill: Ability = load("res://database/Abilities/Drill.tres")
+	var sequence := load("res://database/Sequences/Action/StoneGuardianAdapt.tres") as ActionSequence
+	var previous_current := battle.CurrentChar
+	var previous_turn_ind := battle.TurnInd
+	var previous_color := guardian.main_color
+
+	guardian.attack_multiplier = 1
+	guardian.magic_multiplier = 1
+	guardian.next_move = null
+	guardian.next_target = null
+	Event.remove_flag(&"Event/StoneGuardianFinisher")
+
+	await battle.run_battle_sequence(sequence, alcine, null, false)
+
+	print(
+		"BATTLE_TEST_GUARDIAN_ADAPT atk=", guardian.attack_multiplier,
+		" mag=", guardian.magic_multiplier,
+		" next=", guardian.next_move.name if guardian.next_move != null else "<none>",
+		" target=", guardian.next_target.first_name if guardian.next_target != null else "<none>",
+		" flag=", Event.check_flag(&"Event/StoneGuardianFinisher")
+	)
+
+	if not is_equal_approx(guardian.attack_multiplier, 2.0):
+		_fail("Stone Guardian sequence did not double the attack multiplier")
+
+	if not is_equal_approx(guardian.magic_multiplier, 2.0):
+		_fail("Stone Guardian sequence did not double the magic multiplier")
+
+	if guardian.next_move != drill:
+		_fail("Stone Guardian sequence did not queue Drill")
+
+	if guardian.next_target != alcine:
+		_fail("Stone Guardian sequence did not target Alcine")
+
+	if not Event.check_flag(&"Event/StoneGuardianFinisher"):
+		_fail("Stone Guardian sequence did not set the finisher flag")
+
+	if battle.CurrentChar != guardian:
+		_fail("Stone Guardian sequence did not make the Guardian current")
+
+	if battle.TurnInd != battle.TurnOrder.find(guardian) - 1:
+		_fail("Stone Guardian sequence did not force the Guardian's turn")
+
+	# Put the harness back the way it was.
+	battle.CurrentChar = previous_current
+	battle.act.CurrentChar = previous_current
+	battle.TurnInd = previous_turn_ind
+	guardian.main_color = previous_color
+	Event.remove_flag(&"Event/StoneGuardianFinisher")
+
+
+func _test_new_step_modes() -> void:
+	var caster := Party.Leader
+
+	if caster == null:
+		_fail("New step mode test needs a caster")
+		return
+
+	var hold := BattleControlStep.new()
+	hold.mode = BattleControlStep.Mode.HOLD_TURN
+	await hold.run(_test_context(caster))
+
+	if not battle.lock_turn or battle.lock_count != 1:
+		_fail("Hold turn step did not lock the turn")
+
+	var release := BattleControlStep.new()
+	release.mode = BattleControlStep.Mode.RELEASE_TURN
+	await release.run(_test_context(caster))
+
+	if battle.lock_turn or battle.lock_count != 0:
+		_fail("Release turn step did not unlock the turn")
+
+	var previous_current := battle.CurrentChar
+	var previous_act: Actor = battle.act.CurrentChar
+	var set_current := BattleFlowStep.new()
+	set_current.mode = BattleFlowStep.Mode.SET_CURRENT
+	set_current.actor = ActorRef.new(ActorRef.Mode.CASTER)
+	await set_current.run(_test_context(battle.Troop[0]))
+
+	if battle.CurrentChar != battle.Troop[0]:
+		_fail("Set current step did not change the battle's current actor")
+
+	battle.CurrentChar = previous_current
+	battle.act.CurrentChar = previous_act
+
+	var await_animation := ActorSpriteStep.new()
+	await_animation.mode = ActorSpriteStep.Mode.AWAIT_ANIMATION
+	await_animation.actor = ActorRef.new(ActorRef.Mode.CASTER)
+	await await_animation.run(_test_context(caster))
+
+	print("BATTLE_TEST_NEW_STEP_MODES ok")
+
+
+func _test_context(caster: Actor) -> ActionSequenceContext:
+	var ctx := ActionSequenceContext.new()
+	ctx.battle = battle
+	ctx.runner = battle.action_runner
+	ctx.caster = caster
+	ctx.target = battle.Troop[0] if not battle.Troop.is_empty() else caster
+	ctx.home_position = battle.initial
+	return ctx
+
+
+func _test_battle_event_sequence() -> void:
+	var flag := &"BattleTestEventSequence"
+	var event := BattleEvent.new()
+	event.result = BattleEvent.RES.SEQUENCE
+	event.hold_turn = true
+	event.sequence_caster = &"Mira"
+
+	var sequence := ActionSequence.new()
+	var wait := WaitStep.new()
+	wait.duration = 0.01
+	sequence.steps.append(wait)
+
+	var set_flag := EventStep.new()
+	set_flag.mode = EventStep.Mode.FLAG_SET
+	set_flag.flag = flag
+	set_flag.value = 1
+	sequence.steps.append(set_flag)
+
+	event.sequence = sequence
+	Event.remove_flag(flag)
+	await event.run()
+
+	print("BATTLE_TEST_EVENT_SEQUENCE flag=", Event.check_flag(flag))
+
+	if not Event.check_flag(flag):
+		_fail("Battle event did not run its sequence")
+
+	Event.remove_flag(flag)
+
+
+func _test_asteria_followup() -> void:
+	var asteria_resource: Actor = load("res://database/Enemies/AsteriaEnemy.tres")
+
+	if asteria_resource.followup_ability == null or asteria_resource.followup_ability.action_sequence == null:
+		_fail("Asteria's follow-up ability was not migrated to a sequence")
+
+	var asteria_data: Actor = asteria_resource.duplicate()
+	var asteria := await battle.add_to_troop(asteria_data)
+
+	if asteria == null:
+		_fail("Could not add Asteria for the follow-up sequence test")
+		return
+
+	# The preview party also contains Asteria, and get_actor() prefers the
+	# party copy, so move the party one aside for this codename lookup.
+	var party_asteria := Party.get_member(&"Asteria")
+	var saved_codename: StringName = party_asteria.codename if party_asteria != null else &""
+
+	if party_asteria != null:
+		party_asteria.codename = &"AsteriaPartyTest"
+
+	var sequence := load("res://database/Sequences/Action/AsteriaBossFollowup.tres") as ActionSequence
+
+	# The late phase branch only heals Asteria, so it can be checked exactly.
+	Event.add_flag(&"Event/AsteriaBoss", 4)
+	asteria.health = 50
+	asteria.max_hp = 130
+
+	await battle.run_battle_sequence(sequence, asteria, null, false)
+
+	print("BATTLE_TEST_ASTERIA_FOLLOWUP health=", asteria.health)
+
+	if party_asteria != null:
+		party_asteria.codename = saved_codename
+
+	if asteria.health != 65:
+		_fail("Asteria follow-up sequence did not heal her for 15")
+
+	Event.remove_flag(&"Event/AsteriaBoss")
+
+
+func _test_conditions() -> void:
+	var ctx := _test_context(Party.Leader)
+	var mira := Party.Leader
+	var target := battle.Troop[0]
+
+	var always = AlwaysConditionScript.new()
+
+	if not always.check(ctx):
+		_fail("Always condition did not pass")
+
+	Event.add_flag(&"BattleTestCondition", 2)
+	var flag = FlagConditionScript.new()
+	flag.expression = &"BattleTestCondition >= 2"
+
+	if not flag.check(ctx):
+		_fail("Flag condition did not evaluate its Event.f expression")
+
+	flag.expression = &"BattleTestCondition < 2"
+
+	if flag.check(ctx):
+		_fail("Flag condition ignored its Event.f expression")
+
+	Event.remove_flag(&"BattleTestCondition")
+
+	var health = HealthConditionScript.new()
+	health.actor = ActorRef.new(ActorRef.Mode.CASTER)
+	health.comparator = BattleCondition.Comparator.GT
+	health.value = 0
+
+	if not health.check(ctx):
+		_fail("Health condition did not pass for a living caster")
+
+	var negated = NotConditionScript.new()
+	negated.condition = health
+
+	if negated.check(ctx):
+		_fail("Not condition did not invert its child")
+
+	var all = AllConditionScript.new()
+	all.conditions.append(health)
+	all.conditions.append(negated)
+
+	if all.check(ctx):
+		_fail("All condition passed with a false child")
+
+	var any = AnyConditionScript.new()
+	any.conditions.append(negated)
+	any.conditions.append(health)
+
+	if not any.check(ctx):
+		_fail("Any condition did not pass with a true child")
+
+	var turn = TurnConditionScript.new()
+	turn.turn_min = 0
+	turn.turn_max = 999
+
+	if not turn.check(ctx):
+		_fail("Turn condition did not match a valid turn range")
+
+	var state = StateConditionScript.new()
+	state.actor = ActorRef.new(ActorRef.Mode.CASTER)
+	state.state = &"KnockedOut"
+	state.present = false
+
+	if not state.check(ctx):
+		_fail("State condition did not pass for a missing state")
+
+	var has_actor = HasActorConditionScript.new()
+	has_actor.codename = mira.codename
+
+	if not has_actor.check(ctx):
+		_fail("Has actor condition did not find the party leader")
+
+	var equals = ActorEqualsConditionScript.new()
+	equals.actor = ActorRef.new(ActorRef.Mode.CASTER)
+	equals.other = ActorRef.new(ActorRef.Mode.CASTER)
+
+	if not equals.check(ctx):
+		_fail("Actor equals condition did not match the same caster")
+
+	var hit = HitOutcomeConditionScript.new()
+	hit.outcomes = 1
+	ctx.roll = HitOutcome.HIT
+
+	if not hit.check(ctx):
+		_fail("Hit outcome condition did not match a hit")
+
+	hit.outcomes = 2
+
+	if hit.check(ctx):
+		_fail("Hit outcome condition matched the wrong outcome")
+
+	var group_size = GroupSizeConditionScript.new()
+	group_size.group = ActorGroup.Kind.TROOP
+	group_size.comparator = BattleCondition.Comparator.GE
+	group_size.value = 1
+
+	if not group_size.check(ctx):
+		_fail("Group size condition did not count the troop")
+
+	var group_state = GroupStateConditionScript.new()
+	group_state.group = ActorGroup.Kind.TROOP
+	group_state.state = &"KnockedOut"
+	group_state.present = false
+	group_state.group_match = GroupStateConditionScript.GroupMatch.ANY
+
+	if not group_state.check(ctx):
+		_fail("Group state condition did not pass for a troop without knocked out actors")
+
+	var summons = SummonedAlliesConditionScript.new()
+	summons.actor = ActorRef.new(ActorRef.Mode.CASTER)
+	summons.empty = false
+
+	if not summons.check(ctx):
+		_fail("Summoned allies condition did not pass for a populated summon list")
+
+	if target == null:
+		_fail("Condition test lost its target")
+		return
+
+	print("BATTLE_TEST_CONDITIONS ok")

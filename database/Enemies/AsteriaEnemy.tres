@@ -12,6 +12,7 @@
 [ext_resource type="Resource" uid="uid://bsdc68x2mth0w" path="res://database/Enemies/AsteriaSummonBird.tres" id="10_aktg6"]
 [ext_resource type="Resource" uid="uid://h2dsutkgob4w" path="res://database/Enemies/AsteriaSummonLion.tres" id="11_h8w5e"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="12_h8w5e"]
+[ext_resource type="Resource" path="res://database/Sequences/Action/AsteriaBossFollowup.tres" id="13_follow"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_5mg01"]
 resource_local_to_scene = true
@@ -23,7 +24,7 @@ filter_clip = true
 script = ExtResource("1_lcqvh")
 name = "Time Break"
 icon = SubResource("AtlasTexture_5mg01")
-legacy_action_sequence = &"AsteriaBossFollowup"
+action_sequence = ExtResource("13_follow")
 wheel_color = Color(0.6901961, 0.39607844, 0.6862745, 1)
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"
 

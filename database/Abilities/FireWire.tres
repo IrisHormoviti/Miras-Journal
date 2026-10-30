@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="10_aa7b7"]
 [ext_resource type="Texture2D" uid="uid://cj2ohe8qn3uph" path="res://art/Icons/Items.tres" id="11_frtgg"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="15_7meh1"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_8uryi"]
 resource_name = "Target"
@@ -144,9 +145,14 @@ hit_branch = false
 hit_steps = Array[ExtResource("2_iqb7j")]([SubResource("Resource_swyj0"), SubResource("Resource_6dyp1")])
 miss_steps = Array[ExtResource("2_iqb7j")]([SubResource("Resource_n30h2")])
 
+[sub_resource type="Resource" id="Resource_hit_d87km"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_d87km"]
 script = ExtResource("10_aa7b7")
 if_steps = Array[ExtResource("2_iqb7j")]([SubResource("Resource_yyai0")])
+condition = SubResource("Resource_hit_d87km")
 
 [sub_resource type="Resource" id="Resource_y6o2q"]
 script = ExtResource("6_vorho")

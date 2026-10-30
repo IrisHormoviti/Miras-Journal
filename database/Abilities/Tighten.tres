@@ -12,6 +12,7 @@
 [ext_resource type="Resource" path="res://database/States/Bound.tres" id="8_cwqgp"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="9_4vjrc"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="10_tlx6t"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_murx8"]
 resource_name = "Caster"
@@ -66,11 +67,15 @@ mode = 1
 script = ExtResource("9_4vjrc")
 target = SubResource("Resource_tlx6t")
 
+[sub_resource type="Resource" id="Resource_hit_6vpqa"]
+script = ExtResource("cond_hit")
+outcomes = 4
+
 [sub_resource type="Resource" id="Resource_6vpqa"]
 script = ExtResource("10_tlx6t")
-mode = 3
 if_steps = Array[ExtResource("2_he5q2")]([SubResource("Resource_shivi")])
 else_steps = Array[ExtResource("2_he5q2")]([SubResource("Resource_4vjrc")])
+condition = SubResource("Resource_hit_6vpqa")
 
 [sub_resource type="Resource" id="Resource_hktsn"]
 script = ExtResource("6_dfa5d")
