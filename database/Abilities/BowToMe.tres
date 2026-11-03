@@ -1,23 +1,24 @@
 [gd_resource type="Resource" script_class="Ability" format=3 uid="uid://b1xu46a1gjneu"]
 
-[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_0h2qo"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_wbq51"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_3syvb"]
-[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="2_fsy24"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_jruq6"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_pjnqo"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_ue808"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="6_gmjgh"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="7_4ycyb"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="8_rlsuv"]
-[ext_resource type="Resource" path="res://database/States/Confused.tres" id="9_sfeq2"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="10_gn8ep"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="11_mv6qy"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="12_1wrej"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_jo2ju"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
-
+[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_0h2qo"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_wbq51"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_3syvb"]
+[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_fsy24"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_jruq6"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_pjnqo"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_ue808"]
+[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="6_gmjgh"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="7_4ycyb"]
+[ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="8_rlsuv"]
+[ext_resource type="Resource" uid="uid://ufsrsyrcchaj" path="res://database/States/Confused.tres" id="9_sfeq2"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="10_gn8ep"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="11_mv6qy"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="12_1wrej"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_jo2ju"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="14_ue808"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="15_gmjgh"]
 [ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_wbq51"]
 resource_name = "Target"
@@ -64,6 +65,10 @@ target = SubResource("Resource_4ycyb")
 script = ExtResource("7_4ycyb")
 duration = 0.8
 
+[sub_resource type="Resource" id="Resource_hit_1wrej"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_gn8ep"]
 resource_name = "Target"
 script = ExtResource("3_jruq6")
@@ -75,14 +80,10 @@ actor = SubResource("Resource_gn8ep")
 state = ExtResource("9_sfeq2")
 wait = false
 
-[sub_resource type="Resource" id="Resource_hit_1wrej"]
-script = ExtResource("cond_hit")
-outcomes = 2
-
 [sub_resource type="Resource" id="Resource_1wrej"]
 script = ExtResource("10_gn8ep")
-if_steps = Array[ExtResource("2_3syvb")]([SubResource("Resource_mv6qy")])
 condition = SubResource("Resource_hit_1wrej")
+if_steps = Array[ExtResource("2_3syvb")]([SubResource("Resource_mv6qy")])
 
 [sub_resource type="Resource" id="Resource_jo2ju"]
 resource_name = "Target"
@@ -102,6 +103,27 @@ script = ExtResource("11_mv6qy")
 amount = 5.0
 duration = 0.1
 
+[sub_resource type="Resource" id="Resource_6y4wy"]
+script = ExtResource("11_mv6qy")
+
+[sub_resource type="Resource" id="Resource_iielh"]
+resource_name = "Target"
+script = ExtResource("3_jruq6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_l11uo"]
+script = ExtResource("14_ue808")
+actor = SubResource("Resource_iielh")
+
+[sub_resource type="Resource" id="Resource_3kyia"]
+resource_name = "Target"
+script = ExtResource("3_jruq6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_2sfy0"]
+script = ExtResource("15_gmjgh")
+target = SubResource("Resource_3kyia")
+
 [sub_resource type="Resource" id="Resource_vup6o"]
 resource_name = "medium"
 script = ExtResource("12_1wrej")
@@ -119,6 +141,8 @@ power = SubResource("Resource_vup6o")
 magic_mode = 2
 elemental = true
 hit_branch = false
+hit_steps = Array[ExtResource("2_3syvb")]([SubResource("Resource_6y4wy"), SubResource("Resource_l11uo")])
+miss_steps = Array[ExtResource("2_3syvb")]([SubResource("Resource_2sfy0")])
 
 [sub_resource type="Resource" id="Resource_lkay1"]
 script = ExtResource("7_4ycyb")

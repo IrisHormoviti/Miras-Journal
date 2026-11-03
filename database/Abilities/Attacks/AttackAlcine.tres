@@ -18,7 +18,7 @@
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="13_vesd8"]
 [ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="14_184ew"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_etlpd"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_p2oam"]
 resource_name = "Target"
@@ -152,6 +152,10 @@ miss_branch = true
 hit_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_sfioo"), SubResource("Resource_nhi0m"), SubResource("Resource_ss0uy"), SubResource("Resource_o67l7"), SubResource("Resource_8vt1k")])
 miss_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_pjqo1")])
 
+[sub_resource type="Resource" id="Resource_hit_kiycp"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_xbejl"]
 script = ExtResource("9_nvech")
 amount = 10.0
@@ -258,15 +262,11 @@ actor = SubResource("Resource_vmmoc")
 value = &"CRITICAL"
 color = SubResource("Resource_so5lj")
 
-[sub_resource type="Resource" id="Resource_hit_kiycp"]
-script = ExtResource("cond_hit")
-outcomes = 2
-
 [sub_resource type="Resource" id="Resource_kiycp"]
 script = ExtResource("15_etlpd")
+condition = SubResource("Resource_hit_kiycp")
 if_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_m0isd"), SubResource("Resource_gja57"), SubResource("Resource_2v3dr")])
 else_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_xbejl"), SubResource("Resource_6vbsy")])
-condition = SubResource("Resource_hit_kiycp")
 
 [sub_resource type="Resource" id="Resource_xey2b"]
 resource_name = "Target"

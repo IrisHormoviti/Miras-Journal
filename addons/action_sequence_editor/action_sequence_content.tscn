@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cal3rv5g515v2" path="res://addons/action_sequence_editor/step_list.gd" id="1_am4cq"]
 
-[sub_resource type="DPITexture" id="DPITexture_am4cq"]
+[sub_resource type="DPITexture" id="DPITexture_x5r8k"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"M4 12a1 1 0 0 0 1.555.832l6-4a1 1 0 0 0 0-1.664l-6-4A1 1 0 0 0 4 4z\"/></svg>
 "
 saturation = 2.0
@@ -12,7 +12,7 @@ Color(0.37254903, 1, 0.5921569, 1): Color(0.45, 0.95, 0.5, 1),
 Color(1, 0.8666667, 0.39607844, 1): Color(0.83, 0.78, 0.62, 1)
 }
 
-[sub_resource type="DPITexture" id="DPITexture_wfayj"]
+[sub_resource type="DPITexture" id="DPITexture_3bhnb"]
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#e0e0e0\" d=\"m7 1v6h-6v2h6v6h2v-6h6v-2h-6v-6z\"/></svg>
 "
 saturation = 2.0
@@ -74,14 +74,14 @@ visible = false
 layout_mode = 2
 tooltip_text = "Preview as Mira on Single dummy"
 text = "Preview"
-icon = SubResource("DPITexture_am4cq")
+icon = SubResource("DPITexture_x5r8k")
 
 [node name="AddButton" type="MenuButton" parent="Frame/Content/Header" unique_id=9191894]
 unique_name_in_owner = true
 layout_mode = 2
 tooltip_text = "Add a step"
 text = "Add Step"
-icon = SubResource("DPITexture_wfayj")
+icon = SubResource("DPITexture_3bhnb")
 
 [node name="StepList" type="VBoxContainer" parent="Frame/Content" unique_id=774814926]
 unique_name_in_owner = true

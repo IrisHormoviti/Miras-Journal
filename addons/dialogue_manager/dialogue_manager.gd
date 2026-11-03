@@ -95,7 +95,7 @@ var _rng: RandomNumberGenerator = RandomNumberGenerator.new()
 
 
 func _ready() -> void:
-	reseed_randomizer(hash(ProjectSettings.get_setting("application/config/name")))
+	reseed_randomizer(int(Time.get_unix_time_from_system()))
 
 	# Cache the known Node2D properties
 	_node_properties = ["Script Variables"]
@@ -350,6 +350,7 @@ func get_line(resource: DialogueResource, key: String, extra_game_states: Array)
 			data.id = key
 
 	# Set up a line object.
+	data = data.duplicate() # avoid circular reference
 	data.resource = resource
 	var line: DialogueLine = await create_dialogue_line(data, extra_game_states)
 
@@ -377,16 +378,17 @@ func get_line(resource: DialogueResource, key: String, extra_game_states: Array)
 
 		# If the next line is an end and we have an ID trail then see if it points to responses
 		var peeked_at_stack: bool = false
+		# The resource that next_line belongs to (which might be a different file if we peeked at the stack).
+		var next_line_resource: DialogueResource = resource
 		if next_line.next_id == DMConstants.ID_END and stack.size() > 0:
 			peeked_at_stack = true
-			var return_to_resource: DialogueResource = resource
 			var return_to_id: String = stack.front()
 			if "@" in return_to_id:
 				var bits: PackedStringArray = return_to_id.split("@")
 				if bits[0] != _get_resource_uid(resource):
-					return_to_resource = load("uid://" + bits[0])
+					next_line_resource = load("uid://" + bits[0])
 				return_to_id = bits[1]
-			next_line = return_to_resource.lines.get(return_to_id)
+			next_line = next_line_resource.lines.get(return_to_id)
 
 		# If the response line is marked as a cue then make sure to emit the passed_cue signal.
 		if line.next_id in resource.cues.values():
@@ -397,8 +399,8 @@ func get_line(resource: DialogueResource, key: String, extra_game_states: Array)
 			id_trail = "|" + _get_id_with_resource(resource, next_line.next_id_after) + id_trail
 
 		# If the next line is a cue then check where it points to see if that is a set of responses.
-		while [DMConstants.TYPE_CUE, DMConstants.TYPE_GOTO].has(next_line.type) and resource.lines.has(next_line.next_id):
-			next_line = resource.lines.get(next_line.next_id)
+		while [DMConstants.TYPE_CUE, DMConstants.TYPE_GOTO].has(next_line.type) and next_line_resource.lines.has(next_line.next_id):
+			next_line = next_line_resource.lines.get(next_line.next_id)
 
 		if next_line != null and next_line.type == DMConstants.TYPE_RESPONSE:
 			# If we peeked the stack and it goes directly to a response type then we've consumed the front
@@ -407,7 +409,7 @@ func get_line(resource: DialogueResource, key: String, extra_game_states: Array)
 				id_trail = "" if stack.size() <= 1 else "|" + "|".join(stack.slice(1))
 			# Note: For some reason C# has occasional issues with using the responses property directly
 			# so instead we use set and get here.
-			line.set(&"responses", await _get_responses(next_line.get(&"responses", []), resource, id_trail, extra_game_states))
+			line.set(&"responses", await _get_responses(next_line.get(&"responses", []), next_line_resource, id_trail, extra_game_states))
 
 	line.next_id = "|".join(stack) if line.next_id == DMConstants.ID_NULL else _get_id_with_resource(resource, line.next_id) + id_trail
 
@@ -560,6 +562,8 @@ func get_resolved_character(data: Dictionary, extra_game_states: Array = []) -> 
 		var value: Variant = await _resolve(replacement.expression.duplicate(true), extra_game_states)
 		var index: int = character.find(replacement.value_in_text)
 		if index > -1:
+			if value is Object and "_to_dialogue_string" in value:
+				value = value._to_dialogue_string()
 			character = character.substr(0, index) + str(value) + character.substr(index + replacement.value_in_text.length())
 
 	# Resolve random groups
@@ -831,8 +835,8 @@ func create_response(data: Dictionary, extra_game_states: Array) -> DialogueResp
 
 ## Register a state context. This is handled automatically by [DialogueStateContext] nodes.
 func register_state_context(alias: String, target: Node) -> void:
-	if _registered_contexts.has(alias):
-		push_warning(DMConstants.translate("\"{alias}\" ").format({ alias = alias }))
+	if _registered_contexts.has(alias) and DMSettings.get_setting(DMSettings.WARN_ABOUT_CONTEXT_ALIAS_ALREADY_REGISTERED, true):
+		push_warning(DMConstants.translate("\"{alias}\" will overwrite already registered context alias.").format({ alias = alias }))
 	_registered_contexts[alias] = target
 	_send_state_to_debugger()
 
@@ -1197,7 +1201,7 @@ func _set_state_value(property: String, value: Variant, extra_game_states: Array
 			if access_err is String and access_err != "":
 				show_error_for_missing_state_value(access_err as String, extra_game_states)
 				return
-			state.set(property, value)
+			_set_thing_property(state, property, value)
 			return
 
 	if property.to_snake_case() != property:
@@ -1677,11 +1681,12 @@ func _resolve(tokens: Array, extra_game_states: Array) -> Variant:
 						show_error_for_missing_state_value(access_err as String, extra_game_states)
 						value = null
 					else:
-						value = _apply_operation(token.value, lhs.value.get(lhs.property), tokens[i + 1].value)
 						if typeof(lhs.value) == TYPE_DICTIONARY:
+							value = _apply_operation(token.value, lhs.value.get(lhs.property), tokens[i + 1].value)
 							lhs.value[lhs.property] = value
 						else:
-							lhs.value.set(lhs.property, value)
+							value = _apply_operation(token.value, _get_thing_property(lhs.value, lhs.property), tokens[i + 1].value)
+							_set_thing_property(lhs.value, lhs.property, value)
 				&"dictionary":
 					value = _apply_operation(token.value, lhs.value.get(lhs.key, null), tokens[i + 1].value)
 					lhs.value[lhs.key] = value
@@ -1851,42 +1856,43 @@ func _thing_has_property(thing: Object, property: String, ignore_node_properties
 
 
 func _get_method_info_for(thing: Variant, method: String, args: Array) -> Dictionary:
-	# Use the thing instance id as a key for the caching dictionary.
+	# Resolved methods are cached by the thing's instance id and then by the method name and the types of the args.
 	var thing_instance_id: int = thing.get_instance_id()
-
 	if not _method_info_cache.has(thing_instance_id):
-		var thing_methods: Array[Dictionary] = []
-		if thing.get_script() and thing.get_script().resource_path.ends_with(".cs"):
-			thing_methods = _get_dotnet_dialogue_manager().GetMethodList(thing)
-		else:
-			thing_methods = thing.get_method_list()
+		_method_info_cache[thing_instance_id] = {}
+	var methods: Dictionary = _method_info_cache.get(thing_instance_id)
 
-		var method_overloads: Dictionary = {}
-		for m: Dictionary in thing_methods:
-			method_overloads[_get_method_info_key(m.name, m.args)] = m
-			if not method_overloads.has(m.name):
-				method_overloads[m.name] = m
-		_method_info_cache[thing_instance_id] = method_overloads
-
-	var methods: Dictionary = _method_info_cache.get(thing_instance_id, {})
 	var method_key: String = _get_method_info_key(method, args)
 	if methods.has(method_key):
 		return methods.get(method_key)
-	elif methods.has(method):
-		return methods.get(method)
+
+	var method_info: Dictionary = {}
+	if thing.get_script() and thing.get_script().resource_path.ends_with(".cs"):
+		# C# methods can be overloaded so let dotnet pick the overload that fits the args (including inherited types).
+		method_info = _get_dotnet_dialogue_manager().GetMethodInfo(thing, method, args)
 	else:
-		return _get_method_info_for(thing.new(), method, args)
+		for m: Dictionary in thing.get_method_list():
+			if m.name == method:
+				method_info = m
+				break
+
+	if method_info.is_empty() and thing is Script:
+		method_info = _get_method_info_for(thing.new(), method, args)
+
+	methods[method_key] = method_info
+	return method_info
 
 
+# Build a cache key from a method name and the types of the args that are being passed to it.
 func _get_method_info_key(method: String, args: Array) -> String:
 	return "%s:%s" % [method, ",".join(args.map(func (arg: Variant) -> String:
-		if typeof(arg) == TYPE_DICTIONARY:
-			if arg.has("class_name") and not arg.class_name.is_empty(): return arg.class_name
-			if arg.has("type") and typeof(arg.type) == TYPE_INT: return str(arg.type)
-
-			return str(TYPE_DICTIONARY)
-		else:
-			return str(typeof(arg))
+		if typeof(arg) == TYPE_OBJECT and is_instance_valid(arg):
+			var script: Script = arg.get_script()
+			if is_instance_valid(script):
+				var global_name: String = script.get_global_name()
+				return global_name if not global_name.is_empty() else script.resource_path
+			return arg.get_class()
+		return str(typeof(arg))
 	))]
 
 
@@ -1965,11 +1971,34 @@ func _resolve_thing_property(thing: Object, property: String) -> Variant:
 		show_error_for_missing_state_value(access_err as String, [])
 		return null
 
-	if thing.get_script() and thing.get_script().resource_path.ends_with(".cs"):
-		# If we get this far then the property might be a C# constant.
+	return _get_thing_property(thing, property)
+
+
+# Get a property value from a thing. C# things (including classes referenced by name) may have constants or static members
+# that Godot doesn't know about so those go via the dotnet bridge.
+func _get_thing_property(thing: Object, property: String) -> Variant:
+	if _is_dotnet_thing(thing) and _get_dotnet_dialogue_manager().ThingHasConstant(thing, property):
 		return _get_dotnet_dialogue_manager().ResolveThingConstant(thing, property)
 
 	return thing.get(property)
+
+
+# Set a property value on a thing. C# things (including classes referenced by name) may have static members
+# that Godot doesn't know about so those go via the dotnet bridge.
+func _set_thing_property(thing: Object, property: String, value: Variant) -> void:
+	if _is_dotnet_thing(thing) and _get_dotnet_dialogue_manager().SetThingConstant(thing, property, value):
+		return
+
+	thing.set(property, value)
+
+
+# Check if a thing is a C# script or an instance of one.
+func _is_dotnet_thing(thing: Variant) -> bool:
+	if thing is Script:
+		return thing.resource_path.ends_with(".cs")
+	elif is_instance_valid(thing) and thing.get_script() != null:
+		return thing.get_script().resource_path.ends_with(".cs")
+	return false
 
 
 func _get_resource_uid(resource: DialogueResource) -> String:

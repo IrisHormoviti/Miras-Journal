@@ -19,7 +19,7 @@
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="15_4y07n"]
 [ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="16_rihnb"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="17_yvppu"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_o73er"]
 resource_name = "Target"
@@ -170,6 +170,10 @@ miss_branch = true
 hit_steps = Array[ExtResource("2_tc72j")]([SubResource("Resource_25ow6"), SubResource("Resource_ip1ce"), SubResource("Resource_ifesh"), SubResource("Resource_nsw6u")])
 miss_steps = Array[ExtResource("2_tc72j")]([SubResource("Resource_cbvjl")])
 
+[sub_resource type="Resource" id="Resource_hit_ybng2"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_hbrmi"]
 script = ExtResource("14_h18jo")
 duration = 0.5
@@ -295,14 +299,10 @@ miss_steps = Array[ExtResource("2_tc72j")]([SubResource("Resource_d4iyb")])
 script = ExtResource("14_h18jo")
 duration = 0.7
 
-[sub_resource type="Resource" id="Resource_hit_ybng2"]
-script = ExtResource("cond_hit")
-outcomes = 2
-
 [sub_resource type="Resource" id="Resource_ybng2"]
 script = ExtResource("17_yvppu")
-if_steps = Array[ExtResource("2_tc72j")]([SubResource("Resource_hbrmi"), SubResource("Resource_nxjrx"), SubResource("Resource_ic6if"), SubResource("Resource_f0eaw"), SubResource("Resource_gccer"), SubResource("Resource_8q6bi"), SubResource("Resource_dgjvm"), SubResource("Resource_3umtb"), SubResource("Resource_dc41j"), SubResource("Resource_cikeg"), SubResource("Resource_0enq1")])
 condition = SubResource("Resource_hit_ybng2")
+if_steps = Array[ExtResource("2_tc72j")]([SubResource("Resource_hbrmi"), SubResource("Resource_nxjrx"), SubResource("Resource_ic6if"), SubResource("Resource_f0eaw"), SubResource("Resource_gccer"), SubResource("Resource_8q6bi"), SubResource("Resource_dgjvm"), SubResource("Resource_3umtb"), SubResource("Resource_dc41j"), SubResource("Resource_cikeg"), SubResource("Resource_0enq1")])
 
 [sub_resource type="Resource" id="Resource_3vgk6"]
 script = ExtResource("14_h18jo")

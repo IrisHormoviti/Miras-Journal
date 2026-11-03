@@ -84,15 +84,15 @@ script = ExtResource("9_nlfpl")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ig8e"]
 size = Vector2(41, 14)
 
-[sub_resource type="Resource" id="Resource_sk1io"]
+[sub_resource type="Resource" id="Resource_n1bc5"]
 script = ExtResource("9_nlfpl")
 way = 2
 
-[sub_resource type="Resource" id="Resource_c15y1"]
+[sub_resource type="Resource" id="Resource_7edst"]
 script = ExtResource("9_nlfpl")
 way = 2
 
-[sub_resource type="Resource" id="Resource_oppqm"]
+[sub_resource type="Resource" id="Resource_4a3rh"]
 script = ExtResource("9_nlfpl")
 way = 2
 
@@ -121,10 +121,10 @@ fill_to = Vector2(0.0769231, 0.0384615)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6we5s"]
 size = Vector2(2, 19)
 
-[sub_resource type="Resource" id="Resource_j1fvn"]
+[sub_resource type="Resource" id="Resource_sk1io"]
 script = ExtResource("9_nlfpl")
 
-[sub_resource type="Resource" id="Resource_sdewa"]
+[sub_resource type="Resource" id="Resource_c15y1"]
 script = ExtResource("9_nlfpl")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_u5udm"]
@@ -625,7 +625,7 @@ texture_filter = 1
 metadata/_edit_group_ = true
 
 [node name="AlcineExit" parent="Events/ExitScene" unique_id=344934070 instance=ExtResource("16_s1pqb")]
-facing = SubResource("Resource_sk1io")
+facing = SubResource("Resource_n1bc5")
 dont_use_collision = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/AlcineExit" unique_id=43704205]
@@ -634,7 +634,7 @@ sprite_frames = ExtResource("24_4lmea")
 animation = &"IdleDown"
 
 [node name="AsteriaExit" parent="Events/ExitScene" unique_id=2145210878 instance=ExtResource("16_s1pqb")]
-facing = SubResource("Resource_c15y1")
+facing = SubResource("Resource_7edst")
 dont_use_collision = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/AsteriaExit" unique_id=1668565077]
@@ -643,7 +643,7 @@ sprite_frames = ExtResource("23_taf6h")
 animation = &"IdleDown"
 
 [node name="DazeExit" parent="Events/ExitScene" unique_id=782771303 instance=ExtResource("16_s1pqb")]
-facing = SubResource("Resource_oppqm")
+facing = SubResource("Resource_4a3rh")
 dont_use_collision = true
 
 [node name="Sprite" type="AnimatedSprite2D" parent="Events/ExitScene/DazeExit" unique_id=829220786]
@@ -938,7 +938,7 @@ flag = "Pyrson/LampInMirasRoom"
 
 [node name="RoomMira" parent="HomeBuilding-MyRoom" unique_id=1542336393 instance=ExtResource("16_s1pqb")]
 position = Vector2(-98, 368)
-facing = SubResource("Resource_j1fvn")
+facing = SubResource("Resource_sk1io")
 dont_use_collision = true
 no_shadow = true
 
@@ -997,7 +997,7 @@ tile_set = ExtResource("27_u6p7b")
 [node name="Linde" parent="LindeHouse" unique_id=41972483 instance=ExtResource("16_s1pqb")]
 z_index = 0
 position = Vector2(-175, 555)
-facing = SubResource("Resource_sdewa")
+facing = SubResource("Resource_c15y1")
 
 [node name="TalkPrompt" parent="LindeHouse/Linde" unique_id=2045856511 instance=ExtResource("9_w0u03")]
 position = Vector2(-1, -3)

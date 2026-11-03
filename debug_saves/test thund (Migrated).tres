@@ -10,14 +10,16 @@ room_name = "Shard gardens"
 party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray"]),
-"aura": 9,
 "CantAttack": false,
-"cant_die": false,
-"cant_dodge": false,
-"clutch_dmg": false,
 "ComplimentaryList": Dictionary[String, int]({
 "FluidBlast": 1
 }),
+"WeaponPower": 14,
+"aura": 9,
+"cant_die": false,
+"cant_dodge": false,
+"clutch_dmg": false,
+"codename": &"Alcine",
 "controllable": true,
 "first_name": "Pluey",
 "health": 45,
@@ -28,17 +30,17 @@ members = Array[Dictionary]([{
 "ov": "",
 "skill_level": 2,
 "skill_points": 65,
-"weapon": "Arms?",
-"WeaponPower": 14,
-"codename": &"Alcine"
+"weapon": "Arms?"
 }, {
 "AbilitiesList": Array[String](["PhantomGuard", "Tighten", "RedShift"]),
-"aura": 16,
 "CantAttack": false,
+"ComplimentaryList": Dictionary[String, int]({}),
+"WeaponPower": 16,
+"aura": 16,
 "cant_die": false,
 "cant_dodge": false,
 "clutch_dmg": false,
-"ComplimentaryList": Dictionary[String, int]({}),
+"codename": &"Asteria",
 "controllable": true,
 "first_name": "Asteria",
 "health": 25,
@@ -49,20 +51,20 @@ members = Array[Dictionary]([{
 "ov": "",
 "skill_level": 7,
 "skill_points": 39,
-"weapon": "Possessed Scarf",
-"WeaponPower": 16,
-"codename": &"Asteria"
+"weapon": "Possessed Scarf"
 }, {
 "AbilitiesList": Array[String](["Guard", "Attention", "StaticSaber"]),
-"aura": 5,
 "CantAttack": false,
-"cant_die": false,
-"cant_dodge": false,
-"clutch_dmg": false,
 "ComplimentaryList": Dictionary[String, int]({
 "FluidBlast": 1,
 "Thunderstorm": 1
 }),
+"WeaponPower": 30,
+"aura": 5,
+"cant_die": false,
+"cant_dodge": false,
+"clutch_dmg": false,
+"codename": &"Daze",
 "controllable": true,
 "first_name": "Daze",
 "health": 124,
@@ -73,17 +75,17 @@ members = Array[Dictionary]([{
 "ov": "",
 "skill_level": 19,
 "skill_points": 1,
-"weapon": "Gold-trimmed Katana",
-"WeaponPower": 30,
-"codename": &"Daze"
+"weapon": "Gold-trimmed Katana"
 }, {
 "AbilitiesList": Array[String]([]),
-"aura": 90,
 "CantAttack": false,
+"ComplimentaryList": Dictionary[String, int]({}),
+"WeaponPower": 24,
+"aura": 90,
 "cant_die": false,
 "cant_dodge": false,
 "clutch_dmg": false,
-"ComplimentaryList": Dictionary[String, int]({}),
+"codename": &"Erinn",
 "controllable": false,
 "first_name": "Erinn",
 "health": 85,
@@ -94,19 +96,19 @@ members = Array[Dictionary]([{
 "ov": "res://art/OV/Erinn/ErinnOV.tres",
 "skill_level": 1,
 "skill_points": 0,
-"weapon": "",
-"WeaponPower": 24,
-"codename": &"Erinn"
+"weapon": ""
 }, {
 "AbilitiesList": Array[String](["Guard", "FlameSpark", "HeatWave", "Preparations", "PitchIn"]),
-"aura": 5,
 "CantAttack": false,
-"cant_die": false,
-"cant_dodge": false,
-"clutch_dmg": false,
 "ComplimentaryList": Dictionary[String, int]({
 "FluidBlast": 1
 }),
+"WeaponPower": 15,
+"aura": 5,
+"cant_die": false,
+"cant_dodge": false,
+"clutch_dmg": false,
+"codename": &"Mira",
 "controllable": true,
 "first_name": "Mira",
 "health": 33,
@@ -117,13 +119,11 @@ members = Array[Dictionary]([{
 "ov": "Bag",
 "skill_level": 4,
 "skill_points": 12,
-"weapon": "Lightweight Axe",
-"WeaponPower": 15,
-"codename": &"Mira"
+"weapon": "Lightweight Axe"
 }])
 player_position = Vector2(564, 900)
 complimentaries = Array[String](["FluidBlast", "Thunderstorm"])
-defeated_enemies = ["EnemySG1", "EnemySG2"]
+defeated_enemies = Array[String](["EnemySG1", "EnemySG2"])
 start_time = 1773014079.152903
 saved_time = 1773062617.799657
 play_time = 3406.0
@@ -132,42 +132,42 @@ diary = Dictionary[int, PackedStringArray]({
 5: PackedStringArray("boo", "bee")
 })
 flags = Dictionary[StringName, int]({
-	&"Amberelm/Tripwire/EvStoneGuardianCheckBody": 1,
-	&"Event/AlcineFollow": 4,
-	&"Event/AlcineIsTheLeaderReal": 2,
-	&"Event/AsteriaBoss": 5,
-	&"Event/BeatStoneGuardian": 1,
-	&"Event/DazeQuestions": 0,
-	&"Event/FirstBattle": 3,
-	&"Event/Nov2TownHall": 1,
-	&"Event/PyrsonHome": 1,
-	&"Event/StoneGuardianFinisher": 1,
-	&"Event/TavernTheory": 1,
-	&"Event/WLVoidMira": 1,
-	&"Meta/Started": 1,
-	&"Meta/Veinet/Disable": 1,
-	&"ShardGardens/Item/LifeLave2": 1,
-	&"TempleWoods/Breakable/BreakablePurpleOre0": 1,
-	&"TempleWoods/Breakable/BreakablePurpleOre1": 1,
-	&"TempleWoods/Breakable/BreakableTWCyan0": 1,
-	&"TempleWoods/Breakable/BreakableVines0": 1,
-	&"TempleWoods/Breakable/BreakableVines1": 1,
-	&"TempleWoods/Item/LifeLave1": 1,
-	&"TempleWoods/LookedAtSkeleton": 1,
-	&"TempleWoods/LookedAtStatue": 1,
-	&"TempleWoods/LookedAtTempleSymbol": 3,
-	&"TempleWoods/Tripwire/EvAmbWoodsBridge": 1,
-	&"TempleWoods/Tripwire/EvFirstBattle": 1,
-	&"VeinPoint/OldCamp": 1,
-	&"WitheredLeaves/Bunker1Open": 1,
-	&"WitheredLeaves/Tripwire/EvDazeEnemy1": 1,
-	&"WitheredLeaves/Tripwire/EvDazeEnemy2": 1,
-	&"WitheredLeaves/Tripwire/EvDazeEnemy4": 1,
-	&"WitheredLeaves/Tripwire/EvLostSpiritRed": 1,
-	&"WitheredLeaves/Tripwire/EvMetalicGate": 1,
-	&"WitheredLeaves/WLDoor1a": 1,
-	&"WitheredLeaves/WLDoor1b": 1,
-	&"WitheredLeaves/WLLeftSideOpen": 1,
-	&"day": 3,
+&"Amberelm/Tripwire/EvStoneGuardianCheckBody": 1,
+&"Event/AlcineFollow": 4,
+&"Event/AlcineIsTheLeaderReal": 2,
+&"Event/AsteriaBoss": 5,
+&"Event/BeatStoneGuardian": 1,
+&"Event/DazeQuestions": 0,
+&"Event/FirstBattle": 3,
+&"Event/Nov2TownHall": 1,
+&"Event/PyrsonHome": 1,
+&"Event/StoneGuardianFinisher": 1,
+&"Event/TavernTheory": 1,
+&"Event/WLVoidMira": 1,
+&"Meta/Started": 1,
+&"Meta/Veinet/Disable": 1,
+&"ShardGardens/Item/LifeLave2": 1,
+&"TempleWoods/Breakable/BreakablePurpleOre0": 1,
+&"TempleWoods/Breakable/BreakablePurpleOre1": 1,
+&"TempleWoods/Breakable/BreakableTWCyan0": 1,
+&"TempleWoods/Breakable/BreakableVines0": 1,
+&"TempleWoods/Breakable/BreakableVines1": 1,
+&"TempleWoods/Item/LifeLave1": 1,
+&"TempleWoods/LookedAtSkeleton": 1,
+&"TempleWoods/LookedAtStatue": 1,
+&"TempleWoods/LookedAtTempleSymbol": 3,
+&"TempleWoods/Tripwire/EvAmbWoodsBridge": 1,
+&"TempleWoods/Tripwire/EvFirstBattle": 1,
+&"VeinPoint/OldCamp": 1,
+&"WitheredLeaves/Bunker1Open": 1,
+&"WitheredLeaves/Tripwire/EvDazeEnemy1": 1,
+&"WitheredLeaves/Tripwire/EvDazeEnemy2": 1,
+&"WitheredLeaves/Tripwire/EvDazeEnemy4": 1,
+&"WitheredLeaves/Tripwire/EvLostSpiritRed": 1,
+&"WitheredLeaves/Tripwire/EvMetalicGate": 1,
+&"WitheredLeaves/WLDoor1a": 1,
+&"WitheredLeaves/WLDoor1b": 1,
+&"WitheredLeaves/WLLeftSideOpen": 1,
+&"day": 3
 })
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "LifeLave:Con", "LifeLave:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])

@@ -15,7 +15,7 @@
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="10_xmy5d"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="11_bdjt2"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="12_6dcoy"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_htby5"]
 resource_name = "Target"
@@ -58,6 +58,10 @@ effect_name = &"Needle"
 target = SubResource("Resource_ent8h")
 offset = Vector2(-15, -15)
 flip_on_player_use = true
+
+[sub_resource type="Resource" id="Resource_hit_jtaly"]
+script = ExtResource("cond_hit")
+outcomes = 4
 
 [sub_resource type="Resource" id="Resource_dq88d"]
 script = ExtResource("7_ent8h")
@@ -118,15 +122,11 @@ mode = 1
 script = ExtResource("11_bdjt2")
 target = SubResource("Resource_o6ug2")
 
-[sub_resource type="Resource" id="Resource_hit_jtaly"]
-script = ExtResource("cond_hit")
-outcomes = 4
-
 [sub_resource type="Resource" id="Resource_jtaly"]
 script = ExtResource("12_6dcoy")
+condition = SubResource("Resource_hit_jtaly")
 if_steps = Array[ExtResource("2_ymp11")]([SubResource("Resource_jovuo")])
 else_steps = Array[ExtResource("2_ymp11")]([SubResource("Resource_dq88d"), SubResource("Resource_xmy5d"), SubResource("Resource_mbb0t")])
-condition = SubResource("Resource_hit_jtaly")
 
 [sub_resource type="Resource" id="Resource_q0w1d"]
 script = ExtResource("7_ent8h")

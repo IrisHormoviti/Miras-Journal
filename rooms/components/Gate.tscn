@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://dl3vgpb08inx0" path="res://codings/Components/gate.gd" id="1_gate1"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_gate1"]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_r4m35"]
 size = Vector2(55, 21)
 
 [node name="Gate" type="StaticBody2D" unique_id=1000000001]
@@ -11,4 +11,4 @@ metadata/_custom_type_script = "uid://dl3vgpb08inx0"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1000000002]
 position = Vector2(-1, 0)
-shape = SubResource("RectangleShape2D_gate1")
+shape = SubResource("RectangleShape2D_r4m35")

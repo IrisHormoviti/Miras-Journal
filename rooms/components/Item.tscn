@@ -115,7 +115,7 @@ light_mask = 0
 texture_filter = 1
 sprite_frames = SubResource("SpriteFrames_t6ikl")
 autoplay = "default"
-frame = 2
+frame = 6
 offset = Vector2(0.5, 0.5)
 
 [node name="Interactable" parent="." unique_id=1703852966 instance=ExtResource("3_uqxwf")]

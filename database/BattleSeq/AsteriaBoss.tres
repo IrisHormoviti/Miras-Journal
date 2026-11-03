@@ -15,9 +15,9 @@ after_turn = 3
 actor = &"Asteria"
 low_hp = 50
 result = 6
+hold_turn = true
 sequence = ExtResource("6_summon")
 sequence_caster = &"Asteria"
-hold_turn = true
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_bg0et"]
@@ -26,10 +26,10 @@ repeatable = true
 actor = &"Asteria"
 low_hp = 15
 result = 6
-sequence = ExtResource("7_phase")
-sequence_caster = &"Asteria"
 hold_turn = true
 add_flag = false
+sequence = ExtResource("7_phase")
+sequence_caster = &"Asteria"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [resource]

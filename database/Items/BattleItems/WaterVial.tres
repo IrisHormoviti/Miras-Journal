@@ -1,21 +1,23 @@
 [gd_resource type="Resource" script_class="ItemData" format=3 uid="uid://y47pobp1y18b"]
 
-[ext_resource type="Script" path="res://codings/Classes/ability.gd" id="1_2qys7"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_hu8k2"]
-[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="2_dhttc"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_o7ate"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_8hoj2"]
-[ext_resource type="Script" path="res://codings/Classes/item_data.gd" id="3_r3ic8"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_calgj"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_2pm2l"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_yqqny"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="7_wjklu"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="8_xl588"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="9_5oq57"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="10_62y4n"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="11_1ydp2"]
-[ext_resource type="Resource" path="res://database/States/Soaked.tres" id="12_yqvia"]
-[ext_resource type="Texture2D" path="res://art/Icons/Items.tres" id="13_wp6bi"]
+[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_2qys7"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_hu8k2"]
+[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="2_dhttc"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_o7ate"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_8hoj2"]
+[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="3_r3ic8"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_calgj"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_2pm2l"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_yqqny"]
+[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="7_wjklu"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="8_xl588"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="9_5oq57"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_8hoj2"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="10_62y4n"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_calgj"]
+[ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="11_1ydp2"]
+[ext_resource type="Resource" uid="uid://c5vyc5fu4kgon" path="res://database/States/Soaked.tres" id="12_yqvia"]
+[ext_resource type="Texture2D" uid="uid://cj2ohe8qn3uph" path="res://art/Icons/Items.tres" id="13_wp6bi"]
 
 [sub_resource type="Resource" id="Resource_hu8k2"]
 resource_name = "Target"
@@ -74,8 +76,29 @@ target = SubResource("Resource_62y4n")
 [sub_resource type="Resource" id="Resource_yqvia"]
 script = ExtResource("8_xl588")
 
+[sub_resource type="Resource" id="Resource_lqkux"]
+script = ExtResource("8_xl588")
+
+[sub_resource type="Resource" id="Resource_uuogi"]
+resource_name = "Target"
+script = ExtResource("3_8hoj2")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_pwsgy"]
+script = ExtResource("9_8hoj2")
+actor = SubResource("Resource_uuogi")
+
+[sub_resource type="Resource" id="Resource_icg0q"]
+resource_name = "Target"
+script = ExtResource("3_8hoj2")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_u54qt"]
+script = ExtResource("10_calgj")
+target = SubResource("Resource_icg0q")
+
 [sub_resource type="Resource" id="Resource_wp6bi"]
-resource_name = "weak (0.8x to 1.2x)"
+resource_name = "weak"
 script = ExtResource("9_5oq57")
 damage_scale = 0
 variance = true
@@ -93,6 +116,8 @@ magic_mode = 1
 ignore_stats = true
 elemental = true
 hit_branch = false
+hit_steps = Array[ExtResource("2_o7ate")]([SubResource("Resource_lqkux"), SubResource("Resource_pwsgy")])
+miss_steps = Array[ExtResource("2_o7ate")]([SubResource("Resource_u54qt")])
 
 [sub_resource type="Resource" id="Resource_hfye5"]
 resource_name = "Target"

@@ -18,9 +18,9 @@ after_turn = 5
 actor = &"Mira"
 low_hp = 60
 result = 6
-sequence = ExtResource("8_vict")
 hold_turn = true
 add_flag = false
+sequence = ExtResource("8_vict")
 
 [sub_resource type="Resource" id="Resource_cbbvb"]
 script = ExtResource("2_yeq0t")

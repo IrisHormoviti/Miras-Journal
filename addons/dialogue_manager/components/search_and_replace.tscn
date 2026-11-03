@@ -6,7 +6,7 @@
 _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\"><path fill=\"#ff5d5d\" d=\"M2 1v8.586l1.293-1.293a1 1 0 0 1 1.414 0L7 10.587l2.293-2.293a1 1 0 0 1 1.414 0L13 10.586l1-1V6H9V1H2zm8 0v4h4zm-6 9.414-2 2V15h12v-2.586l-.293.293a1 1 0 0 1-1.414 0L10 10.414l-2.293 2.293a1 1 0 0 1-1.414 0L4 10.414z\"/></svg>
 "
 
-[node name="SearchAndReplace" type="VBoxContainer" unique_id=1022780796]
+[node name="SearchAndReplace" type="VBoxContainer" unique_id=1840067012]
 visible = false
 anchors_preset = 10
 anchor_right = 1.0
@@ -15,64 +15,64 @@ grow_horizontal = 2
 size_flags_horizontal = 3
 script = ExtResource("1_8oj1f")
 
-[node name="Search" type="HBoxContainer" parent="." unique_id=1707526166]
+[node name="Search" type="HBoxContainer" parent="." unique_id=522259912]
 layout_mode = 2
 
-[node name="Input" type="LineEdit" parent="Search" unique_id=2008297323]
+[node name="Input" type="LineEdit" parent="Search" unique_id=277166319]
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Text to search for"
 metadata/_edit_use_custom_anchors = true
 
-[node name="MatchCaseCheckBox" type="CheckBox" parent="Search" unique_id=684964513]
+[node name="MatchCaseCheckBox" type="CheckBox" parent="Search" unique_id=1824642943]
 layout_mode = 2
 text = "Match case"
 
-[node name="VSeparator" type="VSeparator" parent="Search" unique_id=264439212]
+[node name="VSeparator" type="VSeparator" parent="Search" unique_id=885421113]
 layout_mode = 2
 
-[node name="PreviousButton" type="Button" parent="Search" unique_id=1648645737]
+[node name="PreviousButton" type="Button" parent="Search" unique_id=246252126]
 layout_mode = 2
 tooltip_text = "Previous"
 icon = SubResource("DPITexture_brc5y")
 flat = true
 
-[node name="ResultLabel" type="Label" parent="Search" unique_id=1190346044]
+[node name="ResultLabel" type="Label" parent="Search" unique_id=1435400083]
 layout_mode = 2
 text = "0 of 0"
 
-[node name="NextButton" type="Button" parent="Search" unique_id=1207525474]
+[node name="NextButton" type="Button" parent="Search" unique_id=1342263383]
 layout_mode = 2
 tooltip_text = "Next"
 icon = SubResource("DPITexture_brc5y")
 flat = true
 
-[node name="VSeparator2" type="VSeparator" parent="Search" unique_id=1859309626]
+[node name="VSeparator2" type="VSeparator" parent="Search" unique_id=266128535]
 layout_mode = 2
 
-[node name="ReplaceCheckButton" type="CheckButton" parent="Search" unique_id=1781438670]
+[node name="ReplaceCheckButton" type="CheckButton" parent="Search" unique_id=903825460]
 layout_mode = 2
 text = "Replace"
 
-[node name="Replace" type="HBoxContainer" parent="." unique_id=47153610]
+[node name="Replace" type="HBoxContainer" parent="." unique_id=1225288876]
 visible = false
 layout_mode = 2
 
-[node name="ReplaceLabel" type="Label" parent="Replace" unique_id=1921509963]
+[node name="ReplaceLabel" type="Label" parent="Replace" unique_id=1418209565]
 layout_mode = 2
 text = "Replace with:"
 
-[node name="Input" type="LineEdit" parent="Replace" unique_id=1824883338]
+[node name="Input" type="LineEdit" parent="Replace" unique_id=1222773668]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="ReplaceButton" type="Button" parent="Replace" unique_id=1674687110]
+[node name="ReplaceButton" type="Button" parent="Replace" unique_id=505597221]
 layout_mode = 2
 disabled = true
 text = "Replace"
 flat = true
 
-[node name="ReplaceAllButton" type="Button" parent="Replace" unique_id=5878668]
+[node name="ReplaceAllButton" type="Button" parent="Replace" unique_id=187744460]
 layout_mode = 2
 disabled = true
 text = "Replace all"

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://cr1tt12dh5ecr" path="res://addons/dialogue_manager/components/update_button.gd" id="1_d2tpb"]
 [ext_resource type="PackedScene" uid="uid://qdxrxv3c3hxk" path="res://addons/dialogue_manager/components/download_update_panel.tscn" id="2_iwm7r"]
 
-[node name="UpdateButton" type="Button" unique_id=1382297025]
+[node name="UpdateButton" type="Button" unique_id=424405675]
 visible = false
 offset_right = 8.0
 offset_bottom = 8.0
@@ -14,23 +14,23 @@ text = "v2.9.0 available"
 flat = true
 script = ExtResource("1_d2tpb")
 
-[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=2028017863]
+[node name="HTTPRequest" type="HTTPRequest" parent="." unique_id=350410757]
 
-[node name="DownloadDialog" type="AcceptDialog" parent="." unique_id=1810674701]
+[node name="DownloadDialog" type="AcceptDialog" parent="." unique_id=2062323935]
 title = "Download update"
 size = Vector2i(400, 300)
 unresizable = true
 min_size = Vector2i(300, 250)
 ok_button_text = "Close"
 
-[node name="DownloadUpdatePanel" parent="DownloadDialog" unique_id=531350884 instance=ExtResource("2_iwm7r")]
+[node name="DownloadUpdatePanel" parent="DownloadDialog" unique_id=447732378 instance=ExtResource("2_iwm7r")]
 
-[node name="UpdateFailedDialog" type="AcceptDialog" parent="." unique_id=204966590]
+[node name="UpdateFailedDialog" type="AcceptDialog" parent="." unique_id=468832205]
 dialog_text = "You have been updated to version 2.4.3"
 
-[node name="NeedsReloadDialog" type="ConfirmationDialog" parent="." unique_id=1380070571]
+[node name="NeedsReloadDialog" type="ConfirmationDialog" parent="." unique_id=1606700223]
 
-[node name="Timer" type="Timer" parent="." unique_id=1573715165]
+[node name="Timer" type="Timer" parent="." unique_id=1240652653]
 wait_time = 43200.0
 
 [connection signal="pressed" from="." to="." method="_on_update_button_pressed"]

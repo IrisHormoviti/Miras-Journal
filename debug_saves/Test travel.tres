@@ -10,11 +10,13 @@ room_name = "Shard Gardens"
 party = Array[StringName]([&"Mira", &"Alcine", &"Asteria", &"Daze"])
 members = Array[Dictionary]([{
 "AbilitiesList": Array[String](["Guard", "SoothingSpray", "IcyDrizzle"]),
+"ComplimentaryList": Dictionary[String, int]({}),
+"WeaponName": "ArmWhip",
 "aura": 15,
 "cant_die": false,
 "cant_dodge": false,
 "clutch_dmg": false,
-"ComplimentaryList": Dictionary[String, int]({}),
+"codename": &"Alcine",
 "controllable": true,
 "first_name": "Alcine",
 "health": 60,
@@ -24,16 +26,16 @@ members = Array[Dictionary]([{
 "max_hp": 60,
 "ov": "",
 "skill_level": 2,
-"skill_points": 10,
-"WeaponName": "ArmWhip",
-"codename": &"Alcine"
+"skill_points": 10
 }, {
 "AbilitiesList": Array[String](["PhantomGuard", "Tighten", "RedShift"]),
+"ComplimentaryList": Dictionary[String, int]({}),
+"WeaponName": "PocessedScarf",
 "aura": 47,
 "cant_die": false,
 "cant_dodge": false,
 "clutch_dmg": false,
-"ComplimentaryList": Dictionary[String, int]({}),
+"codename": &"Asteria",
 "controllable": false,
 "first_name": "Asteria",
 "health": 90,
@@ -43,16 +45,16 @@ members = Array[Dictionary]([{
 "max_hp": 90,
 "ov": "",
 "skill_level": 7,
-"skill_points": 16,
-"WeaponName": "PocessedScarf",
-"codename": &"Asteria"
+"skill_points": 16
 }, {
 "AbilitiesList": Array[String](["Guard", "Attention", "StaticSaber"]),
+"ComplimentaryList": Dictionary[String, int]({}),
+"WeaponName": "GoldPlatedKatana",
 "aura": 24,
 "cant_die": false,
 "cant_dodge": false,
 "clutch_dmg": false,
-"ComplimentaryList": Dictionary[String, int]({}),
+"codename": &"Daze",
 "controllable": false,
 "first_name": "Daze",
 "health": 130,
@@ -62,16 +64,16 @@ members = Array[Dictionary]([{
 "max_hp": 130,
 "ov": "",
 "skill_level": 14,
-"skill_points": 54,
-"WeaponName": "GoldPlatedKatana",
-"codename": &"Daze"
+"skill_points": 54
 }, {
 "AbilitiesList": Array[String]([]),
+"ComplimentaryList": Dictionary[String, int]({}),
+"WeaponName": "DefaultWeapon",
 "aura": 90,
 "cant_die": false,
 "cant_dodge": false,
 "clutch_dmg": false,
-"ComplimentaryList": Dictionary[String, int]({}),
+"codename": &"Erinn",
 "controllable": false,
 "first_name": "Erinn",
 "health": 85,
@@ -81,18 +83,18 @@ members = Array[Dictionary]([{
 "max_hp": 85,
 "ov": "res://art/OV/Erinn/ErinnOV.tres",
 "skill_level": 1,
-"skill_points": 0,
-"WeaponName": "DefaultWeapon",
-"codename": &"Erinn"
+"skill_points": 0
 }, {
 "AbilitiesList": Array[String](["Guard", "FlameSpark", "HeatWave"]),
+"ComplimentaryList": Dictionary[String, int]({
+"FluidBlast": 1
+}),
+"WeaponName": "LightweightAxe",
 "aura": 20,
 "cant_die": false,
 "cant_dodge": false,
 "clutch_dmg": false,
-"ComplimentaryList": Dictionary[String, int]({
-"FluidBlast": 1
-}),
+"codename": &"Mira",
 "controllable": true,
 "first_name": "Mira",
 "health": 100,
@@ -102,9 +104,7 @@ members = Array[Dictionary]([{
 "max_hp": 100,
 "ov": "Bag",
 "skill_level": 2,
-"skill_points": 28,
-"WeaponName": "LightweightAxe",
-"codename": &"Mira"
+"skill_points": 28
 }])
 player_position = Vector2(428.667, 84)
 complimentaries = Array[String](["FluidBlast"])
@@ -116,36 +116,36 @@ diary = Dictionary[int, PackedStringArray]({
 5: PackedStringArray("boo", "bee")
 })
 flags = Dictionary[StringName, int]({
-	&"Amberelm/Tripwire/EvStoneGuardianCheckBody": 1,
-	&"Event/AlcineFollow": 4,
-	&"Event/AlcineIsTheLeaderReal": 1,
-	&"Event/AsteriaBoss": 5,
-	&"Event/BeatStoneGuardian": 1,
-	&"Event/DazeQuestions": 0,
-	&"Event/DestroyedGuardian": 1,
-	&"Event/EnterAmberelm": 1,
-	&"Event/FirstBattle": 3,
-	&"Event/Nov2TownHall": 1,
-	&"Event/PyrsonHome": 1,
-	&"Event/StoneGuardianFinisher": 1,
-	&"Event/TavernTheory": 1,
-	&"Meta/Started": 1,
-	&"Meta/Veinet/Disable": 1,
-	&"TempleWoods/Breakable/BreakableVines0": 1,
-	&"TempleWoods/Tripwire/EvAmbWoodsBridge": 1,
-	&"TempleWoods/Tripwire/EvFirstBattle": 1,
-	&"TempleWoods/Tripwire/EvFlameActive": 1,
-	&"VeinPoint/OldCamp": 1,
-	&"VeinPoint/Plains": 1,
-	&"WitheredLeaves/Bunker1Open": 1,
-	&"WitheredLeaves/Tripwire/EvDazeEnemy2": 1,
-	&"WitheredLeaves/Tripwire/EvDazeEnemy4": 1,
-	&"WitheredLeaves/Tripwire/EvLostSpiritRed": 1,
-	&"WitheredLeaves/Tripwire/EvMetalicGate": 1,
-	&"WitheredLeaves/WLDoor1a": 1,
-	&"WitheredLeaves/WLDoor1b": 1,
-	&"WitheredLeaves/WLLeftSideOpen": 1,
-	&"day": 3,
+&"Amberelm/Tripwire/EvStoneGuardianCheckBody": 1,
+&"Event/AlcineFollow": 4,
+&"Event/AlcineIsTheLeaderReal": 1,
+&"Event/AsteriaBoss": 5,
+&"Event/BeatStoneGuardian": 1,
+&"Event/DazeQuestions": 0,
+&"Event/DestroyedGuardian": 1,
+&"Event/EnterAmberelm": 1,
+&"Event/FirstBattle": 3,
+&"Event/Nov2TownHall": 1,
+&"Event/PyrsonHome": 1,
+&"Event/StoneGuardianFinisher": 1,
+&"Event/TavernTheory": 1,
+&"Meta/Started": 1,
+&"Meta/Veinet/Disable": 1,
+&"TempleWoods/Breakable/BreakableVines0": 1,
+&"TempleWoods/Tripwire/EvAmbWoodsBridge": 1,
+&"TempleWoods/Tripwire/EvFirstBattle": 1,
+&"TempleWoods/Tripwire/EvFlameActive": 1,
+&"VeinPoint/OldCamp": 1,
+&"VeinPoint/Plains": 1,
+&"WitheredLeaves/Bunker1Open": 1,
+&"WitheredLeaves/Tripwire/EvDazeEnemy2": 1,
+&"WitheredLeaves/Tripwire/EvDazeEnemy4": 1,
+&"WitheredLeaves/Tripwire/EvLostSpiritRed": 1,
+&"WitheredLeaves/Tripwire/EvMetalicGate": 1,
+&"WitheredLeaves/WLDoor1a": 1,
+&"WitheredLeaves/WLDoor1b": 1,
+&"WitheredLeaves/WLLeftSideOpen": 1,
+&"day": 3
 })
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "RustySword:Bti", "RustySword:Bti", "SharpRock:Bti", "LightweightAxe:Key"])
 version = 8

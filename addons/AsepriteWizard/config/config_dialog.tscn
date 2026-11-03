@@ -26,7 +26,7 @@ _source = "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"16\" height=\"16\">
 oversampling_override = 1.0
 title = "Aseprite Wizard Config"
 initial_position = 1
-size = Vector2i(850, 511)
+size = Vector2i(850, 525)
 wrap_controls = true
 transient = true
 min_size = Vector2i(800, 0)

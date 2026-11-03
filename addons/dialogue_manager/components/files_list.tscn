@@ -19,7 +19,7 @@ corner_radius_bottom_right = 3
 corner_radius_bottom_left = 3
 corner_detail = 5
 
-[node name="FilesList" type="VBoxContainer" unique_id=1091889997]
+[node name="FilesList" type="VBoxContainer" unique_id=460027354]
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -29,13 +29,13 @@ size_flags_vertical = 3
 script = ExtResource("1_cytii")
 icon = ExtResource("2_3ijx1")
 
-[node name="FilterEdit" type="LineEdit" parent="." unique_id=1403474936]
+[node name="FilterEdit" type="LineEdit" parent="." unique_id=1796584179]
 layout_mode = 2
 placeholder_text = "Filter files"
 clear_button_enabled = true
 right_icon = SubResource("DPITexture_brc5y")
 
-[node name="List" type="ItemList" parent="." unique_id=18315932]
+[node name="List" type="ItemList" parent="." unique_id=934404351]
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_g2sxj")

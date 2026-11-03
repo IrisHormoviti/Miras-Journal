@@ -17,7 +17,7 @@
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="13_ec7uw"]
 [ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="14_oaukk"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_ivclc"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
+[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_sq3es"]
 resource_name = "Target"
@@ -154,6 +154,10 @@ miss_steps = Array[ExtResource("2_we42m")]([SubResource("Resource_7qvg6")])
 script = ExtResource("6_b6s7n")
 duration = 0.5
 
+[sub_resource type="Resource" id="Resource_hit_tp1hi"]
+script = ExtResource("cond_hit")
+outcomes = 2
+
 [sub_resource type="Resource" id="Resource_1ma41"]
 resource_name = "Target"
 script = ExtResource("3_1ugry")
@@ -195,6 +199,27 @@ sound_name = &"Attack2"
 [sub_resource type="Resource" id="Resource_42whq"]
 script = ExtResource("9_w10ox")
 
+[sub_resource type="Resource" id="Resource_onlr1"]
+script = ExtResource("9_w10ox")
+
+[sub_resource type="Resource" id="Resource_xybki"]
+resource_name = "Target"
+script = ExtResource("3_1ugry")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_kxuic"]
+script = ExtResource("8_spqru")
+actor = SubResource("Resource_xybki")
+
+[sub_resource type="Resource" id="Resource_2tkn2"]
+resource_name = "Target"
+script = ExtResource("3_1ugry")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_vykse"]
+script = ExtResource("10_44hdf")
+target = SubResource("Resource_2tkn2")
+
 [sub_resource type="Resource" id="Resource_d473f"]
 resource_name = "weapon"
 script = ExtResource("11_dwl65")
@@ -212,6 +237,8 @@ power = SubResource("Resource_d473f")
 magic_mode = 1
 elemental = true
 hit_branch = false
+hit_steps = Array[ExtResource("2_we42m")]([SubResource("Resource_onlr1"), SubResource("Resource_kxuic")])
+miss_steps = Array[ExtResource("2_we42m")]([SubResource("Resource_vykse")])
 
 [sub_resource type="Resource" id="Resource_nggsl"]
 resource_name = "Target"
@@ -242,15 +269,11 @@ target = SubResource("Resource_q5emx")
 wait = true
 animation = &"Scarf3"
 
-[sub_resource type="Resource" id="Resource_hit_tp1hi"]
-script = ExtResource("cond_hit")
-outcomes = 2
-
 [sub_resource type="Resource" id="Resource_tp1hi"]
 script = ExtResource("15_ivclc")
+condition = SubResource("Resource_hit_tp1hi")
 if_steps = Array[ExtResource("2_we42m")]([SubResource("Resource_h3cy5"), SubResource("Resource_hucme"), SubResource("Resource_2eu4k"), SubResource("Resource_42whq"), SubResource("Resource_sx43w"), SubResource("Resource_l8dne"), SubResource("Resource_38h3c")])
 else_steps = Array[ExtResource("2_we42m")]([SubResource("Resource_25xiy")])
-condition = SubResource("Resource_hit_tp1hi")
 
 [sub_resource type="Resource" id="Resource_h0yb5"]
 resource_name = "Target"

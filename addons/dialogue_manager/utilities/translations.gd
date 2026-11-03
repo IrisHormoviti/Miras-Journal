@@ -2,7 +2,7 @@
 class_name DMTranslationUtilities extends RefCounted
 
 
-## Generate static IDs/translation keys from some text.
+## Generate static IDs/translation keys for the whole project.
 static func generate_static_line_ids_for_project() -> void:
 	var rng: RandomNumberGenerator = RandomNumberGenerator.new()
 	rng.randomize()
@@ -32,19 +32,13 @@ static func generate_static_line_ids_for_text(text: String, file_path: String) -
 
 		if "[ID:" in line: continue
 
-		var translatable_text: String = ""
-		if l.begins_with("- "):
-			translatable_text = DMCompiler.extract_translatable_string(l)
-		else:
-			translatable_text = Array(l.replace("\\:", "!ESCAPED_COLON!").split(":")).back().replace("!ESCAPED_COLON!", "\\:")
-
 		var key: String = _generate_id(file_path)
 		while key in DMCache.known_static_ids:
 			key = _generate_id(file_path)
 
 		line = line.replace("\\n", "!NEWLINE!")
-		translatable_text = translatable_text.replace("\\n", "!NEWLINE!")
-		lines[i] = line.replace(translatable_text, translatable_text + " [ID:%s]" % [key]).replace("!NEWLINE!", "\\n")
+		l = l.replace("\\n", "!NEWLINE!")
+		lines[i] = line.replace(l, l + " [ID:%s]" % [key]).replace("!NEWLINE!", "\\n")
 
 		DMCache.known_static_ids[key] = file_path
 
@@ -138,7 +132,7 @@ static func export_all_translations_to_csv(to_path: String, default_locale: Stri
 
 			line_to_save[default_locale_column] = line.text
 			if character_column > -1:
-				line_to_save[character_column] = "(response)" if line.type == DMConstants.TYPE_RESPONSE else line.character
+				line_to_save[character_column] = "(response)" if line.type == DMConstants.TYPE_RESPONSE else line.get("character", "")
 			if notes_column > -1:
 				line_to_save[notes_column] = line.get("notes", "")
 
