@@ -97,6 +97,4 @@ action_sequence = SubResource("Resource_jwhnl")
 aura_cost = 5
 types = Array[int]([1])
 group = "TechnicalAttack"
-Damage = 2
-legacy_action_sequence = &"Crusher"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

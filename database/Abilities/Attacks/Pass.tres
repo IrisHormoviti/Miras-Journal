@@ -45,4 +45,3 @@ action_sequence = SubResource("Resource_1n8lb")
 types = Array[int]([1])
 callout = false
 recover_aura = true
-legacy_action_sequence = &"Pass"

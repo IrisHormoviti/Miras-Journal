@@ -13,12 +13,19 @@ class_name BattleEvent
 @export var repeatable := false
 @export_category("Result")
 
-enum RES {PASSIVE_DIALOG, CALL_FUNCTION, REGULAR_DIALOG, FORCE_MOVE, VICTORY, DEFEAT_OTHERS, SEQUENCE}
+enum RES {
+	PASSIVE_DIALOG,
+	REGULAR_DIALOG,
+	FORCE_MOVE,
+	VICTORY,
+	DEFEAT_OTHERS,
+	SEQUENCE,
+}
 @export var result: RES = RES.PASSIVE_DIALOG
 
-##Used as text file for dialog, function name for call function, move type for force move
+## Used as text file for dialog or move type for force move
 @export var parameter1: String = ""
-##Used as node name for dialog
+## Used as node name for dialog
 @export var parameter2: String = ""
 @export var resource: Resource = null
 ##Continue to the next turn only after the event is done
@@ -84,10 +91,6 @@ func run() -> void:
 			RES.PASSIVE_DIALOG:
 				Passive.open(parameter1, parameter2)
 
-			RES.CALL_FUNCTION:
-				print("Call seq: ", parameter1)
-				Global.bt.act.call(parameter1)
-
 			RES.REGULAR_DIALOG:
 				Textbox.open(parameter1, parameter2)
 
@@ -139,9 +142,8 @@ func run() -> void:
 
 func run_with_await() -> void:
 	match result:
-		0: await Passive.open(parameter1, parameter2)
-		1: await Global.bt.act.call(parameter1)
-		2: await Textbox.open(parameter1, parameter2)
+		RES.PASSIVE_DIALOG: await Passive.open(parameter1, parameter2)
+		RES.REGULAR_DIALOG: await Textbox.open(parameter1, parameter2)
 		RES.SEQUENCE: await run_sequence()
 		_: OS.alert("Battle event error: This action cannot hold the turn")
 

@@ -175,6 +175,3 @@ target = 1
 action_sequence = SubResource("Resource_7wtd2")
 aura_cost = 3
 types = Array[int]([1])
-InflictsState = "Confused"
-Damage = 1
-legacy_action_sequence = &"SoulTap"

@@ -69,4 +69,3 @@ icon = SubResource("AtlasTexture_my8qp")
 color_same_as_actor = true
 action_sequence = SubResource("Resource_ecevv")
 types = Array[int]([3])
-legacy_action_sequence = &"Guard"

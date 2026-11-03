@@ -47,9 +47,10 @@ script = ExtResource("3_inimp")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_fr51n"]
-resource_name = "ability power"
+resource_name = "1.0"
 script = ExtResource("7_aq5cp")
-damage_scale = 5
+source = 0
+value = 1.0
 
 [sub_resource type="Resource" id="Resource_vw4m0"]
 script = ExtResource("6_8ddcq")
@@ -86,6 +87,3 @@ wheel_color = Color(0.352941, 0.407843, 0.87451, 1)
 action_sequence = SubResource("Resource_kbfdc")
 aura_cost = 3
 types = Array[int]([9])
-Parameter = 1.0
-damage_variance = true
-legacy_action_sequence = &"MagicUp3"

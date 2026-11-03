@@ -104,6 +104,4 @@ action_sequence = SubResource("Resource_7mikv")
 aura_cost = 10
 types = Array[int]([17])
 group = "Linde"
-InflictsState = "Dispel"
-legacy_action_sequence = &"Dispel"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

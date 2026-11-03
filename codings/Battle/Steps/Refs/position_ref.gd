@@ -41,7 +41,7 @@ enum Mode {
 		offset = value
 		refresh_name()
 ## Mirrors the horizontal component for the acting side. Use this for positions
-## that legacy sequences wrote as Bt.offsetize(...).
+## written as Bt.offsetize(...).
 @export var side_aware := false:
 	set(value):
 		side_aware = value

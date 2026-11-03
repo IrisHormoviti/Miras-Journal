@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_2ea5x"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_84ete"]
+[ext_resource type="Resource" uid="uid://deg6bjkv4wgm5" path="res://database/Sequences/Action/PhoenixDive.tres" id="3_phoenix"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_84ete"]
 resource_local_to_scene = true
@@ -16,9 +17,7 @@ description = "Deals moderate Heat damage to all targets, and recovers fallen al
 icon = SubResource("AtlasTexture_84ete")
 color_same_as_actor = true
 target = 2
+action_sequence = ExtResource("3_phoenix")
 crit_chance = 0.6
 types = Array[int]([15, 2])
-InflictsState = "Burned"
-Damage = 2
-legacy_action_sequence = &"FollowupMira"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

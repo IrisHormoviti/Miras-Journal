@@ -209,6 +209,4 @@ target = 1
 action_sequence = SubResource("Resource_wa88r")
 aura_cost = 8
 types = Array[int]([2])
-Damage = 2
-legacy_action_sequence = &"Drill"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

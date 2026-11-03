@@ -176,7 +176,6 @@ name = "Fire Wire"
 icon = ExtResource("11_frtgg")
 wheel_color = Color(0.9059794, 0.3039068, 0, 1)
 action_sequence = SubResource("Resource_lyyd7")
-Damage = 2
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"
 
 [sub_resource type="Resource" id="Resource_fuwwc"]
@@ -289,6 +288,4 @@ action_sequence = SubResource("Resource_jw4am")
 types = Array[int]([18])
 group = "HeatTrap"
 callout = false
-SetsTrap = SubResource("Resource_t4o0m")
-legacy_action_sequence = &"SetTrap"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

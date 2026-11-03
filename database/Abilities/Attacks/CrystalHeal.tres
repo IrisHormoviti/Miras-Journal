@@ -277,5 +277,4 @@ icon = SubResource("AtlasTexture_2k873")
 action_sequence = SubResource("Resource_rmeqk")
 types = Array[int]([1])
 callout = false
-legacy_action_sequence = &"CrystalHeal"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

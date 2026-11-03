@@ -143,8 +143,8 @@ var speed_boost: int = 0
 @export var dont_idle := false
 ## If true, the character cannot die unless in very low hp
 @export var clutch_dmg := false
-## Sequence played when dying or clutch in case of cant_die
-@export var death_sequence := ""
+## Sequence played when this actor dies, or when a cant-die actor is clutched.
+@export var death_action_sequence: ActionSequence
 ## If true, the character cannot die, and will always stay at low hp
 @export var cant_die := false
 @export var ignore_states := false

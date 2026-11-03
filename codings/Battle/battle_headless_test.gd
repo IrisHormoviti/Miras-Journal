@@ -79,6 +79,7 @@ func _ready() -> void:
 	_test_branch_outcomes()
 	_test_migrated_sequences_load()
 	_test_migrated_sequence_wiring()
+	await _test_last_sequences()
 	await _test_stone_guardian_adapt()
 	await _test_asteria_followup()
 	await _test_new_step_modes()
@@ -815,14 +816,16 @@ const MIGRATED_SEQUENCES := [
 	"AlcineFollow2Entrance.tres",
 	"AlcineFollow3.tres",
 	"ArenaGameOver.tres",
-	"StoneGuardianEntrance.tres",
 	"StoneGuardianLoop.tres",
 	"StoneGuardianAdapt.tres",
-	"StoneGuardianVictory.tres",
 	"AsteriaBossSummon.tres",
 	"AsteriaBossPhase.tres",
 	"AsteriaBossFollowup.tres",
 	"Nov2MiraDream.tres",
+	"RedShift.tres",
+	"ActiveSupport.tres",
+	"PhoenixDive.tres",
+	"FlyAway.tres",
 ]
 
 const MIGRATED_BATTLE_SEQUENCES := [
@@ -874,15 +877,9 @@ func _test_migrated_sequence_wiring() -> void:
 			_fail("Could not load battle sequence " + path)
 			continue
 
-		if sequence.EntranceSequence != "" or sequence.VictorySequence != "" or sequence.DefeatSequence != "":
-			_fail("Battle sequence still uses a legacy named sequence: " + path)
-
 		for event in sequence.Events:
 			if event == null:
 				continue
-
-			if event.result == BattleEvent.RES.CALL_FUNCTION:
-				_fail("Battle event still calls a legacy function: " + path + " " + event.parameter1)
 
 			if event.result == BattleEvent.RES.SEQUENCE and event.sequence == null:
 				_fail("Battle event has no sequence: " + path)
@@ -904,6 +901,127 @@ func _test_migrated_sequence_wiring() -> void:
 		if event.result == BattleEvent.RES.FORCE_MOVE and event.resource is Ability:
 			if (event.resource as Ability).name == "JumpSucc" and (event.resource as Ability).action_sequence == null:
 				_fail("The scripted JumpSucc ability was not migrated to a sequence")
+
+
+func _test_last_sequences() -> void:
+	var caster := Party.Leader
+	var target := battle.Troop[0] if not battle.Troop.is_empty() else null
+
+	if caster == null or target == null:
+		_fail("Last sequence test needs a caster and target")
+		return
+
+	# Red-Shift scales with the number of states on its target.
+	var red_shift := load("res://database/Abilities/RedShift.tres") as Ability
+	var red_damage: DamageStep = red_shift.primary_damage_step() if red_shift != null else null
+
+	if red_damage == null or red_damage.power == null:
+		_fail("Red-Shift has no damage step")
+	else:
+		var ctx := _test_context(caster)
+		ctx.ability = red_shift
+		ctx.target = target
+		var expected := 8 * (target.states.size() + 1)
+		var actual := int(round(red_damage.power.resolve(ctx)))
+		print("BATTLE_TEST_REDSHIFT states=", target.states.size(), " damage=", actual)
+
+		if actual != expected:
+			_fail("Red-Shift damage did not scale with the target's states")
+
+	# Active Support doubles the magic of every other living ally for a turn.
+	var support := load("res://database/Abilities/ActiveSupport.tres") as Ability
+
+	if support == null or support.action_sequence == null:
+		_fail("Active Support has no sequence")
+	else:
+		var before: Dictionary = {}
+
+		for actor in Party.current:
+			if actor != null and actor.health > 0:
+				before[actor] = actor.magic_multiplier
+
+		await battle.action_runner.run_ability(support, caster, caster, false)
+
+		for actor: Actor in before:
+			if actor == caster:
+				continue
+
+			if not is_equal_approx(actor.magic_multiplier, float(before[actor]) + 1.0):
+				_fail("Active Support did not double an ally's magic")
+
+			if not actor.has_state("MagUp"):
+				_fail("Active Support did not apply MagicUp")
+
+		for actor: Actor in before:
+			actor.magic_multiplier = float(before[actor])
+			actor.remove_state("MagUp")
+
+	# Phoenix Dive damages every enemy, then revives fallen allies.
+	var phoenix := load("res://database/Abilities/Followups/PhoenixDive.tres") as Ability
+	var knocked_out: State = load("res://database/States/KnockedOut.tres")
+	var revive_loop: ForEachActorStep = null
+	var has_enemy_loop := false
+
+	if phoenix == null or phoenix.action_sequence == null:
+		_fail("Phoenix Dive has no sequence")
+	else:
+		for step in phoenix.action_sequence.walk():
+			if step is not ForEachActorStep:
+				continue
+
+			var loop := step as ForEachActorStep
+
+			if loop.group == ActorGroup.Kind.ENEMIES:
+				has_enemy_loop = true
+			elif loop.group == ActorGroup.Kind.ALLIES and loop.include_dead:
+				revive_loop = loop
+
+		if not has_enemy_loop:
+			_fail("Phoenix Dive no longer hits every enemy")
+
+		if revive_loop == null:
+			_fail("Phoenix Dive no longer revives fallen allies")
+		else:
+			var ally := Party.Member1
+			var saved_health := ally.health if ally != null else 0
+			var saved_aura := ally.aura if ally != null else 0
+
+			if ally != null:
+				ally.set_health(0)
+				await ally.add_state(knocked_out, -1, caster, false, false)
+				var ctx := _test_context(caster)
+				ctx.target = caster
+				await revive_loop.run(ctx)
+
+				print(
+					"BATTLE_TEST_PHOENIX_REVIVE health=", ally.health,
+					" knocked_out=", ally.has_state("KnockedOut")
+				)
+
+				if ally.has_state("KnockedOut") or ally.health <= 0:
+					_fail("Phoenix Dive did not revive a fallen ally")
+
+				ally.set_health(saved_health)
+				ally.set_aura(saved_aura)
+				ally.remove_state("KnockedOut")
+
+	# The Pterogon's retreat is now authored data instead of a named function.
+	var flyaway := load("res://database/Sequences/Action/FlyAway.tres") as ActionSequence
+	var pterogon := load("res://database/Enemies/Pterogon.tres") as Actor
+	var has_death_step := false
+
+	if flyaway != null:
+		for step in flyaway.walk():
+			if step is BattleControlStep and (step as BattleControlStep).mode == BattleControlStep.Mode.DEATH:
+				has_death_step = true
+
+	if pterogon == null or pterogon.death_action_sequence != flyaway:
+		_fail("Pterogon does not use the authored FlyAway sequence")
+
+	if not has_death_step:
+		_fail("FlyAway does not finish the defeat")
+
+	print("BATTLE_TEST_LAST_SEQUENCES ok")
 
 
 func _test_stone_guardian_adapt() -> void:
@@ -965,7 +1083,6 @@ func _test_stone_guardian_adapt() -> void:
 
 	# Put the harness back the way it was.
 	battle.CurrentChar = previous_current
-	battle.act.CurrentChar = previous_current
 	battle.TurnInd = previous_turn_ind
 	guardian.main_color = previous_color
 	Event.remove_flag(&"Event/StoneGuardianFinisher")
@@ -993,7 +1110,6 @@ func _test_new_step_modes() -> void:
 		_fail("Release turn step did not unlock the turn")
 
 	var previous_current := battle.CurrentChar
-	var previous_act: Actor = battle.act.CurrentChar
 	var set_current := BattleFlowStep.new()
 	set_current.mode = BattleFlowStep.Mode.SET_CURRENT
 	set_current.actor = ActorRef.new(ActorRef.Mode.CASTER)
@@ -1003,7 +1119,6 @@ func _test_new_step_modes() -> void:
 		_fail("Set current step did not change the battle's current actor")
 
 	battle.CurrentChar = previous_current
-	battle.act.CurrentChar = previous_act
 
 	var await_animation := ActorSpriteStep.new()
 	await_animation.mode = ActorSpriteStep.Mode.AWAIT_ANIMATION

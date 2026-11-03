@@ -47,9 +47,10 @@ script = ExtResource("3_2i6e8")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_m3bp7"]
-resource_name = "ability power"
+resource_name = "0.5"
 script = ExtResource("7_tsfas")
-damage_scale = 5
+source = 0
+value = 0.5
 
 [sub_resource type="Resource" id="Resource_g0cbg"]
 script = ExtResource("6_kivps")
@@ -87,7 +88,4 @@ target = 3
 action_sequence = SubResource("Resource_e2cuq")
 aura_cost = 2
 types = Array[int]([9])
-InflictsState = "MagUp"
-Parameter = 0.5
-legacy_action_sequence = &"MagicUp3"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

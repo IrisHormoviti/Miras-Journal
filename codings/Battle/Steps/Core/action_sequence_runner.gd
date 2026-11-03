@@ -14,8 +14,7 @@ func run_ability(ability: Ability, caster: Actor, target: Actor, finish_turn := 
 	battle.Action = true
 	if caster.node != null:
 		caster.node.z_index = 1
-	if battle.act != null:
-		battle.act.interrupted = false
+	battle.interrupted = false
 
 	Loader.battle_bars(2)
 	var ctx := _make_context(ability, caster, target)
@@ -89,9 +88,13 @@ func roll(ctx: ActionSequenceContext, target: Actor) -> void:
 	if ctx.roll != HitOutcome.MISS and randf_range(0, 1) < ability.crit_chance and not battle.no_crits:
 		ctx.roll = HitOutcome.CRIT
 
-	if battle.act != null:
-		battle.act.miss = ctx.roll == HitOutcome.MISS
-		battle.act.crit = ctx.roll == HitOutcome.CRIT
+
+## Rolls an ability's hit and crit outcome without running its sequence. Traps
+## use this so they can pass the result into their counterattack.
+func roll_ability(ability: Ability, caster: Actor, target: Actor) -> int:
+	var ctx := _make_context(ability, caster, target)
+	roll(ctx, target)
+	return ctx.roll
 
 
 func _make_context(ability: Ability, caster: Actor, target: Actor) -> ActionSequenceContext:

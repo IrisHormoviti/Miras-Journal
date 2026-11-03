@@ -86,7 +86,3 @@ aura_cost = 6
 types = Array[int]([5])
 group = "alcine_heal"
 can_target_dead = true
-Damage = 1
-AOE_AdditionalSeq = false
-damage_variance = true
-legacy_action_sequence = &"SoothingSpray"

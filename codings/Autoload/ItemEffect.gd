@@ -31,7 +31,7 @@ func use(item_data: ItemData, battle_target: Actor = null) -> void:
 
 func _on_item_manager_return_member(mem: Actor) -> void:
 	if item.use == ItemData.U.HEALING:
-		mem.add_health(int(item.Parameter))
+		mem.add_health(item.overworld_heal)
 
 	#Hud.shrink()
 	Hud._check_party()

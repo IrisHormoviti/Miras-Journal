@@ -116,8 +116,8 @@ $>> Party.set_to(["Mira", "Daze"])
 ~ destroyed_guardian_event
 $> travel_to("Amberelm", Vector2(2559, -112), 2)
 $> no_player()
-$> spawn("Mira", Vector2(2559, -124), Direction.UP)
-$> spawn("Daze", Vector2(2586, -124), Direction.UP)
+$> spawn("Mira", Vector2(2559, -112), Direction.UP)
+$> spawn("Daze", Vector2(2586, -112), Direction.UP)
 Mira: Hey, the remains of the Guardian are all here.
 Daze: Guardian?
 Mira: It's a name I just came up with for this thing.

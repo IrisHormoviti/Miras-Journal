@@ -68,13 +68,14 @@ func run(ctx: ActionSequenceContext) -> void:
 
 	var overwrite_color := color.resolve(ctx) if color != null else Color.WHITE
 
-	# Parallel per-actor sequences share Battle.act, so swap in this context's
-	# interruption state for the synchronous damage call and keep the result.
-	var previous: bool = ctx.battle.act.interrupted
-	ctx.battle.act.interrupted = ctx.interrupted
+	# Parallel per-actor sequences share the battle's interruption flag, so swap
+	# in this context's interruption state for the synchronous damage call and
+	# keep the result.
+	var previous: bool = ctx.battle.interrupted
+	ctx.battle.interrupted = ctx.interrupted
 	ctx.battle.damage(subject, is_magic, elemental, amount, effect, limiter, ignore_stats, overwrite_color)
-	ctx.interrupted = ctx.battle.act.interrupted
-	ctx.battle.act.interrupted = previous
+	ctx.interrupted = ctx.battle.interrupted
+	ctx.battle.interrupted = previous
 
 	if crit_branch and ctx.roll == HitOutcome.CRIT:
 		await ctx.runner.run_steps(crit_steps, ctx)

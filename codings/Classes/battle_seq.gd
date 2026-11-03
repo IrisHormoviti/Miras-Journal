@@ -39,14 +39,6 @@ class_name BattleSequence
 @export var EntranceBanterIsPassive := true
 @export var VictoryBanter := ""
 @export var VictoryText := "Victory"
-
-@export_group("Deprecated")
-## Deprecated: build the entrance_sequence instead.
-@export var EntranceSequence := ""
-## Deprecated: build the victory_sequence instead.
-@export var VictorySequence := ""
-## Deprecated: build the defeat_sequence instead.
-@export var DefeatSequence := ""
 ## Override the party with the specified Array of IDs
 @export var PartyOverride: PackedStringArray = []
 @export var Events: Array[BattleEvent] = []

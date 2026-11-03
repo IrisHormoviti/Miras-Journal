@@ -25,18 +25,6 @@ enum TP {
 	TRAP = 18, ## Sets up a trap on the target
 }
 
-## Damage type. Deprecated: define the damage scale on the sequence's ValueRef
-## instead. Only read here for legacy abilities that have no action sequence.
-enum D {
-	NONE, ## This abilitiy does no damage
-	WEAK, ## 12
-	MEDIUM, ## 24
-	HEAVY, ## 48
-	SEVERE, ## 96
-	CUSTOM, ## Specify in parameter
-	WEAPON ## Uses weapon stats
-}
-
 ##0: Target range
 enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, ANY = 5}
 
@@ -80,26 +68,6 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 ## When dealing damage, aura is recovered
 @export var recover_aura: bool = false
 
-@export_group("Deprecated")
-## Deprecated: add a StateStep to the sequence instead.
-@export var InflictsState: String = ""
-## Deprecated: add a StateStep in SET_TRAP mode instead.
-@export var SetsTrap: Trap = null
-## Deprecated: set the scale on the sequence's DamageStep power instead.
-@export var Damage: D = D.NONE
-## Deprecated: enable contact on the sequence's DamageStep instead.
-@export var MakesPhysicalContact := false
-## Deprecated: ignored. Use a ForEachActorStep in the sequence instead.
-@export var AOE_AdditionalSeq := true
-## Deprecated: only read by legacy action sequences. Use
-## [member ForEachActorStep.stagger] for sequence-based AOE.
-@export var aoe_stagger: float = 0
-## Deprecated: set the value on the sequence's ValueRef instead.
-@export var Parameter: float = 0
-## Deprecated: enable variance on the sequence's ValueRef instead.
-@export var damage_variance := false
-@export var legacy_action_sequence: StringName = &"Default"
-
 @export_storage var disabled := false
 
 var filename: String = "":
@@ -137,34 +105,36 @@ func primary_damage_step() -> DamageStep:
 	return null
 
 
+func primary_heal_step() -> HealStep:
+	for step in all_steps():
+		if step is HealStep:
+			return step
+
+	return null
+
+
 func deals_damage() -> bool:
-	return primary_damage_step() != null or Damage != D.NONE
+	return primary_damage_step() != null
 
 
 func uses_weapon() -> bool:
 	var step := primary_damage_step()
 
-	if step != null:
-		if step.magic_mode == DamageStep.MagicMode.PHYSICAL:
-			return true
+	if step == null:
+		return false
 
-		if step.power != null and step.power.source == ValueRef.Source.DAMAGE:
-			if step.power.damage_scale == ValueRef.DamageScale.WEAPON:
-				return true
+	if step.magic_mode == DamageStep.MagicMode.PHYSICAL:
+		return true
 
-	return Damage == D.WEAPON
-
-
-func damage_hint() -> D:
-	if Damage != D.NONE:
-		return Damage
-
-	return D.CUSTOM
+	return (
+		step.power != null
+		and step.power.source == ValueRef.Source.DAMAGE
+		and step.power.damage_scale == ValueRef.DamageScale.WEAPON
+	)
 
 
 ## The name of the state this ability applies, from its first add-state step.
-## Falls back to the deprecated InflictsState field for abilities with no
-## sequence yet. Returns an empty name when the ability applies no state.
+## Returns an empty name when the ability applies no state.
 func inflicts_state() -> StringName:
 	for step in all_steps():
 		if step is StateStep:
@@ -173,51 +143,24 @@ func inflicts_state() -> StringName:
 			if placed != null and not placed.name.is_empty():
 				return StringName(placed.name)
 
-	return StringName(InflictsState)
+	return &""
 
 
-## The trap this ability places, from its first set-trap step. Falls back to the
-## deprecated SetsTrap field for abilities with no sequence yet.
-func sets_trap() -> Trap:
-	for step in all_steps():
-		if step is StateStep:
-			var placed := (step as StateStep).placed_trap()
-
-			if placed != null:
-				return placed
-
-	return SetsTrap
-
-
-## Whether any damage step hits the target with physical contact. Falls back to
-## the deprecated MakesPhysicalContact field for abilities with no sequence yet.
+## Whether any damage step hits the target with physical contact.
 func makes_contact() -> bool:
 	for step in all_steps():
 		if step is DamageStep and (step as DamageStep).contact:
 			return true
 
-	if primary_damage_step() != null:
-		return false
-
-	return MakesPhysicalContact
+	return false
 
 
 ## The damage scale this ability's sequence applies, or null when it deals none.
-## Reads the primary DamageStep's ValueRef, falling back to the deprecated
-## `Damage` field for abilities that have no sequence yet.
 func damage_scale() -> Variant:
 	var step := primary_damage_step()
 
 	if step != null and step.power != null and step.power.source == ValueRef.Source.DAMAGE:
 		return step.power.damage_scale
-
-	match Damage:
-		D.WEAK: return ValueRef.DamageScale.WEAK
-		D.MEDIUM: return ValueRef.DamageScale.MEDIUM
-		D.HEAVY: return ValueRef.DamageScale.HEAVY
-		D.SEVERE: return ValueRef.DamageScale.SEVERE
-		D.CUSTOM: return ValueRef.DamageScale.CUSTOM
-		D.WEAPON: return ValueRef.DamageScale.WEAPON
 
 	return null
 

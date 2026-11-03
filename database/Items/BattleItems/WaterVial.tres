@@ -152,10 +152,6 @@ wheel_color = Color(0.09985284, 0.3245714, 1, 1)
 target = 1
 action_sequence = SubResource("Resource_y7egx")
 callout = false
-InflictsState = "Soaked"
-Damage = 1
-damage_variance = true
-legacy_action_sequence = &"ItemThrow"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_dhttc"]
 atlas = ExtResource("2_dhttc")

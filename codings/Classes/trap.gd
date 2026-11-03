@@ -6,8 +6,7 @@ class_name Trap
 ## it interrupts the attacker's current ability and the trap's owner performs
 ## `ability` instead.
 
-## Traps are set up by abilities that reference one in their SetsTrap property,
-## usually through the "SetTrap" action sequence.
+## Traps are set up by abilities with a SetTrap step in their sequence.
 
 ## The ability performed when the trap activates
 @export var ability: Ability = null

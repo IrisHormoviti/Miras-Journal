@@ -7,6 +7,7 @@
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_njwbd"]
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_05ejt"]
 [ext_resource type="Script" uid="uid://1out28n0606o" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="5_ao3k3"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="7_glimmer"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="6_oxly3"]
 
 [sub_resource type="Resource" id="Resource_181hy"]
@@ -35,9 +36,15 @@ resource_name = "Target"
 script = ExtResource("3_njwbd")
 mode = 1
 
+[sub_resource type="Resource" id="Resource_glimmer_heal"]
+resource_name = "medium"
+script = ExtResource("7_glimmer")
+damage_scale = 1
+
 [sub_resource type="Resource" id="Resource_oxly3"]
 script = ExtResource("5_ao3k3")
 target = SubResource("Resource_ao3k3")
+amount = SubResource("Resource_glimmer_heal")
 variance = true
 
 [sub_resource type="Resource" id="Resource_253d2"]
@@ -78,7 +85,3 @@ aura_cost = 8
 types = Array[int]([5])
 group = "heal"
 can_target_dead = true
-Damage = 2
-AOE_AdditionalSeq = false
-damage_variance = true
-legacy_action_sequence = &"SoothingSpray"

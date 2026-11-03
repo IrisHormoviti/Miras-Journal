@@ -285,6 +285,3 @@ success_chance = 0.9
 types = Array[int]([1])
 callout = false
 recover_aura = true
-Damage = 6
-damage_variance = true
-legacy_action_sequence = &"JumpAttack"

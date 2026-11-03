@@ -24,10 +24,6 @@ enum Mode {
 @export var silent := false
 @export var wait := true
 @export var trap: Trap
-@export var use_ability_trap := false:
-	set(value):
-		use_ability_trap = value
-		notify_property_list_changed()
 @export var color: ColorRef
 
 
@@ -49,12 +45,7 @@ func run(ctx: ActionSequenceContext) -> void:
 			await ctx.battle.clear_states(subject)
 
 		Mode.SET_TRAP:
-			var place: Trap = trap
-
-			if use_ability_trap and ctx.ability != null:
-				place = ctx.ability.sets_trap()
-
-			ctx.last_state = await ctx.battle.apply_trap(place, subject, ctx.caster, wait)
+			ctx.last_state = await ctx.battle.apply_trap(trap, subject, ctx.caster, wait)
 
 		Mode.AURA_OVERWRITE:
 			var overwrite := color.resolve(ctx) if color != null else subject.main_color
@@ -117,7 +108,7 @@ func added_state() -> State:
 ## The trap this step places, or null when it defers to the ability or is not a
 ## trap step.
 func placed_trap() -> Trap:
-	if mode != Mode.SET_TRAP or use_ability_trap:
+	if mode != Mode.SET_TRAP:
 		return null
 
 	return trap
@@ -137,9 +128,6 @@ func _to_string() -> String:
 			return "Clear every state on %s" % who
 
 		Mode.SET_TRAP:
-			if use_ability_trap:
-				return "Set the ability's trap on %s" % who
-
 			return "Set trap on %s" % who
 
 		Mode.AURA_OVERWRITE:
@@ -186,10 +174,7 @@ func _validate_property(property: Dictionary) -> void:
 			pass
 
 		Mode.SET_TRAP:
-			visible.append_array(["use_ability_trap", "wait"])
-
-			if not use_ability_trap:
-				visible.append("trap")
+			visible.append_array(["trap", "wait"])
 
 		Mode.AURA_OVERWRITE:
 			visible.append_array(["color", "turns"])

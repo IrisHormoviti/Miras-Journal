@@ -92,5 +92,3 @@ wheel_color = Color(0.690196, 0.396078, 0.686275, 1)
 action_sequence = SubResource("Resource_rd62g")
 types = Array[int]([16, 3])
 group = "asteria_guard"
-InflictsState = "Guard"
-legacy_action_sequence = &"PhantomGuard"

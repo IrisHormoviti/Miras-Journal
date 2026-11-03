@@ -1,13 +1,13 @@
-[gd_resource type="Resource" script_class="State" uid="uid://btmofal2vov07" format=3]
+[gd_resource type="Resource" script_class="State" format=3 uid="uid://btmofal2vov07"]
 
-[ext_resource type="Script" path="res://codings/Classes/state.gd" id="1_28b2m"]
-[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_tvw02"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="2_xpv7v"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_p3dd5"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_8ua3t"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="5_gnbk0"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="6_so21w"]
-[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="7_vdv4o"]
+[ext_resource type="Script" uid="uid://47q0we3aw5v" path="res://codings/Classes/state.gd" id="1_28b2m"]
+[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_tvw02"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="2_xpv7v"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_p3dd5"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_8ua3t"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="5_gnbk0"]
+[ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="6_so21w"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="7_vdv4o"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_13lko"]
 atlas = ExtResource("1_tvw02")

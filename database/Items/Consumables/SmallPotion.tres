@@ -42,7 +42,8 @@ ability_type = 5
 [sub_resource type="Resource" id="Resource_5hus6"]
 resource_name = "ability power"
 script = ExtResource("6_5hus6")
-damage_scale = 5
+source = 0
+value = 50.0
 
 [sub_resource type="Resource" id="Resource_3f0gx"]
 resource_name = "Caster"
@@ -97,10 +98,6 @@ icon = SubResource("AtlasTexture_uyukm")
 action_sequence = SubResource("Resource_rcv7m")
 types = Array[int]([5])
 callout = false
-Damage = 5
-Parameter = 50.0
-damage_variance = true
-legacy_action_sequence = &"Drink"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4bywt"]
 atlas = ExtResource("1_xbfcq")
@@ -118,4 +115,4 @@ icon = SubResource("AtlasTexture_4bywt")
 use = 3
 used_in_battle = true
 battle_effect = SubResource("Resource_iwvc1")
-Parameter = "70"
+overworld_heal = 70

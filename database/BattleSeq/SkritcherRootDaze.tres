@@ -17,7 +17,7 @@ turn_min = 0
 [sub_resource type="Resource" id="Resource_2lova"]
 script = ExtResource("3_kjmt8")
 condition = SubResource("Resource_2lova_turn_0")
-result = 3
+result = 2
 parameter1 = "Ability"
 resource = ExtResource("5_kjmt8")
 event_actor = &"SkritcherRoot"

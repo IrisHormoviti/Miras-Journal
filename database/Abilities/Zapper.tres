@@ -199,6 +199,3 @@ action_sequence = SubResource("Resource_aliyk")
 aura_cost = 7
 crit_chance = 0.8
 types = Array[int]([1, 4])
-InflictsState = "Zapped"
-Damage = 1
-legacy_action_sequence = &"StaticSaber"

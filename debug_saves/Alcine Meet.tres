@@ -119,7 +119,8 @@ flags = Dictionary[StringName, int]({
 &"TempleWoods/Tripwire/EvFlameActive": 1,
 &"UI/DisableMenus": 0,
 &"UI/HideDate": 1,
-&"day": 0
+&"day": 0,
+&"time": 5
 })
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "LifeLave:Con"])
 version = 8

@@ -58,6 +58,4 @@ icon = SubResource("AtlasTexture_rby1t")
 action_sequence = SubResource("Resource_nqgwv")
 aura_cost = 10
 types = Array[int]([3])
-InflictsState = "Barrier"
-legacy_action_sequence = &"SturdyGuard"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

@@ -60,9 +60,15 @@ resource_name = "Target"
 script = ExtResource("3_5wt33")
 mode = 1
 
+[sub_resource type="Resource" id="Resource_rain_heal"]
+resource_name = "weak"
+script = ExtResource("9_ct152")
+damage_scale = 0
+
 [sub_resource type="Resource" id="Resource_ct152"]
 script = ExtResource("7_n22vs")
 target = SubResource("Resource_q0pjp")
+amount = SubResource("Resource_rain_heal")
 
 [sub_resource type="Resource" id="Resource_hit_xsliv"]
 script = ExtResource("cond_hit")
@@ -106,6 +112,7 @@ mode = 1
 [sub_resource type="Resource" id="Resource_qqvra"]
 script = ExtResource("7_n22vs")
 target = SubResource("Resource_dj4aq")
+amount = SubResource("Resource_rain_heal")
 
 [sub_resource type="Resource" id="Resource_hit_schel"]
 script = ExtResource("cond_hit")
@@ -171,5 +178,3 @@ crit_chance = 0.1
 types = Array[int]([5])
 group = "alcine_heal"
 can_target_dead = true
-Damage = 1
-legacy_action_sequence = &"SoothingRain"

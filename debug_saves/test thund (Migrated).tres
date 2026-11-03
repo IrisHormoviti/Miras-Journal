@@ -168,6 +168,7 @@ flags = Dictionary[StringName, int]({
 &"WitheredLeaves/WLDoor1a": 1,
 &"WitheredLeaves/WLDoor1b": 1,
 &"WitheredLeaves/WLLeftSideOpen": 1,
-&"day": 3
+&"day": 3,
+&"time": 3
 })
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "CyanFragment:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "PurpleFragment:Mat", "LifeLave:Con", "LifeLave:Con", "SmallPotion:Con", "SharpRock:Bti", "SharpRock:Bti"])

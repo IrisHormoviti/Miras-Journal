@@ -51,5 +51,4 @@ description = "Recover all AP"
 icon = ExtResource("7_awgqa")
 color_same_as_actor = true
 action_sequence = SubResource("Resource_awgqa")
-legacy_action_sequence = &"Gather"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

@@ -93,5 +93,3 @@ action_sequence = SubResource("Resource_g2r2v")
 aura_cost = 3
 types = Array[int]([7])
 group = "daze_aggro"
-InflictsState = "Aggro"
-legacy_action_sequence = &"Attention"

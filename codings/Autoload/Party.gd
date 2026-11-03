@@ -165,10 +165,16 @@ func heal_party() -> void:
 
 func add_test_state(chara: Actor) -> void:
 	for i in ResourceLoader.list_directory("res://database/States/"):
-		var state: String = i.replace(".tres", "")
+		var state_name: String = i.replace(".tres", "")
+		var state := load("res://database/States/" + i) as State
 		var ab: Ability = load("res://database/Abilities/Debug/TestState.tres").duplicate()
-		ab.name += state
-		ab.InflictsState = state
+		ab.name += state_name
+
+		for step in ab.all_steps():
+			if step is StateStep:
+				(step as StateStep).state = state
+				break
+
 		chara.abilities.append(ab)
 
 

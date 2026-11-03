@@ -151,7 +151,4 @@ aura_cost = 7
 success_chance = 0.95
 crit_chance = 0.3
 types = Array[int]([1])
-InflictsState = "Soaked"
-Damage = 2
-legacy_action_sequence = &"FluidBlast"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

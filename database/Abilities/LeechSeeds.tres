@@ -121,5 +121,3 @@ action_sequence = SubResource("Resource_h8hof")
 aura_cost = 12
 success_chance = 0.9
 types = Array[int]([4])
-InflictsState = "Leeched"
-legacy_action_sequence = &"LeechSeeds"

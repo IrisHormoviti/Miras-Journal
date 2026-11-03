@@ -161,6 +161,3 @@ action_sequence = SubResource("Resource_al06f")
 aura_cost = 5
 crit_chance = 0.4
 types = Array[int]([4, 1])
-InflictsState = "Poisoned"
-Damage = 1
-legacy_action_sequence = &"ToxicSplash"

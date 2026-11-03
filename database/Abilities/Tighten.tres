@@ -110,5 +110,3 @@ aura_cost = 4
 success_chance = 0.9
 types = Array[int]([4])
 group = "asteria_bind"
-InflictsState = "Bound"
-legacy_action_sequence = &"Tighten"

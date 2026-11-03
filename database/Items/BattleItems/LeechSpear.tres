@@ -152,10 +152,6 @@ target = 1
 action_sequence = SubResource("Resource_l0b0w")
 crit_chance = 0.2
 callout = false
-InflictsState = "Leeched"
-Damage = 1
-damage_variance = true
-legacy_action_sequence = &"ItemThrow"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_2utmj"]
 resource_local_to_scene = true

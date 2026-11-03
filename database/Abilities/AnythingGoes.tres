@@ -81,6 +81,4 @@ description = "Hue-Shift to a random color."
 icon = SubResource("AtlasTexture_v3k0o")
 action_sequence = SubResource("Resource_8qthx")
 types = Array[int]([16])
-InflictsState = "AuraOverwrite"
-legacy_action_sequence = &"AnythingGoes"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

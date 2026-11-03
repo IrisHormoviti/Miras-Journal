@@ -36,7 +36,7 @@ conditions = Array[ExtResource("cond_be_base")]([SubResource("Resource_ym1rv_tur
 [sub_resource type="Resource" id="Resource_ym1rv"]
 script = ExtResource("3_bg0et")
 condition = SubResource("Resource_ym1rv_all_3")
-result = 6
+result = 5
 hold_turn = true
 sequence = ExtResource("6_summon")
 sequence_caster = &"Asteria"
@@ -57,7 +57,7 @@ value = 15
 script = ExtResource("3_bg0et")
 condition = SubResource("Resource_bg0et_health_5")
 repeatable = true
-result = 6
+result = 5
 hold_turn = true
 sequence = ExtResource("7_phase")
 sequence_caster = &"Asteria"

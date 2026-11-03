@@ -186,8 +186,6 @@ target = 1
 action_sequence = SubResource("Resource_fw1o0")
 crit_chance = 0.1
 types = Array[int]([3])
-Damage = 6
-legacy_action_sequence = &"CloseupAttack"
 
 [sub_resource type="Resource" id="Resource_cond"]
 script = ExtResource("2_jgiwd")
@@ -264,7 +262,7 @@ mode = 1
 script = ExtResource("20_s7lcy")
 mode = 3
 actor = SubResource("Resource_pwa6s")
-use_ability_trap = true
+trap = SubResource("Resource_cov55")
 
 [sub_resource type="Resource" id="Resource_gu7eh"]
 script = ExtResource("8_qdoaj")
@@ -290,5 +288,3 @@ action_sequence = SubResource("Resource_uksba")
 aura_cost = 4
 types = Array[int]([18])
 callout = false
-SetsTrap = SubResource("Resource_cov55")
-legacy_action_sequence = &"SetTrap"

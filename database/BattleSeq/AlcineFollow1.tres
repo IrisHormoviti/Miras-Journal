@@ -42,7 +42,7 @@ conditions = Array[ExtResource("cond_be_base")]([SubResource("Resource_eg56s_fla
 [sub_resource type="Resource" id="Resource_eg56s"]
 script = ExtResource("2_yeq0t")
 condition = SubResource("Resource_eg56s_all_4")
-result = 6
+result = 5
 hold_turn = true
 sequence = ExtResource("8_vict")
 
@@ -75,7 +75,7 @@ on_run_flag_value = true
 
 [sub_resource type="Resource" id="Resource_jw6e0"]
 script = ExtResource("2_yeq0t")
-result = 3
+result = 2
 parameter1 = "Ability"
 resource = ExtResource("3_bbvgb")
 event_actor = &"Pterogon"
@@ -87,7 +87,7 @@ turn_min = 2
 [sub_resource type="Resource" id="Resource_82jg0"]
 script = ExtResource("2_yeq0t")
 condition = SubResource("Resource_82jg0_turn_9")
-result = 3
+result = 2
 parameter1 = "Attack"
 resource = ExtResource("6_jshqw")
 event_actor = &"Pterogon"

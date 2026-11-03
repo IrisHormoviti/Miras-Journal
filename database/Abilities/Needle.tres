@@ -159,5 +159,3 @@ action_sequence = SubResource("Resource_c07pf")
 aura_cost = 2
 success_chance = 0.99
 types = Array[int]([1])
-Damage = 1
-legacy_action_sequence = &"Needle"

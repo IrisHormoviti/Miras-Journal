@@ -15,4 +15,3 @@ description = "A sheet of paper folded twice."
 item_type = "Key"
 icon = SubResource("AtlasTexture_cbiva")
 use = 1
-Parameter = "folded_paper"

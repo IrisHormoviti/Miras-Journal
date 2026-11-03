@@ -46,5 +46,4 @@ target = 5
 action_sequence = SubResource("Resource_rydl4")
 types = Array[int]([4])
 group = "TestState"
-legacy_action_sequence = &"TestState"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

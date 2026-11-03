@@ -88,24 +88,22 @@ static func calc_num(ab: Ability = Global.bt.CurrentAbility, chara: Actor = null
 	if ab == null:
 		return 0
 
-	var scale := ValueRef.DamageScale.MEDIUM
+	var damage := ab.primary_damage_step()
+	var value: ValueRef = damage.power if damage != null else null
 
-	match ab.Damage:
-		Ability.D.NONE: return 0
-		Ability.D.WEAK: scale = ValueRef.DamageScale.WEAK
-		Ability.D.MEDIUM: scale = ValueRef.DamageScale.MEDIUM
-		Ability.D.HEAVY: scale = ValueRef.DamageScale.HEAVY
-		Ability.D.SEVERE: scale = ValueRef.DamageScale.SEVERE
-		Ability.D.CUSTOM: scale = ValueRef.DamageScale.CUSTOM
-		Ability.D.WEAPON: scale = ValueRef.DamageScale.WEAPON
+	if value == null:
+		var heal := ab.primary_heal_step()
 
-	var base := int(ValueRef.damage_for(scale, chara, ab.Parameter))
+		if heal != null:
+			value = heal.amount
 
-	# Fallback for legacy abilities that have no sequence ValueRef yet.
-	if ab.damage_variance:
-		base = int(base * randf_range(0.8, 1.2))
+	if value == null:
+		return 0
 
-	return base
+	var ctx := ActionSequenceContext.new()
+	ctx.caster = chara
+	ctx.target = chara
+	return int(round(value.resolve(ctx)))
 
 
 static func get_complimentaries() -> Array[Ability]:

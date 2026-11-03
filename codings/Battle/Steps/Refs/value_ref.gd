@@ -2,14 +2,13 @@
 extends Resource
 class_name ValueRef
 
-## Base damage scale, used to derive a number without an ability parameter.
+## Base damage scale, used to derive a number from a fixed table.
 enum DamageScale {
 	WEAK, ## 12
 	MEDIUM, ## 24
 	HEAVY, ## 48
 	SEVERE, ## 96
 	WEAPON, ## The caster's weapon power
-	CUSTOM, ## The ability or item parameter
 }
 
 ## Where the base number comes from.
@@ -123,12 +122,11 @@ func resolve(ctx: ActionSequenceContext) -> float:
 ## The raw damage number for this scale, before the multiplier and add.
 func damage_base(ctx: ActionSequenceContext) -> float:
 	var caster := ctx.caster if ctx != null else null
-	return damage_for(damage_scale, caster, parameter_value(ctx))
+	return damage_for(damage_scale, caster)
 
 
-## Resolves a damage scale without needing a step context. Legacy abilities call
-## this through Query.calc_num until their sequences own the scale.
-static func damage_for(scale: DamageScale, caster: Actor, parameter: float = 0.0) -> float:
+## Resolves a damage scale without needing a step context.
+static func damage_for(scale: DamageScale, caster: Actor) -> float:
 	match scale:
 		DamageScale.WEAK:
 			return 12.0
@@ -145,9 +143,6 @@ static func damage_for(scale: DamageScale, caster: Actor, parameter: float = 0.0
 		DamageScale.WEAPON:
 			return weapon_power_of(caster)
 
-		DamageScale.CUSTOM:
-			return parameter
-
 	return 0.0
 
 
@@ -157,19 +152,6 @@ static func weapon_power_of(caster: Actor) -> float:
 
 	if caster != null and caster.weapon != null:
 		return float(caster.weapon.power)
-
-	return 0.0
-
-
-func parameter_value(ctx: ActionSequenceContext) -> float:
-	if ctx == null:
-		return 0.0
-
-	if ctx.item != null:
-		return float(ctx.item.Parameter)
-
-	if ctx.ability != null:
-		return float(ctx.ability.Parameter)
 
 	return 0.0
 
@@ -247,9 +229,6 @@ func _to_string() -> String:
 
 		Source.DAMAGE:
 			label = str(DamageScale.find_key(damage_scale)).to_lower()
-
-			if damage_scale == DamageScale.CUSTOM:
-				label = "ability power"
 
 		Source.STAT:
 			label = str(Stat.find_key(stat)).replace("_", " ").to_lower()

@@ -53,6 +53,7 @@ script = ExtResource("6_606aq")
 duration = 0.2
 
 [sub_resource type="Resource" id="Resource_hit_xs1kd"]
+resource_name = "miss"
 script = ExtResource("cond_hit")
 outcomes = 4
 
@@ -147,6 +148,4 @@ action_sequence = SubResource("Resource_3eb40")
 aura_cost = 5
 success_chance = 0.93
 types = Array[int]([1])
-Damage = 2
-legacy_action_sequence = &"RockThrow"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

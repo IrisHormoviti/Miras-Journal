@@ -142,9 +142,6 @@ crit_chance = 0.3
 types = Array[int]([2])
 callout = false
 recover_aura = true
-Damage = 4
-damage_variance = true
-legacy_action_sequence = &"ItemThrow"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_asmxh"]
 atlas = ExtResource("1_ua74k")

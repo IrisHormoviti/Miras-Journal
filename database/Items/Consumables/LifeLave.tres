@@ -43,7 +43,8 @@ ability_type = 5
 [sub_resource type="Resource" id="Resource_vgybm"]
 resource_name = "ability power"
 script = ExtResource("6_vgybm")
-damage_scale = 5
+source = 0
+value = 30.0
 
 [sub_resource type="Resource" id="Resource_q8abx"]
 resource_name = "Caster"
@@ -106,10 +107,6 @@ icon = SubResource("AtlasTexture_uyukm")
 action_sequence = SubResource("Resource_y74wh")
 types = Array[int]([5, 17])
 callout = false
-InflictsState = "Poisoned"
-Damage = 5
-Parameter = 30.0
-legacy_action_sequence = &"ItemCure"
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1mmxx"]
 atlas = ExtResource("1_lne2v")
@@ -126,4 +123,4 @@ icon = SubResource("AtlasTexture_1mmxx")
 use = 3
 used_in_battle = true
 battle_effect = SubResource("Resource_y1gkf")
-Parameter = "30"
+overworld_heal = 30

@@ -126,6 +126,4 @@ aura_cost = 5
 success_chance = 0.98
 crit_chance = 0.4
 types = Array[int]([1, 4])
-InflictsState = "Zapped"
-Damage = 1
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

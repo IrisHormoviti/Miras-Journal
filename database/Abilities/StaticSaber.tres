@@ -201,7 +201,3 @@ success_chance = 0.95
 crit_chance = 0.3
 types = Array[int]([4, 1])
 group = "daze_electric"
-InflictsState = "Shocked"
-Damage = 6
-damage_variance = true
-legacy_action_sequence = &"StaticSaber"

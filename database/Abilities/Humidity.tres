@@ -281,7 +281,4 @@ action_sequence = SubResource("Resource_hj3o3")
 aura_cost = 12
 crit_chance = 0.5
 types = Array[int]([2])
-InflictsState = "Soaked"
-Damage = 1
-legacy_action_sequence = &"Humidity"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

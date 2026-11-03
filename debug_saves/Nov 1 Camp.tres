@@ -132,7 +132,9 @@ flags = Dictionary[StringName, int]({
 &"TempleWoods/Tripwire/EvAmbWoodsBridge": 1,
 &"UI/DisableMenus": 0,
 &"WitheredLeaves/Tripwire/EvDazeEnemy1": 1,
-&"WitheredLeaves/Tripwire/EvDazeEnemy2": 1
+&"WitheredLeaves/Tripwire/EvDazeEnemy2": 1,
+&"day": 1,
+&"time": 3
 })
 inventory = Array[String](["Wallet:Key", "PenCase:Key", "FoldedPaper:Key", "LightweightAxe:Key", "WhiteSlime:Mat", "WhiteSlime:Mat", "PurpleFragment:Mat", "SmallPotion:Con"])
 version = 8

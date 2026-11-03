@@ -7,6 +7,7 @@
 [ext_resource type="Resource" uid="uid://dmm26g6xg665u" path="res://database/Abilities/Attacks/WarpAttack.tres" id="6_g7xkm"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="7_n3q5t"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="7_rjgpe"]
+[ext_resource type="Resource" uid="uid://f8w6rkkfler" path="res://database/Sequences/Action/FlyAway.tres" id="8_flyaway"]
 
 [resource]
 script = ExtResource("7_n3q5t")
@@ -30,5 +31,5 @@ offset = Vector2(0, -13)
 shadow = true
 disappear = false
 clutch_dmg = true
-death_sequence = "FlyAway"
+death_action_sequence = ExtResource("8_flyaway")
 cant_die = true

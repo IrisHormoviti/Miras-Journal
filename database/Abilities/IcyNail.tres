@@ -181,6 +181,3 @@ aura_cost = 2
 crit_chance = 0.1
 types = Array[int]([1, 4])
 group = "cold"
-InflictsState = "Frozen"
-Damage = 1
-legacy_action_sequence = &"IcyNail"

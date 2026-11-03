@@ -49,7 +49,8 @@ mode = 1
 [sub_resource type="Resource" id="Resource_nak87"]
 resource_name = "ability power"
 script = ExtResource("7_46w2l")
-damage_scale = 5
+source = 0
+value = 0.5
 
 [sub_resource type="Resource" id="Resource_o4o3k"]
 script = ExtResource("6_vp66x")
@@ -88,6 +89,3 @@ action_sequence = SubResource("Resource_uxcm2")
 aura_cost = 2
 types = Array[int]([8])
 group = "AtkBuff"
-InflictsState = "AttackUp"
-Parameter = 0.5
-legacy_action_sequence = &"AttackUpNext"

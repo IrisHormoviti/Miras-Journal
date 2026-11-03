@@ -2,6 +2,7 @@
 
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_05qwy"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="2_fkd0x"]
+[ext_resource type="Resource" uid="uid://746jroiguivx" path="res://database/Sequences/Action/RedShift.tres" id="3_redshift"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4s5i7"]
 atlas = ExtResource("1_05qwy")
@@ -15,9 +16,7 @@ description = "Deals Corruption damage. Increased damage the more states the tar
 icon = SubResource("AtlasTexture_4s5i7")
 wheel_color = Color(0.760784, 0.2, 0.760784, 1)
 target = 1
+action_sequence = ExtResource("3_redshift")
 aura_cost = 9
 types = Array[int]([2])
 group = "yaru_corruption"
-Damage = 5
-Parameter = 8.0
-legacy_action_sequence = &"RedShift"

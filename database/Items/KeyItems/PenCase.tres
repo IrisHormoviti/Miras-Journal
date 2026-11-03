@@ -15,4 +15,3 @@ description = "A case with a few writting supplies."
 item_type = "Key"
 icon = SubResource("AtlasTexture_kiob0")
 use = 1
-Parameter = "pen_case"

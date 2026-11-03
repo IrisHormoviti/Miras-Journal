@@ -74,4 +74,3 @@ target = 3
 action_sequence = SubResource("Resource_sardv")
 aura_cost = 3
 types = Array[int]([3])
-legacy_action_sequence = &"ProtectiveField"

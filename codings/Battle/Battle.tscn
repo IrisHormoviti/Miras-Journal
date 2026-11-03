@@ -4,7 +4,6 @@
 [ext_resource type="SpriteFrames" uid="uid://bmbis13j145si" path="res://art/BT/Alcine/AlcineBT.tres" id="4_0enhy"]
 [ext_resource type="Material" uid="uid://bk3wcarpqpgmi" path="res://codings/Shaders/Pixelart.tres" id="7_ef2go"]
 [ext_resource type="Texture2D" uid="uid://da4wno1fcym1u" path="res://art/Backgrounds/Debug.png" id="8_4wnfp"]
-[ext_resource type="Script" uid="uid://dipdumn1x0rxq" path="res://database/Sequences/action_sequence.gd" id="8_7y1ke"]
 [ext_resource type="Shader" uid="uid://b27n7x5idg5sw" path="res://codings/Shaders/Actor.gdshader" id="9_owm6w"]
 [ext_resource type="Texture2D" uid="uid://c1pk3d7vu8n26" path="res://art/OV/Objects/Shadow1.png" id="11_utluu"]
 [ext_resource type="FontFile" uid="uid://bks6fau84dtru" path="res://UI/Fonts/Faktos.ttf" id="12_2samf"]
@@ -4331,7 +4330,6 @@ z_as_relative = false
 y_sort_enabled = true
 texture_filter = 1
 use_parent_material = true
-script = ExtResource("8_7y1ke")
 
 [node name="Actor0" type="AnimatedSprite2D" parent="Act" unique_id=1675625572]
 light_mask = 16
@@ -6104,7 +6102,6 @@ texture = ExtResource("54_qjfeq")
 [connection signal="check_party" from="." to="EnemyUI" method="_check_party"]
 [connection signal="next_turn" from="." to="." method="_on_next_turn"]
 [connection signal="next_turn" from="." to="Canvas/UIContainer/ControllerBattleUI" method="_on_battle_next_turn"]
-[connection signal="states_handled" from="Act" to="." method="make_move"]
 [connection signal="ai_chosen" from="AI" to="." method="_on_ai_chosen"]
 [connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_ability"]
 [connection signal="ability" from="Canvas/UIContainer/ControllerBattleUI" to="EnemyUI" method="_on_battle_ui_ability"]

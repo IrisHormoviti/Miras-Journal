@@ -295,5 +295,3 @@ action_sequence = SubResource("Resource_anleo")
 aura_cost = 8
 crit_chance = 0.2
 types = Array[int]([2])
-Damage = 3
-legacy_action_sequence = &"HeatWave"

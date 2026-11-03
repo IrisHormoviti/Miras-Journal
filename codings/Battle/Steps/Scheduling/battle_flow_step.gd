@@ -64,9 +64,6 @@ func run(ctx: ActionSequenceContext) -> void:
 			if subject != null:
 				ctx.battle.CurrentChar = subject
 
-				if ctx.battle.act != null:
-					ctx.battle.act.CurrentChar = subject
-
 
 func _to_string() -> String:
 	var who := str(actor) if actor != null else "Target"

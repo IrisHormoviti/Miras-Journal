@@ -22,5 +22,4 @@ icon = ExtResource("4_bk00b")
 color_same_as_actor = true
 action_sequence = SubResource("Resource_1gsgi")
 callout = false
-legacy_action_sequence = &"Nothing"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

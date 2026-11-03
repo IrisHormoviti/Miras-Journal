@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_d45jw"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_ymuuw"]
+[ext_resource type="Resource" uid="uid://bml7a70biq7j5" path="res://database/Sequences/Action/ActiveSupport.tres" id="2_support"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_s4mw2"]
 resource_local_to_scene = true
@@ -16,7 +17,6 @@ description = "Doubles the Magic of other allies for the next turn."
 icon = SubResource("AtlasTexture_s4mw2")
 wheel_color = Color(0.352941, 0.407843, 0.87451, 1)
 target = 4
+action_sequence = ExtResource("2_support")
 aura_cost = 5
 types = Array[int]([9])
-Parameter = 1.0
-legacy_action_sequence = &"ActiveSupport"

@@ -60,6 +60,8 @@ var lock_count := 0
 var no_crits := false
 ## Prevent missing
 var no_misses := false
+## A sprung trap interrupted the current action, so it can't deal more damage.
+var interrupted := false
 ## The next turn a followup will be preformed
 var follow_up_next := false
 ## True while a sprung trap is being preformed, so traps can't chain forever
@@ -344,7 +346,6 @@ func _ready() -> void:
 	if is_instance_valid(attacker): attacker.hide()
 	if not sequence.skip_entrance:
 		if sequence.entrance_sequence != null: await run_battle_sequence(sequence.entrance_sequence, null, null, false)
-		elif sequence.EntranceSequence != "": await act.call(sequence.EntranceSequence)
 	TurnOrder.sort_custom(speed_sort)
 	turn_ui_init()
 	for i in TurnOrder:
@@ -718,13 +719,9 @@ func entrance() -> void:
 	if not has_entrance_sequence() and not headless_driver: next_turn.emit()
 
 
-## True when the battle brings its own opening, whether from the inspector
-## authored sequence or the deprecated named one.
+## True when the battle brings its own inspector-authored opening sequence.
 func has_entrance_sequence() -> bool:
-	if sequence.entrance_sequence != null and not sequence.entrance_sequence.steps.is_empty():
-		return true
-
-	return sequence.EntranceSequence != ""
+	return sequence.entrance_sequence != null and not sequence.entrance_sequence.steps.is_empty()
 
 
 func entrance_anim(i: Actor) -> void:
@@ -737,7 +734,7 @@ func entrance_anim(i: Actor) -> void:
 func _on_next_turn() -> void:
 	if check_for_victory(): return
 	# A trap's interruption only lasts for the action that sprung it
-	act.interrupted = false
+	interrupted = false
 	#position_sprites()
 	Turn += 1
 
@@ -782,7 +779,32 @@ func _on_next_turn() -> void:
 
 	if CurrentChar.is_enemy: enemy_ui._on_battle_ui_target_foc(CurrentChar)
 	else: enemy_ui.all_enemy_ui()
-	act.handle_states()
+	await handle_states()
+	make_move()
+
+
+## Ticks the current actor's states, runs their on-turn sequences, then clears
+## states that expired this turn. The actor can only act once this finishes.
+func handle_states() -> void:
+	var chara := CurrentChar
+
+	for state: State in chara.states.duplicate():
+		print("Handling ", state.name)
+
+		if state.turns > -1:
+			state.turns -= 1
+
+			if state.turns == 0:
+				state.queue_remove = true
+				anim("", chara)
+
+		if state.queue_remove:
+			continue
+
+		await run_state_sequence(state.on_turn, state, chara)
+
+	await remove_queued_states(chara)
+	chara.damage_received_this_turn = 0
 
 
 func check_for_victory() -> bool:
@@ -998,15 +1020,12 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 
 	var has_sequence := ab.action_sequence != null and not ab.action_sequence.is_empty()
 
-	if has_sequence or ab.legacy_action_sequence != &"":
+	if has_sequence:
 		CurrentChar.add_aura(-CurrentAbility.aura_cost)
 		if CurrentAbility.callout and CurrentChar.controllable:
 			callout()
 
-		if has_sequence:
-			action_runner.run_ability(ab, CurrentChar, CurrentTarget)
-		else:
-			act.play(ab.legacy_action_sequence, CurrentTarget)
+		action_runner.run_ability(ab, CurrentChar, CurrentTarget)
 	else:
 		end_turn()
 		return
@@ -1109,7 +1128,7 @@ func end_turn() -> void:
 
 	await get_tree().create_timer(0.1).timeout
 	show_state_effects()
-	await act.end_turn_checks()
+	await remove_queued_states(CurrentChar)
 	if is_instance_valid(CurrentChar.node):
 		CurrentChar.node.z_index = 0
 
@@ -1137,7 +1156,7 @@ func damage(
 ) -> int:
 	# A sprung trap interrupts the ability against the hit target, so it can't
 	# deal any more damage in that sequence
-	if act.interrupted:
+	if interrupted:
 		print_rich("[color=cornflower-blue]Ability was interrupted by a trap, no damage dealt")
 		return 0
 
@@ -1206,7 +1225,7 @@ func damage(
 	):
 		print("Damage on ", target.first_name, " was clutched")
 		limiter = true
-		queue_sequence_for_actor(target, target.death_sequence)
+		queue_sequence_for_actor(target, target.death_action_sequence, "DeathSequence")
 
 	# Actual damage happens
 	target.damage(dmg, limiter)
@@ -1321,7 +1340,7 @@ func queue_traps(target: Actor, is_magic: bool, relation: Wheel.Relation, dmg: i
 
 	# Cancel any further damage the interrupting ability would have dealt
 	if sprung:
-		act.interrupted = true
+		interrupted = true
 
 	return sprung
 
@@ -1360,13 +1379,11 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 	var prev_ability := CurrentAbility
 	var prev_target := CurrentTarget
 	var prev_initial := initial
-	var prev_miss: bool = act.miss
-	var prev_crit: bool = act.crit
-	var prev_interrupted: bool = act.interrupted
+	var prev_interrupted := interrupted
 
 	in_trap = true
 	hold_turn()
-	act.interrupted = false
+	interrupted = false
 
 	# The counter runs during the attacker's turn, so `initial` holds the
 	# attacker's home position. Point it at the trap owner instead, so any
@@ -1388,30 +1405,17 @@ func trigger_trap(trap: Trap, victim: Actor, hitter: Actor) -> void:
 	CurrentChar = victim
 	CurrentAbility = trap.ability
 	CurrentTarget = tgt
-	act.CurrentChar = victim
-	act.roll_rng(tgt)
 
 	if trap.ability.action_sequence != null and not trap.ability.action_sequence.is_empty():
-		var outcome := HitOutcome.HIT
-
-		if act.miss:
-			outcome = HitOutcome.MISS
-		elif act.crit:
-			outcome = HitOutcome.CRIT
-
+		var outcome := action_runner.roll_ability(trap.ability, victim, tgt)
 		await action_runner.run_trap(trap.ability, victim, tgt, outcome)
-	elif trap.ability.legacy_action_sequence != &"":
-		await act.call(trap.ability.legacy_action_sequence, tgt)
 
 	# Restore the surrounding context
 	initial = prev_initial
 	CurrentChar = prev_char
 	CurrentAbility = prev_ability
 	CurrentTarget = prev_target
-	act.CurrentChar = prev_char
-	act.miss = prev_miss
-	act.crit = prev_crit
-	act.interrupted = prev_interrupted
+	interrupted = prev_interrupted
 	release_turn()
 	in_trap = false
 
@@ -1432,11 +1436,16 @@ func apply_trap(trap: Trap, target: Actor, inflicter: Actor = null, await_effect
 	return await target.add_state(place, -1, inflicter if inflicter != null else CurrentChar, true, await_effect)
 
 
-func queue_sequence_for_actor(chara: Actor, sequence_name: String) -> void:
+func queue_sequence_for_actor(
+	chara: Actor, action_sequence: ActionSequence, sequence_name := "Sequence"
+) -> void:
+	if chara == null or action_sequence == null or action_sequence.steps.is_empty():
+		return
+
 	var ab := Ability.nothing().duplicate()
 	ab.name = sequence_name
-	ab.legacy_action_sequence = sequence_name
-	queue_action(chara, ab, null, Actor.BtAction.ACT)
+	ab.action_sequence = action_sequence
+	queue_action(chara, ab, chara, Actor.BtAction.ACT)
 
 
 ## Queues an intent without touching actor fields at the call site.
@@ -1802,11 +1811,11 @@ func death(target: Actor) -> void:
 
 	await Event.wait(1)
 	if (
-		not target.death_sequence.is_empty()
+		target.death_action_sequence != null
+		and not target.death_action_sequence.steps.is_empty()
 		and not target.cant_die
-		and act.has_method(target.death_sequence)
 	):
-		await act.call(target.death_sequence, target)
+		await run_battle_sequence(target.death_action_sequence, target, target, false)
 
 	release_turn()
 
@@ -1852,9 +1861,8 @@ func game_over(target: Actor = null) -> void:
 
 	if sequence.defeat_sequence != null and not sequence.defeat_sequence.steps.is_empty():
 		await run_battle_sequence(sequence.defeat_sequence, Party.Leader, null, false)
-	elif sequence.DefeatSequence == "":
+	else:
 		UI.game_over()
-	else: act.call(sequence.DefeatSequence)
 
 
 func delete_actor(target: Actor) -> void:
@@ -2073,10 +2081,6 @@ func heal(
 	target: Actor,
 	amount: int = Query.calc_num() * int(CurrentChar.magic * CurrentChar.magic_multiplier)
 ) -> void:
-	# Fallback for legacy abilities that have no sequence ValueRef yet.
-	if CurrentAbility.damage_variance:
-		amount = round(amount * randf_range(1, 1.5))
-
 	amount = min(amount, target.max_hp - target.health)
 	target.add_health(amount)
 	ui.targetFoc.emit(target)
@@ -2290,10 +2294,6 @@ func victory(ignore_seq := false) -> void:
 
 	if sequence.victory_sequence != null and not ignore_seq:
 		await run_battle_sequence(sequence.victory_sequence, Party.Leader, null, false)
-		return
-
-	if sequence.VictorySequence != "" and not ignore_seq:
-		act.call(sequence.VictorySequence)
 		return
 
 	if sequence.VictoryBanter != "":

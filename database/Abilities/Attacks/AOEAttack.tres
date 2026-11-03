@@ -226,6 +226,3 @@ success_chance = 0.9
 crit_chance = 0.1
 types = Array[int]([1])
 recover_aura = true
-Damage = 6
-damage_variance = true
-legacy_action_sequence = &"AOEAttack"

@@ -4,7 +4,7 @@ class_name HealStep
 
 @export var target: ActorRef
 @export var amount: ValueRef
-## Randomise the final amount, matching the legacy damage_variance behaviour.
+## Randomise the final amount.
 @export var variance := false
 @export var variance_min := 1.0
 @export var variance_max := 1.5

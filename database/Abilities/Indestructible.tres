@@ -49,7 +49,8 @@ mode = 1
 [sub_resource type="Resource" id="Resource_elry4"]
 resource_name = "ability power"
 script = ExtResource("7_psuwb")
-damage_scale = 5
+source = 0
+value = 2.0
 
 [sub_resource type="Resource" id="Resource_diipu"]
 script = ExtResource("6_xxn1l")
@@ -87,7 +88,4 @@ target = 3
 action_sequence = SubResource("Resource_70v2r")
 aura_cost = 17
 types = Array[int]([3])
-InflictsState = "DefenceUp"
-Parameter = 2.0
-legacy_action_sequence = &"DefenceUp3"
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

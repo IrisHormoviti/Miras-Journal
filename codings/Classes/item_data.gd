@@ -52,8 +52,8 @@ enum T {SELF, ONE_ALLY, AOE_ALLIES}
 @export var overworld_target: T = T.ONE_ALLY
 ## An ability for when this item is used in battle
 @export var battle_effect: Ability
-## Deprecated: set the value on the sequence's ValueRef instead.
-@export var Parameter: String
+## HP restored when this item is used for healing outside battle
+@export var overworld_heal: int = 0
 
 
 func get_artwork() -> Texture:
