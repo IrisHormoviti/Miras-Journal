@@ -8,26 +8,57 @@
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="5_bg0et"]
 [ext_resource type="Resource" path="res://database/Sequences/Action/AsteriaBossSummon.tres" id="6_summon"]
 [ext_resource type="Resource" path="res://database/Sequences/Action/AsteriaBossPhase.tres" id="7_phase"]
+[ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="cond_be_turn"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="cond_be_actor"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_be_stat"]
+[ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="cond_be_base"]
+[ext_resource type="Script" uid="uid://2x865joteqom" path="res://codings/Battle/Steps/Conditions/all_condition.gd" id="cond_be_all"]
+
+[sub_resource type="Resource" id="Resource_ym1rv_turn_0"]
+script = ExtResource("cond_be_turn")
+turn_min = 3
+
+[sub_resource type="Resource" id="Resource_ym1rv_ref_1"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Asteria"
+
+[sub_resource type="Resource" id="Resource_ym1rv_health_2"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_ym1rv_ref_1")
+comparator = 4
+value = 50
+
+[sub_resource type="Resource" id="Resource_ym1rv_all_3"]
+script = ExtResource("cond_be_all")
+conditions = Array[ExtResource("cond_be_base")]([SubResource("Resource_ym1rv_turn_0"), SubResource("Resource_ym1rv_health_2")])
 
 [sub_resource type="Resource" id="Resource_ym1rv"]
 script = ExtResource("3_bg0et")
-after_turn = 3
-actor = &"Asteria"
-low_hp = 50
+condition = SubResource("Resource_ym1rv_all_3")
 result = 6
 hold_turn = true
 sequence = ExtResource("6_summon")
 sequence_caster = &"Asteria"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
+[sub_resource type="Resource" id="Resource_bg0et_ref_4"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Asteria"
+
+[sub_resource type="Resource" id="Resource_bg0et_health_5"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_bg0et_ref_4")
+comparator = 4
+value = 15
+
 [sub_resource type="Resource" id="Resource_bg0et"]
 script = ExtResource("3_bg0et")
+condition = SubResource("Resource_bg0et_health_5")
 repeatable = true
-actor = &"Asteria"
-low_hp = 15
 result = 6
 hold_turn = true
-add_flag = false
 sequence = ExtResource("7_phase")
 sequence_caster = &"Asteria"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"

@@ -11,24 +11,48 @@
 [ext_resource type="Resource" path="res://database/Sequences/Action/StoneGuardianAdapt.tres" id="8_adapt"]
 [ext_resource type="Resource" path="res://database/Sequences/Action/StoneGuardianLoop.tres" id="9_loop"]
 [ext_resource type="Resource" path="res://database/Sequences/Action/StoneGuardianVictory.tres" id="10_vict"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="cond_be_actor"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_be_stat"]
+[ext_resource type="Script" uid="uid://cfuw4m52tqwxx" path="res://codings/Battle/Steps/Conditions/flag_condition.gd" id="cond_be_flag"]
+
+[sub_resource type="Resource" id="Resource_d2kvd_ref_0"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Guardian"
+
+[sub_resource type="Resource" id="Resource_d2kvd_aura_1"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_d2kvd_ref_0")
+stat = 1
+comparator = 5
+value = 1
 
 [sub_resource type="Resource" id="Resource_d2kvd"]
 script = ExtResource("3_oponu")
+condition = SubResource("Resource_d2kvd_aura_1")
 repeatable = true
-actor = &"Guardian"
-low_ap = 1
 result = 3
 resource = ExtResource("6_t20i2")
+event_actor = &"Guardian"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[sub_resource type="Resource" id="Resource_t20i2_ref_2"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Guardian"
+
+[sub_resource type="Resource" id="Resource_t20i2_health_3"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_t20i2_ref_2")
+comparator = 4
+value = 100
 
 [sub_resource type="Resource" id="Resource_t20i2"]
 script = ExtResource("3_oponu")
+condition = SubResource("Resource_t20i2_health_3")
 repeatable = true
-actor = &"Guardian"
-low_hp = 100
 result = 6
 hold_turn = true
-add_flag = false
 sequence = ExtResource("8_adapt")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
@@ -40,24 +64,35 @@ hold_turn = true
 sequence = ExtResource("9_loop")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
+[sub_resource type="Resource" id="Resource_yttu5_flag_4"]
+script = ExtResource("cond_be_flag")
+expression = &"Event/StoneGuardianFinisher = 1"
+
 [sub_resource type="Resource" id="Resource_yttu5"]
 script = ExtResource("3_oponu")
+condition = SubResource("Resource_yttu5_flag_4")
 repeatable = true
-flag = &"StoneGuardianFinisher"
-flag_should_be = true
 result = 6
 hold_turn = true
-add_flag = false
 sequence = ExtResource("10_vict")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
+[sub_resource type="Resource" id="Resource_oponu_ref_5"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Guardian"
+
+[sub_resource type="Resource" id="Resource_oponu_health_6"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_oponu_ref_5")
+comparator = 4
+value = 200
+
 [sub_resource type="Resource" id="Resource_oponu"]
 script = ExtResource("3_oponu")
-actor = &"Guardian"
-low_hp = 200
+condition = SubResource("Resource_oponu_health_6")
 parameter1 = "story_0"
 parameter2 = "stone_guardian_still_standing"
-add_flag = false
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [resource]

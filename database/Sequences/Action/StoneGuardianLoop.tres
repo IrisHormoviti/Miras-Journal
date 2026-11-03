@@ -14,7 +14,7 @@
 [ext_resource type="Resource" uid="uid://c2tn8slm5k1jq" path="res://database/Abilities/RockThrow.tres" id="12_ewh3h"]
 [ext_resource type="Script" uid="uid://cfuw4m52tqwxx" path="res://codings/Battle/Steps/Conditions/flag_condition.gd" id="cond_1"]
 [ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="cond_2"]
-[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/health_condition.gd" id="cond_3"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_3"]
 [ext_resource type="Script" uid="uid://bgvrojif782vq" path="res://codings/Battle/Steps/Conditions/last_ability_condition.gd" id="cond_5"]
 [ext_resource type="Script" uid="uid://bs3ogoe3gvxhs" path="res://codings/Battle/Steps/Conditions/actor_equals_condition.gd" id="cond_13"]
 [ext_resource type="Script" uid="uid://2x865joteqom" path="res://codings/Battle/Steps/Conditions/all_condition.gd" id="cond_16"]

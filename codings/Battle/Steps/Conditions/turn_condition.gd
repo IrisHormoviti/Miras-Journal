@@ -12,7 +12,6 @@ enum Parity {
 @export var turn_max := -1
 @export var parity: Parity = Parity.ANY
 
-
 func check(ctx: ActionSequenceContext) -> bool:
 	var turn := ctx.battle.Turn
 

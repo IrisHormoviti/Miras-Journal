@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://1out28n0606o" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="11_dkbbn"]
 [ext_resource type="Script" uid="uid://b2viaujc062mm" path="res://codings/Battle/Steps/Actor/troop_step.gd" id="12_rmr3a"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_yqefk"]
-[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/health_condition.gd" id="cond_3"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_3"]
 [ext_resource type="Script" uid="uid://dpqi4c4kik5r8" path="res://codings/Battle/Steps/Conditions/group_size_condition.gd" id="cond_9"]
 
 [sub_resource type="Resource" id="Resource_h0e5d"]

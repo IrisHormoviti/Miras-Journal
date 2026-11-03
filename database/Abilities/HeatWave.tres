@@ -223,6 +223,7 @@ script = ExtResource("aoe_each")
 group = 4
 exclude_caster = true
 wait = false
+stagger = 0.1
 steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_agcte")])
 
 [sub_resource type="Resource" id="Resource_4whjw"]

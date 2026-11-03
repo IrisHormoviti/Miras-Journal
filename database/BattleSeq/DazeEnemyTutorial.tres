@@ -6,10 +6,15 @@
 [ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="4_sotm4"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="5_2isgh"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="5_d6nks"]
+[ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="cond_be_turn"]
+
+[sub_resource type="Resource" id="Resource_xovcb_turn_0"]
+script = ExtResource("cond_be_turn")
+turn_min = 2
 
 [sub_resource type="Resource" id="Resource_xovcb"]
 script = ExtResource("4_sotm4")
-after_turn = 2
+condition = SubResource("Resource_xovcb_turn_0")
 result = 2
 parameter1 = "story_1"
 parameter2 = "daze_enemy_3"

@@ -162,12 +162,12 @@ func _to_string() -> String:
 
 	match mode:
 		Mode.ABSOLUTE:
-			return str(position) + suffix
+			return str(Vector2i(position)) + suffix
 
 		Mode.ABSOLUTE_X:
-			return "x %s%s" % [str(x), suffix]
+			return "x %d%s" % [x, suffix]
 
 		Mode.ABSOLUTE_Y:
-			return "y %s" % str(y)
+			return "y %d" % y
 
 	return str(Mode.find_key(mode)).capitalize()

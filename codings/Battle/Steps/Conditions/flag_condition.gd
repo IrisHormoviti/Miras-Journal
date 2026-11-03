@@ -3,7 +3,9 @@ extends BattleCondition
 class_name FlagCondition
 
 ## A flag expression evaluated by [method Event.f], for example
-## "Event/BossPhase >= 2" or "Event/GuardianDown = 1".
+## "Event/BossPhase >= 2" or "Event/GuardianDown = 1". Flag names used here
+## should avoid spaces and expression operators, because [method Event.f]
+## parses the whole string as an expression.
 
 @export var expression: StringName = &""
 

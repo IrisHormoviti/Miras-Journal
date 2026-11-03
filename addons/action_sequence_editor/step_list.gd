@@ -28,6 +28,10 @@ var property: StringName = &""
 var toggle_property: StringName = &""
 var known_property: StringName = &""
 var title := ""
+var branch_enabled := true
+## The parent StepCard's expansion state. Disabled branches are only shown
+## while the card is expanded.
+var parent_expanded := false
 var cards: Array = []
 var signature: Array[int] = [-1]
 var object_id := 0
@@ -573,9 +577,24 @@ func sync_toggle() -> void:
 
 
 func apply_enabled(enabled: bool) -> void:
+	branch_enabled = enabled
 	list.visible = enabled
 	add_button.visible = enabled
 	count_label.visible = enabled
+	_refresh_branch_visibility()
+
+
+## Called by the owning StepCard when it expands or collapses.
+func set_parent_expanded(value: bool) -> void:
+	if parent_expanded == value:
+		return
+
+	parent_expanded = value
+	_refresh_branch_visibility()
+
+
+func _refresh_branch_visibility() -> void:
+	visible = branch_enabled or parent_expanded
 
 
 func on_branch_toggled(pressed: bool) -> void:

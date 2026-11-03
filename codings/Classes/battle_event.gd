@@ -1,22 +1,17 @@
 extends Resource
 class_name BattleEvent
 
-@export_group("Condition")
+## Runs a result when its [member condition] passes. Conditions are regular
+## [BattleCondition] resources, so events share the same checks as branches
+## instead of having their own flag, turn and stat fields.
+
+@export_category("Condition")
+## Condition that decides whether the event runs. Empty always runs.
+@export var condition: BattleCondition
 ## Should be repeated every turn this condition applies.
 ## Otherwise only runs once.
 @export var repeatable := false
-##Check this flag
-@export var flag: StringName = &""
-@export var flag_should_be: bool = false
-##If all other conditions are met, the event will play on this turn or after it, -1 to disable
-@export var after_turn: int = -1
-##The event will play if the actor's HP is lower than [member low_hp]. Leave empty to skip
-@export var actor: StringName = &""
-## Activate when HP is below this, -1 to disable
-@export var low_hp: int = -1
-## Activate when HP is below this, -1 to disable
-@export var low_ap: int = -1
-@export_group("Result")
+@export_category("Result")
 
 enum RES {PASSIVE_DIALOG, CALL_FUNCTION, REGULAR_DIALOG, FORCE_MOVE, VICTORY, DEFEAT_OTHERS, SEQUENCE}
 @export var result: RES = RES.PASSIVE_DIALOG
@@ -28,8 +23,13 @@ enum RES {PASSIVE_DIALOG, CALL_FUNCTION, REGULAR_DIALOG, FORCE_MOVE, VICTORY, DE
 @export var resource: Resource = null
 ##Continue to the next turn only after the event is done
 @export var hold_turn := false
-##set [member flag] to the oposite of [member flag_should_be] after running
-@export var add_flag: bool = true
+## Actor affected by [constant RES.FORCE_MOVE] or spared by
+## [constant RES.DEFEAT_OTHERS]. Empty uses the current actor.
+@export var event_actor: StringName = &""
+## Set this flag after the event runs. Empty leaves flags untouched.
+@export var on_run_flag: StringName = &""
+## Value written to [member on_run_flag] after the event runs.
+@export var on_run_flag_value := true
 
 @export_group("Sequence")
 ## The sequence played by [constant RES.SEQUENCE].
@@ -42,35 +42,34 @@ var ran_this_turn := false
 
 
 func check() -> bool:
-	var actore := Global.bt.get_actor(actor)
-
-	if ran_this_turn: return false
-	if not is_instance_valid(Global.bt): return false
-	if not flag.is_empty() and Event.check_flag(flag) != flag_should_be:
+	if ran_this_turn:
 		return false
 
-	if after_turn != -1:
-		if Global.bt.Turn < after_turn: return false
+	if not is_instance_valid(Global.bt):
+		return false
 
-	if low_hp != -1 and low_hp >= 0:
-		if actor == &"" or actore == null:
-			push_warning("The event refrences " + actor + " who is not present")
-			return false
+	if condition == null:
+		return true
 
-		if actore.health >= low_hp: return false
+	return condition.check(_condition_context())
 
-	if low_ap != -1 and low_ap >= 0:
-		if actor == &"" or actore == null:
-			push_warning("The event refrences " + actor + " who is not present")
-			return false
 
-		if actore.aura > low_ap: return false
+## Builds a context for the condition from the current battle state.
+func _condition_context() -> ActionSequenceContext:
+	var ctx := ActionSequenceContext.new()
+	ctx.battle = Global.bt
+	ctx.runner = Global.bt.action_runner
+	ctx.caster = Global.bt.CurrentChar
+	ctx.target = Global.bt.CurrentTarget
+	return ctx
 
-	if low_hp == 0:
-		if actore != null and not actore.has_state("KnockedOut"):
-			return false
 
-	return true
+## Resolves [member event_actor], falling back to the current actor when empty.
+func _resolve_event_actor(unsafe := false) -> Actor:
+	if event_actor.is_empty():
+		return Global.bt.CurrentChar
+
+	return Global.bt.get_actor(event_actor, unsafe)
 
 
 func run() -> void:
@@ -105,20 +104,26 @@ func run() -> void:
 					"Command":
 						action = Actor.BtAction.COMMAND
 
-				var actor_data := Global.bt.get_actor(actor)
-				actor_data.next_action = action
-				actor_data.next_move = resource
-				print("Forcing ", resource.name, " on ", actor)
-				if not parameter2.is_empty():
-					actor_data.next_target = Global.bt.get_actor(parameter2)
+				var actor_data := _resolve_event_actor()
+
+				if actor_data == null:
+					push_warning("Battle event FORCE_MOVE could not resolve an actor")
+				else:
+					actor_data.next_action = action
+					actor_data.next_move = resource
+					print("Forcing ", resource.name, " on ", actor_data.codename)
+
+					if not parameter2.is_empty():
+						actor_data.next_target = Global.bt.get_actor(parameter2)
 
 			RES.VICTORY:
 				print("Event means win")
 				Global.bt.victory()
 
 			RES.DEFEAT_OTHERS:
-				print("Defeating everyone but ", actor)
-				var actor_data := Global.bt.get_actor(actor, true)
+				var actor_data := _resolve_event_actor(true)
+				var spared := actor_data.codename if actor_data != null else event_actor
+				print("Defeating everyone but ", spared)
 
 				if actor_data != null and actor_data.is_enemy:
 					for i in Global.bt.Troop:
@@ -128,7 +133,8 @@ func run() -> void:
 			RES.SEQUENCE:
 				run_sequence()
 
-	if add_flag and flag != "": Event.add_flag(flag, !flag_should_be)
+	if not on_run_flag.is_empty():
+		Event.add_flag(on_run_flag, 1 if on_run_flag_value else 0)
 
 
 func run_with_await() -> void:

@@ -36,6 +36,7 @@ func _ready() -> void:
 	duplicate_button.pressed.connect(on_duplicate_pressed)
 	remove_button.pressed.connect(on_remove_pressed)
 	gui_input.connect(on_card_gui_input)
+	resized.connect(_on_resized)
 
 
 func setup(p_editor, p_step: BattleStep, p_index: int) -> void:
@@ -73,7 +74,13 @@ func build_children() -> void:
 		children.add_child(list)
 		list.steps_changed.connect(on_child_steps_committed)
 		list.setup(step, property)
+		list.set_parent_expanded(expanded)
 		child_editors.append(list)
+
+
+func _sync_child_expansion() -> void:
+	for child in child_editors:
+		child.set_parent_expanded(expanded)
 
 
 func on_child_steps_committed(property: StringName, steps: Array) -> void:
@@ -135,9 +142,13 @@ func set_expanded(value: bool) -> void:
 	body.visible = value
 	apply_expanded_background()
 	set_process(value or has_children)
+	_sync_child_expansion()
 
 	if value:
 		ensure_inspector()
+
+	duplicate_button.visible = value
+	remove_button.visible = value or size.x > 500
 
 	if inspector != null:
 		watch_inspector_rows(inspector)
@@ -347,3 +358,9 @@ func editor_icon(icon_name: String) -> Texture2D:
 		return null
 
 	return base.get_theme_icon(icon_name, "EditorIcons")
+
+
+func _on_resized() -> void:
+	type_label.visible = size.x > 500
+	remove_button.visible = size.x > 500
+	index_label.visible = size.x > 600

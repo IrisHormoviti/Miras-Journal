@@ -275,11 +275,3 @@ func FlyAway(chara: Actor) -> void:
 	await Event.wait(2.5, false)
 	Bt.death(chara)
 #endregion
-
-################################################
-
-
-#region Battle events
-## Cutscene and boss sequences are authored as ActionSequence resources in
-## database/Sequences and run by BattleEvent, so they no longer live here.
-#endregion

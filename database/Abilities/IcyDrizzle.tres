@@ -201,6 +201,7 @@ hit_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_5uexj"), SubRes
 miss_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_feshl")])
 
 [sub_resource type="Resource" id="Resource_hit_ec0gy"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 
@@ -223,6 +224,7 @@ script = ExtResource("aoe_each")
 group = 4
 exclude_caster = true
 wait = false
+stagger = 0.3
 steps = Array[ExtResource("3_223rs")]([SubResource("Resource_57mot"), SubResource("Resource_g7gta"), SubResource("Resource_83t34"), SubResource("Resource_qoj0b"), SubResource("Resource_lm64c"), SubResource("Resource_ympqw"), SubResource("Resource_5er56"), SubResource("Resource_mmtq5"), SubResource("Resource_ec0gy")])
 
 [sub_resource type="Resource" id="Resource_t57ii"]

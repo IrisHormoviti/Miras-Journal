@@ -13,66 +13,120 @@
 [ext_resource type="Resource" uid="uid://dbs3pn78pvpuc" path="res://database/Abilities/Glimmer.tres" id="10_x75j7"]
 [ext_resource type="Resource" uid="uid://c03xu7k23kclm" path="res://database/Sequences/Action/LazuliteHeartBossEntrance.tres" id="11_entr"]
 [ext_resource type="Resource" uid="uid://clol06pt2bego" path="res://database/Sequences/Action/LazuliteHeartBossVictory.tres" id="12_vict"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="cond_be_actor"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_be_stat"]
+
+[sub_resource type="Resource" id="Resource_0ymhv_ref_0"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHRight"
+
+[sub_resource type="Resource" id="Resource_0ymhv_health_1"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_0ymhv_ref_0")
+comparator = 4
+value = 95
 
 [sub_resource type="Resource" id="Resource_0ymhv"]
 script = ExtResource("3_4g4ty")
-actor = &"LHRight"
-low_hp = 95
+condition = SubResource("Resource_0ymhv_health_1")
 parameter1 = "story_2"
 parameter2 = "lazulite_heart_1"
 hold_turn = true
-add_flag = false
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[sub_resource type="Resource" id="Resource_mo6wr_ref_2"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHBody"
+
+[sub_resource type="Resource" id="Resource_mo6wr_health_3"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_mo6wr_ref_2")
+comparator = 4
+value = 200
 
 [sub_resource type="Resource" id="Resource_mo6wr"]
 script = ExtResource("3_4g4ty")
-actor = &"LHBody"
-low_hp = 200
+condition = SubResource("Resource_mo6wr_health_3")
 result = 3
 parameter1 = "Ability"
 resource = ExtResource("8_fmg4r")
+event_actor = &"LHBody"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[sub_resource type="Resource" id="Resource_fmg4r_ref_4"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHBody"
+
+[sub_resource type="Resource" id="Resource_fmg4r_health_5"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_fmg4r_ref_4")
+comparator = 4
+value = 100
 
 [sub_resource type="Resource" id="Resource_fmg4r"]
 script = ExtResource("3_4g4ty")
-actor = &"LHBody"
-low_hp = 100
+condition = SubResource("Resource_fmg4r_health_5")
 result = 3
 parameter1 = "Ability"
 resource = ExtResource("8_fmg4r")
+event_actor = &"LHBody"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_x75j7"]
 script = ExtResource("3_4g4ty")
-actor = &"LHBody"
 result = 3
 parameter1 = "Ability"
 resource = ExtResource("9_mo6wr")
+event_actor = &"LHBody"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_v5s8n"]
 script = ExtResource("3_4g4ty")
-actor = &"LHLeft"
 result = 3
 parameter1 = "Ability"
 parameter2 = "LHRight"
 resource = ExtResource("10_x75j7")
+event_actor = &"LHLeft"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[sub_resource type="Resource" id="Resource_ewt77_ref_6"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHBody"
+
+[sub_resource type="Resource" id="Resource_ewt77_health_7"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_ewt77_ref_6")
+comparator = 4
+value = 30
 
 [sub_resource type="Resource" id="Resource_ewt77"]
 script = ExtResource("3_4g4ty")
-actor = &"LHBody"
-low_hp = 30
+condition = SubResource("Resource_ewt77_health_7")
 parameter1 = "story_2"
 parameter2 = "lazulite_heart_2"
 hold_turn = true
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
+[sub_resource type="Resource" id="Resource_4pxea_ref_8"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHBody"
+
+[sub_resource type="Resource" id="Resource_4pxea_health_9"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_4pxea_ref_8")
+comparator = 4
+value = 1
+
 [sub_resource type="Resource" id="Resource_4pxea"]
 script = ExtResource("3_4g4ty")
-actor = &"LHBody"
-low_hp = 1
+condition = SubResource("Resource_4pxea_health_9")
 result = 5
+event_actor = &"LHBody"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [resource]

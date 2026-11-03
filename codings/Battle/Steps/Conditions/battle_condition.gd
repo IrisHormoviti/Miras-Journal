@@ -3,6 +3,7 @@
 extends Resource
 class_name BattleCondition
 
+
 ## Base class for the conditions a BranchStep can test. Each concrete condition
 ## lives in its own subclass and owns only the fields it needs.
 
@@ -15,6 +16,26 @@ enum Comparator {
 	LE,
 }
 
+## Human-readable labels for [enum Comparator], in enum order. Keep this in
+## sync with the enum so the inspector never shows bare abbreviations.
+const COMPARATOR_LABELS := (
+	"Equal to,Not equal to,Greater than,At least,Less than,At most"
+)
+
+
+## Shows readable labels for comparison dropdowns instead of EQ/NE/GT/GE/LT/LE.
+## Also refreshes [member resource_name] while the inspector or ResourceSaver
+## builds the property list, so saved conditions keep an accurate summary.
+func _validate_property(property: Dictionary) -> void:
+	var summary := to_string()
+
+	if resource_name != summary:
+		resource_name = summary
+
+	if str(property.name) == "comparator":
+		property.hint = PROPERTY_HINT_ENUM
+		property.hint_string = COMPARATOR_LABELS
+
 
 ## Returns whether this condition currently passes.
 func check(_ctx: ActionSequenceContext) -> bool:
@@ -22,25 +43,25 @@ func check(_ctx: ActionSequenceContext) -> bool:
 
 
 ## Compares two numbers with a comparator, shared by the numeric conditions.
-static func compare(left: float, comparison: Comparator, right: float) -> bool:
+static func compare(one: float, comparison: Comparator, two: float) -> bool:
 	match comparison:
 		Comparator.EQ:
-			return is_equal_approx(left, right)
+			return is_equal_approx(one, two)
 
 		Comparator.NE:
-			return not is_equal_approx(left, right)
+			return not is_equal_approx(one, two)
 
 		Comparator.GT:
-			return left > right
+			return one > two
 
 		Comparator.GE:
-			return left >= right
+			return one >= two
 
 		Comparator.LT:
-			return left < right
+			return one < two
 
 		Comparator.LE:
-			return left <= right
+			return one <= two
 
 	return false
 
@@ -63,25 +84,33 @@ func right(ctx: ActionSequenceContext, other: ActorRef) -> Actor:
 	return other.resolve(ctx) if other != null else ctx.target
 
 
+## Formats whole numbers without a trailing ".0" in card summaries.
+func number_label(number: float) -> String:
+	if is_equal_approx(number, roundf(number)):
+		return str(int(roundf(number)))
+
+	return str(number)
+
+
 func comparator_label(comparison: Comparator) -> String:
 	match comparison:
 		Comparator.EQ:
-			return "="
+			return "equals"
 
 		Comparator.NE:
-			return "!="
+			return "does not equal"
 
 		Comparator.GT:
-			return ">"
+			return "is greater than"
 
 		Comparator.GE:
-			return ">="
+			return "is at least"
 
 		Comparator.LT:
-			return "<"
+			return "is less than"
 
 		Comparator.LE:
-			return "<="
+			return "is at most"
 
 	return "?"
 

@@ -147,6 +147,7 @@ group = 3
 include_dead = true
 exclude_caster = true
 wait = false
+stagger = 0.3
 steps = Array[ExtResource("2_mtp8p")]([SubResource("Resource_qqvra"), SubResource("Resource_schel"), SubResource("Resource_sr6fk")])
 
 [sub_resource type="Resource" id="Resource_2otfq"]

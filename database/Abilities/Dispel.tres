@@ -11,7 +11,7 @@
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="9_q6byp"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="10_qriw3"]
 [ext_resource type="Texture2D" uid="uid://cj2ohe8qn3uph" path="res://art/Icons/Items.tres" id="11_6h25g"]
-[ext_resource type="Script" uid="uid://dgmk1muuumhc" path="res://codings/Battle/Steps/Conditions/states_empty_condition.gd" id="cond_11"]
+[ext_resource type="Script" uid="uid://dgmk1muuumhc" path="res://codings/Battle/Steps/Conditions/collection_condition.gd" id="cond_11"]
 
 [sub_resource type="Resource" id="Resource_wgwrg"]
 resource_name = "Target"

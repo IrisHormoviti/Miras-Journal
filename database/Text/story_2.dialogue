@@ -348,7 +348,7 @@ Mira.Neutral: Let's look for a way out.
 ~ cast_lines_sg
 $> player.look_to(Direction.UP)
 $> player.camera_follow(false)
-$> Camera.position = Vector2(-158, -18)
+$> camera_move(Vector2(-158, -18))
 $> wait(1)
 Mira.Neutral: Look, there are a lot of cast lines scattered around here.
 Mira.Neutral: Is this some sort of spell?
@@ -404,7 +404,7 @@ else:
 
 ~ sg_find_bunker
 $> player.camera_follow(false)
-$> Camera.position += Vector2(0, -120)
+$> camera_move_relative(Vector2(0, -120))
 if Party.has_member_index(3):
 	Asteria.Neutral: This is it.
 	Mira.Neutral: What's the deal with all the crystals?

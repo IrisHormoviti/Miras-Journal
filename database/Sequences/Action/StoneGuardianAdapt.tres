@@ -21,7 +21,7 @@
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="20_5rm1y"]
 [ext_resource type="Script" uid="uid://dxycvdv0l12r3" path="res://codings/Battle/Steps/Meta/event_step.gd" id="21_2tsdp"]
 [ext_resource type="Script" uid="uid://5k3ongxwrrib" path="res://codings/Battle/Steps/Scheduling/turn_step.gd" id="22_vjj1r"]
-[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/health_condition.gd" id="cond_3"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_3"]
 [ext_resource type="Script" uid="uid://bs3ogoe3gvxhs" path="res://codings/Battle/Steps/Conditions/actor_equals_condition.gd" id="cond_13"]
 
 [sub_resource type="Resource" id="Resource_gl2jn"]

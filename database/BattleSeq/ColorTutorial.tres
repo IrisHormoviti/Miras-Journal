@@ -9,11 +9,24 @@
 [ext_resource type="AudioStream" uid="uid://ds1kaffxnc51u" path="res://sound/Music/Lost in the Ruins - Learning Experience.ogg" id="6_p1b4p"]
 [ext_resource type="AudioStream" uid="uid://ci5i63oqkmt1k" path="res://sound/Music/Lost in the Ruins - Victory.ogg" id="7_6r3l7"]
 [ext_resource type="Resource" path="res://database/Sequences/Action/ColorTutorialEntrance.tres" id="8_entr"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="cond_be_actor"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_be_stat"]
+
+[sub_resource type="Resource" id="Resource_70ffl_ref_0"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"MagicWall"
+
+[sub_resource type="Resource" id="Resource_70ffl_aura_1"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_70ffl_ref_0")
+stat = 1
+comparator = 5
+value = 1
 
 [sub_resource type="Resource" id="Resource_70ffl"]
 script = ExtResource("4_p1b4p")
-actor = &"MagicWall"
-low_ap = 1
+condition = SubResource("Resource_70ffl_aura_1")
 result = 2
 parameter1 = "story_0"
 parameter2 = "color_tutorial_aurabreak"

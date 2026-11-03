@@ -14,6 +14,11 @@
 [ext_resource type="Resource" uid="uid://dni1n5366ogl1" path="res://database/Sequences/Action/FirstBattleAura1.tres" id="13_aura1"]
 [ext_resource type="Resource" uid="uid://c80uk7o0lcc8y" path="res://database/Sequences/Action/FirstBattleAura2.tres" id="14_aura2"]
 [ext_resource type="Resource" uid="uid://dxgmdc611fm3x" path="res://database/Sequences/Action/FirstBattleAura3.tres" id="15_aura3"]
+[ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="cond_be_turn"]
+
+[sub_resource type="Resource" id="Resource_6vdia_turn_0"]
+script = ExtResource("cond_be_turn")
+turn_min = 1
 
 [sub_resource type="Resource" id="Resource_kgu6i"]
 script = ExtResource("2_kk4y6")
@@ -24,32 +29,40 @@ callout = false
 
 [sub_resource type="Resource" id="Resource_6vdia"]
 script = ExtResource("2_68ui3")
-after_turn = 1
-actor = &"CrawlingSludge"
+condition = SubResource("Resource_6vdia_turn_0")
 result = 3
 parameter1 = "Attack"
 resource = SubResource("Resource_kgu6i")
-add_flag = false
+event_actor = &"CrawlingSludge"
+
+[sub_resource type="Resource" id="Resource_g722f_turn_1"]
+script = ExtResource("cond_be_turn")
+turn_min = 3
 
 [sub_resource type="Resource" id="Resource_g722f"]
 script = ExtResource("2_68ui3")
-after_turn = 3
+condition = SubResource("Resource_g722f_turn_1")
 result = 6
-add_flag = false
 sequence = ExtResource("13_aura1")
+
+[sub_resource type="Resource" id="Resource_baynq_turn_2"]
+script = ExtResource("cond_be_turn")
+turn_min = 4
 
 [sub_resource type="Resource" id="Resource_baynq"]
 script = ExtResource("2_68ui3")
-after_turn = 4
+condition = SubResource("Resource_baynq_turn_2")
 result = 6
-add_flag = false
 sequence = ExtResource("14_aura2")
+
+[sub_resource type="Resource" id="Resource_d4pnn_turn_3"]
+script = ExtResource("cond_be_turn")
+turn_min = 6
 
 [sub_resource type="Resource" id="Resource_d4pnn"]
 script = ExtResource("2_68ui3")
-after_turn = 6
+condition = SubResource("Resource_d4pnn_turn_3")
 result = 6
-add_flag = false
 sequence = ExtResource("15_aura3")
 
 [resource]

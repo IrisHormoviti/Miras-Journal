@@ -1619,7 +1619,7 @@ dialogue_cue = "sg_bunker_entrance"
 
 [node name="EvCastLines" parent="." unique_id=1299527673 instance=ExtResource("26_yhh0x")]
 position = Vector2(-143, -26)
-add_the_flag = true
+ShowTextbox = true
 text_file = "story_2"
 text_cue = "cast_lines_sg"
 

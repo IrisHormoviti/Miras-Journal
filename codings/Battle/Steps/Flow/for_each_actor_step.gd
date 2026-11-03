@@ -6,7 +6,13 @@ class_name ForEachActorStep
 @export var include_dead := false
 @export var exclude_caster := false
 ## Wait for every actor before moving on instead of running them all at once.
-@export var wait := true
+@export var wait := true:
+	set(value):
+		wait = value
+		notify_property_list_changed()
+## Delay between starting each actor when [member wait] is off. Use this to
+## stagger overlapping per-actor sequences, like AOE hits.
+@export_range(0.0, 5.0, 0.05, "or_greater", "suffix:s") var stagger := 0.0
 @export var steps: Array[BattleStep] = []
 
 
@@ -29,8 +35,12 @@ func _run_parallel(ctx: ActionSequenceContext) -> void:
 	if pending[0] == 0:
 		return
 
-	for actor in actors:
-		_run_actor_in_background(actor, ctx, func() -> void: pending[0] -= 1)
+	for i in actors.size():
+		_run_actor_in_background(actors[i], ctx, func() -> void: pending[0] -= 1)
+
+		# Stagger the launches so overlapping per-actor sequences don't hit at once.
+		if stagger > 0.0 and i < actors.size() - 1:
+			await ctx.battle.get_tree().create_timer(stagger, false).timeout
 
 	while pending[0] > 0:
 		await ctx.battle.get_tree().process_frame
@@ -70,16 +80,26 @@ func _actors(ctx: ActionSequenceContext) -> Array[Actor]:
 
 func _to_string() -> String:
 	var count := steps.size()
-	return "For %s %s: %d step%s" % [
+	var text := "For %s %s: %d step%s" % [
 		"each" if wait else "all",
 		str(ActorGroup.Kind.find_key(group)).to_lower().replace("_", " "),
 		count,
 		"" if count == 1 else "s",
 	]
 
+	if not wait and stagger > 0.0:
+		text += " (%.2fs stagger)" % stagger
+
+	return text
+
 
 func _validate_property(property: Dictionary) -> void:
-	StepEditor.only(property, ["group", "include_dead", "exclude_caster", "wait"])
+	var visible: Array[String] = ["group", "include_dead", "exclude_caster", "wait"]
+
+	if not wait:
+		visible.append("stagger")
+
+	StepEditor.only(property, visible)
 
 
 func walk() -> Array[BattleStep]:

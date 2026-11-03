@@ -18,7 +18,7 @@ const ICY_DRIZZLE := preload("res://database/Abilities/IcyDrizzle.tres")
 const TEST_DAMAGE := 5
 const AlwaysConditionScript = preload("res://codings/Battle/Steps/Conditions/always_condition.gd")
 const FlagConditionScript = preload("res://codings/Battle/Steps/Conditions/flag_condition.gd")
-const HealthConditionScript = preload("res://codings/Battle/Steps/Conditions/health_condition.gd")
+const StatConditionScript = preload("res://codings/Battle/Steps/Conditions/stat_condition.gd")
 const NotConditionScript = preload("res://codings/Battle/Steps/Conditions/not_condition.gd")
 const AllConditionScript = preload("res://codings/Battle/Steps/Conditions/all_condition.gd")
 const AnyConditionScript = preload("res://codings/Battle/Steps/Conditions/any_condition.gd")
@@ -29,7 +29,7 @@ const ActorEqualsConditionScript = preload("res://codings/Battle/Steps/Condition
 const HitOutcomeConditionScript = preload("res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd")
 const GroupSizeConditionScript = preload("res://codings/Battle/Steps/Conditions/group_size_condition.gd")
 const GroupStateConditionScript = preload("res://codings/Battle/Steps/Conditions/group_state_condition.gd")
-const SummonedAlliesConditionScript = preload("res://codings/Battle/Steps/Conditions/summoned_allies_condition.gd")
+const CollectionConditionScript = preload("res://codings/Battle/Steps/Conditions/collection_condition.gd")
 
 var battle: Battle
 var failed := false
@@ -81,6 +81,7 @@ func _ready() -> void:
 	await _test_asteria_followup()
 	await _test_new_step_modes()
 	await _test_battle_event_sequence()
+	await _test_battle_event_conditions()
 	await _test_conditions()
 
 	print("BATTLE_TEST_DONE failed=", failed)
@@ -400,6 +401,16 @@ func _test_aoe() -> void:
 	battle.no_misses = true
 	battle.no_crits = false
 
+	var each: ForEachActorStep = null
+
+	for step in ability.action_sequence.walk():
+		if step is ForEachActorStep:
+			each = step
+			break
+
+	if each == null or not is_equal_approx(each.stagger, 0.3):
+		_fail("Icy Drizzle lost its AOE stagger")
+
 	var first := battle.Troop[0]
 	var second := battle.Troop[1]
 	var first_before := first.health
@@ -672,6 +683,7 @@ const MIGRATED_BATTLE_SEQUENCES := [
 	"res://database/BattleSeq/AsteriaBoss.tres",
 	"res://database/BattleSeq/ColorTutorial.tres",
 	"res://database/BattleSeq/LazuliteHeartBoss.tres",
+	"res://database/BattleSeq/SkritcherRootDaze.tres",
 	"res://database/BattleSeq/StoneGuardianBoss.tres",
 	"res://database/BattleSeq/ArenaBattles/Round1.tres",
 	"res://database/BattleSeq/ArenaBattles/Round2.tres",
@@ -892,6 +904,84 @@ func _test_battle_event_sequence() -> void:
 	Event.remove_flag(flag)
 
 
+func _test_battle_event_conditions() -> void:
+	var flag := &"BattleTestEventCondition"
+	var condition := FlagConditionScript.new()
+	condition.expression = &"BattleTestEventCondition = 1"
+
+	var event := BattleEvent.new()
+	event.condition = condition
+	event.result = BattleEvent.RES.SEQUENCE
+
+	Event.remove_flag(flag)
+
+	if event.check():
+		_fail("Battle event passed while its flag condition was false")
+
+	Event.add_flag(flag, 1)
+
+	if not event.check():
+		_fail("Battle event did not pass its flag condition")
+
+	var health := StatConditionScript.new()
+	var ref := ActorRef.new(ActorRef.Mode.CODENAME)
+	ref.codename = Party.Leader.codename
+	health.actor = ref
+	health.comparator = BattleCondition.Comparator.GT
+	health.value = 0
+	event.condition = health
+
+	if not event.check():
+		_fail("Battle event did not pass its stat condition")
+
+	Event.remove_flag(flag)
+
+	# Migrated data: the Stone Guardian's first event was actor=Guardian with
+	# low_ap=1, which should now be an aura condition.
+	var guardian := load("res://database/BattleSeq/StoneGuardianBoss.tres") as BattleSequence
+	var aura := guardian.Events[0].condition as StatCondition
+
+	if aura == null or aura.stat != StatConditionScript.Stat.AURA:
+		_fail("Migrated battle event did not get an aura condition")
+	elif aura.comparator != BattleCondition.Comparator.LE or aura.value != 1:
+		_fail("Migrated battle event aura condition changed")
+
+	var finisher := guardian.Events[3].condition as FlagCondition
+
+	if finisher == null or finisher.expression != &"Event/StoneGuardianFinisher = 1":
+		_fail("Stone Guardian victory event does not check the finisher flag")
+
+	# Migrated data: SkritcherRootDaze's single FORCE_MOVE event must keep its
+	# actor and turn condition.
+	var skritcher := load("res://database/BattleSeq/SkritcherRootDaze.tres") as BattleSequence
+	var skritcher_event := skritcher.Events[0]
+
+	if skritcher_event.event_actor != &"SkritcherRoot":
+		_fail("Skritcher Root event lost its event actor")
+
+	if not (skritcher_event.condition is TurnCondition):
+		_fail("Skritcher Root event lost its turn condition")
+
+	# An empty event actor falls back to the current actor.
+	var fallback := BattleEvent.new()
+
+	if fallback._resolve_event_actor() != battle.CurrentChar:
+		_fail("Battle event did not fall back to the current actor")
+
+	var run_flag := &"BattleTestEventRunFlag"
+	var setter := BattleEvent.new()
+	setter.result = BattleEvent.RES.SEQUENCE
+	setter.on_run_flag = run_flag
+	setter.on_run_flag_value = true
+	Event.remove_flag(run_flag)
+	await setter.run()
+
+	if not Event.check_flag(run_flag):
+		_fail("Battle event did not set its on-run flag")
+
+	Event.remove_flag(run_flag)
+
+
 func _test_asteria_followup() -> void:
 	var asteria_resource: Actor = load("res://database/Enemies/AsteriaEnemy.tres")
 
@@ -957,13 +1047,23 @@ func _test_conditions() -> void:
 
 	Event.remove_flag(&"BattleTestCondition")
 
-	var health = HealthConditionScript.new()
+	var health = StatConditionScript.new()
+	health.stat = StatConditionScript.Stat.HEALTH
 	health.actor = ActorRef.new(ActorRef.Mode.CASTER)
 	health.comparator = BattleCondition.Comparator.GT
 	health.value = 0
 
 	if not health.check(ctx):
-		_fail("Health condition did not pass for a living caster")
+		_fail("Stat condition did not pass for a living caster's health")
+
+	var aura = StatConditionScript.new()
+	aura.stat = StatConditionScript.Stat.AURA
+	aura.actor = ActorRef.new(ActorRef.Mode.CASTER)
+	aura.comparator = BattleCondition.Comparator.EQ
+	aura.value = mira.aura
+
+	if not aura.check(ctx):
+		_fail("Stat condition did not pass when comparing aura with itself")
 
 	var negated = NotConditionScript.new()
 	negated.condition = health
@@ -1042,12 +1142,13 @@ func _test_conditions() -> void:
 	if not group_state.check(ctx):
 		_fail("Group state condition did not pass for a troop without knocked out actors")
 
-	var summons = SummonedAlliesConditionScript.new()
+	var summons = CollectionConditionScript.new()
+	summons.collection = CollectionConditionScript.Collection.SUMMONED_ALLIES
 	summons.actor = ActorRef.new(ActorRef.Mode.CASTER)
 	summons.empty = false
 
 	if not summons.check(ctx):
-		_fail("Summoned allies condition did not pass for a populated summon list")
+		_fail("Collection condition did not pass for a populated summon list")
 
 	if target == null:
 		_fail("Condition test lost its target")

@@ -26,3 +26,7 @@ func _icon() -> String:
 ## Boolean property that enables a sequence branch, or empty when it is always on.
 func _sequence_toggle(_property: StringName) -> StringName:
 	return &""
+
+
+func _validate_property(property: Dictionary) -> void:
+	pass

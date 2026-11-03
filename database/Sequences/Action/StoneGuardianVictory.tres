@@ -28,7 +28,7 @@
 [ext_resource type="Script" uid="uid://btnsdsi8rjqnj" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="27_rjc4t"]
 [ext_resource type="Script" uid="uid://bhb42mpxxarv" path="res://codings/Battle/Steps/Meta/world_step.gd" id="28_uujt3"]
 [ext_resource type="Script" uid="uid://dxycvdv0l12r3" path="res://codings/Battle/Steps/Meta/event_step.gd" id="29_3ahqy"]
-[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/health_condition.gd" id="cond_3"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_3"]
 [ext_resource type="Script" uid="uid://bkir2j2h5fpw6" path="res://codings/Battle/Steps/Conditions/state_condition.gd" id="cond_4"]
 
 [sub_resource type="Resource" id="Resource_gl2jn"]

@@ -9,43 +9,88 @@
 [ext_resource type="Resource" uid="uid://dmm26g6xg665u" path="res://database/Abilities/Attacks/WarpAttack.tres" id="6_jshqw"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="7_82jg0"]
 [ext_resource type="Resource" path="res://database/Sequences/Action/AlcineFollow1Victory.tres" id="8_vict"]
+[ext_resource type="Script" uid="uid://cfuw4m52tqwxx" path="res://codings/Battle/Steps/Conditions/flag_condition.gd" id="cond_be_flag"]
+[ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="cond_be_turn"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="cond_be_actor"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_be_stat"]
+[ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="cond_be_base"]
+[ext_resource type="Script" uid="uid://2x865joteqom" path="res://codings/Battle/Steps/Conditions/all_condition.gd" id="cond_be_all"]
+
+[sub_resource type="Resource" id="Resource_eg56s_flag_0"]
+script = ExtResource("cond_be_flag")
+expression = &"AlcineFollow4 = 1"
+
+[sub_resource type="Resource" id="Resource_eg56s_turn_1"]
+script = ExtResource("cond_be_turn")
+turn_min = 5
+
+[sub_resource type="Resource" id="Resource_eg56s_ref_2"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Mira"
+
+[sub_resource type="Resource" id="Resource_eg56s_health_3"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_eg56s_ref_2")
+comparator = 4
+value = 60
+
+[sub_resource type="Resource" id="Resource_eg56s_all_4"]
+script = ExtResource("cond_be_all")
+conditions = Array[ExtResource("cond_be_base")]([SubResource("Resource_eg56s_flag_0"), SubResource("Resource_eg56s_turn_1"), SubResource("Resource_eg56s_health_3")])
 
 [sub_resource type="Resource" id="Resource_eg56s"]
 script = ExtResource("2_yeq0t")
-flag = &"AlcineFollow4"
-flag_should_be = true
-after_turn = 5
-actor = &"Mira"
-low_hp = 60
+condition = SubResource("Resource_eg56s_all_4")
 result = 6
 hold_turn = true
-add_flag = false
 sequence = ExtResource("8_vict")
+
+[sub_resource type="Resource" id="Resource_cbbvb_flag_5"]
+script = ExtResource("cond_be_flag")
+expression = &"AlcineFollow4 != 1"
+
+[sub_resource type="Resource" id="Resource_cbbvb_ref_6"]
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Mira"
+
+[sub_resource type="Resource" id="Resource_cbbvb_health_7"]
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_cbbvb_ref_6")
+comparator = 4
+value = 30
+
+[sub_resource type="Resource" id="Resource_cbbvb_all_8"]
+script = ExtResource("cond_be_all")
+conditions = Array[ExtResource("cond_be_base")]([SubResource("Resource_cbbvb_flag_5"), SubResource("Resource_cbbvb_health_7")])
 
 [sub_resource type="Resource" id="Resource_cbbvb"]
 script = ExtResource("2_yeq0t")
-flag = &"AlcineFollow4"
-actor = &"Mira"
-low_hp = 30
+condition = SubResource("Resource_cbbvb_all_8")
 parameter1 = "story_0"
 parameter2 = "not_going_well"
+on_run_flag = &"AlcineFollow4"
+on_run_flag_value = true
 
 [sub_resource type="Resource" id="Resource_jw6e0"]
 script = ExtResource("2_yeq0t")
-actor = &"Pterogon"
 result = 3
 parameter1 = "Ability"
 resource = ExtResource("3_bbvgb")
-add_flag = false
+event_actor = &"Pterogon"
+
+[sub_resource type="Resource" id="Resource_82jg0_turn_9"]
+script = ExtResource("cond_be_turn")
+turn_min = 2
 
 [sub_resource type="Resource" id="Resource_82jg0"]
 script = ExtResource("2_yeq0t")
-after_turn = 2
-actor = &"Pterogon"
+condition = SubResource("Resource_82jg0_turn_9")
 result = 3
 parameter1 = "Attack"
 resource = ExtResource("6_jshqw")
-add_flag = false
+event_actor = &"Pterogon"
 
 [resource]
 script = ExtResource("1_6ngvg")

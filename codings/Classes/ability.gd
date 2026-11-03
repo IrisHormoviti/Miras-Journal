@@ -91,7 +91,8 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 @export var MakesPhysicalContact := false
 ## Deprecated: ignored. Use a ForEachActorStep in the sequence instead.
 @export var AOE_AdditionalSeq := true
-## Deprecated: only read by legacy action sequences.
+## Deprecated: only read by legacy action sequences. Use
+## [member ForEachActorStep.stagger] for sequence-based AOE.
 @export var aoe_stagger: float = 0
 ## Deprecated: set the value on the sequence's ValueRef instead.
 @export var Parameter: float = 0

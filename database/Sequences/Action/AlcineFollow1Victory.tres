@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://brxod1kfeknjs" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="6_ibiui"]
 [ext_resource type="Script" uid="uid://1lgh0kqkf2x5" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="7_argoe"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="8_q21i7"]
-[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/health_condition.gd" id="cond_3"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_3"]
 
 [sub_resource type="Resource" id="Resource_o8v2u"]
 resource_name = "Party Leader"
