@@ -136,6 +136,7 @@ hit_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_sww3w"), SubRes
 miss_steps = Array[ExtResource("2_ox74t")]([SubResource("Resource_12wet")])
 
 [sub_resource type="Resource" id="Resource_3js2q"]
+resource_name = "crit"
 script = ExtResource("14_f2p68")
 outcomes = 2
 

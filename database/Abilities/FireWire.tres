@@ -20,6 +20,64 @@
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="15_7meh1"]
 [ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
+[sub_resource type="Resource" id="Resource_fkksu"]
+resource_name = "Target"
+script = ExtResource("3_4r7mu")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_45b16"]
+script = ExtResource("4_ietuk")
+zoom_enabled = true
+actor = SubResource("Resource_fkksu")
+
+[sub_resource type="Resource" id="Resource_52axy"]
+resource_name = "Caster"
+script = ExtResource("3_4r7mu")
+
+[sub_resource type="Resource" id="Resource_5wk88"]
+script = ExtResource("4_ietuk")
+move_enabled = true
+actor = SubResource("Resource_52axy")
+
+[sub_resource type="Resource" id="Resource_70jm8"]
+resource_name = "Caster"
+script = ExtResource("3_4r7mu")
+
+[sub_resource type="Resource" id="Resource_gi1e1"]
+script = ExtResource("5_q301x")
+actor = SubResource("Resource_70jm8")
+animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_mwdmj"]
+script = ExtResource("6_vorho")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_23yss"]
+resource_name = "Target"
+script = ExtResource("3_4r7mu")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_1e633"]
+script = ExtResource("4_ietuk")
+zoom_enabled = true
+amount = 6.0
+actor = SubResource("Resource_23yss")
+
+[sub_resource type="Resource" id="Resource_4n7lq"]
+resource_name = "Target"
+script = ExtResource("3_4r7mu")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_dqgnm"]
+script = ExtResource("4_ietuk")
+move_enabled = true
+actor = SubResource("Resource_4n7lq")
+
+[sub_resource type="Resource" id="Resource_p81gb"]
+resource_name = "Target"
+script = ExtResource("3_4r7mu")
+mode = 1
+
 [sub_resource type="Resource" id="Resource_8uryi"]
 resource_name = "Target"
 script = ExtResource("3_4r7mu")
@@ -105,6 +163,7 @@ hit_steps = Array[ExtResource("2_iqb7j")]([SubResource("Resource_t0f3j"), SubRes
 miss_steps = Array[ExtResource("2_iqb7j")]([SubResource("Resource_frtgg")])
 
 [sub_resource type="Resource" id="Resource_hit_d87km"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 
@@ -191,64 +250,6 @@ name = "FireWire"
 description = "A trap is set on this actor that deals medium Heat damage on a weapon attack."
 color = Color(0.9059794, 0.3039068, 0, 1)
 metadata/_custom_type_script = "uid://bqrgukmh060n1"
-
-[sub_resource type="Resource" id="Resource_fkksu"]
-resource_name = "Target"
-script = ExtResource("3_4r7mu")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_45b16"]
-script = ExtResource("4_ietuk")
-zoom_enabled = true
-actor = SubResource("Resource_fkksu")
-
-[sub_resource type="Resource" id="Resource_52axy"]
-resource_name = "Caster"
-script = ExtResource("3_4r7mu")
-
-[sub_resource type="Resource" id="Resource_5wk88"]
-script = ExtResource("4_ietuk")
-move_enabled = true
-actor = SubResource("Resource_52axy")
-
-[sub_resource type="Resource" id="Resource_70jm8"]
-resource_name = "Caster"
-script = ExtResource("3_4r7mu")
-
-[sub_resource type="Resource" id="Resource_gi1e1"]
-script = ExtResource("5_q301x")
-actor = SubResource("Resource_70jm8")
-animation = &"Cast"
-
-[sub_resource type="Resource" id="Resource_mwdmj"]
-script = ExtResource("6_vorho")
-duration = 0.3
-
-[sub_resource type="Resource" id="Resource_23yss"]
-resource_name = "Target"
-script = ExtResource("3_4r7mu")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_1e633"]
-script = ExtResource("4_ietuk")
-zoom_enabled = true
-amount = 6.0
-actor = SubResource("Resource_23yss")
-
-[sub_resource type="Resource" id="Resource_4n7lq"]
-resource_name = "Target"
-script = ExtResource("3_4r7mu")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_dqgnm"]
-script = ExtResource("4_ietuk")
-move_enabled = true
-actor = SubResource("Resource_4n7lq")
-
-[sub_resource type="Resource" id="Resource_p81gb"]
-resource_name = "Target"
-script = ExtResource("3_4r7mu")
-mode = 1
 
 [sub_resource type="Resource" id="Resource_btstc"]
 script = ExtResource("15_7meh1")

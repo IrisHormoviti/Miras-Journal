@@ -183,5 +183,6 @@ steps = Array[ExtResource("2_p0mym")]([SubResource("Resource_tva81")])
 script = ExtResource("1_uh23e")
 name = "Knocked Out"
 description = "Cannot act at all. Might recover after being healed."
+pose = "KnockOut"
 on_remove = SubResource("Resource_buccj")
 on_turn = SubResource("Resource_3o64f")

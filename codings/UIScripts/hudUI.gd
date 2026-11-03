@@ -76,10 +76,36 @@ func _ready() -> void:
 		box.name = "Member" + str(i)
 		Partybox.add_child(box)
 
+	_prepare_revive_timers()
 	ui_visible = false
 	hide_all(false)
 	Global.check.connect(_check_party)
 	Global.check.emit()
+
+
+## Wires the health-bar blink for every party box. The boxes after Member1 are
+## duplicates made in _ready, so connect at runtime instead of in the scene.
+func _prepare_revive_timers() -> void:
+	for child in Partybox.get_children():
+		var box := child as Panel
+
+		if box == null:
+			continue
+
+		var timer := box.get_node_or_null("ReviveFlashTimer") as Timer
+
+		if timer != null:
+			timer.timeout.connect(_on_revive_flash_timer_timeout.bind(timer))
+
+		var healthbar := box.get_node_or_null("Health") as ProgressBar
+
+		if healthbar != null:
+			# Boxes share the scene's fill stylebox until draw_bar runs, so give
+			# each health bar its own copy before anything blinks it.
+			var fill := healthbar.get_theme_stylebox("fill")
+
+			if fill != null:
+				healthbar.add_theme_stylebox_override("fill", fill.duplicate())
 
 
 func _physics_process(_delta: float) -> void:
@@ -218,14 +244,15 @@ func check_member(mem: Actor, node: Panel, ind: int) -> void:
 	node.get_node("Level/Number").text = str(mem.skill_level)
 	var timer: Timer = node.get_node("ReviveFlashTimer") as Timer
 
-	if mem.has_state("KnockedOut") and mem.health > 0:
-		timer.wait_time = 1 - mem.health_ratio()
+	if mem.has_state("KnockedOut") and mem.health > 0 and mem.health_ratio() < 1:
+		# The revive chance is the actor's health ratio, so blink faster as it rises.
+		timer.wait_time = max(0, 1 - mem.health_ratio())
 
 		if timer.is_stopped():
 			timer.start()
 	else:
 		timer.stop()
-		node.get_node("Health").get_theme_stylebox("fill").bg_color.a = 1
+		_stop_revive_flash(node.get_node("Health"))
 
 	if expanded:
 		# Loads render
@@ -1112,13 +1139,52 @@ func _on_partybox_sort_children() -> void:
 
 
 func _on_revive_flash_timer_timeout(source: Timer) -> void:
-	var panel: Panel = source.get_parent()
-	var healthbar: ProgressBar = panel.get_node("Health")
-	var stylebox: StyleBoxFlat = healthbar.get_theme_stylebox("fill")
+	var panel := source.get_parent() as Panel
+
+	if panel == null:
+		return
+
+	var healthbar := panel.get_node_or_null("Health") as ProgressBar
+
+	if healthbar == null:
+		return
+
+	var stylebox := healthbar.get_theme_stylebox("fill") as StyleBoxFlat
+
+	if stylebox == null:
+		return
+
+	# A blink can still be fading when the actor is revived or healed again.
+	var previous: Tween = null
+
+	if healthbar.has_meta("revive_tween"):
+		previous = healthbar.get_meta("revive_tween") as Tween
+
+	if previous != null and previous.is_valid():
+		previous.kill()
+
 	var tf := create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_CUBIC)
+	healthbar.set_meta("revive_tween", tf)
 	tf.tween_property(stylebox, "bg_color:a", 0, source.wait_time / 2)
 	tf.set_ease(Tween.EASE_OUT)
 	tf.tween_property(stylebox, "bg_color:a", 1, source.wait_time / 2)
+
+
+## Ends any revive blink and restores the health bar's fill.
+func _stop_revive_flash(healthbar: ProgressBar) -> void:
+	var previous: Tween = null
+
+	if healthbar.has_meta("revive_tween"):
+		previous = healthbar.get_meta("revive_tween") as Tween
+
+	if previous != null and previous.is_valid():
+		previous.kill()
+
+	healthbar.set_meta("revive_tween", null)
+	var stylebox := healthbar.get_theme_stylebox("fill") as StyleBoxFlat
+
+	if stylebox != null:
+		stylebox.bg_color.a = 1
 
 
 func _on_virtual_joystick_flicked(input_vector: Vector2) -> void:

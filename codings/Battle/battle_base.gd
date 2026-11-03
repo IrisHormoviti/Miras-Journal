@@ -346,6 +346,7 @@ func _ready() -> void:
 	if is_instance_valid(attacker): attacker.hide()
 	if not sequence.skip_entrance:
 		if sequence.entrance_sequence != null: await run_battle_sequence(sequence.entrance_sequence, null, null, false)
+
 	TurnOrder.sort_custom(speed_sort)
 	turn_ui_init()
 	for i in TurnOrder:
@@ -1252,7 +1253,7 @@ func damage(
 
 	if target.health == 0 or target.has_state("Knocked Out"): return dmg
 
-	if target.has_state("Guarding"):
+	if !target.pose().is_empty():
 		if relation == Wheel.Relation.RESIST: target.add_aura(dmg * 2)
 		else: target.add_aura(dmg)
 	elif effect:
@@ -1698,6 +1699,7 @@ func recover(chara: Actor) -> void:
 	anim("Idle", chara)
 	chara.health = max(10, chara.health)
 	chara.aura = chara.max_aura
+	Global.check.emit()
 
 
 func pop_num(target: Actor, text: Variant, color: Color = Color.WHITE) -> void:
@@ -1933,12 +1935,10 @@ func anim(animation: String = "", chara: Actor = CurrentChar) -> void:
 	if animation == "" or chara.has_state("KnockedOut"):
 		if chara.dont_idle: return
 
-		animation = "Idle"
+		animation = chara.pose()
 
-		# A state can replace the idle pose (Guard, Hurt, ...).
-		for i in chara.states:
-			if i.pose != "None" and i.pose in chara.node.sprite_frames.get_animation_names():
-				animation = i.pose
+		if animation.is_empty() or animation not in chara.node.sprite_frames.get_animation_names():
+			animation = "Idle"
 
 	if animation not in chara.node.sprite_frames.get_animation_names():
 		return
@@ -1956,7 +1956,9 @@ func anim(animation: String = "", chara: Actor = CurrentChar) -> void:
 		chara.node.get_node("Glow").color = chara.main_color
 		t_glow.tween_property(chara.node.get_node("Glow"), "energy", chara.glow_def, 0.3)
 
-	chara.node.play(animation)
+	if chara.node.animation != animation:
+		chara.node.play(animation)
+
 	pixel_perfectize(chara)
 	print_rich("[color=cornflower-blue]Animation: ", animation)
 

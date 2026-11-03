@@ -310,6 +310,9 @@ func remove_state(x: Variant, ctx: ActionSequenceContext = null, await_effect :=
 		else:
 			Global.bt.remove_state_effect(state, self, ctx)
 
+	# The HUD checks state names, so refresh it as soon as the state is gone.
+	Global.check.emit()
+
 
 func has_state(x: String) -> bool:
 	#x = x.capitalize()
@@ -529,3 +532,11 @@ func health_ratio() -> float:
 
 func aura_ratio() -> float:
 	return(float(aura) / float(max_aura))
+
+
+func pose() -> String:
+	for i in states:
+		if i.pose != "None":
+			return i.pose
+
+	return ""
