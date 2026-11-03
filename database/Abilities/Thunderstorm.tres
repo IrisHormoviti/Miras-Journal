@@ -18,6 +18,8 @@
 [ext_resource type="Resource" path="res://database/States/Soaked.tres" id="14_4m45y"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
+[ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
+
 [sub_resource type="Resource" id="Resource_fow0g"]
 resource_name = "Caster"
 script = ExtResource("3_acj4s")
@@ -105,10 +107,6 @@ script = ExtResource("3_acj4s")
 script = ExtResource("5_4p3wb")
 actor = SubResource("Resource_k6ehh")
 
-[sub_resource type="Resource" id="Resource_65b4m"]
-script = ExtResource("1_fow0g")
-steps = Array[ExtResource("2_bn8a5")]([SubResource("Resource_bn8a5"), SubResource("Resource_yt4md"), SubResource("Resource_oknl3"), SubResource("Resource_vjxw6"), SubResource("Resource_jhw2g"), SubResource("Resource_84y1k"), SubResource("Resource_4m45y"), SubResource("Resource_72pvy"), SubResource("Resource_58xs3"), SubResource("Resource_apvvi")])
-
 [sub_resource type="Resource" id="Resource_d5amy"]
 resource_name = "Target"
 script = ExtResource("3_acj4s")
@@ -173,9 +171,16 @@ state = ExtResource("14_4m45y")
 turns = 5
 wait = false
 
-[sub_resource type="Resource" id="Resource_6i0ra"]
-script = ExtResource("1_fow0g")
+[sub_resource type="Resource" id="Resource_aoe_each"]
+script = ExtResource("aoe_each")
+group = 4
+exclude_caster = true
+wait = false
 steps = Array[ExtResource("2_bn8a5")]([SubResource("Resource_7u7cv"), SubResource("Resource_4gca7")])
+
+[sub_resource type="Resource" id="Resource_65b4m"]
+script = ExtResource("1_fow0g")
+steps = Array[ExtResource("2_bn8a5")]([SubResource("Resource_bn8a5"), SubResource("Resource_yt4md"), SubResource("Resource_oknl3"), SubResource("Resource_vjxw6"), SubResource("Resource_jhw2g"), SubResource("Resource_84y1k"), SubResource("Resource_4m45y"), SubResource("Resource_aoe_each"), SubResource("Resource_72pvy"), SubResource("Resource_58xs3"), SubResource("Resource_apvvi")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_i7bcs"]
 resource_local_to_scene = true
@@ -191,7 +196,6 @@ icon = SubResource("AtlasTexture_i7bcs")
 wheel_color = Color(0.9882353, 0.87058824, 0.25882354, 1)
 target = 2
 action_sequence = SubResource("Resource_65b4m")
-aoe_sequence = SubResource("Resource_6i0ra")
 aura_cost = 17
 success_chance = 0.7
 types = Array[int]([4, 2])

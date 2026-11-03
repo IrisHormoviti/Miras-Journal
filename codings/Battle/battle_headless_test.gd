@@ -440,14 +440,19 @@ func _test_trap_interrupt() -> void:
 	var ability := Ability.nothing().duplicate() as Ability
 	ability.name = "Battle Test AOE"
 	ability.target = Ability.T.AOE_ENEMIES
-	ability.aoe_stagger = 0.1
 	ability.success_chance = 1
-	var sequence := ActionSequence.new()
+
+	var each := ForEachActorStep.new()
+	each.group = ActorGroup.Kind.ENEMIES
+	each.exclude_caster = true
+	each.wait = false
 
 	for i in 2:
-		sequence.steps.append(_damage_step(TEST_DAMAGE))
+		each.steps.append(_damage_step(TEST_DAMAGE))
 
-	ability.aoe_sequence = sequence
+	var sequence := ActionSequence.new()
+	sequence.steps.append(each)
+	ability.action_sequence = sequence
 	battle.no_misses = true
 
 	var first_before := first.health

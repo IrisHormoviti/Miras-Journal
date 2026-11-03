@@ -49,6 +49,9 @@ func all_enemy_ui(from := false) -> void:
 
 
 func _on_battle_ui_target_foc(cur: Actor) -> void:
+	if cur == null:
+		return
+
 	CurEnemy = cur
 	_check_party()
 	$AllEnemies.hide()
@@ -97,6 +100,11 @@ func _check_party() -> void:
 	for i in Troop:
 		check_panel(i, find_box(i))
 
+	# The focus panel only exists once a target has been selected (for example
+	# in headless battles, which never open the enemy UI).
+	if not is_instance_valid(CurEnemy):
+		return
+
 	check_panel(CurEnemy, $EnemyFocus)
 	$EnemyFocus/Name.text = CurEnemy.first_name
 
@@ -138,7 +146,7 @@ func _check_party() -> void:
 
 
 func check_panel(chara: Actor, panel: Control) -> void:
-	if panel == null: return
+	if panel == null or not is_instance_valid(chara): return
 	if chara.first_name.length() > 16: panel.get_node("Name").add_theme_font_size_override("font_size", 12)
 	elif chara.first_name.length() > 12: panel.get_node("Name").add_theme_font_size_override("font_size", 14)
 	elif chara.first_name.length() > 6: panel.get_node("Name").add_theme_font_size_override("font_size", 18)

@@ -3,7 +3,6 @@ class_name ActionSequenceRunner
 
 var battle: Battle
 var debug_logging := false
-var seq_running := 0
 
 
 func run_ability(ability: Ability, caster: Actor, target: Actor, finish_turn := true) -> void:
@@ -22,10 +21,16 @@ func run_ability(ability: Ability, caster: Actor, target: Actor, finish_turn := 
 	var ctx := _make_context(ability, caster, target)
 
 	if ability.is_aoe():
-		await _run_aoe(ability, ctx)
+		# The sequence starts on the caster; a ForEachActorStep picks the actual
+		# targets and rolls each one separately.
+		ctx.target = caster
+
+		if _has_damage(ability.action_sequence):
+			roll(ctx, caster)
 	else:
 		roll(ctx, target)
-		await _run_single(ability.action_sequence, ctx)
+
+	await _run_single(ability.action_sequence, ctx)
 
 	if finish_turn:
 		battle.anim("", caster)
@@ -109,74 +114,11 @@ func _run_single(sequence: ActionSequence, ctx: ActionSequenceContext) -> void:
 	battle.release_turn()
 
 
-func _run_aoe(ability: Ability, base: ActionSequenceContext) -> void:
-	var launcher := ability.action_sequence
-	var has_launcher := launcher != null and not launcher.steps.is_empty()
-
-	var per_target := ability.aoe_sequence
-	if per_target == null or per_target.steps.is_empty():
-		per_target = ability.action_sequence
-
-	if not has_launcher and (per_target == null or per_target.steps.is_empty()):
-		return
-
-	var targets: Array[Actor] = battle.get_target_faction(ability).duplicate()
-	if base.caster in targets:
-		targets.erase(base.caster)
-
-	# The launcher and the per-target passes run at the same time, so the hits
-	# can start landing while the windup is still playing.
-	if has_launcher:
-		var launcher_ctx := base.duplicate_for_target(base.caster)
-		launcher_ctx.is_launcher = true
-
-		if _has_damage(launcher):
-			roll(launcher_ctx, base.caster)
-
-		seq_running += 1
-		battle.hold_turn()
-		_run_target(launcher, launcher_ctx)
-
-	if per_target == null or per_target.steps.is_empty():
-		await _wait_for_targets()
-		return
-
-	for target: Actor in targets:
-		if target == null or not is_instance_valid(target):
-			continue
-
-		if battle.act != null:
-			battle.act.interrupted = false
-
-		var target_ctx := base.duplicate_for_target(target)
-		roll(target_ctx, target)
-
-		seq_running += 1
-		battle.hold_turn()
-		_run_target(per_target, target_ctx)
-		await Event.wait(ability.aoe_stagger)
-
-	await _wait_for_targets()
-
-
-## Waits until every staggered sequence has released its turn hold.
-func _wait_for_targets() -> void:
-	while seq_running > 0:
-		await Event.wait()
-
-
-func _run_target(sequence: ActionSequence, ctx: ActionSequenceContext) -> void:
-	await run_sequence(sequence, ctx)
-	battle.release_turn()
-	seq_running = maxi(0, seq_running - 1)
-
-
 func _has_damage(sequence: ActionSequence) -> bool:
+	if sequence == null:
+		return false
+
 	for step in sequence.walk():
 		if step is DamageStep:
 			return true
 	return false
-
-
-func _wait(seconds: float) -> void:
-	await battle.get_tree().create_timer(seconds).timeout

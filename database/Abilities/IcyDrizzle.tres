@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="11_uxn6x"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_57mot"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="14_g7gta"]
+[ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
 [ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_86wy7"]
@@ -74,13 +75,6 @@ zoom_enabled = true
 amount = 4.5
 actor = SubResource("Resource_o7dto")
 duration = 1.0
-
-[sub_resource type="Resource" id="Resource_t57ii"]
-script = ExtResource("6_127my")
-
-[sub_resource type="Resource" id="Resource_7em3r"]
-script = ExtResource("2_dmjcc")
-steps = Array[ExtResource("3_223rs")]([SubResource("Resource_dmjcc"), SubResource("Resource_223rs"), SubResource("Resource_uxn6x"), SubResource("Resource_127my"), SubResource("Resource_xvs4g"), SubResource("Resource_t57ii")])
 
 [sub_resource type="Resource" id="Resource_uu1dv"]
 resource_name = "Random Offset"
@@ -224,9 +218,19 @@ script = ExtResource("13_57mot")
 condition = SubResource("Resource_hit_ec0gy")
 if_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_6wgai")])
 
-[sub_resource type="Resource" id="Resource_3tkpp"]
-script = ExtResource("2_dmjcc")
+[sub_resource type="Resource" id="Resource_aoe_each"]
+script = ExtResource("aoe_each")
+group = 4
+exclude_caster = true
+wait = false
 steps = Array[ExtResource("3_223rs")]([SubResource("Resource_57mot"), SubResource("Resource_g7gta"), SubResource("Resource_83t34"), SubResource("Resource_qoj0b"), SubResource("Resource_lm64c"), SubResource("Resource_ympqw"), SubResource("Resource_5er56"), SubResource("Resource_mmtq5"), SubResource("Resource_ec0gy")])
+
+[sub_resource type="Resource" id="Resource_t57ii"]
+script = ExtResource("6_127my")
+
+[sub_resource type="Resource" id="Resource_7em3r"]
+script = ExtResource("2_dmjcc")
+steps = Array[ExtResource("3_223rs")]([SubResource("Resource_dmjcc"), SubResource("Resource_223rs"), SubResource("Resource_uxn6x"), SubResource("Resource_127my"), SubResource("Resource_xvs4g"), SubResource("Resource_aoe_each"), SubResource("Resource_t57ii")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hd34j"]
 atlas = ExtResource("1_jcpxl")
@@ -241,8 +245,6 @@ icon = SubResource("AtlasTexture_hd34j")
 wheel_color = Color(0.0745098, 0.909804, 1, 1)
 target = 2
 action_sequence = SubResource("Resource_7em3r")
-aoe_sequence = SubResource("Resource_3tkpp")
-aoe_stagger = 0.3
 aura_cost = 10
 success_chance = 0.8
 crit_chance = 0.2

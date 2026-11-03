@@ -57,6 +57,9 @@ func run(ctx: ActionSequenceContext) -> void:
 		await ctx.runner.run_steps(miss_steps, ctx)
 		return
 
+	if ctx.interrupted:
+		return
+
 	var amount := int(round(power.resolve(ctx))) if power != null else 0
 	var is_magic := magic_mode == MagicMode.MAGIC
 
@@ -64,7 +67,14 @@ func run(ctx: ActionSequenceContext) -> void:
 		is_magic = power.source != ValueRef.Source.DAMAGE or power.damage_scale != ValueRef.DamageScale.WEAPON
 
 	var overwrite_color := color.resolve(ctx) if color != null else Color.WHITE
+
+	# Parallel per-actor sequences share Battle.act, so swap in this context's
+	# interruption state for the synchronous damage call and keep the result.
+	var previous: bool = ctx.battle.act.interrupted
+	ctx.battle.act.interrupted = ctx.interrupted
 	ctx.battle.damage(subject, is_magic, elemental, amount, effect, limiter, ignore_stats, overwrite_color)
+	ctx.interrupted = ctx.battle.act.interrupted
+	ctx.battle.act.interrupted = previous
 
 	if crit_branch and ctx.roll == HitOutcome.CRIT:
 		await ctx.runner.run_steps(crit_steps, ctx)

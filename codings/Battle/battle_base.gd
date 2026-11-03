@@ -498,11 +498,10 @@ func preview_ability(preview: ActionSequence, aoe: bool, wheel_color := Color.WH
 
 	if aoe:
 		ability.target = Ability.T.AOE_ENEMIES
-		ability.aoe_sequence = preview
 	else:
 		ability.target = Ability.T.ONE_ENEMY
-		ability.action_sequence = preview
 
+	ability.action_sequence = preview
 	return ability
 
 

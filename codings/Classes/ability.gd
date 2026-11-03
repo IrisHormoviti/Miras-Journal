@@ -52,13 +52,9 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 @export var color_same_as_actor := false
 ## Who this ability can target
 @export var target: T = T.SELF
-## The steps that choreograph the ability
+## The steps that choreograph the ability. Use a ForEachActorStep to target
+## every actor of an AOE.
 @export var action_sequence: ActionSequence
-@export_group("AOE only")
-## A per-target action_sequence, for AOE abilities
-@export var aoe_sequence: ActionSequence
-## Delay between running every per target sequence
-@export var aoe_stagger: float = 0
 @export_category("Cost")
 ## AP used to cast this ability
 @export_custom(PROPERTY_HINT_NONE, "suffix:AP") var aura_cost: int
@@ -93,8 +89,10 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 @export var Damage: D = D.NONE
 ## Deprecated: enable contact on the sequence's DamageStep instead.
 @export var MakesPhysicalContact := false
-## Deprecated: ignored. The launcher and AOE sequences decide this now.
+## Deprecated: ignored. Use a ForEachActorStep in the sequence instead.
 @export var AOE_AdditionalSeq := true
+## Deprecated: only read by legacy action sequences.
+@export var aoe_stagger: float = 0
 ## Deprecated: set the value on the sequence's ValueRef instead.
 @export var Parameter: float = 0
 ## Deprecated: enable variance on the sequence's ValueRef instead.
@@ -126,9 +124,6 @@ func all_steps() -> Array[BattleStep]:
 
 	if action_sequence != null:
 		result.append_array(action_sequence.walk())
-
-	if aoe_sequence != null:
-		result.append_array(aoe_sequence.walk())
 
 	return result
 

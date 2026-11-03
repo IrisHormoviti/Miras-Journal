@@ -19,6 +19,7 @@
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="16_3jmqu"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="16_tjvsu"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="17_3jvyu"]
+[ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
 [ext_resource type="Script" uid="uid://bkir2j2h5fpw6" path="res://codings/Battle/Steps/Conditions/state_condition.gd" id="cond_4"]
 [ext_resource type="Script" uid="uid://dutktdwdox6d2" path="res://codings/Battle/Steps/Conditions/group_state_condition.gd" id="cond_10"]
 [ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
@@ -112,44 +113,6 @@ script = ExtResource("4_yhm8m")
 zoom_enabled = true
 actor = SubResource("Resource_uhsx5")
 duration = 1.0
-
-[sub_resource type="Resource" id="Resource_3jvyu"]
-script = ExtResource("6_lkeey")
-
-[sub_resource type="Resource" id="Resource_257x6"]
-script = ExtResource("6_lkeey")
-duration = 0.3
-
-[sub_resource type="Resource" id="Resource_w6nrb"]
-script = ExtResource("cond_10")
-group = 4
-state = &"Soaked"
-present = false
-
-[sub_resource type="Resource" id="Resource_paxrb"]
-script = ExtResource("11_3iuey")
-mode = 2
-message = "nothing_happened"
-
-[sub_resource type="Resource" id="Resource_r41da"]
-script = ExtResource("6_lkeey")
-
-[sub_resource type="Resource" id="Resource_2uw0b"]
-script = ExtResource("12_t2psb")
-condition = SubResource("Resource_w6nrb")
-if_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_paxrb"), SubResource("Resource_r41da")])
-
-[sub_resource type="Resource" id="Resource_cu21g"]
-resource_name = "Caster"
-script = ExtResource("3_5vnmy")
-
-[sub_resource type="Resource" id="Resource_kqxh3"]
-script = ExtResource("5_rtdfi")
-actor = SubResource("Resource_cu21g")
-
-[sub_resource type="Resource" id="Resource_hj3o3"]
-script = ExtResource("1_30ss0")
-steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_tjvsu"), SubResource("Resource_yhm8m"), SubResource("Resource_lkeey"), SubResource("Resource_hivcc"), SubResource("Resource_5bkub"), SubResource("Resource_3iuey"), SubResource("Resource_1d3wg"), SubResource("Resource_3jmqu"), SubResource("Resource_3jvyu"), SubResource("Resource_257x6"), SubResource("Resource_2uw0b"), SubResource("Resource_kqxh3")])
 
 [sub_resource type="Resource" id="Resource_v8apa"]
 resource_name = "Target"
@@ -253,9 +216,50 @@ condition = SubResource("Resource_4tx4j")
 if_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_p2r0k"), SubResource("Resource_45sl6"), SubResource("Resource_mkuwu"), SubResource("Resource_ij2ip")])
 else_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_1fdnj")])
 
-[sub_resource type="Resource" id="Resource_l5ydm"]
-script = ExtResource("1_30ss0")
+[sub_resource type="Resource" id="Resource_aoe_each"]
+script = ExtResource("aoe_each")
+group = 4
+exclude_caster = true
+wait = false
 steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_g0pvd")])
+
+[sub_resource type="Resource" id="Resource_3jvyu"]
+script = ExtResource("6_lkeey")
+
+[sub_resource type="Resource" id="Resource_257x6"]
+script = ExtResource("6_lkeey")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_w6nrb"]
+script = ExtResource("cond_10")
+group = 4
+state = &"Soaked"
+present = false
+
+[sub_resource type="Resource" id="Resource_paxrb"]
+script = ExtResource("11_3iuey")
+mode = 2
+message = "nothing_happened"
+
+[sub_resource type="Resource" id="Resource_r41da"]
+script = ExtResource("6_lkeey")
+
+[sub_resource type="Resource" id="Resource_2uw0b"]
+script = ExtResource("12_t2psb")
+condition = SubResource("Resource_w6nrb")
+if_steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_paxrb"), SubResource("Resource_r41da")])
+
+[sub_resource type="Resource" id="Resource_cu21g"]
+resource_name = "Caster"
+script = ExtResource("3_5vnmy")
+
+[sub_resource type="Resource" id="Resource_kqxh3"]
+script = ExtResource("5_rtdfi")
+actor = SubResource("Resource_cu21g")
+
+[sub_resource type="Resource" id="Resource_hj3o3"]
+script = ExtResource("1_30ss0")
+steps = Array[ExtResource("2_tjvsu")]([SubResource("Resource_tjvsu"), SubResource("Resource_yhm8m"), SubResource("Resource_lkeey"), SubResource("Resource_hivcc"), SubResource("Resource_5bkub"), SubResource("Resource_3iuey"), SubResource("Resource_1d3wg"), SubResource("Resource_3jmqu"), SubResource("Resource_aoe_each"), SubResource("Resource_3jvyu"), SubResource("Resource_257x6"), SubResource("Resource_2uw0b"), SubResource("Resource_kqxh3")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_g1hb7"]
 atlas = ExtResource("1_65bkw")
@@ -271,7 +275,6 @@ icon = SubResource("AtlasTexture_g1hb7")
 wheel_color = Color(0.305882, 0.619608, 1, 1)
 target = 2
 action_sequence = SubResource("Resource_hj3o3")
-aoe_sequence = SubResource("Resource_l5ydm")
 aura_cost = 12
 crit_chance = 0.5
 types = Array[int]([2])

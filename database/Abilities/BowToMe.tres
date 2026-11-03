@@ -17,6 +17,8 @@
 [ext_resource type="Script" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_jo2ju"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
+[ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
+
 [sub_resource type="Resource" id="Resource_wbq51"]
 resource_name = "Target"
 script = ExtResource("3_jruq6")
@@ -130,9 +132,16 @@ script = ExtResource("3_jruq6")
 script = ExtResource("5_ue808")
 actor = SubResource("Resource_ruv2l")
 
+[sub_resource type="Resource" id="Resource_aoe_each"]
+script = ExtResource("aoe_each")
+group = 4
+exclude_caster = true
+wait = false
+steps = Array[ExtResource("2_3syvb")]([SubResource("Resource_3syvb"), SubResource("Resource_pjnqo"), SubResource("Resource_gmjgh"), SubResource("Resource_rlsuv"), SubResource("Resource_sfeq2"), SubResource("Resource_1wrej"), SubResource("Resource_a610c"), SubResource("Resource_gb5t0"), SubResource("Resource_mkknt"), SubResource("Resource_lkay1"), SubResource("Resource_gymyu")])
+
 [sub_resource type="Resource" id="Resource_j5ikj"]
 script = ExtResource("1_wbq51")
-steps = Array[ExtResource("2_3syvb")]([SubResource("Resource_3syvb"), SubResource("Resource_pjnqo"), SubResource("Resource_gmjgh"), SubResource("Resource_rlsuv"), SubResource("Resource_sfeq2"), SubResource("Resource_1wrej"), SubResource("Resource_a610c"), SubResource("Resource_gb5t0"), SubResource("Resource_mkknt"), SubResource("Resource_lkay1"), SubResource("Resource_gymyu")])
+steps = Array[ExtResource("2_3syvb")]([SubResource("Resource_aoe_each")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fsy24"]
 resource_local_to_scene = true
@@ -147,7 +156,7 @@ description = "Spiritual damage, high chance of confusing all targets."
 icon = SubResource("AtlasTexture_fsy24")
 wheel_color = Color(0.321569, 0.972549, 0.709804, 1)
 target = 2
-aoe_sequence = SubResource("Resource_j5ikj")
+action_sequence = SubResource("Resource_j5ikj")
 aura_cost = 20
 crit_chance = 0.6
 types = Array[int]([4, 2])

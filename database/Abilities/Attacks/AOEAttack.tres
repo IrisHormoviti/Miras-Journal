@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_adupg"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="14_4fpcf"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_endxi"]
+[ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
 [ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_7frm6"]
@@ -101,37 +102,6 @@ actor = SubResource("Resource_4fpcf")
 animation = &"Attack2"
 wait = true
 
-[sub_resource type="Resource" id="Resource_xnex4"]
-script = ExtResource("8_t8ypj")
-
-[sub_resource type="Resource" id="Resource_etu7p"]
-resource_name = "Caster"
-script = ExtResource("3_gdunc")
-
-[sub_resource type="Resource" id="Resource_3vq52"]
-resource_name = "Target"
-script = ExtResource("6_2npnd")
-mode = 6
-
-[sub_resource type="Resource" id="Resource_0uflg"]
-script = ExtResource("7_vqu6n")
-mode = 2
-actor = SubResource("Resource_etu7p")
-destination = SubResource("Resource_3vq52")
-wait = false
-
-[sub_resource type="Resource" id="Resource_tgm7r"]
-resource_name = "Caster"
-script = ExtResource("3_gdunc")
-
-[sub_resource type="Resource" id="Resource_abxf8"]
-script = ExtResource("5_om0xi")
-actor = SubResource("Resource_tgm7r")
-
-[sub_resource type="Resource" id="Resource_aod8w"]
-script = ExtResource("1_7frm6")
-steps = Array[ExtResource("2_x5sw2")]([SubResource("Resource_x5sw2"), SubResource("Resource_p7s5k"), SubResource("Resource_vqu6n"), SubResource("Resource_t8ypj"), SubResource("Resource_fo6yx"), SubResource("Resource_adupg"), SubResource("Resource_endxi"), SubResource("Resource_xnex4"), SubResource("Resource_0uflg"), SubResource("Resource_abxf8")])
-
 [sub_resource type="Resource" id="Resource_hit_wo6bb"]
 script = ExtResource("cond_hit")
 outcomes = 4
@@ -200,9 +170,43 @@ condition = SubResource("Resource_hit_wo6bb")
 if_steps = Array[ExtResource("2_x5sw2")]([SubResource("Resource_dqapu")])
 else_steps = Array[ExtResource("2_x5sw2")]([SubResource("Resource_3s7yi"), SubResource("Resource_6qn6n"), SubResource("Resource_ojss4")])
 
-[sub_resource type="Resource" id="Resource_0ig5j"]
-script = ExtResource("1_7frm6")
+[sub_resource type="Resource" id="Resource_aoe_each"]
+script = ExtResource("aoe_each")
+group = 4
+exclude_caster = true
+wait = false
 steps = Array[ExtResource("2_x5sw2")]([SubResource("Resource_wo6bb")])
+
+[sub_resource type="Resource" id="Resource_xnex4"]
+script = ExtResource("8_t8ypj")
+
+[sub_resource type="Resource" id="Resource_etu7p"]
+resource_name = "Caster"
+script = ExtResource("3_gdunc")
+
+[sub_resource type="Resource" id="Resource_3vq52"]
+resource_name = "Target"
+script = ExtResource("6_2npnd")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_0uflg"]
+script = ExtResource("7_vqu6n")
+mode = 2
+actor = SubResource("Resource_etu7p")
+destination = SubResource("Resource_3vq52")
+wait = false
+
+[sub_resource type="Resource" id="Resource_tgm7r"]
+resource_name = "Caster"
+script = ExtResource("3_gdunc")
+
+[sub_resource type="Resource" id="Resource_abxf8"]
+script = ExtResource("5_om0xi")
+actor = SubResource("Resource_tgm7r")
+
+[sub_resource type="Resource" id="Resource_aod8w"]
+script = ExtResource("1_7frm6")
+steps = Array[ExtResource("2_x5sw2")]([SubResource("Resource_x5sw2"), SubResource("Resource_p7s5k"), SubResource("Resource_vqu6n"), SubResource("Resource_t8ypj"), SubResource("Resource_fo6yx"), SubResource("Resource_adupg"), SubResource("Resource_endxi"), SubResource("Resource_aoe_each"), SubResource("Resource_xnex4"), SubResource("Resource_0uflg"), SubResource("Resource_abxf8")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hfqm4"]
 atlas = ExtResource("1_w64i1")
@@ -217,7 +221,6 @@ icon = SubResource("AtlasTexture_hfqm4")
 color_same_as_actor = true
 target = 2
 action_sequence = SubResource("Resource_aod8w")
-aoe_sequence = SubResource("Resource_0ig5j")
 success_chance = 0.9
 crit_chance = 0.1
 types = Array[int]([1])

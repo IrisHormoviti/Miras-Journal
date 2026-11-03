@@ -10,9 +10,9 @@ var caster: Actor
 var target: Actor
 var loop_actor: Actor
 var roll: int = HitOutcome.HIT
+## A trap interrupted this context's sequence, so it can't deal more damage.
+var interrupted := false
 var home_position := Vector2.ZERO
-var aoe_targets: Array[Actor] = []
-var is_launcher := false
 
 ## Result slots used by steps that need to feed a later message or effect.
 var last_actor: Actor
@@ -34,6 +34,4 @@ func duplicate_for_target(new_target: Actor) -> ActionSequenceContext:
 	copy.loop_actor = loop_actor
 	copy.roll = roll
 	copy.home_position = home_position
-	copy.aoe_targets = aoe_targets
-	copy.is_launcher = false
 	return copy

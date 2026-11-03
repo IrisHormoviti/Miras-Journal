@@ -14,6 +14,8 @@
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="10_eyoj8"]
 [ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
+[ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
+
 [sub_resource type="Resource" id="Resource_kuunb"]
 resource_name = "Target"
 script = ExtResource("3_5wt33")
@@ -97,10 +99,6 @@ script = ExtResource("3_5wt33")
 script = ExtResource("6_bjwmh")
 actor = SubResource("Resource_6nyy6")
 
-[sub_resource type="Resource" id="Resource_2otfq"]
-script = ExtResource("1_kuunb")
-steps = Array[ExtResource("2_mtp8p")]([SubResource("Resource_mtp8p"), SubResource("Resource_gdbrr"), SubResource("Resource_n22vs"), SubResource("Resource_ct152"), SubResource("Resource_xsliv"), SubResource("Resource_ryp2u")])
-
 [sub_resource type="Resource" id="Resource_dj4aq"]
 resource_name = "Target"
 script = ExtResource("3_5wt33")
@@ -144,9 +142,17 @@ script = ExtResource("3_5wt33")
 script = ExtResource("6_bjwmh")
 actor = SubResource("Resource_pfffy")
 
-[sub_resource type="Resource" id="Resource_dta6c"]
-script = ExtResource("1_kuunb")
+[sub_resource type="Resource" id="Resource_aoe_each"]
+script = ExtResource("aoe_each")
+group = 3
+include_dead = true
+exclude_caster = true
+wait = false
 steps = Array[ExtResource("2_mtp8p")]([SubResource("Resource_qqvra"), SubResource("Resource_schel"), SubResource("Resource_sr6fk")])
+
+[sub_resource type="Resource" id="Resource_2otfq"]
+script = ExtResource("1_kuunb")
+steps = Array[ExtResource("2_mtp8p")]([SubResource("Resource_mtp8p"), SubResource("Resource_gdbrr"), SubResource("Resource_n22vs"), SubResource("Resource_ct152"), SubResource("Resource_xsliv"), SubResource("Resource_ryp2u"), SubResource("Resource_aoe_each")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_7so8r"]
 atlas = ExtResource("1_dcf1s")
@@ -160,8 +166,6 @@ description = "Heals a slight amount of HP to all allies. Tiny chance of a Magic
 icon = SubResource("AtlasTexture_7so8r")
 target = 4
 action_sequence = SubResource("Resource_2otfq")
-aoe_sequence = SubResource("Resource_dta6c")
-aoe_stagger = 0.3
 aura_cost = 20
 crit_chance = 0.1
 types = Array[int]([5])
