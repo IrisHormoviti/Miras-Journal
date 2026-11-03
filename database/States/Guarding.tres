@@ -48,5 +48,6 @@ turns = 1
 icon = SubResource("AtlasTexture_oocop")
 color = Color(0.792157, 0.792157, 0.792157, 1)
 pose = "Guard"
+aura_on_damage = 1.0
 on_add = SubResource("Resource_axcjl")
 on_remove = SubResource("Resource_i2cun")

@@ -13,6 +13,9 @@ class_name State
 @export var weak_mult := 1.0
 @export var magic_dmg_mult := 1.0
 @export var weapon_dmg_mult := 1.0
+## Aura recovered when this actor is damaged, as a fraction of the damage dealt.
+## A resisted hit recovers twice as much. Zero disables the recovery.
+@export var aura_on_damage := 0.0
 @export var is_stat_change := false
 @export_group("Sequences")
 ## Runs after the state is added to an actor. The owner is the sequence target,

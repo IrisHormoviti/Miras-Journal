@@ -2,6 +2,9 @@
 extends Resource
 class_name BattleStep
 
+## Optional developer note printed when the action sequence runner logs steps.
+@export var note: String = ""
+
 
 ## Runs this step. Steps that animate or wait may await inside this method.
 func run(_ctx: ActionSequenceContext) -> void:

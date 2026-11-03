@@ -246,7 +246,8 @@ func check_member(mem: Actor, node: Panel, ind: int) -> void:
 
 	if mem.has_state("KnockedOut") and mem.health > 0 and mem.health_ratio() < 1:
 		# The revive chance is the actor's health ratio, so blink faster as it rises.
-		timer.wait_time = max(0, 1 - mem.health_ratio())
+		# Keep a small floor so near-full health does not run the timer every frame.
+		timer.wait_time = maxf(0.05, 1.0 - mem.health_ratio())
 
 		if timer.is_stopped():
 			timer.start()

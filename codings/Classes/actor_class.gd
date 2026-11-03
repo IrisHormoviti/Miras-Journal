@@ -241,11 +241,20 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar
 		# before storing it. Otherwise every actor affected by the same ability
 		# would share one State object, including its turn counter and the
 		# queue_remove flag that removes the state at the end of a turn.
-		state = x.duplicate() as State
+		var source := x as State
+		# Capture the path before duplicating; duplicate() clears resource_path.
+		var source_path := source.resource_path
+		state = source.duplicate() as State
 		state.queue_remove = false
-		# Bare resources (e.g. a Trap referenced directly by an ability) may not
-		# have a resource_name, so fall back to the state's display name.
-		state.filename = state.resource_name.replace(".tres", "") if state.resource_name != "" else state.name
+
+		if source_path != "":
+			state.filename = source_path.get_file().get_basename()
+		elif source.resource_name != "":
+			state.filename = source.resource_name.replace(".tres", "")
+		else:
+			# Bare resources (e.g. an inline trap) have no file, so the display
+			# name is the only stable identifier available.
+			state.filename = source.name
 	else:
 		state = (await Loader.load_res("res://database/States/" + x + ".tres")).duplicate()
 		state.filename = x
@@ -309,9 +318,8 @@ func remove_state(x: Variant, ctx: ActionSequenceContext = null, await_effect :=
 			await Global.bt.remove_state_effect(state, self, ctx)
 		else:
 			Global.bt.remove_state_effect(state, self, ctx)
-
-	# The HUD checks state names, so refresh it as soon as the state is gone.
-	Global.check.emit()
+	else:
+		Global.check.emit()
 
 
 func has_state(x: String) -> bool:

@@ -38,4 +38,10 @@ func duplicate_for_target(new_target: Actor) -> ActionSequenceContext:
 	copy.roll = roll
 	copy.state_sequence = state_sequence
 	copy.home_position = home_position
+	copy.interrupted = interrupted
+	copy.last_actor = last_actor
+	copy.last_state = last_state
+	copy.last_effect = last_effect
+	copy.last_value = last_value
+	copy.named_effects = named_effects.duplicate()
 	return copy

@@ -1186,8 +1186,9 @@ func damage(
 	# Initial number of damage
 	var dmg: int = target.calc_dmg(x * el_mod, is_magic, offender)
 
-	# State specific modifications
-	for state in target.states:
+	# State specific modifications. Removing a state (e.g. Frozen) mutates the
+	# live array, so walk a snapshot or the next state gets skipped.
+	for state in target.states.duplicate():
 		# Mutiply with each state's modifiers
 		if is_magic:
 			dmg = int(dmg * state.magic_dmg_mult)
@@ -1233,9 +1234,14 @@ func damage(
 	print(CurrentChar.first_name + " deals " + str(dmg) + " damage to " + target.first_name)
 
 	# Effects!
-	if not is_magic and CurrentChar.has_state("AtkUp") and CurrentChar.get_state("AtkUp").turns == -2:
-		CurrentChar.get_state("AtkUp").queue_remove = true
-		print_rich("[color=cornflower-blue]Weapon attack, so AtkUp will be removed")
+	if not is_magic:
+		# Preparations uses turns == -2 as a one-attack charge, so remove one
+		# charge per weapon attack instead of assuming AtkUp is a single state.
+		for state: State in CurrentChar.states:
+			if state.filename == "AtkUp" and state.turns == -2:
+				state.queue_remove = true
+				print_rich("[color=cornflower-blue]Weapon attack, so AtkUp will be removed")
+				break
 
 	if CurrentAbility.recover_aura: CurrentChar.add_aura(dmg / 2)
 
@@ -1253,10 +1259,19 @@ func damage(
 
 	if target.health == 0 or target.has_state("Knocked Out"): return dmg
 
-	if !target.pose().is_empty():
-		if relation == Wheel.Relation.RESIST: target.add_aura(dmg * 2)
-		else: target.add_aura(dmg)
-	elif effect:
+	var aura_recovery := 0.0
+
+	for state in target.states:
+		aura_recovery = maxf(aura_recovery, state.aura_on_damage)
+
+	if aura_recovery > 0.0:
+		var recovered := roundi(dmg * aura_recovery)
+
+		if relation == Wheel.Relation.RESIST: recovered *= 2
+
+		target.add_aura(recovered)
+
+	if target.pose().is_empty() and effect:
 		play_sound("Hit", target)
 		hit_animation(target)
 		if elemental and not target.has_state("AuraBreak"):
@@ -1692,14 +1707,6 @@ func is_valid_target(target: Actor, ability: Ability = CurrentChar.next_move) ->
 		if !ability.can_target_dead: return false
 
 	return true
-
-
-func recover(chara: Actor) -> void:
-	battle_msg("recovers", chara.first_name)
-	anim("Idle", chara)
-	chara.health = max(10, chara.health)
-	chara.aura = chara.max_aura
-	Global.check.emit()
 
 
 func pop_num(target: Actor, text: Variant, color: Color = Color.WHITE) -> void:
@@ -2228,7 +2235,9 @@ func hide_victory_stuff() -> void:
 func reset_all() -> void:
 	pending_traps.clear()
 	for i in TurnOrder:
-		for j in i.states: if j.removed_on_battle_end: i.states.erase(j)
+		for j in i.states.duplicate():
+			if j.removed_on_battle_end: i.states.erase(j)
+
 		i.attack_multiplier = 1
 		i.defence_multiplier = 1
 		i.magic_multiplier = 1
@@ -2607,7 +2616,9 @@ func add_state_effect(state: State, chara: Actor) -> void:
 
 
 func remove_state_effect(state: State, chara: Actor, ctx: ActionSequenceContext = null) -> void:
-	if chara == null or chara.node == null: return
+	if chara == null or chara.node == null:
+		Global.check.emit()
+		return
 	# Inline states (defined directly inside an Ability, e.g. traps) have no .tres
 	# file in database/States, so their visual uses the live state's display name.
 	var visual := chara.node.get_node_or_null(state.name)
@@ -2619,6 +2630,8 @@ func remove_state_effect(state: State, chara: Actor, ctx: ActionSequenceContext 
 		visual.queue_free()
 
 	await run_state_sequence(state.on_remove, state, chara, chara, ctx)
+	# Refresh the HUD only after the removal effect has applied its changes.
+	Global.check.emit()
 
 
 func get_actor(codename: StringName, unsafe := false) -> Actor:
