@@ -34,6 +34,8 @@ enum Stat {
 	CURRENT_AURA_PERCENT,
 	STATE_COUNT,
 	DAMAGE_TAKEN,
+	STATE_PARAMETER,
+	STATE_TURNS,
 }
 
 @export var source: Source = Source.DAMAGE:
@@ -77,6 +79,14 @@ enum Stat {
 @export var variance_max := 1.2
 @export var random_min: float = 0.0
 @export var random_max: float = 1.0
+## Pick whole numbers for the random source instead of floats.
+@export var integer_random := false:
+	set(value):
+		integer_random = value
+		notify_property_list_changed()
+## Take the absolute value of the result. Useful for state values that can be
+## negative, such as a state's turn counter.
+@export var absolute := false
 
 
 func _init() -> void:
@@ -84,7 +94,7 @@ func _init() -> void:
 
 
 func resolve(ctx: ActionSequenceContext) -> float:
-	var result := value
+	var result: float = value
 
 	match source:
 		Source.FIXED:
@@ -97,12 +107,15 @@ func resolve(ctx: ActionSequenceContext) -> float:
 			result = stat_value(ctx)
 
 		Source.RANDOM:
-			result = randf_range(random_min, random_max)
+			result = float(randi_range(int(random_min), int(random_max))) if integer_random else randf_range(random_min, random_max)
 
 	result = result * multiplier + add
 
 	if variance:
 		result *= randf_range(variance_min, variance_max)
+
+	if absolute:
+		result = absf(result)
 
 	return result
 
@@ -162,6 +175,14 @@ func parameter_value(ctx: ActionSequenceContext) -> float:
 
 
 func stat_value(ctx: ActionSequenceContext) -> float:
+	if stat == Stat.STATE_PARAMETER or stat == Stat.STATE_TURNS:
+		var state: State = ctx.last_state if ctx != null else null
+
+		if state == null:
+			return 0.0
+
+		return float(state.parameter) if stat == Stat.STATE_PARAMETER else float(state.turns)
+
 	var subject := ctx.target if ctx != null else null
 
 	if actor != null:
@@ -207,6 +228,9 @@ func stat_value(ctx: ActionSequenceContext) -> float:
 		Stat.DAMAGE_TAKEN:
 			return float(subject.damage_received_this_turn)
 
+		Stat.STATE_PARAMETER, Stat.STATE_TURNS:
+			return 0.0
+
 	return 0.0
 
 
@@ -236,6 +260,9 @@ func _to_string() -> String:
 		Source.RANDOM:
 			label = "%s to %s" % [str(random_min), str(random_max)]
 
+			if integer_random:
+				label += " (whole)"
+
 	if not is_equal_approx(multiplier, 1.0):
 		label += " x%s" % str(multiplier)
 
@@ -245,11 +272,14 @@ func _to_string() -> String:
 	if variance:
 		label += " (%sx to %sx)" % [str(variance_min), str(variance_max)]
 
+	if absolute:
+		label = "|%s|" % label
+
 	return label.strip_edges()
 
 
 func _validate_property(property: Dictionary) -> void:
-	var visible: Array[String] = ["source", "multiplier", "add", "variance"]
+	var visible: Array[String] = ["source", "multiplier", "add", "variance", "absolute"]
 
 	if variance:
 		visible.append_array(["variance_min", "variance_max"])
@@ -262,13 +292,16 @@ func _validate_property(property: Dictionary) -> void:
 			visible.append("damage_scale")
 
 		Source.STAT:
-			visible.append_array(["stat", "actor"])
+			visible.append("stat")
+
+			if stat not in [Stat.STATE_PARAMETER, Stat.STATE_TURNS]:
+				visible.append("actor")
 
 			if stat in [Stat.MAX_HP_PERCENT, Stat.CURRENT_HP_PERCENT, Stat.MISSING_HP_PERCENT, Stat.MAX_AURA_PERCENT, Stat.CURRENT_AURA_PERCENT]:
 				visible.append("value")
 
 		Source.RANDOM:
-			visible.append_array(["random_min", "random_max"])
+			visible.append_array(["random_min", "random_max", "integer_random"])
 
 	StepEditor.only(property, visible)
 

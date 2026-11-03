@@ -152,9 +152,10 @@ miss_steps = Array[ExtResource("2_we42m")]([SubResource("Resource_7qvg6")])
 
 [sub_resource type="Resource" id="Resource_5f6qw"]
 script = ExtResource("6_b6s7n")
-duration = 0.5
+duration = 0.2
 
 [sub_resource type="Resource" id="Resource_hit_tp1hi"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 

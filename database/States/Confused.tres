@@ -2,11 +2,21 @@
 
 [ext_resource type="Script" uid="uid://47q0we3aw5v" path="res://codings/Classes/state.gd" id="1_ne4g1"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_oqm4i"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="2_nu6j0"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_b11mb"]
+[ext_resource type="Script" uid="uid://bpg01v8kmbpte" path="res://codings/Battle/Steps/Combat/confusion_step.gd" id="4_yk10h"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_fx7au"]
 atlas = ExtResource("1_oqm4i")
 region = Rect2(54, 36, 18, 18)
 filter_clip = true
+
+[sub_resource type="Resource" id="Resource_ql7nk"]
+script = ExtResource("4_yk10h")
+
+[sub_resource type="Resource" id="Resource_1xnxx"]
+script = ExtResource("2_nu6j0")
+steps = Array[ExtResource("3_b11mb")]([SubResource("Resource_ql7nk")])
 
 [resource]
 script = ExtResource("1_ne4g1")
@@ -14,3 +24,4 @@ name = "Confused"
 description = "Might loose control..."
 icon = SubResource("AtlasTexture_fx7au")
 color = Color(0.321569, 0.972549, 0.709804, 1)
+on_turn = SubResource("Resource_1xnxx")

@@ -2,11 +2,258 @@
 
 [ext_resource type="Script" uid="uid://47q0we3aw5v" path="res://codings/Classes/state.gd" id="1_3cc81"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_pyp2k"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="2_2gqn2"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_d4jnx"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_xd5xd"]
+[ext_resource type="Script" uid="uid://onmel5elottq" path="res://codings/Battle/Steps/Conditions/actor_in_turn_order_condition.gd" id="5_urt55"]
+[ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="6_xeul8"]
+[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="7_01ukd"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="8_6g835"]
+[ext_resource type="Script" uid="uid://bi1p1e12c68ev" path="res://codings/Battle/Steps/Conditions/value_condition.gd" id="9_2hxdb"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="10_2fnok"]
+[ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="11_gnrkt"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="12_hm6ln"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="12_xeul8"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="13_01ukd"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_meton"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="14_6g835"]
+[ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="14_lyh2y"]
+[ext_resource type="Script" uid="uid://1out28n0606o" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="15_cvxs6"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_yegrv"]
 atlas = ExtResource("1_pyp2k")
 region = Rect2(36, 36, 18, 18)
 filter_clip = true
+
+[sub_resource type="Resource" id="Resource_2hxdb"]
+resource_name = "Ability Inflicter"
+script = ExtResource("4_xd5xd")
+mode = 10
+
+[sub_resource type="Resource" id="Resource_2fnok"]
+resource_name = "Ability Inflicter is in the turn order"
+script = ExtResource("5_urt55")
+actor = SubResource("Resource_2hxdb")
+
+[sub_resource type="Resource" id="Resource_1n6dk"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_vutx6"]
+script = ExtResource("6_xeul8")
+mode = 1
+actor = SubResource("Resource_1n6dk")
+
+[sub_resource type="Resource" id="Resource_q2yow"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_h1fyw"]
+script = ExtResource("7_01ukd")
+effect_name = &"LeechGrab1"
+target = SubResource("Resource_q2yow")
+
+[sub_resource type="Resource" id="Resource_1idl4"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_0d2hd"]
+script = ExtResource("8_6g835")
+move_enabled = true
+actor = SubResource("Resource_1idl4")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_wpuc1"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_f1sf0"]
+resource_name = "damage taken"
+script = ExtResource("10_2fnok")
+source = 2
+stat = 11
+actor = SubResource("Resource_wpuc1")
+
+[sub_resource type="Resource" id="Resource_g3l4e"]
+resource_name = "damage taken equals 0"
+script = ExtResource("9_2hxdb")
+value = SubResource("Resource_f1sf0")
+
+[sub_resource type="Resource" id="Resource_up12l"]
+resource_name = "Element color"
+script = ExtResource("11_gnrkt")
+mode = 5
+element = &"natural"
+
+[sub_resource type="Resource" id="Resource_gnrkt"]
+script = ExtResource("12_xeul8")
+
+[sub_resource type="Resource" id="Resource_hm6ln"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_meton"]
+script = ExtResource("13_01ukd")
+actor = SubResource("Resource_hm6ln")
+
+[sub_resource type="Resource" id="Resource_lyh2y"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_cvxs6"]
+script = ExtResource("14_6g835")
+target = SubResource("Resource_lyh2y")
+
+[sub_resource type="Resource" id="Resource_qbseq"]
+resource_name = "4.0"
+script = ExtResource("10_2fnok")
+source = 0
+value = 4.0
+
+[sub_resource type="Resource" id="Resource_npkf8"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_5arjt"]
+script = ExtResource("12_hm6ln")
+target = SubResource("Resource_npkf8")
+power = SubResource("Resource_qbseq")
+magic_mode = 2
+effect = false
+limiter = true
+ignore_stats = true
+elemental = true
+color = SubResource("Resource_up12l")
+hit_branch = false
+hit_steps = Array[ExtResource("3_d4jnx")]([SubResource("Resource_gnrkt"), SubResource("Resource_meton")])
+miss_steps = Array[ExtResource("3_d4jnx")]([SubResource("Resource_cvxs6")])
+
+[sub_resource type="Resource" id="Resource_js3da"]
+script = ExtResource("13_meton")
+condition = SubResource("Resource_g3l4e")
+if_steps = Array[ExtResource("3_d4jnx")]([SubResource("Resource_5arjt")])
+
+[sub_resource type="Resource" id="Resource_8k833"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_p5rag"]
+script = ExtResource("7_01ukd")
+mode = 5
+effect_name = &"LeechGrab1"
+target = SubResource("Resource_8k833")
+
+[sub_resource type="Resource" id="Resource_jl0ot"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_6vi3h"]
+script = ExtResource("7_01ukd")
+mode = 1
+effect_name = &"LeechGrab1"
+target = SubResource("Resource_jl0ot")
+animation = &"LeechGrab2"
+
+[sub_resource type="Resource" id="Resource_d1hvk"]
+resource_name = "Ability Inflicter"
+script = ExtResource("4_xd5xd")
+mode = 10
+
+[sub_resource type="Resource" id="Resource_kpw01"]
+script = ExtResource("8_6g835")
+move_enabled = true
+actor = SubResource("Resource_d1hvk")
+offset = Vector2(40, 0)
+
+[sub_resource type="Resource" id="Resource_es8pr"]
+resource_name = "Ability Inflicter"
+script = ExtResource("4_xd5xd")
+mode = 10
+
+[sub_resource type="Resource" id="Resource_b0ykt"]
+resource_name = "Actor Position"
+script = ExtResource("14_lyh2y")
+mode = 8
+actor = SubResource("Resource_es8pr")
+
+[sub_resource type="Resource" id="Resource_6vhg0"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_q78dr"]
+script = ExtResource("7_01ukd")
+mode = 2
+effect_name = &"LeechGrab1"
+target = SubResource("Resource_6vhg0")
+position = SubResource("Resource_b0ykt")
+wait = true
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_xksby"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ah3os"]
+resource_name = "damage taken"
+script = ExtResource("10_2fnok")
+source = 2
+stat = 11
+actor = SubResource("Resource_xksby")
+
+[sub_resource type="Resource" id="Resource_rl7uo"]
+resource_name = "Ability Inflicter"
+script = ExtResource("4_xd5xd")
+mode = 10
+
+[sub_resource type="Resource" id="Resource_1pfua"]
+script = ExtResource("15_cvxs6")
+target = SubResource("Resource_rl7uo")
+amount = SubResource("Resource_ah3os")
+
+[sub_resource type="Resource" id="Resource_2yjen"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_lg73f"]
+script = ExtResource("7_01ukd")
+mode = 1
+effect_name = &"LeechGrab1"
+target = SubResource("Resource_2yjen")
+wait = true
+animation = &"LeechGrab3"
+
+[sub_resource type="Resource" id="Resource_3e8on"]
+resource_name = "Target"
+script = ExtResource("4_xd5xd")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ut7ur"]
+script = ExtResource("7_01ukd")
+mode = 3
+effect_name = &"LeechGrab1"
+target = SubResource("Resource_3e8on")
+
+[sub_resource type="Resource" id="Resource_pl4ii"]
+script = ExtResource("13_meton")
+condition = SubResource("Resource_2fnok")
+if_steps = Array[ExtResource("3_d4jnx")]([SubResource("Resource_h1fyw"), SubResource("Resource_0d2hd"), SubResource("Resource_js3da"), SubResource("Resource_p5rag"), SubResource("Resource_6vi3h"), SubResource("Resource_kpw01"), SubResource("Resource_q78dr"), SubResource("Resource_1pfua"), SubResource("Resource_lg73f"), SubResource("Resource_ut7ur")])
+else_steps = Array[ExtResource("3_d4jnx")]([SubResource("Resource_vutx6")])
+
+[sub_resource type="Resource" id="Resource_d34qs"]
+script = ExtResource("2_2gqn2")
+steps = Array[ExtResource("3_d4jnx")]([SubResource("Resource_pl4ii")])
 
 [resource]
 script = ExtResource("1_3cc81")
@@ -15,3 +262,4 @@ description = "Damaging this actor will heal whoever inflicted this state."
 turns = 5
 icon = SubResource("AtlasTexture_yegrv")
 color = Color(0.819608, 1, 0.235294, 1)
+on_turn = SubResource("Resource_d34qs")

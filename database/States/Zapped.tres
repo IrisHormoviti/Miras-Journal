@@ -1,12 +1,74 @@
 [gd_resource type="Resource" script_class="State" format=3 uid="uid://d1yept33qk7oe"]
 
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_mf0vm"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="2_1s12l"]
 [ext_resource type="Script" uid="uid://47q0we3aw5v" path="res://codings/Classes/state.gd" id="2_5msns"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_3mmnq"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_bhniy"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_0wse0"]
+[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="6_myd75"]
+[ext_resource type="Resource" uid="uid://xsqx8xd4ctjb" path="res://database/Abilities/Nothing.tres" id="7_wji3h"]
+[ext_resource type="Script" uid="uid://qj0kal4v0pn4" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="8_w3ft4"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="9_p5ac0"]
+[ext_resource type="Script" uid="uid://div6ippuwwmdo" path="res://codings/Battle/Steps/Flow/random_step.gd" id="10_5v03j"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6wibv"]
 atlas = ExtResource("1_mf0vm")
 region = Rect2(72, 36, 18, 18)
 filter_clip = true
+
+[sub_resource type="Resource" id="Resource_7yyke"]
+resource_name = "Target"
+script = ExtResource("4_bhniy")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_itro0"]
+script = ExtResource("5_0wse0")
+move_enabled = true
+actor = SubResource("Resource_7yyke")
+
+[sub_resource type="Resource" id="Resource_tpj51"]
+script = ExtResource("6_myd75")
+mode = 2
+message = "shock"
+
+[sub_resource type="Resource" id="Resource_b3rmx"]
+resource_name = "Target"
+script = ExtResource("4_bhniy")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_8i4j6"]
+script = ExtResource("8_w3ft4")
+mode = 6
+actor = SubResource("Resource_b3rmx")
+next_move = ExtResource("7_wji3h")
+
+[sub_resource type="Resource" id="Resource_kyuji"]
+resource_name = "Target"
+script = ExtResource("4_bhniy")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_rkxol"]
+script = ExtResource("9_p5ac0")
+mode = 9
+actor = SubResource("Resource_kyuji")
+wait = true
+
+[sub_resource type="Resource" id="Resource_va1cx"]
+script = ExtResource("2_1s12l")
+steps = Array[ExtResource("3_3mmnq")]([SubResource("Resource_itro0"), SubResource("Resource_tpj51"), SubResource("Resource_8i4j6"), SubResource("Resource_rkxol")])
+
+[sub_resource type="Resource" id="Resource_lrfrt"]
+script = ExtResource("2_1s12l")
+
+[sub_resource type="Resource" id="Resource_i6bsi"]
+script = ExtResource("10_5v03j")
+options = Array[ExtResource("2_1s12l")]([SubResource("Resource_va1cx"), SubResource("Resource_lrfrt")])
+weights = Array[float]([5.0, 2.0])
+
+[sub_resource type="Resource" id="Resource_rg1aq"]
+script = ExtResource("2_1s12l")
+steps = Array[ExtResource("3_3mmnq")]([SubResource("Resource_i6bsi")])
 
 [resource]
 script = ExtResource("2_5msns")
@@ -17,3 +79,4 @@ turns = 2
 icon = SubResource("AtlasTexture_6wibv")
 color = Color(0.988235, 0.866667, 0.258824, 1)
 weak_mult = 1.5
+on_turn = SubResource("Resource_rg1aq")

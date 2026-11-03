@@ -10,6 +10,7 @@ enum Mode {
 	ABILITY_DISABLED,
 	CONTROLLABLE,
 	NEXT_ACTION,
+	NEXT_TARGET,
 }
 
 @export var mode: Mode = Mode.CANT_DIE:
@@ -62,6 +63,9 @@ func run(ctx: ActionSequenceContext) -> void:
 			if next_target != null:
 				subject.next_target = next_target.resolve(ctx)
 
+		Mode.NEXT_TARGET:
+			subject.next_target = next_target.resolve(ctx) if next_target != null else null
+
 
 ## The actor this step acts on. Scripting a turn defaults to the caster, since a
 ## next move usually describes the actor running the sequence.
@@ -101,6 +105,12 @@ func _to_string() -> String:
 		Mode.NEXT_ACTION:
 			return "Next move for %s: %s" % [who, Actor.BtAction.find_key(next_action)]
 
+		Mode.NEXT_TARGET:
+			if next_target == null:
+				return "Clear %s's target" % who
+
+			return "Make %s target %s" % [who, next_target]
+
 	return ""
 
 
@@ -119,6 +129,8 @@ func _validate_property(property: Dictionary) -> void:
 		visible.append_array(["enabled", "ability_index"])
 	elif mode == Mode.NEXT_ACTION:
 		visible.append_array(["next_action", "next_move", "next_target"])
+	elif mode == Mode.NEXT_TARGET:
+		visible.append("next_target")
 	else:
 		visible.append("enabled")
 

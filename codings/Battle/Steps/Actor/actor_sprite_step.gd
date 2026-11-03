@@ -18,6 +18,7 @@ enum Mode {
 	Z_INDEX,
 	PLAY_BACKWARDS,
 	AWAIT_ANIMATION,
+	NODE_Z_INDEX,
 }
 
 ## Standard battle animation names, offered as a dropdown in the inspector.
@@ -141,6 +142,12 @@ func run(ctx: ActionSequenceContext) -> void:
 		Mode.Z_INDEX:
 			subject.node.z_index = z_index
 
+		Mode.NODE_Z_INDEX:
+			var child := subject.node.get_node_or_null(node_path)
+
+			if child is CanvasItem:
+				child.z_index = z_index
+
 		Mode.PLAY_BACKWARDS:
 			subject.node.play_backwards(animation)
 			if wait:
@@ -200,6 +207,9 @@ func _to_string() -> String:
 		Mode.Z_INDEX:
 			return "Set %s's z index to %d" % [who, z_index]
 
+		Mode.NODE_Z_INDEX:
+			return "Set '%s' on %s to z index %d" % [node_path, who, z_index]
+
 	return ""
 
 
@@ -247,6 +257,9 @@ func _validate_property(property: Dictionary) -> void:
 
 		Mode.Z_INDEX:
 			fields.append("z_index")
+
+		Mode.NODE_Z_INDEX:
+			fields.append_array(["node_path", "z_index"])
 
 	StepEditor.only(property, fields)
 

@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="11_uxn6x"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_57mot"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="14_g7gta"]
+[ext_resource type="Resource" uid="uid://d05eisax2ikpg" path="res://database/States/Frozen.tres" id="18_t57ii"]
 [ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
 [ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
@@ -50,7 +51,7 @@ script = ExtResource("5_dmjcc")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_of0ko"]
-resource_name = "(20.0, 0.0) (side)"
+resource_name = "(20, 0) (side)"
 script = ExtResource("7_xvs4g")
 mode = 2
 position = Vector2(20, 0)
@@ -86,13 +87,13 @@ script = ExtResource("9_s2mkv")
 position = SubResource("Resource_uu1dv")
 value = &"Iceicle"
 
-[sub_resource type="Resource" id="Resource_g7gta"]
-script = ExtResource("6_127my")
-duration = 0.3
-
 [sub_resource type="Resource" id="Resource_83t34"]
 script = ExtResource("4_shake")
 amount = 5.0
+
+[sub_resource type="Resource" id="Resource_g7gta"]
+script = ExtResource("6_127my")
+duration = 0.3
 
 [sub_resource type="Resource" id="Resource_18uix"]
 resource_name = "Wheel Color"
@@ -140,6 +141,12 @@ hit_branch = false
 hit_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_hoiqc"), SubResource("Resource_cax0t")])
 miss_steps = Array[ExtResource("3_223rs")]([SubResource("Resource_h4iik")])
 
+[sub_resource type="Resource" id="Resource_7jqbn"]
+script = ExtResource("6_127my")
+duration = 0.5
+random_duration = true
+random_max = 0.5
+
 [sub_resource type="Resource" id="Resource_lm64c"]
 script = ExtResource("9_s2mkv")
 position = SubResource("Resource_uu1dv")
@@ -147,6 +154,7 @@ value = &"Iceicle"
 
 [sub_resource type="Resource" id="Resource_ympqw"]
 script = ExtResource("6_127my")
+duration = 0.3
 random_max = 0.5
 
 [sub_resource type="Resource" id="Resource_5er56"]
@@ -213,6 +221,7 @@ mode = 1
 [sub_resource type="Resource" id="Resource_6wgai"]
 script = ExtResource("14_g7gta")
 actor = SubResource("Resource_s2mkv")
+state = ExtResource("18_t57ii")
 
 [sub_resource type="Resource" id="Resource_ec0gy"]
 script = ExtResource("13_57mot")
@@ -225,7 +234,7 @@ group = 4
 exclude_caster = true
 wait = false
 stagger = 0.3
-steps = Array[ExtResource("3_223rs")]([SubResource("Resource_57mot"), SubResource("Resource_g7gta"), SubResource("Resource_83t34"), SubResource("Resource_qoj0b"), SubResource("Resource_lm64c"), SubResource("Resource_ympqw"), SubResource("Resource_5er56"), SubResource("Resource_mmtq5"), SubResource("Resource_ec0gy")])
+steps = Array[ExtResource("3_223rs")]([SubResource("Resource_57mot"), SubResource("Resource_83t34"), SubResource("Resource_g7gta"), SubResource("Resource_qoj0b"), SubResource("Resource_7jqbn"), SubResource("Resource_lm64c"), SubResource("Resource_ympqw"), SubResource("Resource_5er56"), SubResource("Resource_mmtq5"), SubResource("Resource_ec0gy")])
 
 [sub_resource type="Resource" id="Resource_t57ii"]
 script = ExtResource("6_127my")

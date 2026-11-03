@@ -35,7 +35,7 @@ resource_name = "Caster"
 script = ExtResource("3_7ocar")
 
 [sub_resource type="Resource" id="Resource_lu2nb"]
-resource_name = "x 30.0 (side)"
+resource_name = "x 30 (side)"
 script = ExtResource("5_554vl")
 mode = 3
 x = 30.0
@@ -117,6 +117,7 @@ script = ExtResource("8_ycjgy")
 duration = 0.2
 
 [sub_resource type="Resource" id="Resource_hit_s6ac0"]
+resource_name = "miss"
 script = ExtResource("cond_hit")
 outcomes = 4
 

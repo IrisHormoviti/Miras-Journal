@@ -83,6 +83,7 @@ hit_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_25802")])
 miss_steps = Array[ExtResource("3_7ifvw")]([SubResource("Resource_4yan4")])
 
 [sub_resource type="Resource" id="Resource_hit_j5knt"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 

@@ -87,7 +87,7 @@ func roll_rng(tar: Actor) -> void:
 func handle_states() -> void:
 	var chara := Bt.CurrentChar
 
-	for state: State in chara.states:
+	for state: State in chara.states.duplicate():
 		print("Handling ", state.name)
 		if state.turns > -1:
 			state.turns -= 1
@@ -96,117 +96,19 @@ func handle_states() -> void:
 				state.queue_remove = true
 				Bt.anim("", chara)
 
-		if not state.queue_remove:
-			match state.filename:
-				"AuraBreak":
-					if chara.aura != 0:
-						state.queue_remove = true
+		if state.queue_remove:
+			continue
 
-				"Burned":
-					#chara.node.get_node("State").play("Burned")
-					Bt.focus_cam(chara, 0.3)
-					Bt.play_sound("BurnWoosh", chara)
-					Bt.damage(chara, true, true, randi_range(3, 12), false, true, true, Colorizer.ElementColor.get("heat"))
-					await get_tree().create_timer(0.8).timeout
+		await Bt.run_state_sequence(state.on_turn, state, chara)
 
-				"Poisoned":
-					state.turns += 1
-					#chara.node.get_node("State").play("Poisoned")
-					Bt.focus_cam(chara, 0.3)
-					Bt.damage(chara, true, true, abs(state.turns), false, true, true, Colorizer.ElementColor.get("corruption"))
-					await get_tree().create_timer(0.8).timeout
-
-				"Confused":
-					var luck := randi_range(state.turns, 1)
-					print("Confusion dice roll: ", luck)
-					if luck < -1:
-						chara.remove_state(state.name)
-						Bt.battle_msg("confusion_recover")
-					elif luck == -1 or not chara.controllable:
-						var choices: Array[Ability] = chara.abilities.duplicate()
-						choices.append(chara.standard_attack)
-						chara.next_move = choices.pick_random()
-						chara.next_action = Actor.BtAction.MAGIC
-						chara.next_target = TurnOrder.pick_random()
-
-						if chara.controllable:
-							Bt.battle_msg("confusion_lose_control")
-						else:
-							if chara == chara.next_target and chara.next_move.target == Ability.T.ONE_ENEMY:
-								Bt.battle_msg("confusion_hit_self")
-							elif chara.next_target in Bt.get_ally_faction(chara) and chara.next_move.target == Ability.T.ONE_ENEMY:
-								Bt.battle_msg("confusion_hit_ally")
-
-					state.turns -= 1
-
-				"Leeched":
-					if state.inflicter in TurnOrder:
-						Bt.play_effect("LeechGrab1", chara, Vector2.ZERO, false, true)
-						Bt.focus_cam(chara, 0.3)
-						if chara.damage_received_this_turn == 0:
-							Bt.damage(chara, true, true, 4, false, true, true, Colorizer.ElementColor.get("natural"))
-
-						var dmg: int = chara.damage_received_this_turn
-						await Bt.await_anim($LeechGrab1)
-						$LeechGrab1.play("LeechGrab2")
-						Bt.focus_cam(state.inflicter, 0.5, 40)
-						await Battle.tween(
-							$LeechGrab1, "global_position", 
-							state.inflicter.node.global_position, 0.5,
-							Tween.EASE_OUT, Tween.TRANS_QUART
-							)
-						Bt.heal(state.inflicter, dmg)
-						$LeechGrab1.play("LeechGrab3")
-						await Bt.await_anim($LeechGrab1, "LeechGrab3")
-						$LeechGrab1.queue_free()
-					else: chara.remove_state(state)
-				"Aggro":
-					if state.inflicter not in TurnOrder or state.inflicter.has_state("KnockedOut"):
-						chara.remove_state(state)
-						chara.next_target = null
-
-				"Zapped":
-					if randi_range(0, 6) > 1:
-						Bt.focus_cam(chara)
-						Bt.battle_msg("shock")
-						chara.next_action = Actor.BtAction.ACT
-						chara.next_move = Ability.nothing()
-						await Bt.shake_actor(chara)
-
-				"KnockedOut":
-					if chara.health > 0:
-						var saving_throw := randf()
-						var revive_chance: float = chara.health_ratio()
-						print("Revive chance: %d / %d = %.2f " % [chara.health, chara.max_hp, revive_chance])
-						print("Saving throw: %.2f" % [saving_throw])
-						if revive_chance == 0.0:
-							print("Character is knocked out, skip turn")
-							chara.next_action = Actor.BtAction.ACT
-							chara.next_move = Ability.nothing()
-						elif saving_throw <= (revive_chance):
-							chara.remove_state(state)
-						else:
-							Bt.focus_cam(chara, 0.5, 10)
-							Bt.battle_msg("cant_recover")
-							await Bt.shake_actor(chara)
-							chara.next_action = Actor.BtAction.ACT
-							chara.next_move = Ability.nothing()
-
-				"Frozen":
-					Bt.focus_cam(chara)
-					Bt.battle_msg("frozen")
-					chara.next_action = Actor.BtAction.ACT
-					chara.next_move = Ability.nothing()
-					await Bt.shake_actor(chara)
-
-	Bt.remove_queued_states(chara)
+	await Bt.remove_queued_states(chara)
 	chara.damage_received_this_turn = 0
 	states_handled.emit()
 
 
 func end_turn_checks() -> void:
 	var chara := CurrentChar
-	Bt.remove_queued_states(chara)
+	await Bt.remove_queued_states(chara)
 
 
 #region Attacks

@@ -8,6 +8,7 @@ enum Mode {
 	MOVE,
 	FREE,
 	SET_SHADER,
+	AWAIT,
 }
 
 @export var mode: Mode = Mode.PLAY:
@@ -67,6 +68,9 @@ func run(ctx: ActionSequenceContext) -> void:
 			material.set_shader_parameter("new_color", new_color.resolve(ctx) if new_color != null else Color.WHITE)
 			effect.material = material
 
+		Mode.AWAIT:
+			await ctx.battle.await_anim(effect)
+
 
 func _play(ctx: ActionSequenceContext) -> void:
 	var effect_target: Variant = ctx.target
@@ -120,6 +124,9 @@ func _to_string() -> String:
 		Mode.SET_SHADER:
 			label = "Set effect shader"
 
+		Mode.AWAIT:
+			label = "Wait for effect"
+
 	if str(effect_name).is_empty():
 		return label
 
@@ -144,6 +151,9 @@ func _validate_property(property: Dictionary) -> void:
 
 		Mode.SET_SHADER:
 			visible.append_array(["shader", "prev_color", "new_color"])
+
+		Mode.AWAIT:
+			pass
 
 	StepEditor.only(property, visible)
 

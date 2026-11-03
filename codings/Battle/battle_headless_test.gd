@@ -48,7 +48,7 @@ func _ready() -> void:
 		{"outcome": 0, "actor": "Mira", "targets": 2},
 	):
 		_fail("Could not write the preview request")
-		get_tree().quit(1)
+		await _finish(1)
 		return
 
 	battle = BATTLE_SCENE.instantiate()
@@ -58,7 +58,7 @@ func _ready() -> void:
 
 	if not is_instance_valid(battle) or battle.Troop.is_empty():
 		_fail("Battle harness failed to start")
-		get_tree().quit(1)
+		await _finish(1)
 		return
 
 	print("BATTLE_TEST_READY")
@@ -73,6 +73,8 @@ func _ready() -> void:
 	await _test_miss()
 	await _test_auto_idle()
 	await _test_state_pose()
+	await _test_state_sequences()
+	await _test_migrated_state_turns()
 	_test_enemy_preview_setup()
 	_test_branch_outcomes()
 	_test_migrated_sequences_load()
@@ -85,7 +87,23 @@ func _ready() -> void:
 	await _test_conditions()
 
 	print("BATTLE_TEST_DONE failed=", failed)
-	get_tree().quit(1 if failed else 0)
+	await _finish(1 if failed else 0)
+
+
+## Frees the battle and lets the tree settle before quitting, so the headless
+## run does not report leaked objects and RIDs at exit.
+func _finish(code: int) -> void:
+	if is_instance_valid(battle):
+		battle.free()
+
+	battle = null
+	Battle.current = null
+	Battle.sequence = null
+	Battle.headless_driver = false
+
+	await get_tree().process_frame
+	await get_tree().process_frame
+	get_tree().quit(code)
 
 
 ## The preview sequence used to boot the standalone battle.
@@ -583,9 +601,140 @@ func _test_state_pose() -> void:
 	if caster.node.animation != "Guard":
 		_fail("Sturdy Guard did not keep the Barrier pose")
 
-	caster.remove_state("Barrier")
+	await caster.remove_state("Barrier")
 	caster.node.sprite_frames = original_frames
 	caster.node.play("Idle")
+
+
+func _test_state_sequences() -> void:
+	if battle.Troop.size() < 2:
+		_fail("Battle harness needs two enemies for the state sequence test")
+		return
+
+	var target := battle.Troop[1]
+	target.dont_idle = false
+	target.controllable = true
+
+	var on_add := ActorFlagStep.new()
+	on_add.mode = ActorFlagStep.Mode.DONT_IDLE
+	on_add.actor = ActorRef.new(ActorRef.Mode.TARGET)
+	on_add.enabled = true
+
+	var on_remove := ActorFlagStep.new()
+	on_remove.mode = ActorFlagStep.Mode.DONT_IDLE
+	on_remove.actor = ActorRef.new(ActorRef.Mode.TARGET)
+	on_remove.enabled = false
+
+	var on_turn := ActorFlagStep.new()
+	on_turn.mode = ActorFlagStep.Mode.CONTROLLABLE
+	on_turn.actor = ActorRef.new(ActorRef.Mode.TARGET)
+	on_turn.enabled = false
+
+	var hook_state := State.new()
+	hook_state.name = "BattleTestStateHooks"
+	hook_state.turns = -1
+	hook_state.on_add = _hook_sequence(on_add)
+	hook_state.on_remove = _hook_sequence(on_remove)
+	hook_state.on_turn = _hook_sequence(on_turn)
+
+	await target.add_state(hook_state, -1, Party.Leader, true, true)
+	print("BATTLE_TEST_STATE_ADD dont_idle=", target.dont_idle)
+
+	if not target.dont_idle:
+		_fail("A state's on-add sequence did not run")
+
+	await battle.run_state_sequence(hook_state.on_turn, hook_state, target)
+	print("BATTLE_TEST_STATE_TURN controllable=", target.controllable)
+
+	if target.controllable:
+		_fail("A state's on-turn sequence did not run")
+
+	await target.remove_state(hook_state, null, true)
+	print("BATTLE_TEST_STATE_REMOVE dont_idle=", target.dont_idle)
+
+	if target.dont_idle:
+		_fail("A state's on-remove sequence did not run")
+
+	target.controllable = true
+
+	var burned: State = load("res://database/States/Burned.tres")
+	var knocked_out: State = load("res://database/States/KnockedOut.tres")
+
+	if burned.on_turn == null or knocked_out.on_turn == null or knocked_out.on_remove == null:
+		_fail("Migrated state resources lost their sequences")
+
+
+func _hook_sequence(step: BattleStep) -> ActionSequence:
+	var sequence := ActionSequence.new()
+	var steps: Array[BattleStep] = [step]
+	sequence.steps = steps
+	return sequence
+
+
+func _test_migrated_state_turns() -> void:
+	if battle.Troop.size() < 2:
+		_fail("Battle harness needs two enemies for the migrated state test")
+		return
+
+	var target := battle.Troop[1]
+	await battle.clear_states(target)
+
+	target.next_target = null
+	await target.add_state(load("res://database/States/Aggro.tres"), -1, Party.Leader, false, true)
+
+	if target.next_target != Party.Leader:
+		_fail("Aggro's on-add sequence did not point at its inflicter")
+
+	await target.remove_state("Aggro", null, true)
+
+	target.attack_multiplier = 1
+	await battle.stat_change(&"Atk", 0.5, target, 3)
+
+	if not target.has_state("AtkUp") or not is_equal_approx(target.attack_multiplier, 1.5):
+		_fail("Stat buffs did not apply through add_state")
+
+	await target.remove_state("AtkUp", null, true)
+
+	if not is_equal_approx(target.attack_multiplier, 1.0):
+		_fail("A stat buff's on-remove sequence did not restore its multiplier")
+
+	target.set_health(target.max_hp)
+	var burned: State = load("res://database/States/Burned.tres")
+	await target.add_state(burned, -1, Party.Leader, false, true)
+	var burned_state := target.get_state("Burned")
+	var before := target.health
+	await battle.run_state_sequence(burned_state.on_turn, burned_state, target)
+	print("BATTLE_TEST_STATE_BURNED health=", before, "->", target.health)
+
+	if target.health >= before:
+		_fail("Burned's on-turn sequence did not deal damage")
+
+	await target.add_state(load("res://database/States/AuraBreak.tres"), -1, Party.Leader, false, true)
+	target.set_aura(5)
+	var aura_break := target.get_state("Aura Break")
+	await battle.run_state_sequence(aura_break.on_turn, aura_break, target)
+
+	if target.has_state("Aura Break"):
+		_fail("AuraBreak did not clear once the actor had aura")
+
+	target.set_health(0)
+	target.set_aura(0)
+	target.next_move = null
+	await target.add_state(load("res://database/States/KnockedOut.tres"), -1, Party.Leader, false, true)
+	var knocked_out := target.get_state("Knocked Out")
+	await battle.run_state_sequence(knocked_out.on_turn, knocked_out, target)
+
+	if target.next_move != Ability.nothing():
+		_fail("KnockedOut did not skip a downed actor's turn")
+
+	await target.remove_state(knocked_out, null, true)
+	print("BATTLE_TEST_STATE_RECOVER health=", target.health, " aura=", target.aura)
+
+	if target.health != 10 or target.aura != target.max_aura:
+		_fail("KnockedOut's on-remove sequence did not recover the actor")
+
+	target.set_health(target.max_hp)
+	await battle.clear_states(target)
 
 
 func _test_enemy_preview_setup() -> void:

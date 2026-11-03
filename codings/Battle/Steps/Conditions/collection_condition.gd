@@ -12,7 +12,6 @@ enum Collection {
 
 const COLLECTION_LABELS := "States,Summoned allies"
 
-
 @export_group("Subject")
 ## Who to check. Defaults to the branch target.
 @export var actor: ActorRef
@@ -38,9 +37,9 @@ func check(ctx: ActionSequenceContext) -> bool:
 		return false
 
 	var items: Array = (
-		target.states
+		Array(target.states)
 		if collection == Collection.STATES
-		else target.summoned_allies
+		else Array(target.summoned_allies)
 	)
 
 	return items.is_empty() == empty

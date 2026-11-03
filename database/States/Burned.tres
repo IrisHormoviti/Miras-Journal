@@ -2,10 +2,104 @@
 
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_cibpr"]
 [ext_resource type="Script" uid="uid://47q0we3aw5v" path="res://codings/Classes/state.gd" id="1_e3mid"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="2_lw81i"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_anmxa"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_ifh7c"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_alws4"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="6_0tjk7"]
+[ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="7_g1mh5"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="8_ifh7c"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="8_qkvvj"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="9_alws4"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="9_gbubg"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="10_gm8c3"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_1w22s"]
 atlas = ExtResource("1_cibpr")
 region = Rect2(108, 36, 18, 18)
+
+[sub_resource type="Resource" id="Resource_1f45e"]
+resource_name = "Target"
+script = ExtResource("4_ifh7c")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_xcohi"]
+script = ExtResource("5_alws4")
+move_enabled = true
+actor = SubResource("Resource_1f45e")
+duration = 0.3
+
+[sub_resource type="Resource" id="Resource_5302m"]
+resource_name = "Target"
+script = ExtResource("4_ifh7c")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_kdl3f"]
+script = ExtResource("6_0tjk7")
+actor = SubResource("Resource_5302m")
+sound_name = &"BurnWoosh"
+
+[sub_resource type="Resource" id="Resource_j0m61"]
+resource_name = "Element color"
+script = ExtResource("7_g1mh5")
+mode = 5
+element = &"heat"
+
+[sub_resource type="Resource" id="Resource_0tjk7"]
+script = ExtResource("8_ifh7c")
+
+[sub_resource type="Resource" id="Resource_g1mh5"]
+resource_name = "Target"
+script = ExtResource("4_ifh7c")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_qkvvj"]
+script = ExtResource("6_0tjk7")
+actor = SubResource("Resource_g1mh5")
+
+[sub_resource type="Resource" id="Resource_gbubg"]
+resource_name = "Target"
+script = ExtResource("4_ifh7c")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_gm8c3"]
+script = ExtResource("9_alws4")
+target = SubResource("Resource_gbubg")
+
+[sub_resource type="Resource" id="Resource_i2chg"]
+resource_name = "0.0 to 1.0"
+script = ExtResource("8_qkvvj")
+source = 3
+random_min = 3.0
+random_max = 12.0
+integer_random = true
+
+[sub_resource type="Resource" id="Resource_te3xt"]
+resource_name = "Target"
+script = ExtResource("4_ifh7c")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_jymmw"]
+script = ExtResource("9_gbubg")
+target = SubResource("Resource_te3xt")
+power = SubResource("Resource_i2chg")
+magic_mode = 2
+effect = false
+limiter = true
+ignore_stats = true
+elemental = true
+color = SubResource("Resource_j0m61")
+hit_branch = false
+hit_steps = Array[ExtResource("3_anmxa")]([SubResource("Resource_0tjk7"), SubResource("Resource_qkvvj")])
+miss_steps = Array[ExtResource("3_anmxa")]([SubResource("Resource_gm8c3")])
+
+[sub_resource type="Resource" id="Resource_tlvla"]
+script = ExtResource("10_gm8c3")
+duration = 0.8
+
+[sub_resource type="Resource" id="Resource_6gmvu"]
+script = ExtResource("2_lw81i")
+steps = Array[ExtResource("3_anmxa")]([SubResource("Resource_xcohi"), SubResource("Resource_kdl3f"), SubResource("Resource_jymmw"), SubResource("Resource_tlvla")])
 
 [resource]
 script = ExtResource("1_e3mid")
@@ -17,3 +111,4 @@ turns = 5
 icon = SubResource("AtlasTexture_1w22s")
 color = Color(0.87451, 0.443137, 0.14902, 1)
 weak_mult = 1.5
+on_turn = SubResource("Resource_6gmvu")

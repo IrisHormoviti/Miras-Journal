@@ -127,6 +127,7 @@ layout_mode = 2
 size_flags_horizontal = 3
 text = "Does something very cool"
 vertical_alignment = 1
+text_overrun_behavior = 6
 
 [node name="AwaitToggle" type="Button" parent="Layout/Header" unique_id=1819701468]
 unique_name_in_owner = true

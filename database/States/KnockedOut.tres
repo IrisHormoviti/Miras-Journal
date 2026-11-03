@@ -1,8 +1,187 @@
-[gd_resource type="Resource" script_class="State" format=3 uid="uid://bx4nyp37i8aar"]
+[gd_resource type="Resource" script_class="State" uid="uid://bx4nyp37i8aar" format=3]
 
-[ext_resource type="Script" uid="uid://47q0we3aw5v" path="res://codings/Classes/state.gd" id="1_uh23e"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_ov5f4"]
+[ext_resource type="Script" path="res://codings/Classes/state.gd" id="1_uh23e"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_p0mym"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_ohrjg"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="4_do84t"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_i7o60"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="6_5d1j6"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="7_jinr0"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="8_cbc7s"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Conditions/chance_condition.gd" id="9_t3c5e"]
+[ext_resource type="Resource" path="res://database/Abilities/Nothing.tres" id="10_c7tpk"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="10_p0mym"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="11_y4v2h"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/state_step.gd" id="12_j6x32"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="13_28tm5"]
+
+[sub_resource type="Resource" id="Resource_fxqtm"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_vvmnh"]
+script = ExtResource("4_do84t")
+mode = 2
+message = "recovers"
+insert = SubResource("Resource_fxqtm")
+
+[sub_resource type="Resource" id="Resource_jwtmf"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_w5lbx"]
+script = ExtResource("5_i7o60")
+actor = SubResource("Resource_jwtmf")
+animation = &"Idle"
+
+[sub_resource type="Resource" id="Resource_30ead"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_a3qn6"]
+resource_name = "10.0"
+script = ExtResource("7_jinr0")
+source = 0
+value = 10.0
+
+[sub_resource type="Resource" id="Resource_by1eg"]
+script = ExtResource("6_5d1j6")
+mode = 4
+actor = SubResource("Resource_30ead")
+value = SubResource("Resource_a3qn6")
+
+[sub_resource type="Resource" id="Resource_ornnf"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_ko8fw"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_gngjj"]
+resource_name = "max aura"
+script = ExtResource("7_jinr0")
+source = 2
+stat = 6
+actor = SubResource("Resource_ko8fw")
+
+[sub_resource type="Resource" id="Resource_vc5c6"]
+script = ExtResource("6_5d1j6")
+mode = 0
+stat = 1
+actor = SubResource("Resource_ornnf")
+value = SubResource("Resource_gngjj")
+
+[sub_resource type="Resource" id="Resource_buccj"]
+script = ExtResource("1_ov5f4")
+steps = Array[ExtResource("2_p0mym")]([SubResource("Resource_vvmnh"), SubResource("Resource_w5lbx"), SubResource("Resource_by1eg"), SubResource("Resource_vc5c6")])
+
+[sub_resource type="Resource" id="Resource_cus0x"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_r0vkl"]
+resource_name = "Target health is at most 0"
+script = ExtResource("8_cbc7s")
+actor = SubResource("Resource_cus0x")
+comparator = 5
+
+[sub_resource type="Resource" id="Resource_n5vhu"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_8poxq"]
+resource_name = "Target health chance"
+script = ExtResource("9_t3c5e")
+use_health_ratio = true
+actor = SubResource("Resource_n5vhu")
+
+[sub_resource type="Resource" id="Resource_ohrjg"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_do84t"]
+script = ExtResource("10_p0mym")
+move_enabled = true
+actor = SubResource("Resource_ohrjg")
+offset = Vector2(10, 0)
+
+[sub_resource type="Resource" id="Resource_rfmqn"]
+script = ExtResource("4_do84t")
+mode = 2
+message = "cant_recover"
+
+[sub_resource type="Resource" id="Resource_vggi4"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_02a0d"]
+script = ExtResource("5_i7o60")
+mode = 9
+actor = SubResource("Resource_vggi4")
+wait = true
+
+[sub_resource type="Resource" id="Resource_4pdjx"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_2av6r"]
+script = ExtResource("11_y4v2h")
+mode = 6
+actor = SubResource("Resource_4pdjx")
+next_move = ExtResource("10_c7tpk")
+
+[sub_resource type="Resource" id="Resource_v6u53"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_iosv1"]
+script = ExtResource("12_j6x32")
+mode = 1
+actor = SubResource("Resource_v6u53")
+
+[sub_resource type="Resource" id="Resource_6qpxv"]
+script = ExtResource("13_28tm5")
+condition = SubResource("Resource_8poxq")
+if_steps = Array[ExtResource("2_p0mym")]([SubResource("Resource_iosv1")])
+else_steps = Array[ExtResource("2_p0mym")]([SubResource("Resource_do84t"), SubResource("Resource_rfmqn"), SubResource("Resource_02a0d"), SubResource("Resource_2av6r")])
+
+[sub_resource type="Resource" id="Resource_qinnc"]
+resource_name = "Target"
+script = ExtResource("3_ohrjg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_8ep2d"]
+script = ExtResource("11_y4v2h")
+mode = 6
+actor = SubResource("Resource_qinnc")
+next_move = ExtResource("10_c7tpk")
+
+[sub_resource type="Resource" id="Resource_tva81"]
+script = ExtResource("13_28tm5")
+condition = SubResource("Resource_r0vkl")
+if_steps = Array[ExtResource("2_p0mym")]([SubResource("Resource_8ep2d")])
+else_steps = Array[ExtResource("2_p0mym")]([SubResource("Resource_6qpxv")])
+
+[sub_resource type="Resource" id="Resource_3o64f"]
+script = ExtResource("1_ov5f4")
+steps = Array[ExtResource("2_p0mym")]([SubResource("Resource_tva81")])
 
 [resource]
 script = ExtResource("1_uh23e")
 name = "Knocked Out"
 description = "Cannot act at all. Might recover after being healed."
+on_remove = SubResource("Resource_buccj")
+on_turn = SubResource("Resource_3o64f")

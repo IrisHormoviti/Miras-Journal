@@ -232,9 +232,9 @@ func calc_dmg(power: float, is_magic: bool, attacker: Actor = null) -> int:
 
 
 ## Adds a state to this actor and returns it. When [param await_effect] is true
-## the caller waits for the state's presentation (pop number, effect) to finish
+## the caller waits for the state's presentation and on-add sequence to finish
 ## before continuing, so a sequence can pace itself against it.
-func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar, effect := true, await_effect := false) -> State:
+func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar, effect := true, await_effect := false, ctx: ActionSequenceContext = null) -> State:
 	var state: State
 	if x is State:
 		# Abilities reference State resources directly, so copy the resource
@@ -280,9 +280,9 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar
 	states.append(state)
 	if node:
 		if await_effect:
-			await Global.bt.on_state_add(state, self, effect)
+			await Global.bt.on_state_add(state, self, effect, ctx)
 		else:
-			Global.bt.on_state_add(state, self, effect)
+			Global.bt.on_state_add(state, self, effect, ctx)
 
 		if Global.bt.effects.sprite_frames.has_animation(state.name):
 			if await_effect:
@@ -293,7 +293,7 @@ func add_state(x: Variant, turns := -1, inflicter: Actor = Global.bt.CurrentChar
 	return state
 
 
-func remove_state(x: Variant) -> void:
+func remove_state(x: Variant, ctx: ActionSequenceContext = null, await_effect := false) -> void:
 	var state: State
 	if x is State:
 		# An ability passes its own State resource here, which is not the copy
@@ -303,8 +303,12 @@ func remove_state(x: Variant) -> void:
 
 	if state == null: return
 	print(first_name, "'s ", state.name, " state was removed")
-	Global.bt.remove_state_effect(state.filename, self)
 	states.erase(state)
+	if Global.bt:
+		if await_effect:
+			await Global.bt.remove_state_effect(state, self, ctx)
+		else:
+			Global.bt.remove_state_effect(state, self, ctx)
 
 
 func has_state(x: String) -> bool:

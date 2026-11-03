@@ -58,7 +58,7 @@ animation = &"Cast"
 script = ExtResource("6_2q0l8")
 
 [sub_resource type="Resource" id="Resource_xqkxe"]
-resource_name = "(50.0, 0.0)"
+resource_name = "(50, 0)"
 script = ExtResource("7_uxigr")
 mode = 2
 position = Vector2(50, 0)
@@ -89,7 +89,7 @@ script = ExtResource("3_gbfn6")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_o4p8u"]
-resource_name = "(40.0, 0.0)"
+resource_name = "(40, 0)"
 script = ExtResource("7_uxigr")
 mode = 2
 position = Vector2(40, 0)
@@ -122,11 +122,13 @@ script = ExtResource("3_gbfn6")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_45bnt"]
+resource_name = "Target has state Burned"
 script = ExtResource("cond_4")
 actor = SubResource("Resource_0kj46")
 state = &"Burned"
 
 [sub_resource type="Resource" id="Resource_hit_l556m"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 
@@ -227,25 +229,42 @@ stagger = 0.1
 steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_agcte")])
 
 [sub_resource type="Resource" id="Resource_4whjw"]
+resource_name = "target faction all lack state Burned"
 script = ExtResource("cond_10")
 group = 6
+include_dead = true
 state = &"Burned"
 present = false
 group_match = 1
+
+[sub_resource type="Resource" id="Resource_7edst"]
+resource_name = "target faction all lack state KnockedOut"
+script = ExtResource("cond_10")
+group = 6
+include_dead = true
+state = &"KnockedOut"
+present = false
+group_match = 1
+metadata/_custom_type_script = "uid://dutktdwdox6d2"
+
+[sub_resource type="Resource" id="Resource_knols"]
+script = ExtResource("6_2q0l8")
+duration = 2.0
 
 [sub_resource type="Resource" id="Resource_segoe"]
 script = ExtResource("11_4lbc1")
 mode = 2
 message = "nothing_happened"
 
-[sub_resource type="Resource" id="Resource_knols"]
-script = ExtResource("6_2q0l8")
-duration = 2.0
+[sub_resource type="Resource" id="Resource_fav82"]
+script = ExtResource("12_s66qm")
+condition = SubResource("Resource_7edst")
+if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_knols"), SubResource("Resource_segoe")])
 
 [sub_resource type="Resource" id="Resource_b1ka8"]
 script = ExtResource("12_s66qm")
 condition = SubResource("Resource_4whjw")
-if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_segoe"), SubResource("Resource_knols")])
+if_steps = Array[ExtResource("2_utvg2")]([SubResource("Resource_fav82")])
 
 [sub_resource type="Resource" id="Resource_foo2k"]
 resource_name = "Caster"

@@ -1109,7 +1109,7 @@ func end_turn() -> void:
 
 	await get_tree().create_timer(0.1).timeout
 	show_state_effects()
-	act.end_turn_checks()
+	await act.end_turn_checks()
 	if is_instance_valid(CurrentChar.node):
 		CurrentChar.node.z_index = 0
 
@@ -1759,7 +1759,7 @@ func death(target: Actor) -> void:
 	# Turn must not end until everything here has finished
 	hold_turn()
 
-	clear_states(target)
+	await clear_states(target)
 
 	# TODO: Determine if this is balanced enough or not
 	if CurrentChar != null and CurrentChar != target:
@@ -2088,13 +2088,11 @@ func heal(
 
 func remove_queued_states(chara: Actor) -> void:
 	if not is_instance_valid(chara): return
-	for i in range(chara.states.size() - 1, -1, -1):
-		var state := chara.states[i]
-
+	for state: State in chara.states.duplicate():
 		if state.queue_remove:
-			chara.remove_state(state)
+			await chara.remove_state(state, null, true)
 
-	if chara.states.is_empty(): chara.node.get_node("State").play("None")
+	if chara.states.is_empty() and chara.node != null: chara.node.get_node("State").play("None")
 
 
 func pop_aura(target: Actor, time: float = 0.5) -> void:
@@ -2241,7 +2239,7 @@ func reset_all() -> void:
 
 func victory_anim(chara: Actor) -> void:
 	act.process_mode = Node.PROCESS_MODE_ALWAYS
-	clear_states(chara)
+	await clear_states(chara)
 	await anim("Victory", chara)
 	anim("VictoryLoop", chara)
 
@@ -2543,21 +2541,55 @@ func stat_name(stat: StringName) -> String:
 		_: return "Stat"
 
 
-func on_state_add(state: State, chara: Actor, effect := true) -> void:
+func on_state_add(state: State, chara: Actor, effect := true, ctx: ActionSequenceContext = null) -> void:
 	if chara.health != 0:
 		add_state_effect(state, chara)
-		match state.name:
-			"Guarding", "AuraOverwrite":
-				outline(chara)
-
-			"MagicShield":
-				outline(chara, Color.WHITE)
-
-			"Aggro":
-				chara.next_target = state.inflicter
-
+		await run_state_sequence(state.on_add, state, chara, state.inflicter, ctx)
 		await Event.wait()
 		if not state.is_stat_change and effect: pop_num(chara, state.name, state.color)
+
+
+## Runs one of a State's hook sequences with the state owner as the target.
+## [param caster] defaults to the owner; on-add sequences pass the inflicter so
+## `Caster` still means the actor that applied the state.
+func run_state_sequence(
+	action_sequence: ActionSequence,
+	state: State,
+	chara: Actor,
+	caster: Actor = null,
+	base: ActionSequenceContext = null
+) -> void:
+	if action_sequence == null or action_sequence.steps.is_empty():
+		return
+
+	if chara == null or not is_instance_valid(chara) or action_runner == null:
+		return
+
+	await action_runner.run_sequence(action_sequence, _state_context(state, chara, caster, base))
+
+
+func _state_context(
+	state: State,
+	chara: Actor,
+	caster: Actor,
+	base: ActionSequenceContext
+) -> ActionSequenceContext:
+	var ctx: ActionSequenceContext
+
+	if base != null:
+		ctx = base.duplicate_for_target(chara)
+	else:
+		ctx = ActionSequenceContext.new()
+		ctx.battle = self
+		ctx.runner = action_runner
+		ctx.target = chara
+		ctx.home_position = initial
+
+	ctx.caster = caster if caster != null else chara
+	ctx.target = chara
+	ctx.last_state = state
+	ctx.state_sequence = true
+	return ctx
 
 
 func add_state_effect(state: State, chara: Actor) -> void:
@@ -2570,35 +2602,21 @@ func add_state_effect(state: State, chara: Actor) -> void:
 		chara.node.add_child(dub)
 		dub.show()
 		dub.play(state.name)
-		if state.name == "Bound":
-			dub.z_index = 0
 
 
-func remove_state_effect(statename: String, chara: Actor) -> void:
-	if chara.node == null: return
+func remove_state_effect(state: State, chara: Actor, ctx: ActionSequenceContext = null) -> void:
+	if chara == null or chara.node == null: return
 	# Inline states (defined directly inside an Ability, e.g. traps) have no .tres
-	# file in database/States, so fall back to the live state on the actor.
-	var state: State = chara.get_state(statename)
+	# file in database/States, so their visual uses the live state's display name.
+	var visual := chara.node.get_node_or_null(state.name)
 
-	if state == null:
-		state = await Query.get_state(statename)
+	if visual == null and state.filename != state.name:
+		visual = chara.node.get_node_or_null(state.filename)
 
-	if chara.node.get_node_or_null(statename):
-		chara.node.get_node(statename).queue_free()
+	if visual != null:
+		visual.queue_free()
 
-	match statename:
-		"Guarding", "MagicShield":
-			outline_remove(chara)
-
-		"AtkUp": chara.attack_multiplier -= (state.parameter if state else 0.0)
-		"DefUp": chara.defence_multiplier -= (state.parameter if state else 0.0)
-		"MagUp": chara.magic_multiplier -= (state.parameter if state else 0.0)
-		"AuraOverwrite":
-			chara.main_color = chara.aura_default
-			outline_remove(chara)
-
-		"KnockedOut":
-			recover(chara)
+	await run_state_sequence(state.on_remove, state, chara, chara, ctx)
 
 
 func get_actor(codename: StringName, unsafe := false) -> Actor:
@@ -2669,8 +2687,8 @@ func filter_dead(arr: Array[Actor]) -> Array[Actor]:
 
 
 func clear_states(target: Actor) -> void:
-	for i in target.states:
-		target.remove_state(i)
+	for state: State in target.states.duplicate():
+		await target.remove_state(state, null, true)
 
 
 func aura_overwrite(tar: Actor, color: Color, turns: int = 1) -> void:

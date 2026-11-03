@@ -11,6 +11,7 @@ enum Mode {
 	SET_TURNS,
 	REMOVE_RANDOM,
 	REMOVE_QUEUED,
+	ADD_TURNS,
 }
 
 @export var mode: Mode = Mode.ADD:
@@ -21,8 +22,6 @@ enum Mode {
 @export var state: State
 @export var turns := -1
 @export var silent := false
-## Wait for the state's presentation (pop number, effect) before the sequence
-## continues. Turn this off to add the state while the sequence runs on.
 @export var wait := true
 @export var trap: Trap
 @export var use_ability_trap := false:
@@ -41,13 +40,13 @@ func run(ctx: ActionSequenceContext) -> void:
 	match mode:
 		Mode.ADD:
 			var place: Variant = _state(ctx)
-			ctx.last_state = await subject.add_state(place, turns, ctx.caster, not silent, wait)
+			ctx.last_state = await subject.add_state(place, turns, ctx.caster, not silent, wait, ctx)
 
 		Mode.REMOVE:
-			subject.remove_state(_state(ctx))
+			await subject.remove_state(_state(ctx), ctx, true)
 
 		Mode.CLEAR:
-			ctx.battle.clear_states(subject)
+			await ctx.battle.clear_states(subject)
 
 		Mode.SET_TRAP:
 			var place: Trap = trap
@@ -67,14 +66,20 @@ func run(ctx: ActionSequenceContext) -> void:
 			if current != null:
 				current.turns = turns
 
+		Mode.ADD_TURNS:
+			var current := subject.get_state(_state_name(ctx))
+
+			if current != null:
+				current.turns += turns
+
 		Mode.REMOVE_RANDOM:
 			if not subject.states.is_empty():
 				var random_state: State = subject.states.pick_random()
 				ctx.last_state = random_state
-				subject.remove_state(random_state)
+				await subject.remove_state(random_state, ctx, true)
 
 		Mode.REMOVE_QUEUED:
-			ctx.battle.remove_queued_states(subject)
+			await ctx.battle.remove_queued_states(subject)
 
 
 ## The state this step targets. When it is unset the ability's own state is used
@@ -83,8 +88,8 @@ func _state(ctx: ActionSequenceContext) -> Variant:
 	if state != null:
 		return state
 
-	if ctx != null and ctx.ability != null:
-		return ctx.ability.inflicts_state()
+	if ctx != null and ctx.state_sequence and ctx.last_state != null:
+		return ctx.last_state
 
 	return null
 
@@ -94,8 +99,8 @@ func _state_name(ctx: ActionSequenceContext) -> String:
 	if state != null:
 		return state.name
 
-	if ctx != null and ctx.ability != null:
-		return str(ctx.ability.inflicts_state())
+	if ctx != null and ctx.state_sequence and ctx.last_state != null:
+		return ctx.last_state.name
 
 	return ""
 
@@ -143,6 +148,9 @@ func _to_string() -> String:
 		Mode.SET_TURNS:
 			return "Set state '%s' to %d turns on %s" % [_state_label(), turns, who]
 
+		Mode.ADD_TURNS:
+			return "Add %d turns to state '%s' on %s" % [turns, _state_label(), who]
+
 		Mode.REMOVE_RANDOM:
 			return "Remove a random state from %s" % who
 
@@ -187,6 +195,9 @@ func _validate_property(property: Dictionary) -> void:
 			visible.append_array(["color", "turns"])
 
 		Mode.SET_TURNS:
+			visible.append_array(["state", "turns"])
+
+		Mode.ADD_TURNS:
 			visible.append_array(["state", "turns"])
 
 	StepEditor.only(property, visible)

@@ -60,6 +60,7 @@ target = SubResource("Resource_nxc74")
 script = ExtResource("7_nxc74")
 
 [sub_resource type="Resource" id="Resource_hit_av6b6"]
+resource_name = "miss"
 script = ExtResource("cond_hit")
 outcomes = 4
 

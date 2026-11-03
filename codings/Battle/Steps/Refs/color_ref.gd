@@ -9,6 +9,7 @@ enum Mode {
 	WHEEL_COLOR,
 	RANDOM,
 	ELEMENT,
+	AURA_DEFAULT,
 }
 
 @export var mode: Mode = Mode.WHEEL_COLOR:
@@ -52,6 +53,8 @@ func resolve(ctx: ActionSequenceContext) -> Color:
 			)
 		Mode.ELEMENT:
 			return Colorizer.ElementColor.get(element, color)
+		Mode.AURA_DEFAULT:
+			return subject.aura_default if subject != null else color
 
 	return color
 
@@ -75,6 +78,9 @@ func _validate_property(property: Dictionary) -> void:
 		Mode.ELEMENT:
 			visible.append_array(["element", "color"])
 
+		Mode.AURA_DEFAULT:
+			visible.append("actor")
+
 	StepEditor.only(property, visible)
 
 
@@ -85,5 +91,8 @@ func _to_string() -> String:
 
 		Mode.ELEMENT:
 			return "Element color" if element.is_empty() else "%s color" % String(element).capitalize()
+
+		Mode.AURA_DEFAULT:
+			return "Aura default color"
 
 	return str(Mode.find_key(mode)).capitalize()

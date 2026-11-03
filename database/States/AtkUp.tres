@@ -1,12 +1,39 @@
-[gd_resource type="Resource" script_class="State" format=3 uid="uid://dx7qwcecyns1x"]
+[gd_resource type="Resource" script_class="State" uid="uid://dx7qwcecyns1x" format=3]
 
-[ext_resource type="Script" uid="uid://47q0we3aw5v" path="res://codings/Classes/state.gd" id="1_1vjby"]
-[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="1_rniet"]
+[ext_resource type="Script" path="res://codings/Classes/state.gd" id="1_1vjby"]
+[ext_resource type="Texture2D" path="res://art/Icons/Items.png" id="1_rniet"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="2_6s8fc"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_fxjfb"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_j7chg"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="5_xir6m"]
+[ext_resource type="Script" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="6_tu7do"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jx88a"]
 atlas = ExtResource("1_rniet")
 region = Rect2(0, 54, 18, 18)
 filter_clip = true
+
+[sub_resource type="Resource" id="Resource_uy0n0"]
+resource_name = "Target"
+script = ExtResource("4_j7chg")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_k707u"]
+resource_name = "state parameter x-1.0"
+script = ExtResource("6_tu7do")
+source = 2
+stat = 12
+multiplier = -1.0
+
+[sub_resource type="Resource" id="Resource_tdiex"]
+script = ExtResource("5_xir6m")
+stat = 6
+actor = SubResource("Resource_uy0n0")
+value = SubResource("Resource_k707u")
+
+[sub_resource type="Resource" id="Resource_1udqm"]
+script = ExtResource("2_6s8fc")
+steps = Array[ExtResource("3_fxjfb")]([SubResource("Resource_tdiex")])
 
 [resource]
 script = ExtResource("1_1vjby")
@@ -15,4 +42,5 @@ description = "Weapon attacks deal more damage."
 turns = 3
 icon = SubResource("AtlasTexture_jx88a")
 color = Color(0.87451, 0.215686, 0.215686, 1)
+on_remove = SubResource("Resource_1udqm")
 is_stat_change = true

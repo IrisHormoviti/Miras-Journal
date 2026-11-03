@@ -12,6 +12,9 @@ var loop_actor: Actor
 var roll: int = HitOutcome.HIT
 ## A trap interrupted this context's sequence, so it can't deal more damage.
 var interrupted := false
+## True while a State's own add/remove/turn sequence is running. State steps
+## use this to fall back to the state that triggered the sequence.
+var state_sequence := false
 var home_position := Vector2.ZERO
 
 ## Result slots used by steps that need to feed a later message or effect.
@@ -33,5 +36,6 @@ func duplicate_for_target(new_target: Actor) -> ActionSequenceContext:
 	copy.target = new_target
 	copy.loop_actor = loop_actor
 	copy.roll = roll
+	copy.state_sequence = state_sequence
 	copy.home_position = home_position
 	return copy
