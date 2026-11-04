@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://5dk5u2y85kai"]
+[gd_resource type="Resource" script_class="PartyMember" format=3 uid="uid://5dk5u2y85kai"]
 
 [ext_resource type="Texture2D" uid="uid://b1j4plv0rs4k1" path="res://art/Icons/Party/Alcine.png" id="1_by5ga"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_l356q"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="1_o1wey"]
+[ext_resource type="Script" uid="uid://dyud4gdvs66co" path="res://codings/Classes/party_member_class.gd" id="1_o1wey"]
 [ext_resource type="Resource" uid="uid://jbe4kiixyygg" path="res://database/Abilities/SoothingSpray.tres" id="2_2vyew"]
 [ext_resource type="Resource" uid="uid://bfoi0xxeujmlq" path="res://database/Abilities/Attacks/AttackAlcine.tres" id="2_3o6lq"]
 [ext_resource type="Resource" uid="uid://dadlaa3lk8441" path="res://database/Abilities/Guard.tres" id="2_kbab6"]

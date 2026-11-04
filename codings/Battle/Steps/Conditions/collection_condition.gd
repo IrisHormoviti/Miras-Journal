@@ -39,7 +39,7 @@ func check(ctx: ActionSequenceContext) -> bool:
 	var items: Array = (
 		Array(target.states)
 		if collection == Collection.STATES
-		else Array(target.summoned_allies)
+		else Array((target as Enemy).summoned_allies if target is Enemy else [])
 	)
 
 	return items.is_empty() == empty

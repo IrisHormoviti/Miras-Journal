@@ -2,7 +2,7 @@ extends Control
 
 var index: int = 0
 signal closed
-var working_chara: Actor
+var working_chara: PartyMember
 var learnable: Ability
 var active := false
 
@@ -93,7 +93,7 @@ func got_complimentary(ability: Ability, from_name: String) -> void:
 	$ChooseUpgrade/Continue.show()
 
 
-func levelup(chara: Actor) -> void:
+func levelup(chara: PartyMember) -> void:
 	working_chara = chara
 	find_learnable()
 	$ChooseUpgrade/Continue.hide()
@@ -182,7 +182,7 @@ func levelup(chara: Actor) -> void:
 	active = true
 
 
-func level_cutin(chara: Actor) -> void:
+func level_cutin(chara: PartyMember) -> void:
 	$LevelupText.show()
 	$GotComplimentaryText.hide()
 	Hud.hide_all()

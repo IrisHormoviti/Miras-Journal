@@ -1,27 +1,26 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://bdfytl8ohvtj6"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://bdfytl8ohvtj6"]
 
 [ext_resource type="Resource" uid="uid://b1h2pffoho6bu" path="res://database/Abilities/ToxicSplash.tres" id="1_ge8t8"]
 [ext_resource type="Texture2D" uid="uid://deqeff2tjgq00" path="res://art/Icons/Enemies/Slime.png" id="1_gfcpg"]
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_tn5j1"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_nskis"]
 [ext_resource type="Resource" uid="uid://dadlaa3lk8441" path="res://database/Abilities/Guard.tres" id="2_pmj1l"]
 [ext_resource type="Resource" uid="uid://d38c2f7pbaqyj" path="res://database/Abilities/Attacks/JumpAttack.tres" id="4_bmd5k"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="5_54arq"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="7_54arq"]
 
 [resource]
-script = ExtResource("2_nskis")
+script = ExtResource("5_54arq")
+received_sp = 3
 first_name = "Dark Spawn"
 main_color = Color(0.768627, 0.654902, 0.929412, 1)
 party_icon = ExtResource("1_gfcpg")
 actor_class = "Support"
-received_sp = 3
 max_hp = 20
 max_aura = 15
 attack = 0.3
 magic = 0.4
 defence = 0.4
 speed = 3.0
-skill_level = 0
 abilities = Array[ExtResource("1_tn5j1")]([ExtResource("1_ge8t8"), ExtResource("2_pmj1l")])
 standard_attack = ExtResource("4_bmd5k")
 offset = Vector2(2, -15)

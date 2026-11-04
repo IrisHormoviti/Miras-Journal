@@ -1,18 +1,18 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://djr2vkawr2evu"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://djr2vkawr2evu"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_fb2dv"]
 [ext_resource type="Texture2D" uid="uid://br3ayvp6wpv2r" path="res://art/Icons/Enemies/Parasite.png" id="2_iqcmx"]
 [ext_resource type="Resource" uid="uid://ds6wuqiorov2m" path="res://database/Abilities/SmallShock.tres" id="2_m8tav"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_iqcmx"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="4_up2d6"]
 [ext_resource type="Resource" uid="uid://dfwfci7qqogji" path="res://database/Abilities/Attacks/RemoteAttack.tres" id="5_up2d6"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="6_up2d6"]
 
 [resource]
-script = ExtResource("3_iqcmx")
+script = ExtResource("4_up2d6")
+received_sp = 6
 first_name = "Pirce Parasite"
 main_color = Color(0.835294, 0.788235, 0.439216, 1)
 party_icon = ExtResource("2_iqcmx")
-received_sp = 6
 max_hp = 100
 max_aura = 22
 attack = 1.9

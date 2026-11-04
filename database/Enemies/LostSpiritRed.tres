@@ -1,18 +1,18 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://bc78enbwohmsk"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://bc78enbwohmsk"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_csvme"]
 [ext_resource type="Texture2D" uid="uid://2mlrn7q550rg" path="res://art/Icons/Enemies/Spirit.png" id="2_422f2"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_422f2"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="3_422f2"]
 [ext_resource type="Resource" uid="uid://17bbb0h04khb" path="res://database/Abilities/Attacks/CloseupAttack.tres" id="4_422f2"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="5_422f2"]
 
 [resource]
 script = ExtResource("3_422f2")
+received_sp = 12
 first_name = "Lost Spirit"
 main_color = Color(0.68235296, 0.23921569, 0.23921569, 1)
 party_icon = ExtResource("2_422f2")
 actor_class = "Attacker"
-received_sp = 12
 max_hp = 30
 max_aura = 30
 attack = 1.3

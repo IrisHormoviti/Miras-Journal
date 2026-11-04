@@ -219,6 +219,11 @@ func check_member(mem: Actor, node: Panel, ind: int) -> void:
 	if not is_instance_valid(mem):
 		return
 
+	var member := mem as PartyMember
+
+	if member == null:
+		return
+
 	t = create_tween()
 	t.set_parallel()
 	t.set_ease(Tween.EASE_OUT)
@@ -231,18 +236,18 @@ func check_member(mem: Actor, node: Panel, ind: int) -> void:
 	var txt_color := mem.main_color
 	txt_color.v = min(txt_color.v, 0.75)
 	get_node("%Pages/Page" + str(ind) + "/Label").add_theme_color_override("font_color", txt_color)
-	get_node("%Pages/Page" + str(ind) + "/Label").text = mem.first_name + " " + mem.last_name
+	get_node("%Pages/Page" + str(ind) + "/Label").text = mem.first_name + " " + member.last_name
 	t.tween_property(node.get_node("Health"), "value", mem.health, 1)
 	node.get_node("Health").max_value = mem.max_hp
 	draw_bar(mem, node)
 	node.get_node("Aura").max_value = mem.max_aura
-	node.get_node("Level/ExpBar").max_value = mem.skill_points_for(mem.skill_level)
+	node.get_node("Level/ExpBar").max_value = member.skill_points_for(member.skill_level)
 	t.tween_property(node.get_node("Aura"), "value", mem.aura, 1)
 	node.get_node("Icon").texture = mem.party_icon
 	_update_state_icon(mem, node.get_node("Icon/State"))
 	node.get_node("Health/HpText").text = str(mem.health)
 	node.get_node("Aura/ApText").text = str(mem.aura)
-	node.get_node("Level/Number").text = str(mem.skill_level)
+	node.get_node("Level/Number").text = str(member.skill_level)
 	var timer: Timer = node.get_node("ReviveFlashTimer") as Timer
 
 	if mem.has_state("KnockedOut") and mem.health > 0 and mem.health_ratio() < 1:
@@ -258,18 +263,18 @@ func check_member(mem: Actor, node: Panel, ind: int) -> void:
 
 	if expanded:
 		# Loads render
-		if get_node("%Pages/Page" + str(ind) + "/Render").texture == null and mem.render_artwork != null:
-			get_node("%Pages/Page" + str(ind) + "/Render").texture = await Loader.load_res(mem.render_artwork)
+		if get_node("%Pages/Page" + str(ind) + "/Render").texture == null and member.render_artwork != null:
+			get_node("%Pages/Page" + str(ind) + "/Render").texture = await Loader.load_res(member.render_artwork)
 
 		# Loads Aura doodle
-		if get_node("%Pages/Page" + str(ind) + "/AuraDoodle").texture == null and mem.party_page != null:
-			get_node("%Pages/Page" + str(ind) + "/AuraDoodle").texture = await Loader.load_res(mem.party_page)
+		if get_node("%Pages/Page" + str(ind) + "/AuraDoodle").texture == null and member.party_page != null:
+			get_node("%Pages/Page" + str(ind) + "/AuraDoodle").texture = await Loader.load_res(member.party_page)
 
 		# Loads Shadow
 		if get_node("%Pages/Page" + str(ind) + "/Render/Shadow").texture == null:
-			get_node("%Pages/Page" + str(ind) + "/Render/Shadow").texture = await mem.RenderShadow()
+			get_node("%Pages/Page" + str(ind) + "/Render/Shadow").texture = await member.RenderShadow()
 
-	await check_for_levelups(mem, node)
+	await check_for_levelups(member, node)
 
 
 func _input(event: InputEvent) -> void:
@@ -730,33 +735,35 @@ func only_current() -> void:
 
 
 func check_for_levelups(mem: Actor, node: Panel) -> void:
-	if mem.skill_curve == null:
+	var member := mem as PartyMember
+
+	if member == null or member.skill_curve == null:
 		return
 
 	t = create_tween()
 	t.set_parallel()
 	t.set_ease(Tween.EASE_OUT)
 	t.set_trans(Tween.TRANS_QUART)
-	if (mem.skill_curve != null and mem.skill_points < mem.skill_points_for(mem.skill_level)) or mem.codename in levelup_chain:
-		t.tween_property(node.get_node("Level/ExpBar"), "value", mem.skill_points, 1)
+	if (member.skill_points < member.skill_points_for(member.skill_level)) or member.codename in levelup_chain:
+		t.tween_property(node.get_node("Level/ExpBar"), "value", member.skill_points, 1)
 	else:
-		t.tween_property(node.get_node("Level/ExpBar"), "value", mem.skill_points_for(mem.skill_level), 1)
+		t.tween_property(node.get_node("Level/ExpBar"), "value", member.skill_points_for(member.skill_level), 1)
 		await t.finished
-		mem.skill_points -= mem.skill_points_for(mem.skill_level)
-		mem.skill_points = max(mem.skill_points, 0)
+		member.skill_points -= member.skill_points_for(member.skill_level)
+		member.skill_points = max(member.skill_points, 0)
 		t = create_tween()
 		t.tween_property(node.get_node("Level/ExpBar"), "value", 0, 0.3)
 		await t.finished
-		if not mem.codename in levelup_chain:
-			mem.skill_level += 1
-			levelup_chain.append(mem.codename)
-			print(mem.first_name + " grows to level ", mem.skill_level, ", ", mem.skill_points, "SP remain")
-			node.get_node("Level/Number").text = str(mem.skill_level)
+		if not member.codename in levelup_chain:
+			member.skill_level += 1
+			levelup_chain.append(member.codename)
+			print(member.first_name + " grows to level ", member.skill_level, ", ", member.skill_points, "SP remain")
+			node.get_node("Level/Number").text = str(member.skill_level)
 
-			if mem.skill_curve != null:
-				node.get_node("Level/ExpBar").max_value = mem.skill_points_for(mem.skill_level)
+			if member.skill_curve != null:
+				node.get_node("Level/ExpBar").max_value = member.skill_points_for(member.skill_level)
 
-			check_for_levelups(mem, node)
+			check_for_levelups(member, node)
 
 
 func make_shadow(texture: Texture2D) -> Texture2D:
@@ -796,13 +803,15 @@ func draw_bar(mem: Actor, node: Panel) -> void:
 	bord1.border_color = mem.main_color
 
 	# Borders
-	if mem.character_box_profile:
+	var member := mem as PartyMember
+
+	if member != null and member.character_box_profile:
 		node.get_node("Border1").add_theme_stylebox_override("panel", bord1.duplicate())
 		var bord2: StyleBoxFlat = node.get_node("Border1/Border2").get_theme_stylebox("panel")
-		bord2.border_color = mem.character_box_profile.Bord2
+		bord2.border_color = member.character_box_profile.Bord2
 		node.get_node("Border1/Border2").add_theme_stylebox_override("panel", bord2.duplicate())
 		var bord3: StyleBoxFlat = node.get_node("Border1/Border2/Border3").get_theme_stylebox("panel")
-		bord3.border_color = mem.character_box_profile.Bord3
+		bord3.border_color = member.character_box_profile.Bord3
 		node.get_node("Border1/Border2/Border3").add_theme_stylebox_override("panel", bord3.duplicate())
 
 
@@ -918,8 +927,10 @@ func cmd(cmd_text := "") -> void:
 				var text := cmd_text.replace("/lv ", "")
 
 				for i: Actor in Party.current:
-					if i != null:
-						i.level_up_to(int(text))
+					var member := i as PartyMember
+
+					if member != null:
+						member.level_up_to(int(text))
 
 				Party.heal_party()
 				Global.check.emit()
@@ -1131,7 +1142,7 @@ func preform_levelups() -> void:
 		Battle.current.hide_victory_stuff()
 
 	for i in levelup_chain:
-		var mem: Actor = Party.get_member(i.split(":", false)[0])
+		var mem := Party.get_member(i.split(":", false)[0])
 		var scene: Node = scenepack.instantiate()
 		UI.add_child(scene)
 		await Event.wait()

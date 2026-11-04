@@ -83,7 +83,10 @@ func save(filename: String = "Autosave", showicon := true) -> void:
 	data.defeated_enemies = defeated.duplicate()
 
 	for mem in Party.members:
-		data.members.append(mem.save_to_dict())
+		var member := mem as PartyMember
+
+		if member != null:
+			data.members.append(member.save_to_dict())
 
 	data.version = SaveFile.VERSION
 	data.flags = Event.flags.duplicate()
@@ -151,7 +154,7 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 
 		if codename.is_empty(): continue
 
-		var mem: Actor = (await Loader.load_res("res://database/Party/" + codename + ".tres")).duplicate()
+		var mem := (await Loader.load_res("res://database/Party/" + codename + ".tres")).duplicate() as PartyMember
 		await mem.load_from_dict(mem_dict)
 		temp_members.append(mem)
 
@@ -173,7 +176,11 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 	print_rich("[color=green]Current party: ", data.party)
 	Party.set_to(data.party)
 	for mem in Party.members:
-		mem.reset_static_info()
+		var member := mem as PartyMember
+
+		if member != null:
+			member.reset_static_info()
+
 		mem.health = min(mem.health, mem.max_hp)
 		mem.aura = min(mem.aura, mem.max_aura)
 
@@ -448,7 +455,9 @@ func travel_done(controllable := false, index: int = 0) -> void:
 	else:
 		Global.controllable = false
 
-	Transition.unwipe()
+	if remembered_direction:
+		Transition.unwipe()
+
 	Transition.load_icon_close()
 
 

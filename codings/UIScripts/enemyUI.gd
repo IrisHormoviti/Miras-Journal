@@ -67,7 +67,9 @@ func _on_battle_ui_target_foc(cur: Actor) -> void:
 
 
 func find_box(enemy: Actor) -> Control:
-	if enemy.health_bar:
+	var enemy_data := enemy as Enemy
+
+	if enemy_data != null and enemy_data.health_bar:
 		for i in $AllEnemies.get_children():
 			if i.has_meta("enemy") and i.get_meta("enemy") == enemy:
 				return i

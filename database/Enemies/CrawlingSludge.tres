@@ -1,30 +1,27 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://dhcj1318p3b4g"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://dhcj1318p3b4g"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_keytb"]
 [ext_resource type="Texture2D" uid="uid://deqeff2tjgq00" path="res://art/Icons/Enemies/Slime.png" id="1_u1o0b"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_iy5kn"]
 [ext_resource type="Resource" uid="uid://c60vqgbtkew60" path="res://database/Abilities/SoulTap.tres" id="2_pm52f"]
 [ext_resource type="Resource" uid="uid://du1gofmain0gg" path="res://database/Abilities/InnerFocus.tres" id="3_xe4iy"]
 [ext_resource type="Resource" uid="uid://di0tgolj2jhxg" path="res://database/Items/Materials/WhiteSlime.tres" id="4_n0njt"]
 [ext_resource type="Resource" uid="uid://d38c2f7pbaqyj" path="res://database/Abilities/Attacks/JumpAttack.tres" id="4_rtvyb"]
-[ext_resource type="Resource" uid="uid://bdfytl8ohvtj6" path="res://database/Enemies/DarkSpawn.tres" id="8_t44b1"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="6_1j86d"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="9_0b4hg"]
 
 [resource]
-script = ExtResource("2_iy5kn")
+script = ExtResource("6_1j86d")
+dropped_item = ExtResource("4_n0njt")
 first_name = "Crawling Sludge"
 main_color = Color(0.560784, 1, 0.886275, 1)
 party_icon = ExtResource("1_u1o0b")
 actor_class = "Attacker"
-dropped_item = ExtResource("4_n0njt")
-summoned_allies = Array[ExtResource("2_iy5kn")]([ExtResource("8_t44b1")])
 max_hp = 40
 max_aura = 30
 attack = 0.4
 magic = 0.5
 defence = 0.9
 speed = 3.0
-skill_level = 0
 abilities = Array[ExtResource("1_keytb")]([ExtResource("2_pm52f"), ExtResource("3_xe4iy")])
 standard_attack = ExtResource("4_rtvyb")
 offset = Vector2(0, -17)

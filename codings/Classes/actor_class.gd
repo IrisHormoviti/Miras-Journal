@@ -2,7 +2,20 @@ extends Resource
 
 class_name Actor
 
-## Represents every character in a battle, as well as all party member data in general.
+
+## Represents every character in a battle. Party members and enemies extend
+## this class with their own data. see PartyMember and Enemy.
+
+## Whether this actor is an enemy. Derived from the resource type so the flag
+## can never disagree with the actor's class.
+var is_enemy: bool:
+	get(): return not is_party_member()
+
+
+## Overridden by PartyMember. Plain Actors count as enemies, matching the old
+## default for inline and test actors.
+func is_party_member() -> bool:
+	return false
 
 @export_subgroup("Current")
 @export_range(0, 9999) var health: int: set = set_health
@@ -32,33 +45,10 @@ class_name Actor
 ##Used in system text, 0: subjective, 1: objective, 2: possessive, 3: -self
 @export_enum("it", "he", "she", "they") var pronouns: String = "it"
 
-@export_group("Enemy specific")
-##Used to check if the character is an enemy internally
-var is_enemy: bool = true
-@export var health_bar: bool = false
-##Material item that the enemy drops at the end of battle
-@export var dropped_item: MaterialItem = null
-##Skill Points the party recives for defeating the enemy at the end of battle
-@export_range(0, 999, 1, "suffix:SP") var received_sp: int = 5
-##What allies will be summoned when calling for help
-@export var summoned_allies: Array[Actor]
-@export var custom_position: Vector2i = Vector2i.ZERO
-
-@export_group("party specific")
 ##Used for the Aura gauge, purely cosmetic. If left black, the color will be automatically generated.
 @export var secondary_color: Color = Color.BLACK
-##Used for textboxes for this character and their box with their stats. If left null, the box will be automatically generated.
-@export var character_box_profile: BoxProfile
-##Used in the party menu
-@export var last_name: String = ""
-##Doodles shown in the party menu
-@export_file("*.png") var party_page: String
-##Artwork shown in the party menu
-@export_file("*.png") var render_artwork: String
 ##Whether the actor is controlled by the player or the AI
 @export var controllable: bool = false
-@export_range(1, 9999, 1, "suffix:HP") var hp_on_level_up: int = 25
-@export_range(1, 9999, 1, "suffix:AP") var ap_on_level_up: int = 10
 
 @export_category("Stats")
 @export_range(1, 9999, 1, "suffix:HP") var max_hp: int = 99
@@ -79,13 +69,6 @@ var defence_multiplier: float = 1
 var magic_multiplier: float = 1
 var speed_boost: int = 0
 
-@export_subgroup("Skill points")
-@export var skill_level: int = 1
-@export var skill_points: int
-##The skill points required to reach the next skill level. The 2nd item of the array for example
-##is the skill points required to reach skill level 3.
-@export var skill_curve: Curve
-
 @export_category("Skills")
 ##The actors current skill list
 @export var abilities: Array[Ability]
@@ -98,20 +81,7 @@ var speed_boost: int = 0
 
 		return standard_attack
 
-##The abilities that can be unlocked by leveling up, party member only
-@export var learnable_abilities: Array[Ability]
-@export var complimentaries: Array[Ability]
-@export var complimentary_list: Dictionary[String, int]
-@export var followup_ability: Ability
-## Optional sequence that drives this actor's whole turn instead of the AI.
-## Useful for bosses that take several actions or follow a scripted pattern.
-@export var turn_sequence: ActionSequence
-
 @export_category("Sprites")
-##The sprite used in the overworld when this actor is in the party
-@export var ov: String
-## Shadow offset for the battle Sprite
-@export var ov_shadow_offset: int = 6
 ##The battle sprites for this actor.
 ##Some standard animation names include:
 ##Idle, Hit, Ability, Cast, KnockOut, Entrance, Attack1, Attack2, Item, Command,
@@ -208,10 +178,6 @@ func add_aura(x: int) -> void:
 	aura += x
 	print(first_name + " gains ", x, " AP")
 	Global.check.emit()
-
-
-func add_SP(x: int) -> void:
-	skill_points += x
 
 
 func damage(dmg: int, limiter := false) -> void:
@@ -355,81 +321,6 @@ func full_heal() -> void:
 	aura = max_aura
 
 
-func save_to_dict() -> Dictionary:
-	var dict: Dictionary = {
-		"codename": codename,
-		"first_name": first_name,
-		"last_name": last_name,
-		"WeaponName": weapon.filename if not weapon.resource_path.is_empty() else "",
-		"controllable": controllable,
-		"max_hp": max_hp,
-		"max_aura": max_aura,
-		"health": health,
-		"aura": aura,
-		"skill_level": skill_level,
-		"skill_points": skill_points,
-		"AbilitiesList": get_ability_list(),
-		"complimentary_list": complimentary_list,
-		"clutch_dmg": clutch_dmg,
-		"cant_die": cant_die,
-		"cant_dodge": cant_dodge,
-		"ignore_states": ignore_states,
-		"ov": ov,
-	}
-	return dict
-
-
-func load_from_dict(dict: Dictionary) -> void:
-	for prop in get_property_list():
-		var key: String = prop.get("name")
-
-		# Complimentary slots need their typed dictionary rebuilt explicitly.
-		if key == "complimentary_list":
-			continue
-
-		if dict.has(key):
-			set(key, dict.get(key))
-
-	if dict.has("complimentary_list"):
-		var saved_complimentaries: Dictionary[String, int] = dict.get("complimentary_list")
-		complimentary_list.clear()
-		for ability_name: String in saved_complimentaries:
-			complimentary_list[str(ability_name)] = int(saved_complimentaries[ability_name])
-
-	if dict.has("AbilitiesList"):
-		abilities.clear()
-		for i: String in dict.get("AbilitiesList"):
-			if i != "":
-				var ab: Ability = await Loader.load_res("res://database/Abilities/" + i + ".tres")
-
-				if ab not in abilities: abilities.append(ab)
-
-	if dict.has("WeaponName") and dict.get("WeaponName") != "":
-		weapon = await Item.get_item(dict.get("WeaponName"), &"Key")
-
-
-func reset_static_info() -> void:
-	var og: Actor = load("res://database/Party/" + codename + ".tres")
-	attack = og.attack
-	defence = og.defence
-	magic = og.magic
-	sound_set = og.sound_set
-	sound_set = og.sound_set
-	learnable_abilities = og.learnable_abilities
-	party_page = og.party_page
-
-
-func get_ability_list() -> Array[String]:
-	var ab_list: Array[String]
-	for i in abilities:
-		var ab_name := i.resource_path.replace(".tres", "").replace("res://database/Abilities/", "")
-
-		if not ab_name.is_empty():
-			ab_list.append(ab_name)
-
-	return ab_list
-
-
 func is_fully_healed() -> bool:
 	return health >= max_hp
 
@@ -438,8 +329,18 @@ func get_abilities(include_compl := true, include_attack := false) -> Array[Abil
 	var rtn := abilities.duplicate()
 
 	if include_attack: rtn.append(standard_attack)
-	if include_compl: rtn.append_array(complimentaries)
+	if include_compl: rtn.append_array(get_complimentary_abilities())
 	return rtn
+
+
+## Party members override this with their equipped complimentary abilities.
+func get_complimentary_abilities() -> Array[Ability]:
+	return []
+
+
+## Party members load their equipped complimentary abilities; enemies have none.
+func load_complimentaries() -> void:
+	pass
 
 
 func groupped_abilities() -> Array[Array]:
@@ -460,35 +361,11 @@ func groupped_abilities() -> Array[Array]:
 	return rtn
 
 
-## A shadow for the above artwork
-func RenderShadow() -> Texture:
-	var render_name: String = render_artwork.split("/")[-1].replace(".png", "")
-
-	if FileAccess.file_exists("res://UI/Party/" + render_name + "Shadow.png"):
-		return await Loader.load_res("res://UI/Party/" + render_name + "Shadow.png")
-	else: return null
-
-
 func has_ability(ab: String) -> bool:
 	for i in abilities:
 		if i.name == ab: return true
 
 	return false
-
-
-func skill_points_for(level: int) -> int:
-	return int(skill_curve.sample(level)) if skill_curve else -1
-
-
-func get_OV() -> SpriteFrames:
-	var path: String = "res://art/OV/" + codename + "/" + codename + "OV" + ov + ".tres"
-
-	if not ResourceLoader.exists(path):
-		ov = ""
-		push_warning("Couldn't find " + path + ", using fallback")
-		return await get_BT()
-
-	return await Loader.load_res(path)
 
 
 func get_BT() -> SpriteFrames:
@@ -502,40 +379,6 @@ func get_BT() -> SpriteFrames:
 			return await get_BT()
 		else: OS.alert("Invalid BT path, " + path)
 	return await Loader.load_res(path)
-
-
-func load_complimentaries() -> void:
-	complimentaries = []
-
-	for i in complimentary_list:
-		if complimentary_list.get(i) > 0:
-			complimentaries.append(await Query.get_ability(i))
-
-
-func level_up_to(lv: int) -> void:
-	while skill_level < lv:
-		var learnable := find_learnable()
-		var rand := randi_range(0, 2)
-
-		if learnable == null: rand = randi_range(0, 1)
-		match rand:
-			0: max_hp += hp_on_level_up
-			1: max_aura += ap_on_level_up
-			2: abilities.append(learnable)
-
-		skill_level += 1
-
-
-func find_learnable() -> Ability:
-	var learnable: Ability = null
-	var learnables := learnable_abilities.duplicate()
-	learnables.reverse()
-	for i: Ability in learnables:
-		if not i in abilities:
-			learnable = i
-			continue
-
-	return learnable
 
 
 func get_pronoun(string: String = "they") -> String:

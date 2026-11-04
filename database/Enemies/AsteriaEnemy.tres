@@ -1,4 +1,4 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://bu66eiqtjjnvk"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://bu66eiqtjjnvk"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_lcqvh"]
 [ext_resource type="Resource" uid="uid://cbh1if1c4xskl" path="res://database/Abilities/PhantomGuard.tres" id="2_433ji"]
@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dkmfv7lb5ne4v" path="res://art/Icons/Party/Asteria.png" id="6_fw6lu"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="6_h8w5e"]
 [ext_resource type="Resource" uid="uid://d3fmjjobglnvn" path="res://database/Abilities/Attacks/AttackAsteria.tres" id="8_rr3rf"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="9_3alpk"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy.gd" id="9_3alpk"]
 [ext_resource type="Resource" uid="uid://bsdc68x2mth0w" path="res://database/Enemies/AsteriaSummonBird.tres" id="10_aktg6"]
 [ext_resource type="Resource" uid="uid://h2dsutkgob4w" path="res://database/Enemies/AsteriaSummonLion.tres" id="11_h8w5e"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="12_h8w5e"]
@@ -48,19 +48,12 @@ health_bar = true
 summoned_allies = Array[ExtResource("9_3alpk")]([ExtResource("10_aktg6"), ExtResource("11_h8w5e")])
 custom_position = Vector2i(76, 0)
 secondary_color = Color(0.69189, 0.395577, 0.688155, 1)
-character_box_profile = ExtResource("5_g0f5o")
-last_name = "Versea"
-hp_on_level_up = 18
-ap_on_level_up = 13
 max_hp = 90
 max_aura = 47
 attack = 0.8
 magic = 1.4
 defence = 0.8
 speed = 4.0
-skill_level = 7
-skill_points = 16
-skill_curve = SubResource("Curve_7hmow")
 abilities = Array[ExtResource("1_lcqvh")]([ExtResource("2_433ji"), ExtResource("3_birmr"), ExtResource("4_tbw3j")])
 standard_attack = ExtResource("8_rr3rf")
 followup_ability = SubResource("Resource_5mg01")

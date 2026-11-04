@@ -1,11 +1,11 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://blb51swqx23w7"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://blb51swqx23w7"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_rjgpe"]
 [ext_resource type="Resource" uid="uid://dsel12nodt7a6" path="res://database/Abilities/Sharpen.tres" id="2_la0sd"]
 [ext_resource type="Resource" uid="uid://crmjudbrr8xf" path="res://database/Abilities/Needle.tres" id="3_bc4v8"]
 [ext_resource type="Texture2D" uid="uid://cqr2l0aaignpu" path="res://art/Icons/Enemies/Dragon.png" id="4_dt0m6"]
 [ext_resource type="Resource" uid="uid://dmm26g6xg665u" path="res://database/Abilities/Attacks/WarpAttack.tres" id="6_g7xkm"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="7_n3q5t"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy.gd" id="7_n3q5t"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="7_rjgpe"]
 
 [resource]
@@ -23,7 +23,6 @@ attack = 1.8
 magic = 1.6
 defence = 1.7
 speed = 4.0
-skill_level = 0
 abilities = Array[ExtResource("1_rjgpe")]([ExtResource("2_la0sd"), ExtResource("3_bc4v8")])
 standard_attack = ExtResource("6_g7xkm")
 offset = Vector2(0, -13)

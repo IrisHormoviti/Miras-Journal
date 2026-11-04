@@ -117,27 +117,28 @@ func _on_battle_get_control() -> void:
 	if disable_item or Event.check_flag("Player/NoBag"): $Item.disabled = true
 
 	$BaseRing/Ring2.texture.gradient.set_color(0, CurrentChar.main_color)
-	if CurrentChar.character_box_profile != null:
-		var mem := CurrentChar
-		$BaseRing/Ring1.texture.gradient.set_color(0, CurrentChar.character_box_profile.Bord3)
+	var member := CurrentChar as PartyMember
+
+	if member != null and member.character_box_profile != null:
+		$BaseRing/Ring1.texture.gradient.set_color(0, member.character_box_profile.Bord3)
 		var bord1: StyleBoxFlat = $Inventory/Border1.get_theme_stylebox("panel")
-		bord1.border_color = mem.character_box_profile.Bord1
+		bord1.border_color = member.character_box_profile.Bord1
 		$Inventory/Border1.add_theme_stylebox_override("panel", bord1.duplicate())
 		var bord2: StyleBoxFlat = $Inventory/Border1/Border2.get_theme_stylebox("panel")
-		bord2.border_color = mem.character_box_profile.Bord2
+		bord2.border_color = member.character_box_profile.Bord2
 		$Inventory/Border1/Border2.add_theme_stylebox_override("panel", bord2.duplicate())
 		var bord3: StyleBoxFlat = $Inventory/Border1/Border2/Border3.get_theme_stylebox("panel")
-		bord3.border_color = mem.character_box_profile.Bord3
+		bord3.border_color = member.character_box_profile.Bord3
 		$Inventory/Border1/Border2/Border3.add_theme_stylebox_override("panel", bord3.duplicate())
 
 		bord1 = $AbilityUI/Border2/Border1.get_theme_stylebox("panel")
-		bord1.border_color = mem.character_box_profile.Bord1
+		bord1.border_color = member.character_box_profile.Bord1
 		$AbilityUI/Border2/Border1.add_theme_stylebox_override("panel", bord1.duplicate())
 		bord2 = $AbilityUI/Border2.get_theme_stylebox("panel")
-		bord2.border_color = mem.character_box_profile.Bord2
+		bord2.border_color = member.character_box_profile.Bord2
 		$AbilityUI/Border2.add_theme_stylebox_override("panel", bord2.duplicate())
 		bord3 = $AbilityUI.get_theme_stylebox("panel")
-		bord3.border_color = mem.character_box_profile.Bord3
+		bord3.border_color = member.character_box_profile.Bord3
 		$AbilityUI.add_theme_stylebox_override("panel", bord3.duplicate())
 
 	fetch_abilities()

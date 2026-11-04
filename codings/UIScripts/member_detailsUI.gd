@@ -9,6 +9,8 @@ func _ready() -> void:
 
 
 func draw_character(chara: Actor, menu := 0) -> void:
+	var member := chara as PartyMember
+
 	if Party.complimentaries.is_empty():
 		$AbilityPanel/Complimentary.disabled = true
 		$AbilityPanel/Border1/Scroller/AbilityList/CompTxt.hide()
@@ -19,14 +21,14 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	chara.load_complimentaries()
 	Audio.confirm_sound()
 	$Name/Icon.texture = chara.party_icon
-	$Name.text = chara.first_name + " " + chara.last_name
+	$Name.text = chara.first_name + (" " + member.last_name if member != null else "")
 
-	if chara.skill_curve != null:
-		$StatPanel/LvBox/Vbox/LvBar/Number.text = str(chara.skill_level)
-		$StatPanel/LvBox/Vbox/LvBar/SPNum.text = str(chara.skill_points)
-		$StatPanel/LvBox/Vbox/ExpBar.max_value = chara.skill_points_for(chara.skill_level)
-		$StatPanel/LvBox/Vbox/ExpBar.value = chara.skill_points
-		$StatPanel/LvBox/Vbox/ToNextLv/Number.text = str(chara.skill_points_for(chara.skill_level) - chara.skill_points)
+	if member != null and member.skill_curve != null:
+		$StatPanel/LvBox/Vbox/LvBar/Number.text = str(member.skill_level)
+		$StatPanel/LvBox/Vbox/LvBar/SPNum.text = str(member.skill_points)
+		$StatPanel/LvBox/Vbox/ExpBar.max_value = member.skill_points_for(member.skill_level)
+		$StatPanel/LvBox/Vbox/ExpBar.value = member.skill_points
+		$StatPanel/LvBox/Vbox/ToNextLv/Number.text = str(member.skill_points_for(member.skill_level) - member.skill_points)
 
 	$StatPanel/HPAura/HPText.text = str(chara.max_hp)
 	$StatPanel/HPAura/APText.text = str(chara.max_aura)
@@ -43,15 +45,15 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	var abox: StyleBoxFlat = $StatPanel/HPAura/Aura.get_theme_stylebox("fill")
 	abox.bg_color = chara.secondary_color
 	$StatPanel/HPAura/Aura.add_theme_stylebox_override("fill", abox.duplicate())
-	if chara.character_box_profile != null:
+	if member != null and member.character_box_profile != null:
 		var bord1: StyleBoxFlat = $StatPanel/Border1.get_theme_stylebox("panel")
-		bord1.border_color = chara.character_box_profile.Bord1
+		bord1.border_color = member.character_box_profile.Bord1
 		$StatPanel/Border1.add_theme_stylebox_override("panel", bord1.duplicate())
 		var bord2: StyleBoxFlat = $StatPanel/Border1/Border2.get_theme_stylebox("panel")
-		bord2.border_color = chara.character_box_profile.Bord2
+		bord2.border_color = member.character_box_profile.Bord2
 		$StatPanel/Border1/Border2.add_theme_stylebox_override("panel", bord2.duplicate())
 		var bord3: StyleBoxFlat = $StatPanel/Border1/Border2/Border3.get_theme_stylebox("panel")
-		bord3.border_color = chara.character_box_profile.Bord3
+		bord3.border_color = member.character_box_profile.Bord3
 		$StatPanel/Border1/Border2/Border3.add_theme_stylebox_override("panel", bord3.duplicate())
 
 	#$StatPanel/LvBox/Vbox/ExpBar.add_theme_stylebox_override("fill", hbox.duplicate())
@@ -59,9 +61,9 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	#xbox.bg_color = chara.BoxProfile.Bord3
 	#$StatPanel/LvBox/Vbox/ExpBar.add_theme_stylebox_o]verride("background", xbox)
 
-		$Line1.color = chara.character_box_profile.Bord1
-		$Line1/Line2.color = chara.character_box_profile.Bord2
-		$Line1/Line2/Line3.color = chara.character_box_profile.Bord3
+		$Line1.color = member.character_box_profile.Bord1
+		$Line1/Line2.color = member.character_box_profile.Bord2
+		$Line1/Line2/Line3.color = member.character_box_profile.Bord3
 
 	$StatPanel/StatBars/Attack.value = chara.attack
 	$StatPanel/StatBars/Defence.value = chara.defence
@@ -71,14 +73,15 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	$StatPanel/Weapon/Icon/WeaponRating.text = "Power rating: " + Query.get_power_rating(chara.weapon.power)
 
 	$StatPanel/Wheel.show_atk_color(chara.main_color)
-	$Render.texture = await Loader.load_res(chara.render_artwork) if not chara.render_artwork.is_empty() else null
-	$Render/Shadow.texture = await chara.RenderShadow()
+	var render_artwork := member.render_artwork if member != null else ""
+	$Render.texture = await Loader.load_res(render_artwork) if not render_artwork.is_empty() else null
+	$Render/Shadow.texture = await member.RenderShadow() if member != null else null
 	$Render.global_position = Hud.get_node("%Pages/Page" + str(Hud.focus) + "/Render").global_position
 
 	fetch_abilities(chara)
 
 	for i in $Line1/NameChain.get_children():
-		i.text = chara.first_name.to_upper() + " " + chara.last_name.to_upper() + " "
+		i.text = chara.first_name.to_upper() + (" " + member.last_name.to_upper() if member != null else "") + " "
 		#i.add_theme_color_override("font_color", chara.BoxProfile.Bord3)
 
 	await Event.wait(0.1, false)

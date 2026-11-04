@@ -12,7 +12,7 @@ var follow: PathFollow2D
 	set(x):
 		member = x
 		actor = member_info()
-@export var actor: Actor
+@export var actor: PartyMember
 @export var distance: int = 30
 @export var dont_follow: bool = false:
 	set(x):
@@ -134,7 +134,7 @@ func _on_timer_timeout() -> void:
 		update_anim_prm()
 
 
-func member_info() -> Actor:
+func member_info() -> PartyMember:
 	return Party.get_member_index(member)
 
 

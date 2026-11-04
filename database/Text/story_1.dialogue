@@ -1,4 +1,5 @@
 ~ nov1_morning
+$>> Transition.unwipe()
 $> Transition.fade_in(Color.BLACK, 0)
 $> Loader.travel_to("WitheredLeaves", Vector2.ZERO, 1, null)
 $> Event.no_player()
@@ -41,7 +42,6 @@ Daze.Neutral: The food I have really won't last us long, I really didn't prepare
 Mira.Smile: Hey, my supplies weren't even enough to take a step outside my village!
 [hide]
 $>> Transition.fade_in()
-$> lower_layer()
 $> wait(1)
 After we finish eating, I'll ask.
 [hide]
@@ -83,7 +83,6 @@ if day == 1 and Party.has_member("Mira") and Party.has_member("Daze"):
 	$> Battle.attacker = EnemyFlowent1
 	$> Battle.start("DazeEnemyTutorial", 1)
 	$> wait_for_battle()
-	=> dont_treat_me_like_a_child
 else:
 	$> give_control()
 => END
@@ -94,23 +93,14 @@ Daze.Neutral: Leave it to me.
 => END
 
 ~ daze_enemy_3
-Daze.Neutral: My attack caused an [color=#57a0f9]Aura Break[/color] on it!
-Daze.Neutral: It no longer has the resources to use magic, you should be safe.
+Daze.Neutral: See? I caused an [color=#57a0f9]Aura Break[/color] on it!
+Daze.Neutral: It no longer has the resources to use magic, you're safe.
+Mira.Upset: *Sigh*[br]I wanted to do something though...
+Mira.OpenMouth: Wait I know![br][wait=1]This is my specialty!
+$> bt.ui.disable_attack = true
+$> bt.ui.disable_ability = false
+$> bt.ui.disable_item = false
 => END
-
-~ dont_treat_me_like_a_child
-Daze.Neutral: I hope you learned something.
-Mira.Angry: Can you please not treat me like child?
-Mira.Angry: I know plenty about magic, I've studied these things thoroughly!
-Mira.Angry: You just wanted to show off [i]how much better you are[/i]!
-$>> F1.move_by_tiles(Vector2.DOWN*6)
-Mira.Neutral: Let's just just hurry up, I want to see {{alcine}}.
-Daze.Neutral: *sigh*
-[hide]
-$>> travel_to("WitheredLeaves", F1.position)
-$> wait(0.5, false)
-$>> Party.set_to(["Mira", "Daze"])
-=> END!
 
 
 ~ destroyed_guardian_event

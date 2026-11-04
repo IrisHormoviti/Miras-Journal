@@ -1,28 +1,27 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://of5cf81xb3dd"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://of5cf81xb3dd"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_f06dm"]
 [ext_resource type="Resource" uid="uid://c60vqgbtkew60" path="res://database/Abilities/SoulTap.tres" id="1_p3tw5"]
 [ext_resource type="Texture2D" uid="uid://deqeff2tjgq00" path="res://art/Icons/Enemies/Slime.png" id="1_udw1f"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_a457n"]
 [ext_resource type="Resource" uid="uid://di0tgolj2jhxg" path="res://database/Items/Materials/WhiteSlime.tres" id="3_r050w"]
 [ext_resource type="Resource" uid="uid://d38c2f7pbaqyj" path="res://database/Abilities/Attacks/JumpAttack.tres" id="4_cbmb1"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="5_4gq0h"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="7_4gq0h"]
 
 [resource]
-script = ExtResource("2_a457n")
+script = ExtResource("5_4gq0h")
+dropped_item = ExtResource("3_r050w")
+received_sp = 2
 first_name = "White Spawn"
 main_color = Color(0.768627, 1, 0.85098, 1)
 party_icon = ExtResource("1_udw1f")
 actor_class = "Support"
-dropped_item = ExtResource("3_r050w")
-received_sp = 2
 max_hp = 20
 max_aura = 8
 attack = 0.1
 magic = 0.3
 defence = 0.6
 speed = 8.0
-skill_level = 0
 abilities = Array[ExtResource("1_f06dm")]([ExtResource("1_p3tw5")])
 standard_attack = ExtResource("4_cbmb1")
 offset = Vector2(0, -15)

@@ -12,6 +12,40 @@ if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 	Daze.Neutral: [[You got careless Levenor...|I messed up...|You better hang in there.|I told you to be careful!]]
 => END
 
+~ mira_analyze
+% Mira.Neutral: I'll look into it!
+% Mira.Neutral: Let's see here...
+% Mira.Neutral: Just give me a moment...
+% Mira.Smile: I'll reveal ALL your secrets!
+%0.5 Mira.Smile: Mira's journal, activate!
+%0.1 Mira.Smile: Recording!
+=> END
+
+~ mira_analyze_success
+% Mira.Smile: I got it!
+% Mira.Smile: This should be enough info.
+% Mira.Smile: Hey, look at this!
+% Mira.Smile: Registered to the journal!
+% Mira.Smile: Check this out!
+=> END
+
+~ mira_analyze_success_weak
+% Mira.Neutral: It's but a weakling.
+% Mira.Neutral: It's not really worth our time.
+=> END
+
+~ mira_analyze_success_strong
+% Mira.Upset: It's really powerful... Do we even stand a chance?
+% Mira.Upset: We need to be extremely careful.
+% Mira.Upset: I'm scared..!
+=> END
+
+~ mira_analyze_fail
+Mira.Neutral: Sorry, I... I can't get any info on it.
+Mira.Neutral: W-What even is it?[br]I can't tell anything!
+Mira.Neutral: I don't know anything, sorry.
+=> END
+
 ~ mira_complimentary_try
 % Mira.Neutral: Well If I fail once... or thrice....
 % Mira.Neutral: Um...[br]Let me check my notes...

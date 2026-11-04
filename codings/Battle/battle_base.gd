@@ -96,6 +96,10 @@ var acting_stack: Array[Dictionary] = []
 var skipped_turns: Array[Actor] = []
 ## True while the inspector preview is driving a standalone battle.
 var previewing := false
+## True from the authored opening through the transition into the first turn.
+## An entrance sequence's END_TURN step must not start the first turn while
+## this is set, or it races the opening and cuts it short.
+var entrance_in_progress := false
 
 @onready var ui: Control = %ControllerBattleUI
 @onready var canvas: CanvasLayer = $Canvas
@@ -355,8 +359,6 @@ func _ready() -> void:
 			2: i.speed = 4
 			3: i.speed = 2
 
-		i.is_enemy = false
-
 	for i in Troop.size():
 		var dub := await create_actor_node(Troop[i], "Enemy" + str(i))
 		dub.offset = Troop[i].offset
@@ -388,6 +390,8 @@ func _ready() -> void:
 		act.show()
 
 	if is_instance_valid(attacker): attacker.hide()
+	entrance_in_progress = true
+
 	if not sequence.skip_entrance:
 		if sequence.entrance_sequence != null: await run_battle_sequence(sequence.entrance_sequence, null, null, false)
 
@@ -735,8 +739,10 @@ func position_sprites() -> void:
 				enemy.position = enemy_positions[i]
 
 	for i in TurnOrder:
-		if i.custom_position != Vector2i.ZERO:
-			i.node.position = i.custom_position
+		var enemy := i as Enemy
+
+		if enemy != null and enemy.custom_position != Vector2i.ZERO:
+			i.node.position = enemy.custom_position
 
 		pixel_perfectize(i)
 
@@ -764,7 +770,6 @@ func recruit_party_member(codename: StringName) -> Actor:
 	if not is_instance_valid(member.node):
 		await create_actor_node(member, "Actor" + str(index))
 
-	member.is_enemy = false
 	member.speed = 8 - index * 2
 	member.next_action = Actor.BtAction.UNSET
 	member.next_move = null
@@ -818,9 +823,12 @@ func entrance() -> void:
 		screen_shake()
 
 	if not has_entrance_sequence() and not sequence.skip_entrance:
-		for i in Party.current:
-			if not i: continue
-			entrance_anim(i)
+		await play_party_entrances()
+
+	# An authored opening can end while an actor's Entrance animation is still
+	# playing; let it finish before moving on to the first turn.
+	if has_entrance_sequence() and not sequence.skip_entrance:
+		await await_playing_entrance_animations()
 
 	Loader.battle_bars(2)
 	await Event.wait(0.5, false)
@@ -828,7 +836,41 @@ func entrance() -> void:
 	Hud.battle_state(true)
 	Hud.save_box_positions()
 	await Event.wait(0.7, false)
-	if not has_entrance_sequence() and not headless_driver: next_turn.emit()
+
+	# Always start the first turn here, after the whole opening has played. An
+	# entrance sequence may end with an END_TURN step; end_turn() defers it
+	# while entrance_in_progress is set so the transition can finish first.
+	entrance_in_progress = false
+	if not headless_driver: next_turn.emit()
+
+
+## Plays every present party member's Entrance animation at once and waits for
+## all of them, so the next turn can't cut the last frames off.
+func play_party_entrances() -> void:
+	var pending := {"count": 0}
+
+	for i in Party.current:
+		if not i: continue
+		pending["count"] += 1
+		_finish_party_entrance(i, pending)
+
+	while pending["count"] > 0:
+		await Event.wait()
+
+
+func _finish_party_entrance(i: Actor, pending: Dictionary) -> void:
+	await entrance_anim(i)
+	pending["count"] -= 1
+
+
+## Waits for any Entrance animation an authored opening left playing.
+func await_playing_entrance_animations() -> void:
+	for i in TurnOrder:
+		if i == null or i.node == null:
+			continue
+
+		if i.node.animation == &"Entrance" and i.node.is_playing():
+			await await_anim(i.node, "Entrance")
 
 
 ## True when the battle brings its own inspector-authored opening sequence.
@@ -936,10 +978,13 @@ func check_for_victory() -> bool:
 func make_move() -> void:
 	if check_for_victory(): return
 	if CurrentChar.next_action == Actor.BtAction.UNSET:
+		var enemy := CurrentChar as Enemy
+
 		if (
 			not CurrentChar.controllable
-			and CurrentChar.turn_sequence != null
-			and not CurrentChar.turn_sequence.is_empty()
+			and enemy != null
+			and enemy.turn_sequence != null
+			and not enemy.turn_sequence.is_empty()
 		):
 			await run_turn_sequence(CurrentChar)
 		elif CurrentChar.controllable:
@@ -956,11 +1001,13 @@ func make_move() -> void:
 ## actions; the battle ends the turn afterwards unless the script ended the
 ## battle itself (for example by showing a scripted victory).
 func run_turn_sequence(actor: Actor) -> void:
-	if actor == null or actor.turn_sequence == null or actor.turn_sequence.is_empty():
+	var enemy := actor as Enemy
+
+	if enemy == null or enemy.turn_sequence == null or enemy.turn_sequence.is_empty():
 		return
 
 	Action = true
-	await run_battle_sequence(actor.turn_sequence, actor, CurrentTarget, false)
+	await run_battle_sequence(enemy.turn_sequence, actor, CurrentTarget, false)
 
 	if not is_instance_valid(self):
 		return
@@ -1256,6 +1303,11 @@ func hold_next_turn() -> void:
 
 
 func end_turn() -> void:
+	# An entrance sequence often ends with an END_TURN step. Defer it until the
+	# opening transition is finished; entrance() starts the first turn itself.
+	if entrance_in_progress:
+		return
+
 	Global.check.emit()
 
 	# Traps are resolved here, after the action's sequences are done
@@ -2177,11 +2229,13 @@ func death(target: Actor) -> void:
 	target.set_aura(0)
 	target.set_health(0)
 	# Rewards
-	if target.is_enemy:
-		totalSP += target.received_sp
+	var enemy := target as Enemy
 
-		if target.dropped_item:
-			ObtainedItems.append(target.dropped_item)
+	if enemy != null:
+		totalSP += enemy.received_sp
+
+		if enemy.dropped_item:
+			ObtainedItems.append(enemy.dropped_item)
 
 	anim("KnockOut", target)
 
@@ -2736,7 +2790,10 @@ func victory_count_sp() -> void:
 		"custom_minimum_size:x", 140, 0.5).from(1)
 
 	for i in Party.current:
-		i.add_SP(totalSP)
+		var member := i as PartyMember
+
+		if member != null:
+			member.add_SP(totalSP)
 
 	Hud._check_party()
 	await Event.wait(0.5, false)

@@ -137,14 +137,16 @@ func _random(actors: Array[Actor], caster: Actor, exclude: bool) -> Actor:
 
 
 func _summon(ctx: ActionSequenceContext, random: bool) -> Actor:
-	if ctx.caster == null or ctx.caster.summoned_allies.is_empty():
+	var enemy := ctx.caster as Enemy
+
+	if enemy == null or enemy.summoned_allies.is_empty():
 		return null
 
 	if random:
-		return ctx.caster.summoned_allies.pick_random()
+		return enemy.summoned_allies.pick_random()
 
-	var index := clampi(summon_index, 0, ctx.caster.summoned_allies.size() - 1)
-	return ctx.caster.summoned_allies[index]
+	var index := clampi(summon_index, 0, enemy.summoned_allies.size() - 1)
+	return enemy.summoned_allies[index]
 
 
 func _validate_property(property: Dictionary) -> void:

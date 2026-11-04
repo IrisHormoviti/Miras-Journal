@@ -1,7 +1,7 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://dfxf3fj1wgl5q"]
+[gd_resource type="Resource" script_class="PartyMember" format=3 uid="uid://dfxf3fj1wgl5q"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_446mq"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="1_e1lg0"]
+[ext_resource type="Script" uid="uid://dyud4gdvs66co" path="res://codings/Classes/party_member_class.gd" id="1_e1lg0"]
 [ext_resource type="Resource" uid="uid://dadlaa3lk8441" path="res://database/Abilities/Guard.tres" id="1_uxycv"]
 [ext_resource type="Texture2D" uid="uid://cnwsdp6c2x76w" path="res://art/Icons/Party/Mira.png" id="2_gadvr"]
 [ext_resource type="Resource" uid="uid://dt3173m0fj781" path="res://database/Abilities/FlameSpark.tres" id="2_ntlg3"]
@@ -13,7 +13,6 @@
 [ext_resource type="Resource" uid="uid://bc1byaoqk3s1q" path="res://database/Abilities/RagingFire.tres" id="8_27hub"]
 [ext_resource type="PackedScene" uid="uid://tw1kc2hybp1c" path="res://sound/Sets/MiraSoundSet.tscn" id="10_rljiu"]
 [ext_resource type="Resource" uid="uid://dumcwabsghqgu" path="res://database/Items/KeyItems/LightweightAxe.tres" id="14_00vn1"]
-[ext_resource type="Resource" uid="uid://cwp57sgr8rbwo" path="res://database/Enemies/Dummy.tres" id="14_flf11"]
 
 [sub_resource type="Curve" id="Curve_00vn1"]
 _limits = [1.0, 500.0, 0.0, 50.0]
@@ -23,6 +22,14 @@ point_count = 6
 
 [resource]
 script = ExtResource("1_e1lg0")
+character_box_profile = ExtResource("6_u8hid")
+last_name = "Levenor"
+party_page = "uid://drtjopmyeh8ib"
+render_artwork = "uid://dqa765cmwj2am"
+hp_on_level_up = 20
+ap_on_level_up = 5
+learnable_abilities = Array[ExtResource("1_446mq")]([ExtResource("6_a84rm"), ExtResource("3_g7gj5"), ExtResource("6_enhby"), ExtResource("8_27hub")])
+skill_curve = SubResource("Curve_00vn1")
 health = 100
 aura = 20
 first_name = "Mira"
@@ -32,24 +39,15 @@ actor_class = "Attacker"
 codename = &"Mira"
 weapon = ExtResource("14_00vn1")
 pronouns = "she"
-summoned_allies = Array[ExtResource("1_e1lg0")]([ExtResource("14_flf11")])
 secondary_color = Color(0.886275, 0.345098, 0.192157, 1)
-character_box_profile = ExtResource("6_u8hid")
-last_name = "Levenor"
-party_page = "uid://drtjopmyeh8ib"
-render_artwork = "uid://dqa765cmwj2am"
 controllable = true
-hp_on_level_up = 20
-ap_on_level_up = 5
 max_hp = 100
 attack = 1.5
 magic = 1.1
 defence = 0.4
 speed = 8.0
-skill_curve = SubResource("Curve_00vn1")
 abilities = Array[ExtResource("1_446mq")]([ExtResource("1_uxycv"), ExtResource("2_ntlg3")])
 standard_attack = ExtResource("6_pdf3s")
-learnable_abilities = Array[ExtResource("1_446mq")]([ExtResource("6_a84rm"), ExtResource("3_g7gj5"), ExtResource("6_enhby"), ExtResource("8_27hub")])
 offset = Vector2(0, -15)
 shadow = true
 sound_set = ExtResource("10_rljiu")

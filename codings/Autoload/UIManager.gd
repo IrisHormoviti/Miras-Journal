@@ -58,11 +58,14 @@ func member_details(chara: Actor, menu := 0) -> void:
 
 
 func complimentary_ui(chara: Actor) -> void:
-	if chara == null: return
+	var member := chara as PartyMember
+
+	if member == null: return
+
 	var dub: Node = (await Loader.load_res("res://UI/Complimentary/ComplimentaryUI.tscn")).instantiate()
 	add_child(dub)
 	await Event.wait()
-	dub.draw_character(chara)
+	dub.draw_character(member)
 
 
 func next_day_ui() -> void:

@@ -1,10 +1,10 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://bqwviswxxvkw2"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://bqwviswxxvkw2"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_mqkvp"]
 [ext_resource type="Resource" uid="uid://bepaxlymwd13p" path="res://database/Abilities/SturdyGuard.tres" id="2_px5pt"]
 [ext_resource type="Resource" uid="uid://cci8aukur3fo7" path="res://database/Abilities/Drill.tres" id="3_2uyqa"]
 [ext_resource type="Texture2D" uid="uid://c3lg7n83ygaen" path="res://art/Icons/Enemies/Guardian.png" id="3_px5pt"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="4_px5pt"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy.gd" id="4_px5pt"]
 [ext_resource type="Resource" uid="uid://c2tn8slm5k1jq" path="res://database/Abilities/RockThrow.tres" id="5_uhvrc"]
 [ext_resource type="Shader" uid="uid://cg1448p6ebsbo" path="res://codings/Shaders/color_replace2.gdshader" id="6_oq2ia"]
 [ext_resource type="PackedScene" uid="uid://co34lfhkwbp56" path="res://sound/Sets/DefaultSoundSet.tscn" id="7_oq2ia"]

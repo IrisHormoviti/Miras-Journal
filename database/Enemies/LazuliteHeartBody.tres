@@ -1,8 +1,8 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://dyqwhhom23j2x"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://dyqwhhom23j2x"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_j4a1g"]
 [ext_resource type="Resource" uid="uid://xkuji6v3lk6" path="res://database/Abilities/Indestructible.tres" id="2_ubodn"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_3qp5y"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy.gd" id="3_3qp5y"]
 [ext_resource type="Resource" uid="uid://dmhsvhd1lkkue" path="res://database/Abilities/Summon.tres" id="3_8lohf"]
 [ext_resource type="Texture2D" uid="uid://budghnw4lgtg4" path="res://art/Icons/Enemies/Object.png" id="3_wvs21"]
 [ext_resource type="Resource" uid="uid://b1xu46a1gjneu" path="res://database/Abilities/BowToMe.tres" id="4_hsgqg"]

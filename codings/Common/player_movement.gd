@@ -475,8 +475,11 @@ func attack() -> void:
 			attacking = false
 			state = S.IDLE
 			set_anim()
-			$Attack/AttackPreview/CollisionShape2D.disabled = false
-			$Attack/CollisionShape2D.disabled = false
+			# The attack was interrupted (e.g. a battle or cutscene started).
+			# Leave the hitboxes off, or they stay live and break anything the
+			# player walks past afterward.
+			$Attack/AttackPreview/CollisionShape2D.disabled = true
+			$Attack/CollisionShape2D.disabled = true
 			speed = WALK_SPEED
 			return
 

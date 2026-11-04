@@ -523,7 +523,6 @@ custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 size_flags_horizontal = 0
 theme = SubResource("Theme_nfiq0")
-disabled = true
 text = "Beastiary
 "
 metadata/_edit_use_anchors_ = true

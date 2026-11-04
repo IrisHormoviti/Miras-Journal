@@ -45,6 +45,9 @@ const VERSION := 8
 ## Array of diary entries for each day ID
 @export var diary: Dictionary[int, PackedStringArray]
 
+## The enemies that have been registerred to the beastiary
+@export var beastiary: Array[String]
+
 ## List of flags and their value
 @export var flags: Dictionary[StringName, int]
 

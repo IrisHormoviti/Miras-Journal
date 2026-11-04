@@ -1,6 +1,6 @@
 extends CanvasLayer
 
-var chara: Actor
+var chara: PartyMember
 var slots: int
 var setting := false
 var active_slot: int = 0
@@ -10,7 +10,7 @@ func _init() -> void:
 	hide()
 
 
-func draw_character(character: Actor) -> void:
+func draw_character(character: PartyMember) -> void:
 	chara = character
 	##Test
 	#Global.complimentaries = ["FluidBlast", "RedShift", "Dispel"]

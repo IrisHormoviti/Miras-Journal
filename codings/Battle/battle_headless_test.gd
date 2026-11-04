@@ -81,6 +81,7 @@ func _ready() -> void:
 	await _test_enemy_revive()
 	_test_enemy_preview_setup()
 	_test_branch_outcomes()
+	_test_actor_types()
 	_test_migrated_sequences_load()
 	_test_migrated_sequence_wiring()
 	await _test_last_sequences()
@@ -955,6 +956,21 @@ const MIGRATED_BATTLE_SEQUENCES := [
 ]
 
 
+func _test_actor_types() -> void:
+	for mem in Party.members:
+		if not mem is PartyMember:
+			_fail("Party resource is not a PartyMember: " + str(mem.codename if mem != null else "<null>"))
+
+	for enemy in battle.Troop:
+		if not enemy is Enemy:
+			_fail("Troop actor is not an Enemy: " + str(enemy.codename if enemy != null else "<null>"))
+
+	if not Party.Leader is PartyMember:
+		_fail("Party leader is not a PartyMember")
+
+	print("BATTLE_TEST_ACTOR_TYPES ok")
+
+
 func _test_migrated_sequences_load() -> void:
 	for file in MIGRATED_SEQUENCES:
 		var path: String = "res://database/Sequences/Action/" + str(file)
@@ -1153,7 +1169,7 @@ func _test_stone_guardian_pattern() -> void:
 	var finisher := load("res://database/Sequences/Action/StoneGuardianFinisher.tres") as ActionSequence
 	var turn := load("res://database/Sequences/Action/StoneGuardianTurn.tres") as ActionSequence
 	var adaptation := load("res://database/Abilities/Adaptation.tres") as Ability
-	var guardian_data: Actor = load("res://database/Enemies/StoneGuardian.tres")
+	var guardian_data: Enemy = load("res://database/Enemies/StoneGuardian.tres")
 
 	if boss.Events.size() != 2:
 		_fail("Stone Guardian battle events changed unexpectedly")
@@ -1757,7 +1773,7 @@ func _test_self_target_ai_move() -> void:
 
 
 func _test_asteria_followup() -> void:
-	var asteria_resource: Actor = load("res://database/Enemies/AsteriaEnemy.tres")
+	var asteria_resource: Enemy = load("res://database/Enemies/AsteriaEnemy.tres")
 
 	if asteria_resource.followup_ability == null or asteria_resource.followup_ability.action_sequence == null:
 		_fail("Asteria's follow-up ability was not migrated to a sequence")
@@ -1945,7 +1961,11 @@ func _test_conditions() -> void:
 	summons.actor = ActorRef.new(ActorRef.Mode.CASTER)
 	summons.empty = false
 
-	if not summons.check(ctx):
+	# Summon lists belong to Enemy resources now, so use a troop member as the
+	# caster instead of relying on a leftover list on the party leader.
+	var summon_ctx := _test_context(battle.Troop[0]) if not battle.Troop.is_empty() else ctx
+
+	if not summons.check(summon_ctx):
 		_fail("Collection condition did not pass for a populated summon list")
 
 	if target == null:

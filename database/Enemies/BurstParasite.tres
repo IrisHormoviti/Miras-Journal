@@ -1,18 +1,18 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://dndjx0ile1qpr"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://dndjx0ile1qpr"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_kl0ra"]
 [ext_resource type="Texture2D" uid="uid://br3ayvp6wpv2r" path="res://art/Icons/Enemies/Parasite.png" id="3_6gxsa"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_c3tjn"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="3_s0gi0"]
 [ext_resource type="Resource" uid="uid://bhnd7jyfc0grt" path="res://database/Abilities/Attacks/AOEAttack.tres" id="5_ox88c"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="5_s0gi0"]
 
 [resource]
-script = ExtResource("3_c3tjn")
+script = ExtResource("3_s0gi0")
+received_sp = 3
 first_name = "Burst Parasite"
 main_color = Color(0.262745, 0.345098, 0.176471, 1)
 party_icon = ExtResource("3_6gxsa")
 actor_class = "Attacker"
-received_sp = 3
 max_hp = 20
 max_aura = 30
 attack = 1.5

@@ -161,6 +161,25 @@ func diary() -> void:
 	$List/List.get_children()[-1].grab_focus()
 
 
+func beastiary() -> void:
+	stage = "beastiary"
+	$Journal.hide()
+	$RootMenu.hide()
+	$JournalBack.show()
+	$Pages.show()
+	$List.show()
+	$Select.hide()
+
+	var t: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
+	t.tween_property($Close, "position:x", 320, 0.5).set_ease(Tween.EASE_OUT)
+	t.tween_property($List, "position:x", 0, 0.5).from(-300)
+
+	t.tween_property(UI.get_node("MainMenu"), "offset:x", -165, 0.5)
+	t.tween_property(Global.camera, "offset:x", 150, 0.5)
+
+	$List/List.get_children()[-1].grab_focus()
+
+
 func add_test_entries() -> void:
 	Event.diary = {
 		2: ["boo"],

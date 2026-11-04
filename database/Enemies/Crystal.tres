@@ -1,18 +1,18 @@
-[gd_resource type="Resource" script_class="Actor" format=3 uid="uid://btpc8qptcieh"]
+[gd_resource type="Resource" script_class="Enemy" format=3 uid="uid://btpc8qptcieh"]
 
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_fxbje"]
 [ext_resource type="Texture2D" uid="uid://budghnw4lgtg4" path="res://art/Icons/Enemies/Object.png" id="2_1fp2h"]
-[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_1fp2h"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="3_1fp2h"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="5_1fp2h"]
 [ext_resource type="Resource" uid="uid://w4h535f4bdj8" path="res://database/Abilities/Attacks/CrystalHeal.tres" id="5_yd7wc"]
 
 [resource]
 script = ExtResource("3_1fp2h")
+received_sp = 1
 first_name = "Crystal"
 main_color = Color(0, 0.72549, 0.239216, 1)
 party_icon = ExtResource("2_1fp2h")
 actor_class = "Support"
-received_sp = 1
 max_hp = 40
 max_aura = 10
 attack = 0.0

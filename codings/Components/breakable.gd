@@ -42,8 +42,14 @@ func get_name_flag() -> String:
 	return Global.room.codename() + "/Breakable/" + name
 
 
-func _on_area_break_area_entered(_area: Area2D) -> void:
-	if Engine.is_editor_hint():
+func _on_area_break_area_entered(area: Area2D) -> void:
+	if Engine.is_editor_hint() or broken:
+		return
+
+	# The break area shares its layer with roaming enemies and other breakables,
+	# so only the player's axe swing should actually break this. Without this
+	# check, an enemy walking past (or two breakables overlapping) breaks it.
+	if not is_instance_valid(Global.player) or area != Global.player.get_node_or_null("Attack"):
 		return
 
 	set_break()

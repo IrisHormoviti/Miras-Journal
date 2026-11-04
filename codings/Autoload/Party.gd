@@ -5,20 +5,20 @@ var current: Array[Actor] = [null]
 ## Data for all party members (Outside of the party too)
 var members: Array[Actor] = []
 
-var Leader: Actor:
-	get(): return current[0] if current.size() > 0 else null
+var Leader: PartyMember:
+	get(): return current[0] as PartyMember if current.size() > 0 else null
 	set(x): current[0] = x
 
-var Member1: Actor:
-	get(): return current[1] if current.size() > 1 else null
+var Member1: PartyMember:
+	get(): return current[1] as PartyMember if current.size() > 1 else null
 	set(x): current[1] = x
 
-var Member2: Actor:
-	get(): return current[2] if current.size() > 2 else null
+var Member2: PartyMember:
+	get(): return current[2] as PartyMember if current.size() > 2 else null
 	set(x): current[2] = x
 
-var Member3: Actor = null:
-	get(): return current[3] if current.size() > 3 else null
+var Member3: PartyMember:
+	get(): return current[3] as PartyMember if current.size() > 3 else null
 	set(x): current[3] = x
 
 
@@ -34,9 +34,9 @@ func _init() -> void:
 	reset_party()
 
 
-func get_member(codename: StringName) -> Actor:
+func get_member(codename: StringName) -> PartyMember:
 	for i in members:
-		if i.codename == codename: return i
+		if i.codename == codename: return i as PartyMember
 
 	push_warning("No party member with the name " + codename + " was found")
 	return null
@@ -88,7 +88,7 @@ func get_strarr() -> Array[StringName]:
 	return arr
 
 
-func get_member_index(num: int) -> Actor:
+func get_member_index(num: int) -> PartyMember:
 	match num:
 		0: return Leader
 		1: return Member1
@@ -102,7 +102,7 @@ func member_index(mem: Actor) -> int:
 	return current.find(mem)
 
 
-func overwrite_member(num: int, actor: Actor) -> void:
+func overwrite_member(num: int, actor: PartyMember) -> void:
 	current[num] = actor
 
 
@@ -180,8 +180,13 @@ func add_test_state(chara: Actor) -> void:
 
 func unlock_all_abilities() -> void:
 	for mem in members:
-		for ab in mem.learnable_abilities:
-			if ab not in mem.abilities: mem.abilities.append(ab)
+		var member := mem as PartyMember
+
+		if member == null:
+			continue
+
+		for ab in member.learnable_abilities:
+			if ab not in member.abilities: member.abilities.append(ab)
 
 
 func give_every_ability() -> void:
