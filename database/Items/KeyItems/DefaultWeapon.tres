@@ -4,5 +4,4 @@
 
 [resource]
 script = ExtResource("3_7wih8")
-power = 10
 item_type = "Key"

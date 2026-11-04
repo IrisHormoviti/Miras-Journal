@@ -73,8 +73,7 @@ func run(ctx: ActionSequenceContext) -> void:
 			await ctx.battle.remove_queued_states(subject)
 
 
-## The state this step targets. When it is unset the ability's own state is used
-## so a StateStep can stay generic across abilities that share a sequence.
+## The state this step targets.
 func _state(ctx: ActionSequenceContext) -> Variant:
 	if state != null:
 		return state
@@ -96,8 +95,7 @@ func _state_name(ctx: ActionSequenceContext) -> String:
 	return ""
 
 
-## The state resource this step adds, or null when it defers to the ability or
-## is not an add-state step.
+## The state resource this step adds
 func added_state() -> State:
 	if mode != Mode.ADD:
 		return null
@@ -105,8 +103,7 @@ func added_state() -> State:
 	return state
 
 
-## The trap this step places, or null when it defers to the ability or is not a
-## trap step.
+## The trap this step places
 func placed_trap() -> Trap:
 	if mode != Mode.SET_TRAP:
 		return null
@@ -152,7 +149,7 @@ func _to_string() -> String:
 ## internal id.
 func _state_label() -> String:
 	if state == null:
-		return "the ability's state"
+		return "null"
 
 	if state.resource_name != "":
 		return state.resource_name

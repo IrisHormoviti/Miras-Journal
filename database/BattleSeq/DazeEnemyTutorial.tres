@@ -16,8 +16,8 @@ turn_min = 2
 script = ExtResource("4_sotm4")
 condition = SubResource("Resource_xovcb_turn_0")
 result = 1
-parameter1 = "story_1"
-parameter2 = "daze_enemy_3"
+dialog_file = "story_1"
+dialog_cue = "daze_enemy_3"
 hold_turn = true
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 

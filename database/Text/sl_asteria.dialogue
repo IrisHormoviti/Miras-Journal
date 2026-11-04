@@ -1,7 +1,8 @@
+~ dispatch
 match get_flag("SocialLink/Asteria"):
 	when 0:
 		=> rank1_prepare
-	when 1: 
+	when 1:
 		=> rank2_prepare
 => END
 

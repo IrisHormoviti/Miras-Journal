@@ -17,8 +17,14 @@ enum Mode {
 @export var flag: StringName = &""
 @export var value := 1
 @export var tutorial: StringName = &""
-@export var file: StringName = &""
-@export var cue: StringName = &""
+@export var file := "":
+	set(value):
+		if file == value:
+			return
+
+		file = value
+		notify_property_list_changed()
+@export var cue := ""
 @export var wait := true
 
 
@@ -76,6 +82,13 @@ func _to_string() -> String:
 
 
 func _validate_property(property: Dictionary) -> void:
+	if mode == Mode.RUN_CUE:
+		match property.name:
+			&"file":
+				StepEditor.dialogue_files(property)
+			&"cue":
+				StepEditor.dialogue_cues(property, file)
+
 	var visible: Array[String] = ["mode"]
 
 	match mode:

@@ -1,3 +1,4 @@
+~ dispatch
 match get_flag("SocialLink/Maple"):
 	when 0:
 		=> rank1_prepare

@@ -60,6 +60,7 @@ offset = Vector2(-15, -15)
 flip_on_player_use = true
 
 [sub_resource type="Resource" id="Resource_hit_jtaly"]
+resource_name = "miss"
 script = ExtResource("cond_hit")
 outcomes = 4
 

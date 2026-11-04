@@ -33,8 +33,8 @@ actor = SubResource("Resource_qctwl")
 
 [sub_resource type="Resource" id="Resource_8814l"]
 script = ExtResource("5_8814l")
-file = &"banter_battle"
-cue = &"attention"
+file = "banter_battle"
+cue = "attention"
 passive = true
 wait = false
 

@@ -77,6 +77,7 @@ func _ready() -> void:
 		Partybox.add_child(box)
 
 	_prepare_revive_timers()
+	_prepare_state_cycle_timer()
 	ui_visible = false
 	hide_all(false)
 	Global.check.connect(_check_party)
@@ -238,7 +239,7 @@ func check_member(mem: Actor, node: Panel, ind: int) -> void:
 	node.get_node("Level/ExpBar").max_value = mem.skill_points_for(mem.skill_level)
 	t.tween_property(node.get_node("Aura"), "value", mem.aura, 1)
 	node.get_node("Icon").texture = mem.party_icon
-	cycle_states(mem, node.get_node("Icon/State"))
+	_update_state_icon(mem, node.get_node("Icon/State"))
 	node.get_node("Health/HpText").text = str(mem.health)
 	node.get_node("Aura/ApText").text = str(mem.aura)
 	node.get_node("Level/Number").text = str(mem.skill_level)
@@ -1007,18 +1008,38 @@ func main_menu() -> void:
 		Audio.buzzer_sound()
 
 
-func cycle_states(chara: Actor, rect: TextureRect, reclude := true) -> void:
-	if chara.states.is_empty():
-		rect.texture = null
-	elif chara.states.size() == 1:
-		rect.texture = chara.states[0].icon
-	else:
-		var index := wrapi($StateTimer.time_left, 0, chara.states.size())
-		rect.texture = chara.states[index].icon
+## One timer drives every party box's state icon. Starting a coroutine per HUD
+## refresh leaked a new cycler every time a state was added or removed.
+func _prepare_state_cycle_timer() -> void:
+	var timer := Timer.new()
+	timer.name = "StateCycleTimer"
+	timer.wait_time = 0.3
+	timer.autostart = true
+	timer.timeout.connect(_refresh_state_icons)
+	add_child(timer)
 
-		while chara.states.size() > 1 and reclude:
-			cycle_states(chara, rect, false)
-			await Event.wait(0.3, false)
+
+func _refresh_state_icons() -> void:
+	for i in range(0, 4):
+		if not Party.has_member_index(i):
+			continue
+
+		var box := Partybox.get_child(i) as Panel
+		var mem := Party.current[i]
+
+		if box == null or not is_instance_valid(mem):
+			continue
+
+		_update_state_icon(mem, box.get_node("Icon/State"))
+
+
+func _update_state_icon(mem: Actor, rect: TextureRect) -> void:
+	if mem.states.is_empty():
+		rect.texture = null
+	elif mem.states.size() == 1:
+		rect.texture = mem.states[0].icon
+	else:
+		rect.texture = mem.states[wrapi($StateTimer.time_left, 0, mem.states.size())].icon
 
 	rect.show()
 
@@ -1064,6 +1085,7 @@ func back() -> void:
 			Audio.cancel_sound()
 			await Event.wait(0.1, false)
 			Global.controllable = was_controllable
+			Global.check.emit()
 
 			if UI.is_open("MainMenu"):
 				UI.get_node("MainMenu").stage = "root"

@@ -27,6 +27,9 @@ func _check_party() -> void:
 func confirm_time_passage(title: String, description: String, to_time: Event.TOD) -> bool:
 	Global.check.emit()
 	Event.add_flag("UI/Disable", false)
+	# Restore whatever pause state we came from once the prompt closes. Keeping
+	# the tree paused made animations in the following cutscene wait forever.
+	var was_paused := get_tree().paused
 	Global.controllable = false
 	get_tree().paused = true
 	Hud.show_all()
@@ -48,7 +51,9 @@ func confirm_time_passage(title: String, description: String, to_time: Event.TOD
 	await t.finished
 	Global.controllable = false
 	$Action/Nevermind.grab_focus()
-	return await chosen_time_pass
+	var answer: bool = await chosen_time_pass
+	get_tree().paused = was_paused
+	return answer
 
 
 func hide_prompt() -> void:

@@ -84,8 +84,8 @@ mode = 2
 
 [sub_resource type="Resource" id="Resource_hrv5d"]
 script = ExtResource("10_hppvc")
-file = &"story_0"
-cue = &"what_this"
+file = "story_0"
+cue = "what_this"
 
 [sub_resource type="Resource" id="Resource_2jejd"]
 script = ExtResource("11_123dc")

@@ -7,7 +7,14 @@
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="4_2lova"]
 [ext_resource type="Resource" uid="uid://dr48hmn1otdiw" path="res://database/Abilities/LeechSeeds.tres" id="5_kjmt8"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_f6ajr"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="be_actor_ref"]
 [ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="cond_be_turn"]
+
+[sub_resource type="Resource" id="Resource_2lova_caster"]
+resource_name = "SkritcherRoot"
+script = ExtResource("be_actor_ref")
+mode = 2
+codename = &"SkritcherRoot"
 
 [sub_resource type="Resource" id="Resource_2lova_turn_0"]
 resource_name = "turn >= 0"
@@ -18,9 +25,9 @@ turn_min = 0
 script = ExtResource("3_kjmt8")
 condition = SubResource("Resource_2lova_turn_0")
 result = 2
-parameter1 = "Ability"
-resource = ExtResource("5_kjmt8")
-event_actor = &"SkritcherRoot"
+dialog_cue = "0"
+caster = SubResource("Resource_2lova_caster")
+move = ExtResource("5_kjmt8")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [resource]

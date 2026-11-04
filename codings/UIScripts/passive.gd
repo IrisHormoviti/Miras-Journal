@@ -24,11 +24,19 @@ static var is_open := false
 static func open(file: String, cue: String = "0", extra_game_states: Array = []) -> void:
 	print_rich("[color=orange]Passive: ", file, " - ", cue)
 
-	if UI.is_open("Passive"):
-		UI.get_node("Passive")._on_close()
-		await Event.wait(0.3)
-		open(file, cue, extra_game_states)
-		return
+	# If a passive is already up, close it and wait for it to actually leave the
+	# tree. The previous node can still exist for a frame after queue_free(),
+	# and reopening on top of it made the next passive play twice.
+	var closing := false
+
+	while UI.is_open("Passive"):
+		var existing: Node = UI.get_node("Passive")
+
+		if is_open and not closing:
+			closing = true
+			existing._on_close()
+
+		await Event.wait()
 
 	is_open = true
 	var passive: PackedScene = await Loader.load_res("res://UI/Textbox/Passive.tscn")
@@ -77,7 +85,7 @@ var dialogue_line: DialogueLine:
 
 		var char_name := tr(dialogue_line.character, "dialogue")
 
-		if dialogue_line.text == "(hide)" or dialogue_line.text == " ":
+		if dialogue_line.text == "[hide]":
 			await hide_box()
 			next(dialogue_line.next_id)
 			char_name = ""

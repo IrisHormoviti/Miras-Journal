@@ -73,10 +73,11 @@ gdscript/warnings/treat_warnings_as_errors=true
 
 [dialogue_manager]
 
-runtime/state_autoload_shortcuts=["Global", "Loader", "World", "Event", "Hud", "Item", "Query", "Audio", "UI"]
+runtime/state_autoload_shortcuts=["Global", "Loader", "World", "Event", "Hud", "Item", "Query", "Audio", "UI", "Party"]
 editor/wrap_long_lines=true
 editor/advanced/custom_test_scene_path="uid://dro6xc73x3rl4"
 runtime/advanced/ignore_missing_state_values=true
+runtime/warn_about_context_alias_already_registered=false
 
 [display]
 

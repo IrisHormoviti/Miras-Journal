@@ -453,14 +453,14 @@ $> bt.no_misses = false
 ~ lazulite_heart_2
 if Party.Member1.has_state("KnockedOut"):
 	$>> Party.Member1.remove_state("KnockedOut")
-	$>> Party.Member1.add_health("10")
-	$>> Party.Member1.add_aura("5")
+	$>> Party.Member1.add_health(10)
+	$>> Party.Member1.add_aura(5)
 Alcine.Neutral: ...!?
 Mira.Neutral: What's wrong?
 Asteria.Neutral: So they can feel it too...
 Daze.Neutral: ?
 $> toast(alcine+ " hesitates.")
-$> Party.Member1.next_action = "Attack"
+$> Party.Member1.next_action = Actor.BtAction.ACT
 $> Party.Member1.next_move = Ability.nothing()
 => END!
 

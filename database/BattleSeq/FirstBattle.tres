@@ -15,6 +15,7 @@
 [ext_resource type="Resource" uid="uid://c80uk7o0lcc8y" path="res://database/Sequences/Action/FirstBattleAura2.tres" id="14_aura2"]
 [ext_resource type="Resource" uid="uid://dxgmdc611fm3x" path="res://database/Sequences/Action/FirstBattleAura3.tres" id="15_aura3"]
 [ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="cond_be_turn"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="be_actor_ref"]
 
 [sub_resource type="Resource" id="Resource_6vdia_turn_0"]
 script = ExtResource("cond_be_turn")
@@ -27,13 +28,19 @@ icon = ExtResource("6_hflgg")
 action_sequence = ExtResource("12_jump")
 callout = false
 
+[sub_resource type="Resource" id="Resource_6vdia_caster"]
+resource_name = "CrawlingSludge"
+script = ExtResource("be_actor_ref")
+mode = 2
+codename = &"CrawlingSludge"
+
 [sub_resource type="Resource" id="Resource_6vdia"]
 script = ExtResource("2_68ui3")
 condition = SubResource("Resource_6vdia_turn_0")
 result = 2
-parameter1 = "Attack"
-resource = SubResource("Resource_kgu6i")
-event_actor = &"CrawlingSludge"
+move_action = 1
+move = SubResource("Resource_kgu6i")
+caster = SubResource("Resource_6vdia_caster")
 
 [sub_resource type="Resource" id="Resource_g722f_turn_1"]
 script = ExtResource("cond_be_turn")

@@ -15,6 +15,15 @@ static var attacker: Node2D = null
 ## Set by the headless battle harness so the standalone preview keeps the live
 ## battle instead of quitting after the first previewed action.
 static var headless_driver := false
+## Dialogue that was already open before the battle started. Cutscenes can call
+## Battle.start() from inside a textbox, which then stays open (usually hidden)
+## for the whole fight. It belongs to the story, not the battle, so it must not
+## make the battle UI think a battle dialog is blocking the screen.
+static var external_textbox_id := 0
+static var external_passive_id := 0
+## How many turn-holding battle dialogues are currently blocking the menu.
+## Passives that do not hold the turn (e.g. flavor warnings) are not counted.
+static var modal_dialogue_count := 0
 
 enum Result {UNFINISHED, VICTORY, ESCAPE, DEFEAT}
 static var battle_result: Result = Result.UNFINISHED
@@ -56,6 +65,9 @@ var callout_onscreen := false
 var lock_turn := false
 ## How many flows are holding the turn, lock_turn is true while above 0
 var lock_count := 0
+## Upcoming turns that should be held as soon as they begin. Scripted dialogue
+## uses this to talk over a turn without racing the action's end_turn().
+var pending_turn_holds := 0
 ## Prevent critical hits
 var no_crits := false
 ## Prevent missing
@@ -69,6 +81,8 @@ var in_trap := false
 ## Traps that sprung from the current hit, waiting to counterattack
 ## (resolved by end_turn, once the attacking sequence is over)
 var pending_traps: Array[Dictionary] = []
+## Victory animations still clearing states before end_battle() can reset them.
+var victory_anim_pending := 0
 ## Optional story phase used by PhaseCondition.
 var battle_phase: StringName = &""
 ## Runtime owner for data-driven action sequences.
@@ -116,6 +130,17 @@ static func start(stg: Variant, advantage := 0) -> void:
 
 	if prevent_battles:
 		return
+
+	# Remember a cutscene textbox/passive that is already open. It stays open
+	# (and is often hidden with [hide]) while the battle runs, so it must not be
+	# treated as modal battle dialogue.
+	external_textbox_id = (
+		Textbox.current.get_instance_id() if is_instance_valid(Textbox.current) else 0
+	)
+	external_passive_id = (
+		Passive.current.get_instance_id() if is_instance_valid(Passive.current) else 0
+	)
+	modal_dialogue_count = 0
 
 	battle_result = Result.UNFINISHED
 	battle_advantage = advantage
@@ -241,6 +266,8 @@ static func build_preview_sequence(targets: int, enemy_path := "") -> BattleSequ
 func _ready() -> void:
 	if sequence == null and not Engine.is_editor_hint():
 		setup_standalone_preview()
+
+	modal_dialogue_count = 0
 
 	# Re-parent Act node
 	act.reparent(get_node(Loader.area_spawn_path))
@@ -558,10 +585,37 @@ static func tween(
 func create_actor_node(actor: Actor, node_name: String) -> AnimatedSprite2D:
 	var sprite: AnimatedSprite2D = act.get_node("Actor0").duplicate()
 	sprite.name = node_name
+
+	# A duplicate also copies Actor0's runtime state visuals and shader outline.
+	# Strip them so a joining actor does not inherit another actor's Guarding
+	# outline (or any other state overlay).
+	for child in sprite.get_children():
+		if child is AnimatedSprite2D and child.name != "State":
+			child.free()
+
+	var shadow := sprite.get_node_or_null("Shadow")
+
+	if shadow != null:
+		shadow.modulate = Color.WHITE
+
+	var particle := sprite.get_node_or_null("Particle")
+
+	if particle != null:
+		particle.emitting = false
+
+	var nums := sprite.get_node_or_null("Nums")
+
+	if nums != null:
+		nums.visible = false
+
 	act.add_child(sprite)
 	actor.node = sprite
 	sprite.sprite_frames = await actor.get_BT()
 	sprite.material = sprite.material.duplicate()
+
+	if sprite.material is ShaderMaterial:
+		sprite.material.set_shader_parameter("outline_enabled", false)
+		sprite.material.set_shader_parameter("outline_color", Color.TRANSPARENT)
 
 	# A duplicate made after Actor0 got its own sound set carries a stale "SFX"
 	# child. Remove it so the actor's sound set can take its place.
@@ -670,6 +724,45 @@ func position_sprites() -> void:
 		pixel_perfectize(i)
 
 
+## Adds a party member while a battle is already running, for story beats where
+## someone joins mid-fight. Creates their battle sprite and turn-order slot and
+## refreshes the battle UI.
+func recruit_party_member(codename: StringName) -> Actor:
+	var member := Party.get_member(codename)
+
+	if member == null:
+		return null
+
+	if member in TurnOrder:
+		return member
+
+	Party.add(str(codename))
+	member = Party.get_member(codename)
+	var index := Party.member_index(member)
+
+	if index <= 0:
+		push_warning("No open party slot for " + str(codename))
+		return null
+
+	if not is_instance_valid(member.node):
+		await create_actor_node(member, "Actor" + str(index))
+
+	member.is_enemy = false
+	member.speed = 8 - index * 2
+	member.next_action = Actor.BtAction.UNSET
+	member.next_move = null
+	member.next_target = null
+	member.battle_log = [Actor.log_entry.new()]
+	member.load_complimentaries()
+	await sprite_init(member)
+	TurnOrder.push_front(member)
+	resort_turn_order()
+	position_sprites()
+	turn_ui_init()
+	Hud.battle_state()
+	return member
+
+
 func entrance() -> void:
 	Action = true
 	Global.controllable = false
@@ -763,21 +856,24 @@ func _on_next_turn() -> void:
 		end_turn()
 		return
 
+	# Fodder that is mid-deletion should not get another turn.
+	if CurrentChar.queue_delete:
+		end_turn()
+		return
+
+	# Scripted dialogue can ask for the next turn to be held before it starts,
+	# so it cannot race the action itself ending the turn.
+	if pending_turn_holds > 0:
+		pending_turn_holds -= 1
+		hold_turn()
+
 	print("-------------------------------------------------")
 	print_rich("[color=cornflower-blue]Turn: ", Turn, " - Index: ", TurnInd, " - Name: ", CurrentChar.first_name)
 	initial = CurrentChar.node.position
 
-	if CurrentChar.has_state("Knocked Out"):
-		if CurrentChar.is_enemy:
-			Troop.erase(CurrentChar)
-			TurnOrder.erase(CurrentChar)
-			if Troop.is_empty():
-				victory()
-				return
-			else:
-				end_turn()
-				return
-
+	# Knocked-out enemies stay in the turn order just like party members, so an
+	# ally can heal them and their KnockedOut.on_turn chance can get them up.
+	# Fodder that is meant to disappear is handled by queue_delete above.
 	if CurrentChar.is_enemy: enemy_ui._on_battle_ui_target_foc(CurrentChar)
 	else: enemy_ui.all_enemy_ui()
 	await handle_states()
@@ -972,6 +1068,9 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 	CurrentAbility = ab
 	CurrentTarget = tar
 
+	if ab.name == "DeathSequence":
+		CurrentChar.death_sequence_queued = false
+
 	if CurrentChar.has_state("Bound") and (CurrentAbility.uses_weapon() or CurrentAbility == CurrentChar.standard_attack):
 		CurrentAbility = Ability.nothing()
 		battle_msg("struggle")
@@ -1094,6 +1193,12 @@ func release_turn() -> void:
 	if lock_count == 0: lock_turn = false
 
 
+## Hold the turn as soon as the next actor's turn begins. Scripted dialogue
+## uses this to keep talking over a turn without racing the action's end_turn().
+func hold_next_turn() -> void:
+	pending_turn_holds += 1
+
+
 func end_turn() -> void:
 	Global.check.emit()
 
@@ -1145,6 +1250,43 @@ func end_turn() -> void:
 	next_turn.emit()
 
 
+## Battle events that do not hold the turn are run here, one after another, so
+## their dialogues cannot open on top of each other. The queue is deliberately
+## not awaited by end_turn: a flavor passive keeps playing while the turn moves
+## on, it just cannot be replaced by the next event mid-sentence.
+var event_queue: Array[BattleEvent] = []
+var event_queue_running := false
+
+
+func queue_event(event: BattleEvent) -> void:
+	if event == null or event_queue.has(event):
+		return
+
+	event.queued = true
+	event_queue.append(event)
+	_run_event_queue()
+
+
+func _run_event_queue() -> void:
+	if event_queue_running:
+		return
+
+	event_queue_running = true
+
+	while not event_queue.is_empty():
+		var event: BattleEvent = event_queue.pop_front()
+		await event.run()
+
+	event_queue_running = false
+
+
+## Waits for queued non-holding events to finish. Holding events call this first
+## so they never play over a passive that is already on screen.
+func wait_for_event_queue() -> void:
+	while event_queue_running or not event_queue.is_empty():
+		await Event.wait()
+
+
 func damage(
 	target: Actor,
 	is_magic := not CurrentAbility.uses_weapon(),
@@ -1188,7 +1330,7 @@ func damage(
 
 	# State specific modifications. Removing a state (e.g. Frozen) mutates the
 	# live array, so walk a snapshot or the next state gets skipped.
-	for state in target.states.duplicate():
+	for state: State in target.states.duplicate():
 		# Mutiply with each state's modifiers
 		if is_magic:
 			dmg = int(dmg * state.magic_dmg_mult)
@@ -1226,7 +1368,10 @@ func damage(
 		or target.cant_die) and target.health - dmg < 0
 	):
 		print("Damage on ", target.first_name, " was clutched")
-		limiter = true
+
+		# cant_die actors let Actor.damage roll the 1-5 hp clutch value; actors
+		# with only clutch_dmg stop at exactly 1 hp.
+		limiter = not target.cant_die
 		queue_sequence_for_actor(target, target.death_action_sequence, "DeathSequence")
 
 	# Actual damage happens
@@ -1462,6 +1607,9 @@ func queue_sequence_for_actor(
 	ab.name = sequence_name
 	ab.action_sequence = action_sequence
 	queue_action(chara, ab, chara, Actor.BtAction.ACT)
+
+	if sequence_name == "DeathSequence":
+		chara.death_sequence_queued = true
 
 
 ## Queues an intent without touching actor fields at the call site.
@@ -1816,6 +1964,7 @@ func death(target: Actor) -> void:
 	outline_remove(target)
 
 	print(target.first_name, " was defeated")
+	target.death_sequence_queued = false
 	target.add_state("KnockedOut")
 
 	await Event.wait(1)
@@ -1947,6 +2096,9 @@ func anim(animation: String = "", chara: Actor = CurrentChar) -> void:
 		if animation.is_empty() or animation not in chara.node.sprite_frames.get_animation_names():
 			animation = "Idle"
 
+		# Do not repeat playing pose animations
+		if animation == chara.node.animation: return
+
 	if animation not in chara.node.sprite_frames.get_animation_names():
 		return
 
@@ -1963,8 +2115,7 @@ func anim(animation: String = "", chara: Actor = CurrentChar) -> void:
 		chara.node.get_node("Glow").color = chara.main_color
 		t_glow.tween_property(chara.node.get_node("Glow"), "energy", chara.glow_def, 0.3)
 
-	if chara.node.animation != animation:
-		chara.node.play(animation)
+	chara.node.play(animation)
 
 	pixel_perfectize(chara)
 	print_rich("[color=cornflower-blue]Animation: ", animation)
@@ -2122,6 +2273,14 @@ func escape() -> void:
 
 func end_battle() -> void:
 	AwaitVictory = false
+	var anim_start := Time.get_ticks_msec()
+
+	while victory_anim_pending > 0 and Time.get_ticks_msec() - anim_start < 10000:
+		await Event.wait()
+
+	if victory_anim_pending > 0:
+		push_warning("Victory animations did not finish before the battle reset")
+
 	reset_all()
 	canvas.get_node("Continue").hide()
 	await Hud.preform_levelups()
@@ -2190,6 +2349,53 @@ func finish_without_room() -> void:
 	Global.battle_end.emit()
 
 
+## True while a dialogue opened by the battle (event, banter or sequence) is
+## still on screen. The cutscene textbox that may have started the battle is
+## ignored so it cannot keep the battle UI hidden or swallow its input.
+static func battle_dialogue_open() -> bool:
+	if Passive.is_open:
+		var passive := Passive.current
+
+		if is_instance_valid(passive) and passive.get_instance_id() != external_passive_id:
+			return true
+
+	if Textbox.is_open:
+		var textbox := Textbox.current
+
+		if is_instance_valid(textbox) and textbox.get_instance_id() != external_textbox_id:
+			return true
+
+	return false
+
+
+## Marks the start of a battle dialogue or sequence that is holding the turn.
+static func push_modal_dialogue() -> void:
+	modal_dialogue_count += 1
+
+
+## Marks the end of a turn-holding battle dialogue or sequence.
+static func pop_modal_dialogue() -> void:
+	modal_dialogue_count = maxi(0, modal_dialogue_count - 1)
+
+
+## True while dialogue should take the battle menu away from the player. Only
+## turn-holding battle dialogue counts, plus a cutscene textbox while it is
+## actually showing a line and waiting for the player. A parked textbox (such as
+## the one behind AlcineFollow) or a non-holding flavor passive must not hide
+## the menu.
+static func dialogue_blocks_battle() -> bool:
+	if modal_dialogue_count > 0:
+		return true
+
+	if Textbox.is_open:
+		var textbox := Textbox.current
+
+		if is_instance_valid(textbox) and textbox.is_waiting_for_input:
+			return true
+
+	return false
+
+
 static func post_battle() -> void:
 	if battle_result == Result.ESCAPE:
 		Global.player.position = Query.globalize(sequence.EscPosition)
@@ -2213,6 +2419,13 @@ static func post_battle() -> void:
 			Global.player.activate_flame()
 
 	if sequence.return_control:
+		# The victory banter (and any battle dialogue) can still be on screen
+		# after the battle scene is freed. Do not hand the overworld back
+		# while a battle dialogue is up. A cutscene textbox that started the
+		# battle is not battle dialogue and must not block this.
+		while battle_dialogue_open():
+			await Event.wait()
+
 		Hud.ui_visible = true
 		Event.give_control(true)
 
@@ -2235,7 +2448,7 @@ func hide_victory_stuff() -> void:
 func reset_all() -> void:
 	pending_traps.clear()
 	for i in TurnOrder:
-		for j in i.states.duplicate():
+		for j: State in i.states.duplicate():
 			if j.removed_on_battle_end: i.states.erase(j)
 
 		i.attack_multiplier = 1
@@ -2257,6 +2470,7 @@ func victory_anim(chara: Actor) -> void:
 	await clear_states(chara)
 	await anim("Victory", chara)
 	anim("VictoryLoop", chara)
+	victory_anim_pending = maxi(0, victory_anim_pending - 1)
 
 
 func victory_count_sp() -> void:
@@ -2314,12 +2528,19 @@ func victory(ignore_seq := false) -> void:
 	battle_result = Result.VICTORY
 	victory_music()
 
+	victory_anim_pending = 0
+
 	for i in Party.current:
+		if i == null:
+			continue
+
+		victory_anim_pending += 1
 		victory_anim(i)
 
 	check_party.emit()
 	enemy_ui.colapse_root()
-	reset_all()
+	# end_battle() owns the reset. Doing it here races victory_anim()'s state
+	# removal coroutines, which are still running.
 	var t := create_tween()
 	$Canvas/VictoryText.text = sequence.VictoryText
 	t.set_ease(Tween.EASE_OUT)
@@ -2619,6 +2840,7 @@ func remove_state_effect(state: State, chara: Actor, ctx: ActionSequenceContext 
 	if chara == null or chara.node == null:
 		Global.check.emit()
 		return
+
 	# Inline states (defined directly inside an Ability, e.g. traps) have no .tres
 	# file in database/States, so their visual uses the live state's display name.
 	var visual := chara.node.get_node_or_null(state.name)

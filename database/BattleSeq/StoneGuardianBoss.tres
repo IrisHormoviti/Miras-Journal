@@ -56,13 +56,20 @@ stat = 1
 comparator = 5
 value = 1.0
 
+[sub_resource type="Resource" id="Resource_d2kvd_caster"]
+resource_name = "Guardian"
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Guardian"
+
 [sub_resource type="Resource" id="Resource_d2kvd"]
 script = ExtResource("3_oponu")
 condition = SubResource("Resource_d2kvd_aura_1")
 repeatable = true
 result = 2
-resource = ExtResource("6_t20i2")
-event_actor = &"Guardian"
+dialog_cue = "0"
+caster = SubResource("Resource_d2kvd_caster")
+move = ExtResource("6_t20i2")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_t20i2_ref_2"]
@@ -84,6 +91,7 @@ condition = SubResource("Resource_t20i2_health_3")
 repeatable = true
 result = 5
 hold_turn = true
+dialog_cue = "0"
 sequence = ExtResource("8_adapt")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
@@ -92,6 +100,7 @@ script = ExtResource("3_oponu")
 repeatable = true
 result = 5
 hold_turn = true
+dialog_cue = "0"
 sequence = ExtResource("9_loop")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
@@ -288,8 +297,8 @@ process_while_paused = true
 
 [sub_resource type="Resource" id="Resource_k2yjx"]
 script = ExtResource("34_t2vt3")
-file = &"story_0"
-cue = &"stone_guardian_my_arm"
+file = "story_0"
+cue = "stone_guardian_my_arm"
 passive = true
 
 [sub_resource type="Resource" id="Resource_2x8cy"]
@@ -304,8 +313,8 @@ process_while_paused = true
 
 [sub_resource type="Resource" id="Resource_mptor"]
 script = ExtResource("34_t2vt3")
-file = &"story_0"
-cue = &"stone_guardian_guard"
+file = "story_0"
+cue = "stone_guardian_guard"
 passive = true
 wait = false
 
@@ -418,8 +427,8 @@ process_while_paused = true
 
 [sub_resource type="Resource" id="Resource_deni0"]
 script = ExtResource("34_t2vt3")
-file = &"story_0"
-cue = &"placeholder_daze"
+file = "story_0"
+cue = "placeholder_daze"
 
 [sub_resource type="Resource" id="Resource_ebp2d"]
 script = ExtResource("26_g70io")
@@ -453,6 +462,7 @@ condition = SubResource("Resource_yttu5_flag_4")
 repeatable = true
 result = 5
 hold_turn = true
+dialog_cue = "0"
 sequence = SubResource("Resource_i7gd8")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
@@ -472,8 +482,8 @@ value = 200.0
 [sub_resource type="Resource" id="Resource_oponu"]
 script = ExtResource("3_oponu")
 condition = SubResource("Resource_oponu_health_6")
-parameter1 = "story_0"
-parameter2 = "stone_guardian_still_standing"
+dialog_file = "story_0"
+dialog_cue = "stone_guardian_still_standing"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_545aw"]
@@ -568,8 +578,8 @@ wait = true
 
 [sub_resource type="Resource" id="Resource_85jd3"]
 script = ExtResource("34_t2vt3")
-file = &"story_0"
-cue = &"stone_guardian_intro"
+file = "story_0"
+cue = "stone_guardian_intro"
 passive = true
 
 [sub_resource type="Resource" id="Resource_wjr3m"]

@@ -8,29 +8,31 @@
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="6_jcce0"]
 [ext_resource type="AudioStream" uid="uid://ds1kaffxnc51u" path="res://sound/Music/Lost in the Ruins - Learning Experience.ogg" id="6_p1b4p"]
 [ext_resource type="AudioStream" uid="uid://ci5i63oqkmt1k" path="res://sound/Music/Lost in the Ruins - Victory.ogg" id="7_6r3l7"]
-[ext_resource type="Resource" path="res://database/Sequences/Action/ColorTutorialEntrance.tres" id="8_entr"]
+[ext_resource type="Resource" uid="uid://cuvklojhts275" path="res://database/Sequences/Action/ColorTutorialEntrance.tres" id="8_entr"]
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="cond_be_actor"]
 [ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_be_stat"]
 
 [sub_resource type="Resource" id="Resource_70ffl_ref_0"]
+resource_name = "MagicWall"
 script = ExtResource("cond_be_actor")
 mode = 2
 codename = &"MagicWall"
 
 [sub_resource type="Resource" id="Resource_70ffl_aura_1"]
+resource_name = "MagicWall aura is at most 1"
 script = ExtResource("cond_be_stat")
 actor = SubResource("Resource_70ffl_ref_0")
 stat = 1
 comparator = 5
-value = 1
+value = 1.0
 
 [sub_resource type="Resource" id="Resource_70ffl"]
 script = ExtResource("4_p1b4p")
 condition = SubResource("Resource_70ffl_aura_1")
 result = 1
-parameter1 = "story_0"
-parameter2 = "color_tutorial_aurabreak"
 hold_turn = true
+dialog_file = "story_0"
+dialog_cue = "color_tutorial_aurabreak"
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_jcce0"]

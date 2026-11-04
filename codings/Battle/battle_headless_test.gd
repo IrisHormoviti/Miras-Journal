@@ -75,6 +75,8 @@ func _ready() -> void:
 	await _test_state_pose()
 	await _test_state_sequences()
 	await _test_migrated_state_turns()
+	await _test_state_identity_and_cleanup()
+	await _test_enemy_revive()
 	_test_enemy_preview_setup()
 	_test_branch_outcomes()
 	_test_migrated_sequences_load()
@@ -84,6 +86,7 @@ func _ready() -> void:
 	await _test_asteria_followup()
 	await _test_new_step_modes()
 	await _test_battle_event_sequence()
+	await _test_battle_events_run_in_order()
 	await _test_battle_event_conditions()
 	await _test_conditions()
 
@@ -738,6 +741,77 @@ func _test_migrated_state_turns() -> void:
 	await battle.clear_states(target)
 
 
+func _test_state_identity_and_cleanup() -> void:
+	var target := battle.Troop[0]
+
+	if target == null:
+		_fail("Battle harness has no target for the state identity test")
+		return
+
+	await battle.clear_states(target)
+
+	var aura_break: State = load("res://database/States/AuraBreak.tres")
+	var added: State = await target.add_state(aura_break, -1, Party.Leader, false, true)
+	print("BATTLE_TEST_STATE_IDENTITY aura_break=", added.filename, " by_file=", target.has_state("AuraBreak"))
+
+	if added.filename != "AuraBreak" or not target.has_state("AuraBreak"):
+		_fail("A resource-added state lost its canonical filename")
+
+	var unbreaking: State = load("res://database/States/UnbreakingAura.tres")
+	added = await target.add_state(unbreaking, -1, Party.Leader, false, true)
+
+	if added.filename != "UnbreakingAura" or not target.has_state("UnbreakingAura"):
+		_fail("UnbreakingAura lost its canonical filename")
+
+	var guarding: State = load("res://database/States/Guarding.tres")
+	added = await target.add_state(guarding, -1, Party.Leader, false, true)
+
+	if not is_equal_approx(added.aura_on_damage, 1.0):
+		_fail("Guarding did not load its aura-on-damage value")
+
+	await target.add_state("Burned", -1, target, false, true)
+	await target.add_state("Zapped", -1, target, false, true)
+	battle.reset_all()
+	print("BATTLE_TEST_STATE_CLEANUP remaining=", target.states.size())
+
+	if not target.states.is_empty():
+		_fail("reset_all left states on the actor")
+
+
+func _test_enemy_revive() -> void:
+	var target := battle.Troop[0]
+
+	if target == null:
+		_fail("Battle harness has no target for the enemy revive test")
+		return
+
+	var previous := battle.CurrentChar
+	await battle.clear_states(target)
+	target.set_health(0)
+	target.set_aura(0)
+	target.next_move = null
+	target.next_action = Actor.BtAction.UNSET
+	battle.CurrentChar = target
+	await target.add_state("KnockedOut", -1, Party.Leader, false, true)
+	await battle.handle_states()
+
+	if target.next_move != Ability.nothing():
+		_fail("A downed enemy did not skip its turn")
+
+	target.set_health(target.max_hp)
+	target.next_move = null
+	target.next_action = Actor.BtAction.UNSET
+	await battle.handle_states()
+	print("BATTLE_TEST_ENEMY_REVIVE health=", target.health, " knocked_out=", target.has_state("KnockedOut"))
+
+	if target.has_state("KnockedOut") or target.health <= 0:
+		_fail("A healed enemy could not revive on its turn")
+
+	target.set_health(target.max_hp)
+	await battle.clear_states(target)
+	battle.CurrentChar = previous
+
+
 func _test_enemy_preview_setup() -> void:
 	var enemy_sequence := Battle.build_preview_sequence(1, "res://database/Enemies/Pterogon.tres")
 
@@ -812,9 +886,6 @@ const MIGRATED_SEQUENCES := [
 	"FirstBattleAura2.tres",
 	"FirstBattleAura3.tres",
 	"FirstBattleVictory.tres",
-	"AlcineFollow1Victory.tres",
-	"AlcineFollow2Entrance.tres",
-	"AlcineFollow3.tres",
 	"ArenaGameOver.tres",
 	"StoneGuardianLoop.tres",
 	"StoneGuardianAdapt.tres",
@@ -830,8 +901,7 @@ const MIGRATED_SEQUENCES := [
 
 const MIGRATED_BATTLE_SEQUENCES := [
 	"res://database/BattleSeq/FirstBattle.tres",
-	"res://database/BattleSeq/AlcineFollow1.tres",
-	"res://database/BattleSeq/AlcineFollow2.tres",
+	"res://database/BattleSeq/AlcineFollow.tres",
 	"res://database/BattleSeq/AsteriaBoss.tres",
 	"res://database/BattleSeq/ColorTutorial.tres",
 	"res://database/BattleSeq/LazuliteHeartBoss.tres",
@@ -898,9 +968,24 @@ func _test_migrated_sequence_wiring() -> void:
 	var first_battle := load("res://database/BattleSeq/FirstBattle.tres") as BattleSequence
 
 	for event in first_battle.Events:
-		if event.result == BattleEvent.RES.FORCE_MOVE and event.resource is Ability:
-			if (event.resource as Ability).name == "JumpSucc" and (event.resource as Ability).action_sequence == null:
+		if event.result == BattleEvent.RES.FORCE_MOVE and event.move is Ability:
+			if (event.move as Ability).name == "JumpSucc" and (event.move as Ability).action_sequence == null:
 				_fail("The scripted JumpSucc ability was not migrated to a sequence")
+
+			if (event.move as Ability).name == "JumpSucc" and event.move_action != BattleEvent.MoveAction.ACT:
+				_fail("The scripted JumpSucc event lost its attack action")
+
+	var color_tutorial := load("res://database/BattleSeq/ColorTutorial.tres") as BattleSequence
+	var dialog_event := color_tutorial.Events[0] if not color_tutorial.Events.is_empty() else null
+
+	if (
+		dialog_event == null
+		or dialog_event.dialog_file != "story_0"
+		or dialog_event.dialog_cue != "color_tutorial_aurabreak"
+	):
+		_fail("The color tutorial event lost its dialog fields")
+	elif not dialog_event.hold_turn:
+		_fail("The color tutorial dialog event stopped holding the turn")
 
 
 func _test_last_sequences() -> void:
@@ -1143,7 +1228,9 @@ func _test_battle_event_sequence() -> void:
 	var event := BattleEvent.new()
 	event.result = BattleEvent.RES.SEQUENCE
 	event.hold_turn = true
-	event.sequence_caster = &"Mira"
+	var mira := ActorRef.new(ActorRef.Mode.CODENAME)
+	mira.codename = &"Mira"
+	event.caster = mira
 
 	var sequence := ActionSequence.new()
 	var wait := WaitStep.new()
@@ -1166,6 +1253,65 @@ func _test_battle_event_sequence() -> void:
 		_fail("Battle event did not run its sequence")
 
 	Event.remove_flag(flag)
+
+
+## Non-holding events must not delay the turn, but the background queue still
+## runs them one at a time so their dialogues cannot open on top of each other.
+func _test_battle_events_run_in_order() -> void:
+	var first_flag := &"BattleTestEventOrderA"
+	var second_flag := &"BattleTestEventOrderB"
+	Event.remove_flag(first_flag)
+	Event.remove_flag(second_flag)
+
+	var long_wait := WaitStep.new()
+	long_wait.duration = 0.2
+
+	var first_sequence := ActionSequence.new()
+	first_sequence.steps.append(long_wait)
+
+	var first := BattleEvent.new()
+	first.result = BattleEvent.RES.SEQUENCE
+	first.sequence = first_sequence
+	first.on_run_flag = first_flag
+
+	var short_wait := WaitStep.new()
+	short_wait.duration = 0.01
+
+	var second_sequence := ActionSequence.new()
+	second_sequence.steps.append(short_wait)
+
+	var second := BattleEvent.new()
+	second.result = BattleEvent.RES.SEQUENCE
+	second.sequence = second_sequence
+	second.on_run_flag = second_flag
+
+	Global.bt.queue_event(first)
+	Global.bt.queue_event(second)
+	await Event.wait(0.1)
+
+	print(
+		"BATTLE_TEST_EVENT_ORDER early a=", Event.check_flag(first_flag),
+		" b=", Event.check_flag(second_flag),
+	)
+
+	if Event.check_flag(second_flag):
+		_fail("Battle events overlapped instead of running in order")
+
+	await Global.bt.wait_for_event_queue()
+
+	print(
+		"BATTLE_TEST_EVENT_ORDER done a=", Event.check_flag(first_flag),
+		" b=", Event.check_flag(second_flag),
+	)
+
+	if not Event.check_flag(first_flag):
+		_fail("First battle event did not finish")
+
+	if not Event.check_flag(second_flag):
+		_fail("Queued battle event did not run")
+
+	Event.remove_flag(first_flag)
+	Event.remove_flag(second_flag)
 
 
 func _test_battle_event_conditions() -> void:
@@ -1220,8 +1366,12 @@ func _test_battle_event_conditions() -> void:
 	var skritcher := load("res://database/BattleSeq/SkritcherRootDaze.tres") as BattleSequence
 	var skritcher_event := skritcher.Events[0]
 
-	if skritcher_event.event_actor != &"SkritcherRoot":
-		_fail("Skritcher Root event lost its event actor")
+	if (
+		skritcher_event.caster == null
+		or skritcher_event.caster.mode != ActorRef.Mode.CODENAME
+		or skritcher_event.caster.codename != &"SkritcherRoot"
+	):
+		_fail("Skritcher Root event lost its forced move caster")
 
 	if not (skritcher_event.condition is TurnCondition):
 		_fail("Skritcher Root event lost its turn condition")
@@ -1231,6 +1381,20 @@ func _test_battle_event_conditions() -> void:
 
 	if fallback._resolve_event_actor() != battle.CurrentChar:
 		_fail("Battle event did not fall back to the current actor")
+
+	# Both a bare dialogue name and a path picked in the inspector resolve to
+	# the name Textbox and Passive expect.
+	var dialog_path := BattleEvent.new()
+	dialog_path.dialog_file = "res://database/Text/story_0.dialogue"
+
+	if dialog_path._dialog_name() != "story_0":
+		_fail("Battle event did not normalize a dialogue path")
+
+	var forced := BattleEvent.new()
+	forced.move_action = BattleEvent.MoveAction.ITEM
+
+	if forced._bt_action() != Actor.BtAction.ITEM:
+		_fail("Battle event did not map its forced move action")
 
 	var run_flag := &"BattleTestEventRunFlag"
 	var setter := BattleEvent.new()

@@ -6,7 +6,12 @@
 [ext_resource type="Texture2D" uid="uid://64lecqcynv4b" path="res://art/Icons/Enemies/Mechanical.png" id="2_ix1hr"]
 [ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="2_jf3ey"]
 [ext_resource type="Resource" uid="uid://17bbb0h04khb" path="res://database/Abilities/Attacks/CloseupAttack.tres" id="4_tcrsf"]
-[ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="7_k6h8r"]
+[ext_resource type="Script" uid="uid://5klh1xmhdeg6" path="res://codings/Classes/weapon_class.gd" id="7_k6h8r"]
+
+[sub_resource type="Resource" id="Resource_l8yr8"]
+script = ExtResource("7_k6h8r")
+power = 32
+item_type = "Key"
 
 [resource]
 script = ExtResource("2_jf3ey")
@@ -15,6 +20,7 @@ main_color = Color(0.482353, 0.431373, 0.556863, 1)
 party_icon = ExtResource("2_ix1hr")
 actor_class = "Attacker"
 received_sp = 6
+weapon = SubResource("Resource_l8yr8")
 max_hp = 47
 max_aura = 31
 attack = 1.2

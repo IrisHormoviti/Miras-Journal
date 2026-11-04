@@ -8,8 +8,8 @@
 
 [sub_resource type="Resource" id="Resource_dialogue"]
 script = ExtResource("3")
-file = &"story_2"
-cue = &"lazulite_heart_3"
+file = "story_2"
+cue = "lazulite_heart_3"
 
 [sub_resource type="Resource" id="Resource_fade"]
 script = ExtResource("4")

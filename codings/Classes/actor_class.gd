@@ -27,6 +27,8 @@ class_name Actor
 			codename = first_name.to_pascal_case()
 
 		return codename
+## Determines the power of weapon attacks, and can override the actors standard attack
+@export var weapon: WeaponItem = preload("res://database/Items/KeyItems/DefaultWeapon.tres")
 ##Used in system text, 0: subjective, 1: objective, 2: possessive, 3: -self
 @export_enum("it", "he", "she", "they") var pronouns: String = "it"
 
@@ -49,8 +51,6 @@ var is_enemy: bool = true
 @export var character_box_profile: BoxProfile
 ##Used in the party menu
 @export var last_name: String = ""
-##Used in the details menu, purely cosmetic
-@export var weapon: WeaponItem = preload("res://database/Items/KeyItems/DefaultWeapon.tres")
 ##Doodles shown in the party menu
 @export_file("*.png") var party_page: String
 ##Artwork shown in the party menu
@@ -166,6 +166,9 @@ var states: Array[State]
 var damage_received_this_turn: int = 0
 var aura_default: Color = Color.WHITE
 var queue_delete := false
+## A clutch hit queued this actor's death sequence, so forced moves must not
+## overwrite it before the actor gets its turn.
+var death_sequence_queued := false
 
 
 class log_entry:

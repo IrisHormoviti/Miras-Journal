@@ -16,8 +16,6 @@
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="12_np5mp"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_7jf5s"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="14_d8asv"]
-[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="15_5hcc5"]
-[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_6thnr"]
 resource_name = "Target"
@@ -76,10 +74,15 @@ animation = &"Attack2"
 script = ExtResource("8_lrsee")
 duration = 0.2
 
-[sub_resource type="Resource" id="Resource_hit_jig3p"]
-resource_name = "miss"
-script = ExtResource("cond_hit")
-outcomes = 4
+[sub_resource type="Resource" id="Resource_626bt"]
+resource_name = "Target"
+script = ExtResource("3_p7iv0")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_bq7xw"]
+script = ExtResource("11_xttxs")
+effect_name = &"SimpleHit"
+target = SubResource("Resource_626bt")
 
 [sub_resource type="Resource" id="Resource_7jf5s"]
 resource_name = "Caster"
@@ -93,16 +96,6 @@ sound_name = &"Attack2"
 [sub_resource type="Resource" id="Resource_5hcc5"]
 script = ExtResource("10_uryyp")
 amount = 18.0
-
-[sub_resource type="Resource" id="Resource_626bt"]
-resource_name = "Target"
-script = ExtResource("3_p7iv0")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_bq7xw"]
-script = ExtResource("11_xttxs")
-effect_name = &"SimpleHit"
-target = SubResource("Resource_626bt")
 
 [sub_resource type="Resource" id="Resource_q1dqm"]
 resource_name = "Target"
@@ -127,23 +120,11 @@ mode = 1
 script = ExtResource("13_7jf5s")
 target = SubResource("Resource_cc7rt")
 power = SubResource("Resource_idxng")
-hit_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_bq7xw")])
+magic_mode = 1
+contact = true
+miss_branch = true
+hit_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_bq7xw"), SubResource("Resource_d8asv"), SubResource("Resource_5hcc5")])
 miss_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_5efn2")])
-
-[sub_resource type="Resource" id="Resource_04yqx"]
-resource_name = "Target"
-script = ExtResource("3_p7iv0")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_awfyx"]
-script = ExtResource("14_d8asv")
-target = SubResource("Resource_04yqx")
-
-[sub_resource type="Resource" id="Resource_jig3p"]
-script = ExtResource("15_5hcc5")
-condition = SubResource("Resource_hit_jig3p")
-if_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_awfyx")])
-else_steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_d8asv"), SubResource("Resource_5hcc5"), SubResource("Resource_ceyk6")])
 
 [sub_resource type="Resource" id="Resource_2duox"]
 script = ExtResource("8_lrsee")
@@ -175,7 +156,7 @@ actor = SubResource("Resource_xftal")
 
 [sub_resource type="Resource" id="Resource_cc4gh"]
 script = ExtResource("1_6thnr")
-steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_iul7y"), SubResource("Resource_4dvip"), SubResource("Resource_2io5d"), SubResource("Resource_ht8f2"), SubResource("Resource_xttxs"), SubResource("Resource_np5mp"), SubResource("Resource_jig3p"), SubResource("Resource_2duox"), SubResource("Resource_vlk6u"), SubResource("Resource_85wbv")])
+steps = Array[ExtResource("2_iul7y")]([SubResource("Resource_iul7y"), SubResource("Resource_4dvip"), SubResource("Resource_2io5d"), SubResource("Resource_ht8f2"), SubResource("Resource_xttxs"), SubResource("Resource_np5mp"), SubResource("Resource_ceyk6"), SubResource("Resource_2duox"), SubResource("Resource_vlk6u"), SubResource("Resource_85wbv")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_q46ei"]
 atlas = ExtResource("1_ooo5y")

@@ -9,11 +9,10 @@
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_kmfp0"]
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="6_vgybm"]
 [ext_resource type="Script" uid="uid://1out28n0606o" path="res://codings/Battle/Steps/Combat/heal_step.gd" id="7_q8abx"]
-[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="8_plp5k"]
+[ext_resource type="Resource" uid="uid://bc3dsepudk1qc" path="res://database/States/Poisoned.tres" id="8_iwrpa"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="9_hf01o"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="10_by5tc"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="11_3o2f5"]
-[ext_resource type="Script" uid="uid://ciprlldlvuc6g" path="res://codings/Battle/Steps/Conditions/ability_type_condition.gd" id="cond_15"]
 
 [sub_resource type="Resource" id="Resource_k8p37"]
 resource_name = "Caster"
@@ -36,12 +35,8 @@ zoom_enabled = true
 amount = 5.5
 actor = SubResource("Resource_dlksm")
 
-[sub_resource type="Resource" id="Resource_mufue"]
-script = ExtResource("cond_15")
-ability_type = 5
-
 [sub_resource type="Resource" id="Resource_vgybm"]
-resource_name = "ability power"
+resource_name = "30.0"
 script = ExtResource("6_vgybm")
 source = 0
 value = 30.0
@@ -55,11 +50,6 @@ script = ExtResource("7_q8abx")
 target = SubResource("Resource_q8abx")
 amount = SubResource("Resource_vgybm")
 
-[sub_resource type="Resource" id="Resource_hf01o"]
-script = ExtResource("8_plp5k")
-condition = SubResource("Resource_mufue")
-if_steps = Array[ExtResource("2_mb37q")]([SubResource("Resource_plp5k")])
-
 [sub_resource type="Resource" id="Resource_by5tc"]
 resource_name = "Caster"
 script = ExtResource("3_dlksm")
@@ -68,6 +58,7 @@ script = ExtResource("3_dlksm")
 script = ExtResource("9_hf01o")
 mode = 1
 actor = SubResource("Resource_by5tc")
+state = ExtResource("8_iwrpa")
 
 [sub_resource type="Resource" id="Resource_hdwhp"]
 resource_name = "Caster"
@@ -92,7 +83,7 @@ actor = SubResource("Resource_ec38t")
 
 [sub_resource type="Resource" id="Resource_y74wh"]
 script = ExtResource("1_k8p37")
-steps = Array[ExtResource("2_mb37q")]([SubResource("Resource_mb37q"), SubResource("Resource_kmfp0"), SubResource("Resource_hf01o"), SubResource("Resource_3o2f5"), SubResource("Resource_06uya"), SubResource("Resource_0mbk5"), SubResource("Resource_f8cbs")])
+steps = Array[ExtResource("2_mb37q")]([SubResource("Resource_mb37q"), SubResource("Resource_kmfp0"), SubResource("Resource_plp5k"), SubResource("Resource_3o2f5"), SubResource("Resource_06uya"), SubResource("Resource_0mbk5"), SubResource("Resource_f8cbs")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uyukm"]
 atlas = ExtResource("1_lne2v")

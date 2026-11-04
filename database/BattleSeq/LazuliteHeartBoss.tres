@@ -30,8 +30,8 @@ value = 95
 [sub_resource type="Resource" id="Resource_0ymhv"]
 script = ExtResource("3_4g4ty")
 condition = SubResource("Resource_0ymhv_health_1")
-parameter1 = "story_2"
-parameter2 = "lazulite_heart_1"
+dialog_file = "story_2"
+dialog_cue = "lazulite_heart_1"
 hold_turn = true
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
@@ -46,13 +46,18 @@ actor = SubResource("Resource_mo6wr_ref_2")
 comparator = 4
 value = 200
 
+[sub_resource type="Resource" id="Resource_mo6wr_caster"]
+resource_name = "LHBody"
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHBody"
+
 [sub_resource type="Resource" id="Resource_mo6wr"]
 script = ExtResource("3_4g4ty")
 condition = SubResource("Resource_mo6wr_health_3")
 result = 2
-parameter1 = "Ability"
-resource = ExtResource("8_fmg4r")
-event_actor = &"LHBody"
+move = ExtResource("8_fmg4r")
+caster = SubResource("Resource_mo6wr_caster")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_fmg4r_ref_4"]
@@ -66,30 +71,51 @@ actor = SubResource("Resource_fmg4r_ref_4")
 comparator = 4
 value = 100
 
+[sub_resource type="Resource" id="Resource_fmg4r_caster"]
+resource_name = "LHBody"
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHBody"
+
 [sub_resource type="Resource" id="Resource_fmg4r"]
 script = ExtResource("3_4g4ty")
 condition = SubResource("Resource_fmg4r_health_5")
 result = 2
-parameter1 = "Ability"
-resource = ExtResource("8_fmg4r")
-event_actor = &"LHBody"
+move = ExtResource("8_fmg4r")
+caster = SubResource("Resource_fmg4r_caster")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[sub_resource type="Resource" id="Resource_x75j7_caster"]
+resource_name = "LHBody"
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHBody"
 
 [sub_resource type="Resource" id="Resource_x75j7"]
 script = ExtResource("3_4g4ty")
 result = 2
-parameter1 = "Ability"
-resource = ExtResource("9_mo6wr")
-event_actor = &"LHBody"
+move = ExtResource("9_mo6wr")
+caster = SubResource("Resource_x75j7_caster")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[sub_resource type="Resource" id="Resource_v5s8n_target"]
+resource_name = "LHRight"
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHRight"
+
+[sub_resource type="Resource" id="Resource_v5s8n_caster"]
+resource_name = "LHLeft"
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"LHLeft"
 
 [sub_resource type="Resource" id="Resource_v5s8n"]
 script = ExtResource("3_4g4ty")
 result = 2
-parameter1 = "Ability"
-parameter2 = "LHRight"
-resource = ExtResource("10_x75j7")
-event_actor = &"LHLeft"
+target = SubResource("Resource_v5s8n_target")
+move = ExtResource("10_x75j7")
+caster = SubResource("Resource_v5s8n_caster")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_ewt77_ref_6"]
@@ -106,8 +132,8 @@ value = 30
 [sub_resource type="Resource" id="Resource_ewt77"]
 script = ExtResource("3_4g4ty")
 condition = SubResource("Resource_ewt77_health_7")
-parameter1 = "story_2"
-parameter2 = "lazulite_heart_2"
+dialog_file = "story_2"
+dialog_cue = "lazulite_heart_2"
 hold_turn = true
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 

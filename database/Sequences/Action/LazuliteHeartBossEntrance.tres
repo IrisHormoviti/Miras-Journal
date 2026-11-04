@@ -105,8 +105,8 @@ count = 2
 
 [sub_resource type="Resource" id="Resource_dialogue"]
 script = ExtResource("9")
-file = &"story_2"
-cue = &"lazulite_heart_intro"
+file = "story_2"
+cue = "lazulite_heart_intro"
 passive = true
 
 [sub_resource type="Resource" id="Resource_mira_next"]

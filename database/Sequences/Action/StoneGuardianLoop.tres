@@ -72,8 +72,8 @@ process_while_paused = true
 
 [sub_resource type="Resource" id="Resource_6n7q5"]
 script = ExtResource("9_fhkqs")
-file = &"story_0"
-cue = &"anything_goes_comment"
+file = "story_0"
+cue = "anything_goes_comment"
 passive = true
 
 [sub_resource type="Resource" id="Resource_3j6pg"]

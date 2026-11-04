@@ -144,8 +144,8 @@ script = ExtResource("5_xduxt")
 
 [sub_resource type="Resource" id="Resource_518k7"]
 script = ExtResource("13_avb0t")
-file = &"story_0"
-cue = &"sstay_back"
+file = "story_0"
+cue = "sstay_back"
 passive = true
 wait = false
 

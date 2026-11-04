@@ -20,6 +20,7 @@ var PrevStage := &"root"
 var TargetFaction: Array[Actor]
 var foc: Control
 var analyzing := false
+var dialogue_hidden := false
 var disable_attack := false
 var disable_ability := false
 var disable_item := false
@@ -49,6 +50,19 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	var dialogue_open := Battle.dialogue_blocks_battle()
+
+	if dialogue_open:
+		dialogue_hidden = true
+
+		if visible:
+			hide()
+	elif dialogue_hidden:
+		dialogue_hidden = false
+
+		if active:
+			show()
+
 	if is_instance_valid(CurrentChar) and CurrentChar.has_state("Confused"):
 		$BaseRing.pivot_offset = Vector2(200 + randf_range(-1, 1), 200 + randf_range(-1, 1))
 
@@ -144,6 +158,11 @@ func move_to(pos: Vector2 = Vector2.ZERO, time := 0.3) -> void:
 
 
 func _input(event: InputEvent) -> void:
+	# Only turn-holding battle dialogue is modal. A flavor passive that does not
+	# hold the turn must leave the battle menu usable.
+	if Battle.dialogue_blocks_battle():
+		return
+
 	if Controller.last_input == Global.process_frame: return
 	set_controller_icons()
 	if active:

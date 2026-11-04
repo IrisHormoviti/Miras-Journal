@@ -13,8 +13,8 @@
 
 [sub_resource type="Resource" id="Resource_vnjkk"]
 script = ExtResource("3_045aa")
-file = &"story_1"
-cue = &"asteria_boss_2"
+file = "story_1"
+cue = "asteria_boss_2"
 passive = true
 
 [sub_resource type="Resource" id="Resource_5yydu"]

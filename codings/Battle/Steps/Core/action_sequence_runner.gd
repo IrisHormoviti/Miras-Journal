@@ -69,7 +69,7 @@ func run_steps(steps: Array[BattleStep], ctx: ActionSequenceContext) -> void:
 
 func run_step(step: BattleStep, ctx: ActionSequenceContext) -> void:
 	if debug_logging:
-		print_rich("[color=cornflower-blue]Step: ", step.get_script().resource_path.get_file(), " ", step.note)
+		print_rich("[color=cornflower-blue]Step: ", step.get_script().resource_path.get_file(), " ", step)
 
 	@warning_ignore("redundant_await")
 	await step.run(ctx)

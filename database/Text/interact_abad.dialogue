@@ -131,7 +131,7 @@ else:
 
 ~ WL_void
 $> take_control(false, true, true)
-if Party.has_member_index("Mira") and Party.has_member_index("Daze"):
+if Party.has_member("Mira") and Party.has_member("Daze"):
 	Daze.Neutral: Ms. Levenor stop.
 	Mira.Neutral: Huh?
 	Daze takes a pebble and throws it forward.

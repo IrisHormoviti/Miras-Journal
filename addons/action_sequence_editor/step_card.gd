@@ -148,7 +148,6 @@ func set_expanded(value: bool) -> void:
 		ensure_inspector()
 
 	duplicate_button.visible = value
-	remove_button.visible = value or size.x > 500
 
 	if inspector != null:
 		watch_inspector_rows(inspector)
@@ -362,5 +361,4 @@ func editor_icon(icon_name: String) -> Texture2D:
 
 func _on_resized() -> void:
 	type_label.visible = size.x > 500
-	remove_button.visible = size.x > 500
-	index_label.visible = size.x > 600
+	index_label.visible = size.x > 700

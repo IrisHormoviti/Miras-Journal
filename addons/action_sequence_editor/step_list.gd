@@ -15,6 +15,12 @@ const PREVIEW_ENEMY_SELECTED := 51
 
 signal steps_changed(property: StringName, steps: Array)
 
+## Every live step list, so a card dragged out of one list can find the list it
+## is hovering over. Nested branch lists register here too.
+static var live_lists: Array = []
+## The list that currently owns the drag, if any. There is only ever one.
+static var drag_owner = null
+
 @onready var title_label: Label = %TitleLabel
 @onready var count_label: Label = %CountLabel
 @onready var add_button: MenuButton = %AddButton
@@ -41,10 +47,27 @@ var reorder_card = null
 var reorder_index := -1
 var reorder_accum := 0.0
 var reorder_changed := false
+## The branch list the dragged card would drop into, and the insertion point
+## inside it. Only set while the pointer is outside the source list.
+var drop_target = null
+var drop_index := -1
+var drop_marker: ColorRect = null
 var preview_actor := "Mira"
 var preview_targets := 1
 var preview_enemy_path := ""
 var preview_enemy_name := ""
+
+
+func _enter_tree() -> void:
+	if not live_lists.has(self):
+		live_lists.append(self)
+
+
+func _exit_tree() -> void:
+	live_lists.erase(self)
+
+	if drag_owner == self:
+		cancel_drag()
 
 
 func _ready() -> void:
@@ -111,6 +134,8 @@ func refresh() -> void:
 
 
 func clear_cards() -> void:
+	hide_drop_marker()
+
 	for card in cards:
 		list.remove_child(card)
 		card.queue_free()
@@ -224,18 +249,46 @@ func reorder_step_drag(card, event: InputEvent) -> void:
 			return
 
 		if button.pressed:
-			reorder_card = card
-			reorder_index = card.index
-			reorder_accum = 0.0
-			reorder_changed = false
+			begin_reorder(card)
 		else:
 			finish_reorder()
 
 		return
 
 	if event is InputEventMouseMotion and reorder_card != null:
-		reorder_accum += (event as InputEventMouseMotion).relative.y
+		update_reorder(event as InputEventMouseMotion)
+
+
+func begin_reorder(card) -> void:
+	if card == null or card.step == null:
+		return
+
+	# A release can be missed when the editor rebuilds the list mid-drag.
+	if is_instance_valid(drag_owner) and drag_owner != self:
+		drag_owner.cancel_drag()
+
+	drag_owner = self
+	reorder_card = card
+	reorder_index = card.index
+	reorder_accum = 0.0
+	reorder_changed = false
+	card.modulate = Color(1, 1, 1, 0.65)
+
+
+func update_reorder(motion: InputEventMouseMotion) -> void:
+	var target = find_drop_target()
+
+	if target == null or target == self:
+		clear_drop_target()
+		# Follow the cursor inside the source list, like a normal reorder.
+		reorder_accum += motion.relative.y
 		step_reorder()
+		return
+
+	# Outside the source list: stop the local preview and show where the step
+	# will be inserted in the branch under the pointer.
+	reorder_accum = 0.0
+	set_drop_target(target, target.drop_insertion_index(get_global_mouse_position().y))
 
 
 func step_reorder() -> void:
@@ -275,14 +328,217 @@ func finish_reorder() -> void:
 	if reorder_card == null:
 		return
 
-	if reorder_changed:
+	# Re-check the pointer in case a rebuild ate the last motion event.
+	var target = find_drop_target()
+	var target_index := -1
+
+	if target != null:
+		target_index = target.drop_insertion_index(get_global_mouse_position().y)
+
+	if target != null and target != self:
+		set_drop_target(target, target_index)
+		move_step_between(self, target, reorder_card.step, target_index)
+	elif reorder_changed:
 		selected_index = reorder_index
 		commit_reorder()
 
+	cancel_drag()
+
+
+## Moves a step from one branch list to another, keeping both resources in sync.
+func move_step_between(source, target, step: BattleStep, to_index: int) -> void:
+	if source == null or target == null or step == null or source == target:
+		return
+
+	# Moving between two views of the same branch is just a reorder.
+	if source.object == target.object and source.property == target.property:
+		return
+
+	# Dropping a step into its own branch would make it contain itself.
+	if target.object is BattleStep:
+		if target.object == step or step.walk().has(target.object):
+			return
+
+	if is_instance_valid(source.reorder_card) and source.reorder_card.is_ancestor_of(target):
+		return
+
+	var source_steps: Array[BattleStep] = source.typed_steps(source.get_steps())
+	var from := source_steps.find(step)
+
+	if from < 0:
+		return
+
+	var target_steps: Array[BattleStep] = target.typed_steps(target.get_steps())
+
+	# Keep the root list around: refreshing either side can rebuild the other
+	# side's controls when one list is nested in the other.
+	var root = target.root_list()
+
+	source_steps.remove_at(from)
+	target_steps.insert(clampi(to_index, 0, target_steps.size()), step)
+
+	# Set both arrays before either list refreshes. One list can be nested inside
+	# the other, so refreshing one may free the other's controls.
+	source.object.set(source.property, source_steps)
+	target.object.set(target.property, target_steps)
+
+	if source.object is BattleStep:
+		source.object.emit_changed()
+
+	if target.object is BattleStep and target.object != source.object:
+		target.object.emit_changed()
+
+	if Engine.is_editor_hint():
+		target.selected_index = target_steps.find(step)
+		target.expanded_id = step.get_instance_id()
+
+	target.refresh()
+
+	if is_instance_valid(source):
+		source.refresh()
+
+	# Propagate the change up to the inspector property editor.
+	if is_instance_valid(root):
+		root.mark_step_changed()
+
+
+func cancel_drag() -> void:
+	if is_instance_valid(reorder_card):
+		reorder_card.modulate = Color.WHITE
+
+	clear_drop_target()
 	reorder_card = null
 	reorder_index = -1
 	reorder_accum = 0.0
 	reorder_changed = false
+
+	if drag_owner == self:
+		drag_owner = null
+
+
+## Topmost StepList this list belongs to. A drag can only move cards inside the
+## same edited sequence, never between two different inspectors.
+func root_list():
+	var root = self
+	var node := get_parent()
+
+	while node != null:
+		if node.has_method(&"root_list"):
+			root = node
+
+		node = node.get_parent()
+
+	return root
+
+
+## The deepest visible list under the pointer that belongs to the same editor.
+func find_drop_target():
+	if not is_instance_valid(reorder_card):
+		return null
+
+	var mouse := get_global_mouse_position()
+	var root = root_list()
+	var best = null
+	var best_depth := -1
+	var best_area := INF
+
+	for candidate in live_lists:
+		if not is_instance_valid(candidate) or not candidate.is_visible_in_tree():
+			continue
+
+		# Cannot drop into a branch of the card being dragged, that would make
+		# the step contain itself.
+		if candidate != self and reorder_card.is_ancestor_of(candidate):
+			continue
+
+		var candidate_root = candidate.root_list()
+
+		if candidate_root == null or candidate_root.object != root.object:
+			continue
+
+		var rect: Rect2 = candidate.get_global_rect()
+
+		if not rect.has_point(mouse):
+			continue
+
+		var depth: int = candidate.nesting_depth()
+		var area := rect.get_area()
+
+		if depth > best_depth or (depth == best_depth and area < best_area):
+			best = candidate
+			best_depth = depth
+			best_area = area
+
+	return best
+
+
+## Index a step would be inserted at when the pointer is at [param mouse_y].
+func drop_insertion_index(mouse_y: float) -> int:
+	for i in cards.size():
+		var card = cards[i]
+
+		if not is_instance_valid(card):
+			continue
+
+		var rect: Rect2 = card.get_global_rect()
+
+		if mouse_y < rect.position.y + rect.size.y * 0.5:
+			return i
+
+	return cards.size()
+
+
+func set_drop_target(target, index: int) -> void:
+	if drop_target == target and drop_index == index:
+		return
+
+	if is_instance_valid(drop_target):
+		drop_target.hide_drop_marker()
+
+	drop_target = target
+	drop_index = index
+
+	if is_instance_valid(drop_target):
+		drop_target.show_drop_marker(index)
+
+
+func clear_drop_target() -> void:
+	if is_instance_valid(drop_target):
+		drop_target.hide_drop_marker()
+
+	drop_target = null
+	drop_index = -1
+
+
+func show_drop_marker(index: int) -> void:
+	if list == null:
+		return
+
+	if drop_marker == null or not is_instance_valid(drop_marker):
+		drop_marker = ColorRect.new()
+		drop_marker.mouse_filter = Control.MOUSE_FILTER_IGNORE
+		drop_marker.custom_minimum_size = Vector2(0, 3)
+		drop_marker.color = Color(0.45, 0.7, 1.0, 0.9)
+
+	if drop_marker.get_parent() != list:
+		if drop_marker.get_parent() != null:
+			drop_marker.get_parent().remove_child(drop_marker)
+
+		list.add_child(drop_marker)
+
+	list.move_child(drop_marker, clampi(index, 0, list.get_child_count() - 1))
+
+
+func hide_drop_marker() -> void:
+	if not is_instance_valid(drop_marker):
+		drop_marker = null
+		return
+
+	if drop_marker.get_parent() != null:
+		drop_marker.get_parent().remove_child(drop_marker)
+
+	drop_marker.queue_free()
+	drop_marker = null
 
 
 func commit_reorder() -> void:

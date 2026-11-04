@@ -80,7 +80,7 @@ if day == 1 and Party.has_member("Mira") and Party.has_member("Daze"):
 	$> F1.speed = 150
 	$> F1.go_to(EnemyFlowent1.position, false, false, Direction.LEFT, 10)
 	$>> UI.intro_effect(EnemyFlowent1)
-	$> Loader.attacker = EnemyFlowent1
+	$> Battle.attacker = EnemyFlowent1
 	$> Battle.start("DazeEnemyTutorial", 1)
 	$> wait_for_battle()
 	=> dont_treat_me_like_a_child

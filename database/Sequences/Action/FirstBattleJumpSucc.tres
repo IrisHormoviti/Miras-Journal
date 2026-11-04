@@ -164,8 +164,8 @@ miss_steps = Array[ExtResource("2_8aius")]([SubResource("Resource_hld7c")])
 
 [sub_resource type="Resource" id="Resource_tpxgq"]
 script = ExtResource("15_ekfyq")
-file = &"story_0"
-cue = &"gahh"
+file = "story_0"
+cue = "gahh"
 passive = true
 wait = false
 
@@ -280,8 +280,8 @@ glow_time = 2.0
 
 [sub_resource type="Resource" id="Resource_gupe1"]
 script = ExtResource("15_ekfyq")
-file = &"story_0"
-cue = &"my_aura"
+file = "story_0"
+cue = "my_aura"
 passive = true
 wait = false
 

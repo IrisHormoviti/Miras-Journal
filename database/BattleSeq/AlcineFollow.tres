@@ -1,0 +1,162 @@
+[gd_resource type="Resource" script_class="BattleSequence" format=3 uid="uid://c3jgxjdaf6cqb"]
+
+[ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="1_seq"]
+[ext_resource type="Script" uid="uid://b1asade5rjus" path="res://codings/Classes/item_data.gd" id="1_ylk11"]
+[ext_resource type="Resource" uid="uid://blb51swqx23w7" path="res://database/Enemies/Pterogon.tres" id="2_pterogon"]
+[ext_resource type="Script" uid="uid://msf7qb28ublo" path="res://codings/Classes/actor_class.gd" id="3_actor"]
+[ext_resource type="Script" uid="uid://cn75n6xjwndk3" path="res://codings/Classes/battle_event.gd" id="4_event"]
+[ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="7_82jg0"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="7_action_sequence"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="8_step"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="11_actor_ref"]
+[ext_resource type="Script" uid="uid://2x865joteqom" path="res://codings/Battle/Steps/Conditions/all_condition.gd" id="12_all"]
+[ext_resource type="Script" uid="uid://1lgh0kqkf2x5" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="13_38rep"]
+[ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="13_condition"]
+[ext_resource type="Resource" uid="uid://dsel12nodt7a6" path="res://database/Abilities/Sharpen.tres" id="14_2u1tv"]
+[ext_resource type="Script" uid="uid://cfuw4m52tqwxx" path="res://codings/Battle/Steps/Conditions/flag_condition.gd" id="14_flag"]
+[ext_resource type="Resource" uid="uid://dmm26g6xg665u" path="res://database/Abilities/Attacks/WarpAttack.tres" id="15_38rep"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="15_stat"]
+[ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="16_turn"]
+
+[sub_resource type="Resource" id="Resource_0soar"]
+resource_name = "Caster"
+script = ExtResource("11_actor_ref")
+
+[sub_resource type="Resource" id="Resource_join_flag"]
+resource_name = "flag AlcineFollow4 = 1"
+script = ExtResource("14_flag")
+expression = &"AlcineFollow4 = 1"
+
+[sub_resource type="Resource" id="Resource_join_turn"]
+resource_name = "turn >= 5"
+script = ExtResource("16_turn")
+turn_min = 5
+
+[sub_resource type="Resource" id="Resource_join_mira"]
+resource_name = "Mira"
+script = ExtResource("11_actor_ref")
+mode = 2
+codename = &"Mira"
+
+[sub_resource type="Resource" id="Resource_join_health"]
+resource_name = "Mira health is less than 60"
+script = ExtResource("15_stat")
+actor = SubResource("Resource_join_mira")
+comparator = 4
+value = 60.0
+
+[sub_resource type="Resource" id="Resource_join_condition"]
+resource_name = "all 3 conditions"
+script = ExtResource("12_all")
+conditions = Array[ExtResource("13_condition")]([SubResource("Resource_join_flag"), SubResource("Resource_join_turn"), SubResource("Resource_join_health")])
+
+[sub_resource type="Resource" id="Resource_cu7hf"]
+script = ExtResource("13_38rep")
+file = "story_0"
+cue = "AlcineFollowJoin"
+passive = true
+
+[sub_resource type="Resource" id="Resource_amazing_step"]
+script = ExtResource("13_38rep")
+file = "story_0"
+cue = "amazing"
+passive = true
+
+[sub_resource type="Resource" id="Resource_join_sequence"]
+script = ExtResource("7_action_sequence")
+steps = Array[ExtResource("8_step")]([SubResource("Resource_cu7hf"), SubResource("Resource_amazing_step")])
+
+[sub_resource type="Resource" id="Resource_join_event"]
+resource_name = "alcine joins"
+script = ExtResource("4_event")
+condition = SubResource("Resource_join_condition")
+result = 5
+hold_turn = true
+dialog_cue = "0"
+caster = SubResource("Resource_0soar")
+sequence = SubResource("Resource_join_sequence")
+
+[sub_resource type="Resource" id="Resource_qf7q4"]
+resource_name = "Caster"
+script = ExtResource("11_actor_ref")
+
+[sub_resource type="Resource" id="Resource_warning_flag"]
+resource_name = "flag AlcineFollow4 != 1"
+script = ExtResource("14_flag")
+expression = &"AlcineFollow4 != 1"
+
+[sub_resource type="Resource" id="Resource_warning_mira"]
+resource_name = "Mira"
+script = ExtResource("11_actor_ref")
+mode = 2
+codename = &"Mira"
+
+[sub_resource type="Resource" id="Resource_warning_health"]
+resource_name = "Mira health is less than 30"
+script = ExtResource("15_stat")
+actor = SubResource("Resource_warning_mira")
+comparator = 4
+value = 30.0
+
+[sub_resource type="Resource" id="Resource_warning_condition"]
+resource_name = "all 2 conditions"
+script = ExtResource("12_all")
+conditions = Array[ExtResource("13_condition")]([SubResource("Resource_warning_flag"), SubResource("Resource_warning_health")])
+
+[sub_resource type="Resource" id="Resource_warning_event"]
+resource_name = "not going well"
+script = ExtResource("4_event")
+condition = SubResource("Resource_warning_condition")
+dialog_file = "story_0"
+dialog_cue = "not_going_well"
+caster = SubResource("Resource_qf7q4")
+on_run_flag = &"AlcineFollow4"
+
+[sub_resource type="Resource" id="Resource_7o8vp"]
+resource_name = "Pterogon"
+script = ExtResource("11_actor_ref")
+mode = 2
+codename = &"Pterogon"
+
+[sub_resource type="Resource" id="Resource_sharpen_event"]
+resource_name = "start out with sharpen"
+script = ExtResource("4_event")
+result = 2
+dialog_cue = "0"
+event_actor = &"Pterogon"
+caster = SubResource("Resource_7o8vp")
+move = ExtResource("14_2u1tv")
+
+[sub_resource type="Resource" id="Resource_s2h2i"]
+resource_name = "Pterogon"
+script = ExtResource("11_actor_ref")
+mode = 2
+codename = &"Pterogon"
+
+[sub_resource type="Resource" id="Resource_warp_turn"]
+resource_name = "turn >= 2"
+script = ExtResource("16_turn")
+turn_min = 2
+
+[sub_resource type="Resource" id="Resource_warp_event"]
+resource_name = "second move is warp attack"
+script = ExtResource("4_event")
+condition = SubResource("Resource_warp_turn")
+result = 2
+dialog_cue = "0"
+event_actor = &"Pterogon"
+caster = SubResource("Resource_s2h2i")
+move_action = 1
+move = ExtResource("15_38rep")
+
+[resource]
+script = ExtResource("1_seq")
+Enemies = Array[ExtResource("3_actor")]([ExtResource("2_pterogon")])
+ScenePosition = Vector2(1665, -1067)
+transition = false
+return_control = false
+CanEscape = false
+DeleteAttacker = false
+VictoryBanter = "it_flew_away"
+PartyOverride = ["Mira"]
+Events = Array[ExtResource("4_event")]([SubResource("Resource_join_event"), SubResource("Resource_warning_event"), SubResource("Resource_sharpen_event"), SubResource("Resource_warp_event")])

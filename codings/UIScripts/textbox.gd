@@ -36,6 +36,23 @@ static func open(file: String, cue: String = "0", fade_bg := false, extra_game_s
 	is_open = false
 
 
+## Opens a short prompt over the textbox that is already running, without
+## closing it. Used by UI like Alcine's naming screen: the cutscene textbox
+## that opened the scene must survive so its dialogue can continue afterwards.
+static func open_prompt(file: String, cue: String = "0", extra_game_states: Array = []) -> void:
+	print_rich("[color=orange]Textbox prompt: ", file, " - ", cue)
+	var Textbox2: PackedScene = await Loader.load_res("res://UI/Textbox/Textbox2.tscn")
+	var text: DialogueResource = await Loader.load_res("res://database/Text/" + file + ".dialogue")
+	var box: Textbox = Textbox2.instantiate()
+	box.silent_close = true
+	box.owns_open_flag = not is_open
+	is_open = true
+	UI.add_child(box)
+
+	if is_instance_valid(box):
+		box.start(text, cue, extra_game_states)
+
+
 static func fade_txt_background(alpha := 0.8) -> void:
 	if is_instance_valid(current):
 		var tw := current.create_tween()
@@ -82,6 +99,12 @@ var is_waiting_for_input: bool = false
 
 ## See if we are running a long mutation and should hide the balloon
 var will_hide_balloon: bool = false
+
+## Prompts opened with [method open_prompt] must not emit the global close
+## signal, because the cutscene textbox underneath is still using it.
+var silent_close := false
+## The prompt opened the global [member is_open] flag itself, so it closes it.
+var owns_open_flag := false
 
 ## The current line
 var dialogue_line: DialogueLine:
@@ -348,7 +371,11 @@ func _on_close() -> void:
 	$Portrait.hide()
 	Engine.time_scale = 1
 	responses_menu.hide()
-	Event.textbox_close.emit()
+
+	if not silent_close:
+		Event.textbox_close.emit()
+	elif owns_open_flag:
+		Textbox.is_open = false
 	if self != null: queue_free()
 
 
@@ -361,8 +388,18 @@ func hide_box() -> void:
 	t.tween_property(balloon, "modulate", Color(0, 0, 0, 0), 0.2)
 	t.tween_property($Fader, "color", Color(0, 0, 0, 0), 0.5)
 	t.tween_property(balloon, "scale", Vector2(0.9, 0.5), 0.2)
-	if $Portrait.visible:
-		while $Portrait.modulate != Color.WHITE and $Portrait.visible:
+	if $Portrait.visible and $Portrait.modulate.a > 0.0:
+		# Wait for the portrait to finish sliding in before fading it out. A
+		# portrait that is already transparent (hidden by an earlier [hide])
+		# would never turn white, so do not wait on it. Cap the wait because
+		# stopping the slide-in tween can also leave it partially transparent.
+		var wait_start := Time.get_ticks_msec()
+
+		while (
+			$Portrait.visible
+			and $Portrait.modulate.a < 1.0
+			and Time.get_ticks_msec() - wait_start < 1000
+		):
 			await Event.wait()
 
 		t = create_tween()

@@ -46,8 +46,18 @@ class_name BattleSequence
 
 func call_events() -> void:
 	for i in Events:
-		if i.check():
+		if not i.check():
+			continue
+
+		if i.hold_turn:
+			# Never start a turn-holding event on top of a queued non-holding
+			# one that is still on screen.
+			await Global.bt.wait_for_event_queue()
 			await i.run()
+		else:
+			# A non-holding event must not delay the turn, but events still run
+			# one at a time through the battle's background queue.
+			Global.bt.queue_event(i)
 
 
 func check_events() -> bool:

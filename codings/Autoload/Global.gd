@@ -53,6 +53,37 @@ func _ready() -> void:
 	Controller.rumble(0, 0.1, 0.1)
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 
+	get_viewport().gui_focus_changed.connect(_on_gui_focus_changed)
+	check.connect(_reclaim_game_focus)
+
+
+## Keyboard events only reach the gameplay [SubViewport] before the root GUI
+## while its container has focus. UI controls take focus while they are open,
+## but nothing gives it back when they close: the viewport ends up with no focus
+## owner, the root GUI gets first pick of the confirm press, and interactables
+## stop reacting until the game is clicked (which focuses the container again).
+func _on_gui_focus_changed(control: Control) -> void:
+	if control == null:
+		_reclaim_game_focus.call_deferred()
+
+
+func _reclaim_game_focus() -> void:
+	if not is_inside_tree() or get_tree().paused:
+		return
+
+	if not controllable or Battle.in_battle:
+		return
+
+	# A textbox or passive keeps focus on its balloon. Give the game container
+	# focus back only once nothing is asking for input anymore.
+	if Textbox.is_open or Passive.is_open:
+		return
+
+	if get_viewport().gui_get_focus_owner() != null:
+		return
+
+	GameViewport.grab_focus()
+
 
 func quit(save_first := true) -> void:
 	if save_first:

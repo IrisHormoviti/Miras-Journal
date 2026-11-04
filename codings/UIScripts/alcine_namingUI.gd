@@ -27,6 +27,7 @@ func _on_text_edit_text_changed(text: String) -> void:
 	if "\n" in text:
 		textbox.text = text.replace("\n", "")
 		return
+
 	if text.length() > 10:
 		response.text = "Bit too long, isn't it?"
 		response.show()
@@ -35,19 +36,23 @@ func _on_text_edit_text_changed(text: String) -> void:
 			textbox.set_caret_column(20)
 	else:
 		response.hide()
+
 	txt = textbox.text
 
 
 func on_confirm(text: String) -> void:
 	var textedit: LineEdit = textbox
 	textedit.text = textedit.text.dedent()
+
 	if textedit.text != "":
 		textedit.text[0].to_upper()
+
 	await Event.wait(0.03)
 	textedit.set_caret_column(20)
 	txt = textedit.text
 	txt = txt.to_lower()
-	if txt.length() > 10: return  #shouldn't this give a response?
+
+	if txt.length() > 10: return #shouldn't this give a response?
 	elif txt.length() == 1:
 		response.text = "Let's try to be a little more creative."
 		response.show()
@@ -73,6 +78,7 @@ func on_confirm(text: String) -> void:
 		word_list["responses_in"].keys().any(func(k: String) -> bool: return k in txt)
 		):
 			#necessary evil to find WHICH key we hit that contains our word
+
 		for key: String in word_list["responses_in"]:
 			if key in txt:
 				response.text = word_list["responses_in"][key]
@@ -80,14 +86,17 @@ func on_confirm(text: String) -> void:
 	else:
 		textedit.release_focus()
 		Party.get_member("Alcine").first_name = txt.capitalize()
-		Textbox.open("naming", "what_about")
+		Textbox.open_prompt("naming", "what_about")
+
 	await get_tree().process_frame
 	textedit.set_caret_column(14)
 
 
 func check_for_symbols() -> bool:
 	var res := false
+
 	for i in txt:
 		if !(i.is_valid_identifier() or i == " ") or i == "_":
 			res = true
+
 	return res

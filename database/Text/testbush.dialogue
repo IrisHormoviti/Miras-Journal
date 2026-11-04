@@ -166,7 +166,7 @@ You lost this round. Try again?
 	$> load_game("Arena")
 - Exit Arena mode.
 	$> load_game()
-	$> Bt.end_battle()
+	$> bt.end_battle()
 	$> load_game()
 => END!
 

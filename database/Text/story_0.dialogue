@@ -160,6 +160,8 @@ $> camera_move(get_marker_pos("HugSpot"))
 It seems scared...
 Maybe I should try approaching it.
 [hide]
+
+# Mira walks forward
 $> player.go_to("HugSpot")
 $> player.set_anim("ReachOut")
 $> player.get_node("Flame").flicker = false
@@ -168,6 +170,9 @@ $>> tween(Alcine.get_node("Glow"), "energy", 0.6, 2)
 $> tween(Alcine.get_node("Glow"), "texture_scale", 3, 2)
 $> remove_flag("Player/Flame")
 $> wait(0.5)
+
+# Mira is in front of alcine
+
 Mira.Neutral: Hey little one.
 [hide]
 $> wait(0.5)
@@ -175,6 +180,8 @@ $> Alcine.set_anim("ScaredTurn1", true)
 Mira.Smile: Don't worry, I'm not here to harm you. 
 Mira.Smile: You just seem scared, and...
 [hide]
+
+# Alcine rushes forward and hugs mira
 $> Alcine.set_anim("ScaredTurn2", true)
 $> Alcine.go_to(player.position + Vector2(12, 0))
 $> Alcine.set_anim("Hug")
@@ -193,6 +200,8 @@ $> Alcine.look_to(Direction.LEFT)
 Mira.Smile: It'll be okay..!
 $> no_nametag()
 Alcine.Happy: Whimm!
+
+# Mira gives Alcine the cloth
 $> player.get_node("%Flame").play("ReachOut2")
 Mira.Smile: Wait, I have an idea.
 I take a green fabric from my bag, and tie it around their neck.
@@ -205,6 +214,8 @@ $> player.check_flame(true)
 $> player.set_anim("IdleRight")
 Mira.Smile: Hehe, looks good on you!
 [hide]
+
+# Pterogon appears
 $> Alcine.look_to(Direction.RIGHT)
 $> Alcine.bubble("Surprise")
 $> Pterogon.show()
@@ -226,26 +237,36 @@ Mira.Neutral: Stay behind me, I'll deal with it!
 $> Battle.attacker = Pterogon
 $> Event.wait(0.1)
 $> Event.flag_progress("Event/AlcineFollow", 3)
-$> Battle.start("AlcineFollow1")
-=> END!
 
-~ not_going_well
-Mira.Neutral: Ow, this hurts...
-Mira.Neutral: Is there anything I can do?
-=> END
+# Battle happens here
+$> Battle.start("AlcineFollow")
+$> wait_for_battle()
+if Battle.battle_result != Battle.Result.VICTORY:
+	=> END
 
-~ going_nowhere
-Mira.Neutral: If this goes on...
-=> END
-
-~ amazing
-Mira.Neutral: Woah, you can use healing magic!?
-Mira.Neutral: We might have a chance like this!
-Alcine.Happy: Whieaaa!
-=> END
-
-~ got_through_that
+# Post battle stuff
+$> Party.set_to(["Mira", "Alcine"])
+$> check.emit()
+$> take_control()
+$> Hud.hide_all()
+$> Party.Member1.first_name = "Alcine"
+$> Party.Member1.custom_position = Vector2i(0, 0)
 $> Party.Leader.clutch_dmg = false
+$> Alcine.z_index = 0
+$> Party.get_member("Mira").ov = "Bag"
+$> Alcine.position = player.position + Vector2(-12, -12)
+
+# Both of them go down and look at eachother. 
+# The alcine npc is used, not the follower
+$>> player.go_to("HugSpot+(48, 0)")
+$> Global.room.followers[0].dont_follow = true
+$> Global.room.followers[0].hide()
+$> Alcine.show()
+$> Alcine.go_to("HugSpot")
+$> wait(0.3)
+$> Alcine.look_to(Direction.RIGHT)
+$> camera_move(player.position - Vector2(18, 0))
+$> player.look_to(Direction.LEFT)
 Mira.Neutral: We should be safe now.
 Mira.Neutral: If it wasn't for you, I'd be done for.
 Mira.Neutral: We should stick together for now, [wait=0.5]umm...
@@ -254,14 +275,36 @@ Mira.Neutral: Wait, do you have a name?
 $> Alcine.bubble("Question")
 Mira.Neutral: Right, you can't talk. But I need to call you something...
 Mira.Neutral: Oh I got it! [br]I'll come up with a name and you tell me if you like it, okay?
-=> END
+[hide]
 
-~ use_name
+# Naming alcine
+$> UI.alcine_naming()
+
 Mira.Neutral: What about "{{alcine}}"?
 Alcine.Neutral: *nod*
 $> player.look_to(Direction.RIGHT)
 Mira.Neutral: Alright then {{alcine}}, let's go together from here on.
-$> Party.set_to(["Mira", "Alcine"])
+[hide]
+$> Hud.disabled = false
+$> Hud.ui_visible = true
+$> flag_progress("Event/AlcineFollow", 4)
+$> add_flag("Player/Flame")
+
+$> travel_to("TempleWoods", get_marker_pos("HugSpot"), 2, Direction.RIGHT)
+
+$>> pop_tutorial("party")
+$> save()
+=> END
+
+~ not_going_well
+Mira.Neutral: Ow, this hurts...
+Mira.Neutral: Is there anything I can do?
+=> END
+
+~ amazing
+Mira.Neutral: Woah, you can use healing magic!?
+Mira.Neutral: We might have a chance like this!
+Alcine.Happy: Whieaaa!
 => END
 
 ~ a_bridge
@@ -315,7 +358,7 @@ Doesn't look too comfy, but I can't be picky right now.
 $> Event.progress_by_time(1)
 if Hud.confirm_time_passage("Rest", "Fully recover Health."):
 	[hide]
-	$> transition()
+	$> Transition.wipe()
 	$> save()
 	$> no_player()
 	$> spawn("Mira:MiraOVBag", "UnderTree", "SitDown", 8)
@@ -335,7 +378,7 @@ if Hud.confirm_time_passage("Rest", "Fully recover Health."):
 	Placeholder description: Mira takes a nap.
 	Alcine.Neutral: ...
 	Placeholder description: {{alcine}} picks up the paper.
-	$> transition(Direction.CENTER)
+	$> Transition.wipe(Direction.CENTER)
 	$> wait(1)
 	$> Party.heal_party()
 	$>>  time_transition()
@@ -459,8 +502,8 @@ Mira.Neutral: Let's give it a try!
 [hide]
 $> Party.Leader.next_action = Actor.BtAction.MAGIC
 $> Party.Leader.next_move = Query.get_ability("FlameSpark")
+$> bt.hold_turn()
 $> bt.confirm_next()
-$> bt.lock_turn = true
 $> wait(3)
 Mira.Neutral: And you can see, my attack was resisted.
 $>> bt.focus_cam(Party.Member1)
@@ -477,16 +520,15 @@ $> Party.Member1.next_action = Actor.BtAction.MAGIC
 $> Party.Member1.next_move = Query.get_ability("IcyNail")
 $> Party.Leader.next_action = Actor.BtAction.ACT
 $> Party.Leader.next_move = Ability.nothing()
-$> bt.lock_turn = false
-$> bt.confirm_next()
+$> bt.hold_next_turn()
+$> bt.release_turn()
 $> wait(1)
-$> bt.lock_turn = true
 $> wait(4)
 Mira.Smile: See? That was a direct hit to its weakness!
 Mira.Smile: Just keep it up!
 $> Party.Member1.next_action = Actor.BtAction.MAGIC
 $> Party.Member1.next_move = Query.get_ability("IcyNail")
-$> bt.lock_turn = false
+$> bt.release_turn()
 => END
 
 ~ color_tutorial_aurabreak
@@ -682,65 +724,25 @@ $> pop_tutorial("ov_attack")
 $> save()
 => END
 
-~ AlcineFollowHelp
+~ AlcineFollowJoin
+Mira.Neutral: If this goes on...
+[hide]
 $> Alcine.set_anim("IdleRight")
 $> Alcine.bubble("Surprise")
-$> temp.pterogon_hp = bt.get_actor("Pterogon").health
-if temp.pterogon_hp < 5:
-	$> temp.pterogon_hp = 5
 $> Alcine.z_index = 9
-$>> Transition.fade_in_out(Color.WHITE, 0.5, 2, 3)
+$>> Transition.fade_in_out(Color.WHITE, 0.5, 0.3)
 $> Alcine.jump_to(Vector2(1660, -1068), 7, 0.5)
-$>> bt.end_battle()
-$> wait_for_battle()
-$> Party.add("Alcine")
+$> Alcine.hide()
+$> bt.recruit_party_member("Alcine")
 $> Party.Member1.first_name = "Spirit"
-$> Alcine.hide()
-$> wait(0.5, false)
-$> Battle.start("AlcineFollow2")
-$> wait(1)
-$> bt.get_actor("Pterogon", true).health = temp.pterogon_hp
-$> wait_for_battle()
-=> AlcineFollow4
-
-~ AlcineFollow4
-$> check.emit()
-$> take_control()
-while Battle.in_battle:
-	$> wait(0.1)
-$> take_control()
-$> Party.Member1.first_name = "Alcine"
-$> Alcine.z_index = 0
-$> Party.get_member("Mira").ov = "Bag"
-$> Alcine.position = Global.room.followers[0].position
-$> player.go_to(Vector2(67, -45), true)
-$> Global.room.followers[0].dont_follow = true
-$> Global.room.followers[0].hide()
-$> Alcine.show()
-$> Alcine.go_to(Vector2(66, -46), true)
-$> wait(0.3)
-$> Alcine.look_to(Direction.RIGHT)
-$> camera.position = player.position - Vector2(18, 0)
-$> take_control()
-$> player.look_to(Direction.LEFT)
-$> player.position = Vector2(1619, -1068)
-$> Textbox.open("story_0", "got_through_that")
-$> UI.alcine_naming()
-$> Textbox.open("story_0", "use_name")
-$> Transition.wipe(Direction.RIGHT)
-$> flag_progress("Event/AlcineFollow", 4)
-$> Alcine.hide()
-$> camera.zoom = Vector2(4, 4)
-$> Hud.disabled = false
-$> Hud.ui_visible = true
-$> add_flag("Player/Flame")
-$> Global.room.followers[0].dont_follow = false
-$>> Transition.unwipe()
-$> Hud.shrink()
-$> give_control(true)
-$> pop_tutorial("party")
-$> Alcine.default()
-$> save()
+$> Party.Member1.custom_position = Vector2i(-5, -1)
+$> bt.position_sprites()
+$> bt.turn_ui_init()
+$> Hud.battle_state()
+$> bt.use_ability_now(Party.Member1, Query.get_ability("SoothingSpray"), Party.Leader, false)
+$> Party.Member1.custom_position = Vector2i(-75, -25)
+$> bt.jump_to(Party.Member1, Vector2(-75, -25), 5)
+$> Passive.open("story_0", "amazing")
 => END
 
 ~ enter_amberelm
