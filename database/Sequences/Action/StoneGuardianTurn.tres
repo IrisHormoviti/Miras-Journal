@@ -1,0 +1,113 @@
+[gd_resource type="Resource" script_class="ActionSequence" format=3 uid="uid://dp7gy4hxqe07x"]
+
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_li4fj"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_q1b72"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_rehgr"]
+[ext_resource type="Script" uid="uid://bq6h8c3vs70hp" path="res://codings/Battle/Steps/Conditions/actor_alive_condition.gd" id="4_6jeo0"]
+[ext_resource type="Script" uid="uid://5k3ongxwrrib" path="res://codings/Battle/Steps/Scheduling/turn_step.gd" id="5_nv3mf"]
+[ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="6_vwlvs"]
+[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="9_johyb"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="9_vwlvs"]
+[ext_resource type="Script" uid="uid://xc08auq8tg1f" path="res://codings/Battle/Steps/Flow/sequence_step.gd" id="11_qy5eb"]
+[ext_resource type="Resource" uid="uid://7xem2g8y8mxl" path="res://database/Sequences/Action/StoneGuardianFinisher.tres" id="12_53d2g"]
+[ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="14_base"]
+[ext_resource type="Resource" uid="uid://e6uiu5biqg87" path="res://database/Sequences/Action/StoneGuardianSecondMove.tres" id="14_rehgr"]
+[ext_resource type="Script" uid="uid://2x865joteqom" path="res://codings/Battle/Steps/Conditions/all_condition.gd" id="15_all"]
+[ext_resource type="Script" uid="uid://dmjaumboerwiq" path="res://codings/Battle/Steps/Conditions/follow_up_condition.gd" id="16_follow"]
+
+[sub_resource type="Resource" id="Resource_follow_up"]
+resource_name = "a follow-up turn"
+script = ExtResource("16_follow")
+
+[sub_resource type="Resource" id="Resource_wuain"]
+resource_name = "Party Member 1"
+script = ExtResource("3_rehgr")
+mode = 3
+party_index = 1
+
+[sub_resource type="Resource" id="Resource_b4vew"]
+resource_name = "Party Member 1 dead"
+script = ExtResource("4_6jeo0")
+actor = SubResource("Resource_wuain")
+alive = false
+
+[sub_resource type="Resource" id="Resource_i8reh"]
+resource_name = "Guardian"
+script = ExtResource("3_rehgr")
+mode = 2
+codename = &"Guardian"
+
+[sub_resource type="Resource" id="Resource_18hjs"]
+resource_name = "Guardian health is less than 150"
+script = ExtResource("6_vwlvs")
+actor = SubResource("Resource_i8reh")
+comparator = 4
+value = 150.0
+
+[sub_resource type="Resource" id="Resource_finisher_condition"]
+resource_name = "(Party Member 1 dead) and (Guardian health is less than 150)"
+script = ExtResource("15_all")
+conditions = Array[ExtResource("14_base")]([SubResource("Resource_b4vew"), SubResource("Resource_18hjs")])
+
+[sub_resource type="Resource" id="Resource_cxpmo"]
+script = ExtResource("5_nv3mf")
+mode = 5
+actor = SubResource("Resource_i8reh")
+
+[sub_resource type="Resource" id="Resource_phase_ai"]
+script = ExtResource("5_nv3mf")
+mode = 5
+actor = SubResource("Resource_i8reh")
+target = SubResource("Resource_wuain")
+
+[sub_resource type="Resource" id="Resource_phase_move"]
+resource_name = "First move"
+script = ExtResource("9_johyb")
+condition = SubResource("Resource_18hjs")
+if_steps = Array[ExtResource("2_q1b72")]([SubResource("Resource_phase_ai")])
+else_steps = Array[ExtResource("2_q1b72")]([SubResource("Resource_cxpmo")])
+
+[sub_resource type="Resource" id="Resource_u31ca"]
+resource_name = "Finisher cutscene"
+script = ExtResource("11_qy5eb")
+sequence = ExtResource("12_53d2g")
+
+[sub_resource type="Resource" id="Resource_6jeo0"]
+resource_name = "Finisher after the first move"
+script = ExtResource("9_johyb")
+condition = SubResource("Resource_finisher_condition")
+if_steps = Array[ExtResource("2_q1b72")]([SubResource("Resource_u31ca")])
+
+[sub_resource type="Resource" id="Resource_53d2g"]
+resource_name = "Caster"
+script = ExtResource("3_rehgr")
+
+[sub_resource type="Resource" id="Resource_dd7g1"]
+resource_name = "Return camera"
+script = ExtResource("9_vwlvs")
+move_enabled = true
+actor = SubResource("Resource_53d2g")
+wait = true
+
+[sub_resource type="Resource" id="Resource_nv3mf"]
+resource_name = "Second move"
+script = ExtResource("11_qy5eb")
+sequence = ExtResource("14_rehgr")
+
+[sub_resource type="Resource" id="Resource_vwlvs"]
+resource_name = "Normal turn"
+script = ExtResource("9_johyb")
+condition = SubResource("Resource_finisher_condition")
+if_steps = Array[ExtResource("2_q1b72")]([SubResource("Resource_u31ca")])
+else_steps = Array[ExtResource("2_q1b72")]([SubResource("Resource_phase_move"), SubResource("Resource_6jeo0"), SubResource("Resource_dd7g1"), SubResource("Resource_nv3mf")])
+
+[sub_resource type="Resource" id="Resource_u8b44"]
+resource_name = "Follow-up turn"
+script = ExtResource("9_johyb")
+condition = SubResource("Resource_follow_up")
+if_steps = Array[ExtResource("2_q1b72")]([SubResource("Resource_phase_move")])
+else_steps = Array[ExtResource("2_q1b72")]([SubResource("Resource_vwlvs")])
+
+[resource]
+script = ExtResource("1_li4fj")
+steps = Array[ExtResource("2_q1b72")]([SubResource("Resource_u8b44")])

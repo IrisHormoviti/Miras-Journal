@@ -103,6 +103,9 @@ var speed_boost: int = 0
 @export var complimentaries: Array[Ability]
 @export var complimentary_list: Dictionary[String, int]
 @export var followup_ability: Ability
+## Optional sequence that drives this actor's whole turn instead of the AI.
+## Useful for bosses that take several actions or follow a scripted pattern.
+@export var turn_sequence: ActionSequence
 
 @export_category("Sprites")
 ##The sprite used in the overworld when this actor is in the party
@@ -143,7 +146,8 @@ var speed_boost: int = 0
 @export var dont_idle := false
 ## If true, the character cannot die unless in very low hp
 @export var clutch_dmg := false
-## Sequence played when this actor dies, or when a cant-die actor is clutched.
+## Optional override for the death action sequence. When empty,
+## database/Sequences/Action/<codename>_death.tres is used if it exists.
 @export var death_action_sequence: ActionSequence
 ## If true, the character cannot die, and will always stay at low hp
 @export var cant_die := false
@@ -169,6 +173,9 @@ var queue_delete := false
 ## A clutch hit queued this actor's death sequence, so forced moves must not
 ## overwrite it before the actor gets its turn.
 var death_sequence_queued := false
+## How many turns this actor has started in the current battle. Used by
+## per-actor turn conditions without depending on the global turn counter.
+var turns_taken := 0
 
 
 class log_entry:
@@ -362,7 +369,7 @@ func save_to_dict() -> Dictionary:
 		"skill_level": skill_level,
 		"skill_points": skill_points,
 		"AbilitiesList": get_ability_list(),
-		"ComplimentaryList": complimentary_list,
+		"complimentary_list": complimentary_list,
 		"clutch_dmg": clutch_dmg,
 		"cant_die": cant_die,
 		"cant_dodge": cant_dodge,
@@ -376,8 +383,18 @@ func load_from_dict(dict: Dictionary) -> void:
 	for prop in get_property_list():
 		var key: String = prop.get("name")
 
+		# Complimentary slots need their typed dictionary rebuilt explicitly.
+		if key == "complimentary_list":
+			continue
+
 		if dict.has(key):
 			set(key, dict.get(key))
+
+	if dict.has("complimentary_list"):
+		var saved_complimentaries: Dictionary[String, int] = dict.get("complimentary_list")
+		complimentary_list.clear()
+		for ability_name: String in saved_complimentaries:
+			complimentary_list[str(ability_name)] = int(saved_complimentaries[ability_name])
 
 	if dict.has("AbilitiesList"):
 		abilities.clear()

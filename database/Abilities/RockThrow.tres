@@ -13,8 +13,6 @@
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="9_qqq4g"]
 [ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_r1r7i"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_ik2w3"]
-[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="11_go6sa"]
-[ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
 
 [sub_resource type="Resource" id="Resource_fejub"]
 resource_name = "Target"
@@ -52,24 +50,6 @@ offset = Vector2(30, -40)
 script = ExtResource("6_606aq")
 duration = 0.2
 
-[sub_resource type="Resource" id="Resource_hit_xs1kd"]
-resource_name = "miss"
-script = ExtResource("cond_hit")
-outcomes = 4
-
-[sub_resource type="Resource" id="Resource_dyguj"]
-script = ExtResource("7_yggcf")
-
-[sub_resource type="Resource" id="Resource_qqq4g"]
-resource_name = "Target"
-script = ExtResource("3_r1r7i")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_ik2w3"]
-script = ExtResource("5_pvtex")
-effect_name = &"SimpleHit"
-target = SubResource("Resource_qqq4g")
-
 [sub_resource type="Resource" id="Resource_lw4hs"]
 script = ExtResource("7_yggcf")
 
@@ -81,6 +61,16 @@ mode = 1
 [sub_resource type="Resource" id="Resource_xybfr"]
 script = ExtResource("9_r1r7i")
 actor = SubResource("Resource_xaqd7")
+
+[sub_resource type="Resource" id="Resource_d83qd"]
+resource_name = "Target"
+script = ExtResource("3_r1r7i")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_y587c"]
+script = ExtResource("5_pvtex")
+effect_name = &"SimpleHit"
+target = SubResource("Resource_d83qd")
 
 [sub_resource type="Resource" id="Resource_q6y3n"]
 resource_name = "Target"
@@ -107,29 +97,16 @@ target = SubResource("Resource_eldcg")
 power = SubResource("Resource_go6sa")
 magic_mode = 1
 elemental = true
-hit_branch = false
-hit_steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_lw4hs"), SubResource("Resource_xybfr")])
+miss_branch = true
+hit_steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_lw4hs"), SubResource("Resource_xybfr"), SubResource("Resource_y587c")])
 miss_steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_j217x")])
 
-[sub_resource type="Resource" id="Resource_q5h32"]
-resource_name = "Target"
-script = ExtResource("3_r1r7i")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_s845q"]
-script = ExtResource("10_ik2w3")
-target = SubResource("Resource_q5h32")
-wait = true
-
-[sub_resource type="Resource" id="Resource_xs1kd"]
-script = ExtResource("11_go6sa")
-condition = SubResource("Resource_hit_xs1kd")
-if_steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_s845q")])
-else_steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_dyguj"), SubResource("Resource_ik2w3"), SubResource("Resource_k3kyl")])
+[sub_resource type="Resource" id="Resource_tnic3"]
+script = ExtResource("6_606aq")
 
 [sub_resource type="Resource" id="Resource_3eb40"]
 script = ExtResource("1_fejub")
-steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_rmkr1"), SubResource("Resource_f0dg7"), SubResource("Resource_606aq"), SubResource("Resource_yggcf"), SubResource("Resource_xs1kd")])
+steps = Array[ExtResource("2_rmkr1")]([SubResource("Resource_rmkr1"), SubResource("Resource_f0dg7"), SubResource("Resource_606aq"), SubResource("Resource_yggcf"), SubResource("Resource_k3kyl"), SubResource("Resource_tnic3")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_0fx3q"]
 resource_local_to_scene = true
@@ -146,6 +123,6 @@ wheel_color = Color(0.827451, 0.26666668, 0.42745098, 1)
 target = 1
 action_sequence = SubResource("Resource_3eb40")
 aura_cost = 5
-success_chance = 0.93
+success_chance = 0.9
 types = Array[int]([1])
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

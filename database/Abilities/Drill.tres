@@ -39,6 +39,12 @@ move_enabled = true
 actor = SubResource("Resource_tqfp6")
 duration = 1.0
 
+[sub_resource type="Resource" id="Resource_aku36"]
+resource_name = "Target"
+script = ExtResource("9_y5brj")
+mode = 6
+metadata/_custom_type_script = "uid://dejg68glbtmg0"
+
 [sub_resource type="Resource" id="Resource_7oyni"]
 resource_name = "Target"
 script = ExtResource("3_tqfp6")
@@ -48,7 +54,8 @@ mode = 1
 script = ExtResource("5_7oyni")
 effect_name = &"Drill"
 target = SubResource("Resource_7oyni")
-offset = Vector2(100, 0)
+position = SubResource("Resource_aku36")
+offset = Vector2(-100, 0)
 flip_on_player_use = true
 
 [sub_resource type="Resource" id="Resource_b3mos"]
@@ -83,7 +90,8 @@ duration = 0.8
 resource_name = "Target Position"
 script = ExtResource("9_y5brj")
 mode = 9
-offset = Vector2(32, 0)
+offset = Vector2(-32, 0)
+side_aware = true
 
 [sub_resource type="Resource" id="Resource_cuawh"]
 resource_name = "Target"
@@ -178,6 +186,17 @@ miss_steps = Array[ExtResource("2_rlvnk")]([SubResource("Resource_fpaye")])
 script = ExtResource("8_3vvaj")
 duration = 0.5
 
+[sub_resource type="Resource" id="Resource_5yptg"]
+resource_name = "Target"
+script = ExtResource("3_tqfp6")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_await_drill"]
+script = ExtResource("5_7oyni")
+mode = 5
+effect_name = &"Drill"
+target = SubResource("Resource_5yptg")
+
 [sub_resource type="Resource" id="Resource_apdap"]
 resource_name = "Target"
 script = ExtResource("3_tqfp6")
@@ -191,7 +210,7 @@ target = SubResource("Resource_apdap")
 
 [sub_resource type="Resource" id="Resource_wa88r"]
 script = ExtResource("1_va38c")
-steps = Array[ExtResource("2_rlvnk")]([SubResource("Resource_rlvnk"), SubResource("Resource_ddegd"), SubResource("Resource_v78om"), SubResource("Resource_3ynov"), SubResource("Resource_fkjmj"), SubResource("Resource_ta3xe"), SubResource("Resource_5gnpv"), SubResource("Resource_wbmns"), SubResource("Resource_7bjh3"), SubResource("Resource_72s3j"), SubResource("Resource_0ld1n"), SubResource("Resource_6ny8f"), SubResource("Resource_rsuay"), SubResource("Resource_t7ngc")])
+steps = Array[ExtResource("2_rlvnk")]([SubResource("Resource_rlvnk"), SubResource("Resource_ddegd"), SubResource("Resource_v78om"), SubResource("Resource_3ynov"), SubResource("Resource_fkjmj"), SubResource("Resource_ta3xe"), SubResource("Resource_5gnpv"), SubResource("Resource_wbmns"), SubResource("Resource_7bjh3"), SubResource("Resource_72s3j"), SubResource("Resource_0ld1n"), SubResource("Resource_6ny8f"), SubResource("Resource_rsuay"), SubResource("Resource_await_drill"), SubResource("Resource_t7ngc")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_rt0sr"]
 resource_local_to_scene = true

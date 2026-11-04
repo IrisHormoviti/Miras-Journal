@@ -8,6 +8,7 @@ enum Mode {
 	SKIP,
 	RESORT,
 	CANCEL_FOLLOW_UP,
+	AI_MOVE,
 }
 
 @export var mode: Mode = Mode.USE_ABILITY:
@@ -18,6 +19,9 @@ enum Mode {
 @export var ability: Ability
 @export var target: ActorRef
 @export var consume_turn := false
+## Whether this scripted ability spends its AP cost. Off by default so
+## cinematic moves do not depend on the actor's remaining AP.
+@export var pay_cost := false
 ## Keep the current actor at the same turn slot when resorting.
 @export var preserve_current := true
 
@@ -28,7 +32,7 @@ func run(ctx: ActionSequenceContext) -> void:
 	match mode:
 		Mode.USE_ABILITY:
 			var victim := target.resolve(ctx) if target != null else ctx.target
-			await ctx.battle.use_ability_now(subject, ability, victim, consume_turn)
+			await ctx.battle.use_ability_now(subject, ability, victim, consume_turn, Actor.BtAction.ACT, pay_cost)
 		Mode.FORCE_NEXT:
 			ctx.battle.force_next_actor(subject)
 		Mode.SKIP:
@@ -37,6 +41,9 @@ func run(ctx: ActionSequenceContext) -> void:
 			ctx.battle.resort_turn_order(preserve_current)
 		Mode.CANCEL_FOLLOW_UP:
 			ctx.battle.cancel_follow_up()
+		Mode.AI_MOVE:
+			var hint := target.resolve(ctx) if target != null else null
+			await ctx.battle.ai_move(subject, consume_turn, hint)
 
 
 func _to_string() -> String:
@@ -60,6 +67,12 @@ func _to_string() -> String:
 		Mode.CANCEL_FOLLOW_UP:
 			return "Cancel the follow-up"
 
+		Mode.AI_MOVE:
+			if target != null:
+				return "Let %s choose a move on %s" % [who, victim]
+
+			return "Let %s choose a move" % who
+
 	return ""
 
 
@@ -67,7 +80,9 @@ func _validate_property(property: Dictionary) -> void:
 	var visible: Array[String] = ["mode", "actor"]
 	match mode:
 		Mode.USE_ABILITY:
-			visible.append_array(["ability", "target", "consume_turn"])
+			visible.append_array(["ability", "target", "consume_turn", "pay_cost"])
+		Mode.AI_MOVE:
+			visible.append_array(["target", "consume_turn"])
 		Mode.RESORT:
 			visible.append("preserve_current")
 		Mode.FORCE_NEXT, Mode.SKIP, Mode.CANCEL_FOLLOW_UP:

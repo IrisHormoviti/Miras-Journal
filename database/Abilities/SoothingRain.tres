@@ -32,7 +32,7 @@ script = ExtResource("3_5wt33")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_04wps"]
-resource_name = "(-30.0, 0.0)"
+resource_name = "(-30, 0)"
 script = ExtResource("5_gdbrr")
 mode = 2
 position = Vector2(-30, 0)
@@ -55,15 +55,15 @@ actor = SubResource("Resource_bjwmh")
 animation = &"Cast"
 wait = true
 
-[sub_resource type="Resource" id="Resource_q0pjp"]
-resource_name = "Target"
-script = ExtResource("3_5wt33")
-mode = 1
-
 [sub_resource type="Resource" id="Resource_rain_heal"]
 resource_name = "weak"
 script = ExtResource("9_ct152")
 damage_scale = 0
+
+[sub_resource type="Resource" id="Resource_q0pjp"]
+resource_name = "Target"
+script = ExtResource("3_5wt33")
+mode = 1
 
 [sub_resource type="Resource" id="Resource_ct152"]
 script = ExtResource("7_n22vs")
@@ -71,6 +71,7 @@ target = SubResource("Resource_q0pjp")
 amount = SubResource("Resource_rain_heal")
 
 [sub_resource type="Resource" id="Resource_hit_xsliv"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 
@@ -115,6 +116,7 @@ target = SubResource("Resource_dj4aq")
 amount = SubResource("Resource_rain_heal")
 
 [sub_resource type="Resource" id="Resource_hit_schel"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 

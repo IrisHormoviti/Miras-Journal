@@ -26,12 +26,14 @@ func draw_character(character: Actor) -> void:
 		grd.set_meta("rate", randf_range(-0.1, 0.1))
 		$Background.add_child(grd)
 		grd.rotation_degrees = randf_range(0, 360)
+
 	for i in $Background.get_children(): i.modulate = Color.TRANSPARENT
 	$Background.self_modulate = Color.TRANSPARENT
 	$Title/Member.text = "[img width=58]%s[/img] %s %s" % [chara.party_icon.resource_path, chara.first_name, chara.last_name]
 	refresh()
 	show()
 	%Equipped.get_child(0).grab_focus()
+	_render_equipped_focus(%Equipped.get_child(0) as Control)
 	Audio.confirm_sound()
 
 	var t := create_tween().set_parallel().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
@@ -47,21 +49,25 @@ func draw_character(character: Actor) -> void:
 
 func fetch_all_abilities() -> void:
 	var Abilities := await Query.get_complimentaries()
+
 	for n in %AbilityList.get_children():
 		if n is Button:
 			%AbilityList.remove_child(n)
 			n.queue_free()
+
 	for i in Abilities:
 		var dub: Button = %Ab0.duplicate()
 		dub.show()
 		%AbilityList.add_child(dub)
 		dub.text = i.name
 		dub.get_node("Icon").texture = i.icon
+
 		if i.aura_cost != 0:
 			dub.get_child(0).text = str(i.aura_cost)
 			dub.get_child(0).show()
 		else:
 			dub.get_child(0).hide()
+
 		dub.name = "Item" + str(dub.get_index(true))
 		dub.set_meta("Ability", i)
 
@@ -70,17 +76,22 @@ func fetch_equiped_abilities() -> void:
 	await chara.load_complimentaries()
 	while chara.complimentaries.size() > slots:
 		chara.complimentaries.remove_at(-1)
+
 	var Abilities := chara.complimentaries
+
 	while slots > %Equipped.get_child_count():
 		var dub: Button = %Slot0.duplicate()
 		dub.show()
 		%Equipped.add_child(dub)
 		dub.disabled = true
+
 	var j := 0
+
 	for i in Abilities:
 		var dub: Button = $Equipped.get_child(j)
 		dub.set_meta("Ability", i)
 		j += 1
+
 	update_equipped()
 
 
@@ -91,17 +102,20 @@ func update_equipped() -> void:
 			dub.disabled = false
 			dub.text = i.name
 			dub.get_node("Icon").texture = i.icon
+
 			if i.aura_cost != 0:
 				dub.get_child(0).text = str(i.aura_cost)
 				dub.get_child(0).show()
 			else:
 				dub.get_child(0).hide()
+
 			dub.name = "Item" + str(dub.get_index(true))
 
 
 func refresh() -> void:
 	$Set.icon = Controller.get_scheme().ConfirmIcon
 	$Back.icon = Controller.get_scheme().CancelIcon
+
 	for i in %AbilityList.get_children():
 		if not i is Button: continue
 		if i.get_meta("Ability") in chara.complimentaries:
@@ -114,42 +128,63 @@ func refresh() -> void:
 			t.tween_property($Background.get_child(i), "modulate", Color.TRANSPARENT, 1)
 		else:
 			var color := chara.complimentaries[i].wheel_color
+
 			if chara.complimentaries[i].wheel_color == Color.WHITE: color.a = 0.3
 			else: color.a = 0.6
 			t.tween_property($Background.get_child(i), "modulate", color, randf_range(0.5, 3))
 
 
-func _on_list_focus_entered() -> void:
-	Audio.cursor_sound()
-	var ab: Ability = get_viewport().gui_get_focus_owner().get_meta("Ability")
+func _ability_has_wheel(ab: Ability) -> bool:
+	return (
+		is_instance_valid(ab)
+		and ab.wheel_color != Color.WHITE
+		and not ab.color_same_as_actor
+		and ab.deals_damage()
+	)
+
+
+func _draw_ability_wheel(wheel: Wheel, ab: Ability) -> void:
+	if _ability_has_wheel(ab):
+		wheel.show()
+		wheel.show_atk_color(ab.wheel_color)
+	else:
+		wheel.hide()
+
+
+## Update the ability list preview for a specific button. Kept separate from the
+## focus signal so it can also be forced right after focus is assigned
+## programmatically (which does not always emit focus_entered).
+func _render_list_focus(foc: Control) -> void:
+	var ab: Ability = foc.get_meta("Ability") if foc != null and foc.has_meta("Ability") else null
+	_draw_ability_wheel(%Wheel, ab)
+
 	if not is_instance_valid(ab): return
-	if ab.wheel_color != Color.WHITE and not ab.color_same_as_actor and ab.deals_damage():
-		%Wheel.show()
-		%Wheel.color = ab.wheel_color
-		%Wheel.draw_wheel()
-		%Wheel.draw_wheel()
-	else: %Wheel.hide()
 	%AttackTitle.text = ab.name
 	%AttackTitle/RichTextLabel.text = Colorizer.colorize(ab.description)
+
+
+func _on_list_focus_entered() -> void:
+	Audio.cursor_sound()
+	_render_list_focus(get_viewport().gui_get_focus_owner())
+
+
+## Update the description/preview wheel for the equipped slot.
+func _render_equipped_focus(foc: Control) -> void:
+	if foc != null and foc.has_meta("Ability"):
+		var ab: Ability = foc.get_meta("Ability")
+		_draw_ability_wheel($Desc/Wheel, ab)
+
+		if not is_instance_valid(ab): return
+		$Desc/RichTextLabel.text = Colorizer.colorize(ab.description)
+	else:
+		$Desc/RichTextLabel.text = "This slot is empty.\n\nPress [img width=48]" + Controller.get_scheme().ConfirmIcon.resource_path + "[/img] to equip one of the available Complimentary abilities to this slot."
+		$Desc/Wheel.hide()
 
 
 func _on_equipped_focus_entered() -> void:
 	#refresh()
 	Audio.cursor_sound()
-	var foc := get_viewport().gui_get_focus_owner()
-	if foc.has_meta("Ability"):
-		var ab: Ability = foc.get_meta("Ability")
-		if not is_instance_valid(ab): return
-		if ab.wheel_color != Color.WHITE and not ab.color_same_as_actor and ab.deals_damage():
-			$Desc/Wheel.show()
-			$Desc/Wheel.color = ab.wheel_color
-			$Desc/Wheel.draw_wheel()
-			$Desc/Wheel.draw_wheel()
-		else: $Desc/Wheel.hide()
-		$Desc/RichTextLabel.text = Colorizer.colorize(ab.description)
-	else:
-		$Desc/RichTextLabel.text = "This slot is empty.\n\nPress [img width=48]" + Controller.get_scheme().ConfirmIcon.resource_path + "[/img] to equip one of the available Complimentary abilities to this slot."
-		$Desc/Wheel.hide()
+	_render_equipped_focus(get_viewport().gui_get_focus_owner())
 
 
 func _process(delta: float) -> void:
@@ -161,10 +196,12 @@ func _on_back_pressed() -> void:
 	if $AbilityPanel.visible:
 		$AbilityPanel.hide()
 		$Equipped.get_child(active_slot).grab_focus()
+		_render_equipped_focus($Equipped.get_child(active_slot) as Control)
 	else:
 		if UI.is_open("MemberDetails"):
 			UI.get_node("MemberDetails").fetch_abilities(chara)
 			UI.get_node("MemberDetails/AbilityPanel/Border1/Scroller/AbilityList").get_child(1).grab_focus()
+
 		Audio.cancel_sound()
 
 		var t := create_tween().set_parallel().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART)
@@ -186,7 +223,11 @@ func set_ability(slot: int) -> void:
 	active_slot = slot
 	$AbilityPanel.show()
 	refresh()
-	%AbilityList.get_child(0).grab_focus()
+
+	if %AbilityList.get_child_count() > 0:
+		var first := %AbilityList.get_child(0) as Control
+		first.grab_focus()
+		_render_list_focus(first)
 
 
 func _set_pressed() -> void:
@@ -205,12 +246,14 @@ func _on_slot_pressed() -> void:
 
 func _list_ability_pressed() -> void:
 	var foc := get_viewport().gui_get_focus_owner()
+
 	if foc.disabled:
 		Audio.buzzer_sound()
 	else:
 		var ab: Ability = foc.get_meta("Ability")
 		var slot: Button = $Equipped.get_child(active_slot)
 		var prev_ab: Ability = slot.get_meta("Ability") if slot.has_meta("Ability") and slot.get_meta("Ability") != null else null
+
 		if ab.filename in chara.complimentary_list:
 			chara.complimentary_list.set(ab.filename, abs(chara.complimentary_list.get(ab.filename)))
 		else: chara.complimentary_list.set(ab.filename, 1)

@@ -153,6 +153,7 @@ hit_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_sfioo"), SubRes
 miss_steps = Array[ExtResource("2_p2oam")]([SubResource("Resource_pjqo1")])
 
 [sub_resource type="Resource" id="Resource_hit_kiycp"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 

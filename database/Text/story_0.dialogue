@@ -500,11 +500,8 @@ Mira.Neutral: Because it's so close to my own attack's color, inside the X mark,
 $> picture_clear()
 Mira.Neutral: Let's give it a try!
 [hide]
-$> Party.Leader.next_action = Actor.BtAction.MAGIC
-$> Party.Leader.next_move = Query.get_ability("FlameSpark")
 $> bt.hold_turn()
-$> bt.confirm_next()
-$> wait(3)
+$> bt.use_ability_now(Party.Leader, Query.get_ability("FlameSpark"), bt.Troop[0], false, Actor.BtAction.MAGIC)
 Mira.Neutral: And you can see, my attack was resisted.
 $>> bt.focus_cam(Party.Member1)
 $> picture("ColorTutorial3")
@@ -516,19 +513,14 @@ Mira.Smile: The enemy's color is on the [b]O[/b] mark![br][small](The double O m
 $> picture_clear()
 Mira.Smile: So try out one of your attacks!
 [hide]
-$> Party.Member1.next_action = Actor.BtAction.MAGIC
-$> Party.Member1.next_move = Query.get_ability("IcyNail")
-$> Party.Leader.next_action = Actor.BtAction.ACT
-$> Party.Leader.next_move = Ability.nothing()
-$> bt.hold_next_turn()
-$> bt.release_turn()
+$> bt.use_ability_now(Party.Member1, Query.get_ability("IcyNail"), bt.Troop[0], false, Actor.BtAction.MAGIC)
 $> wait(1)
-$> wait(4)
 Mira.Smile: See? That was a direct hit to its weakness!
 Mira.Smile: Just keep it up!
 $> Party.Member1.next_action = Actor.BtAction.MAGIC
 $> Party.Member1.next_move = Query.get_ability("IcyNail")
 $> bt.release_turn()
+$> bt.start_turns()
 => END
 
 ~ color_tutorial_aurabreak
@@ -539,7 +531,7 @@ Mira.Neutral: But remember, this can happen to us too, so be careful!
 => END
 
 ~ oct31_afternoon
-$> travel_to("Amberelm", Vector2(2218, -132), 2)
+$> travel_to("Amberelm", Vector2(2218, -132), 2, null, false)
 Placeholder description: Unfinished cutscene
 The sky getting darker. I've really been out here all day...
 Placeholder description: Mira looks forward to Alcine goofing around.
@@ -551,6 +543,7 @@ Perhaps I could give liquid magic a try.
 $> add_complimentary("FluidBlast", alcine)
 $> player.jump_to(get_marker_pos("BenchBeforeGuardian"))
 $> save()
+$> give_control()
 => END
 
 ~ stone_guardian_intro
@@ -796,9 +789,8 @@ $> player.set_anim("IdleRight")
 ~ amberelm_guardian
 $> Battle.start("StoneGuardianBoss")
 $> wait_for_battle()
-if Battle.battle_result == 1:
+if Battle.battle_result == Battle.Result.VICTORY:
 	$> Party.set_to(["Mira"])
-	$>> Transition.fade_out()
 	$> to_day = 0
 	$> to_time = 5
 	$> add_flag("Event/BeatStoneGuardian")

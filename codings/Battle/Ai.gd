@@ -2,6 +2,9 @@ extends Node
 
 @onready var Bt: Battle = get_parent()
 var Char: Actor
+## Suppresses [signal ai_chosen] when a scripted turn is asking the AI for a
+## move and wants to run the action itself.
+var manual := false
 signal ai_chosen
 
 
@@ -87,9 +90,14 @@ func ai() -> void:
 	print("--------")
 
 	if best_ability == null:
-		print("Nothing else to do, using Standard Attack")
-		best_ability = Char.standard_attack
-		best_target = Bt.random_target(best_ability)
+		if Char.standard_attack != null and can_afford(Char.standard_attack):
+			print("Nothing else to do, using Standard Attack")
+			best_ability = Char.standard_attack
+			best_target = Bt.random_target(best_ability)
+		else:
+			print("Nothing affordable, skipping the turn")
+			best_ability = Ability.nothing()
+			best_target = Char
 
 	choose(best_ability, best_target)
 
@@ -205,10 +213,17 @@ func get_ability_score_modifiers(ab: Ability) -> float:
 		score += bonus
 		print(" - Recovery bonus: +%.2f" % [bonus])
 
-	# Discourage spamming the same thing
-	if Char.battle_log.back().ability == ab:
-		score -= 0.3
-		print(" - Avoid using the same thing again: -0.3")
+	# Discourage spamming the same thing, especially twice in one turn.
+	var repeated_this_turn := false
+
+	for entry in Char.battle_log:
+		if entry.turn == Bt.Turn and entry.ability == ab:
+			repeated_this_turn = true
+			break
+
+	if repeated_this_turn:
+		score -= 1.0
+		print(" - Already used this turn: -1.0")
 
 	return score
 
@@ -258,6 +273,7 @@ func choose(ab: Ability, tar: Actor = null) -> void:
 
 	if ab.target == Ability.T.SELF:
 		tar = Char
+		Char.next_target = Char
 	elif Char.next_target == null:
 
 		if tar == null:
@@ -277,4 +293,5 @@ func choose(ab: Ability, tar: Actor = null) -> void:
 		Char.next_target = Bt.TurnOrder.pick_random()
 		Bt.confusion_msg()
 
-	ai_chosen.emit()
+	if not manual:
+		ai_chosen.emit()

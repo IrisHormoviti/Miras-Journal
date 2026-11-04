@@ -14,7 +14,15 @@ func check(ctx: ActionSequenceContext) -> bool:
 
 
 func _to_string() -> String:
-	return "all %d conditions" % conditions.size()
+	var string: String = ""
+
+	for i in conditions:
+		if conditions[0] != i:
+			string += " and "
+
+		string += "(%s)" % str(i)
+
+	return string
 
 
 func _icon() -> String:

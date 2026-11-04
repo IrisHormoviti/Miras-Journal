@@ -10,6 +10,7 @@ enum Mode {
 	RANDOM,
 	ELEMENT,
 	AURA_DEFAULT,
+	WEAK_TO_ACTOR,
 }
 
 @export var mode: Mode = Mode.WHEEL_COLOR:
@@ -56,6 +57,9 @@ func resolve(ctx: ActionSequenceContext) -> Color:
 		Mode.AURA_DEFAULT:
 			return subject.aura_default if subject != null else color
 
+		Mode.WEAK_TO_ACTOR:
+			return Query.get_weak_color(subject.main_color) if subject != null else color
+
 	return color
 
 
@@ -81,6 +85,9 @@ func _validate_property(property: Dictionary) -> void:
 		Mode.AURA_DEFAULT:
 			visible.append("actor")
 
+		Mode.WEAK_TO_ACTOR:
+			visible.append("actor")
+
 	StepEditor.only(property, visible)
 
 
@@ -94,5 +101,8 @@ func _to_string() -> String:
 
 		Mode.AURA_DEFAULT:
 			return "Aura default color"
+
+		Mode.WEAK_TO_ACTOR:
+			return "Weak-to color"
 
 	return str(Mode.find_key(mode)).capitalize()

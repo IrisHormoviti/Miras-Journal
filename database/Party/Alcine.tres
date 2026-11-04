@@ -10,6 +10,7 @@
 [ext_resource type="Resource" uid="uid://dxr8psmfxx8ve" path="res://database/Text/Profiles/AlcineBox.tres" id="4_roarn"]
 [ext_resource type="Resource" uid="uid://fjn4ct8t7w41" path="res://database/Abilities/IcyDrizzle.tres" id="5_fp5sq"]
 [ext_resource type="Resource" uid="uid://glraxorvlv4r" path="res://database/Abilities/SoothingRain.tres" id="6_82uy0"]
+[ext_resource type="Resource" uid="uid://d1ri7q5c1bkev" path="res://database/Abilities/PitchIn.tres" id="6_wpfc1"]
 [ext_resource type="Resource" uid="uid://d2p8t0dmhxotw" path="res://database/Items/KeyItems/ArmWhip.tres" id="10_h1qhr"]
 
 [sub_resource type="Curve" id="Curve_wpfc1"]
@@ -27,10 +28,10 @@ main_color = Color(0.34432322, 0.8054822, 0.69785404, 1)
 party_icon = ExtResource("1_by5ga")
 actor_class = "Support"
 codename = &"Alcine"
+weapon = ExtResource("10_h1qhr")
 pronouns = "they"
 secondary_color = Color(0.305882, 0.580392, 0.439216, 1)
 character_box_profile = ExtResource("4_roarn")
-weapon = ExtResource("10_h1qhr")
 party_page = "uid://syhtbusm7hkg"
 render_artwork = "uid://dhj86uscr784t"
 hp_on_level_up = 15
@@ -43,7 +44,7 @@ speed = 6.0
 skill_curve = SubResource("Curve_wpfc1")
 abilities = Array[ExtResource("1_l356q")]([ExtResource("2_kbab6"), ExtResource("2_2vyew"), ExtResource("4_72ylq")])
 standard_attack = ExtResource("2_3o6lq")
-learnable_abilities = Array[ExtResource("1_l356q")]([ExtResource("5_fp5sq"), ExtResource("6_82uy0")])
+learnable_abilities = Array[ExtResource("1_l356q")]([ExtResource("6_wpfc1"), ExtResource("5_fp5sq"), ExtResource("6_82uy0")])
 ov_shadow_offset = 4
 offset = Vector2(-3, -15)
 disappear = false

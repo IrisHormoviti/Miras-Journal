@@ -9,6 +9,7 @@ enum Mode {
 	FREE,
 	SET_SHADER,
 	AWAIT,
+	HOLD,
 }
 
 @export var mode: Mode = Mode.PLAY:
@@ -28,6 +29,9 @@ enum Mode {
 @export var shader: Shader
 @export var prev_color := Color.WHITE
 @export var new_color: ColorRef
+## Frame to stop the effect on when using [constant Mode.HOLD].
+@export var hold_frame := 0
+@export var hold_pause := true
 
 
 func run(ctx: ActionSequenceContext) -> void:
@@ -54,9 +58,9 @@ func run(ctx: ActionSequenceContext) -> void:
 			var destination := position.resolve(ctx) if position != null else effect.position
 
 			if wait:
-				await Battle.tween(effect, "global_position", destination, duration, Tween.EASE_OUT, Tween.TRANS_QUART)
+				await Battle.tween(effect, "position", destination, duration, Tween.EASE_OUT, Tween.TRANS_QUART)
 			else:
-				Battle.tween(effect, "global_position", destination, duration, Tween.EASE_OUT, Tween.TRANS_QUART)
+				Battle.tween(effect, "position", destination, duration, Tween.EASE_OUT, Tween.TRANS_QUART)
 
 		Mode.FREE:
 			effect.queue_free()
@@ -70,6 +74,12 @@ func run(ctx: ActionSequenceContext) -> void:
 
 		Mode.AWAIT:
 			await ctx.battle.await_anim(effect)
+
+		Mode.HOLD:
+			effect.frame = hold_frame
+
+			if hold_pause:
+				effect.pause()
 
 
 func _play(ctx: ActionSequenceContext) -> void:
@@ -86,13 +96,13 @@ func _play(ctx: ActionSequenceContext) -> void:
 	if position != null:
 		effect_target = position.resolve(ctx, ctx.target)
 
-	if wait:
-		await ctx.battle.play_effect(str(effect_name), effect_target, offsetized, flip_on_player_use, true)
-	else:
-		ctx.battle.play_effect(str(effect_name), effect_target, offsetized, flip_on_player_use, true)
+	var effect := ctx.battle.spawn_effect(str(effect_name), effect_target, offsetized, flip_on_player_use)
 
-	if ctx.battle.act != null:
-		ctx.last_effect = ctx.battle.act.get_node_or_null(str(effect_name))
+	if effect != null:
+		ctx.last_effect = effect
+
+		if wait:
+			await ctx.battle.await_anim(effect, str(effect_name))
 
 
 func _effect(ctx: ActionSequenceContext) -> AnimatedSprite2D:
@@ -127,6 +137,9 @@ func _to_string() -> String:
 		Mode.AWAIT:
 			label = "Wait for effect"
 
+		Mode.HOLD:
+			label = "Hold effect"
+
 	if str(effect_name).is_empty():
 		return label
 
@@ -154,6 +167,9 @@ func _validate_property(property: Dictionary) -> void:
 
 		Mode.AWAIT:
 			pass
+
+		Mode.HOLD:
+			visible.append_array(["hold_frame", "hold_pause"])
 
 	StepEditor.only(property, visible)
 

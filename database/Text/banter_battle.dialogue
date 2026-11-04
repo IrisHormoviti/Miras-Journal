@@ -11,3 +11,75 @@ if Party.has_member("Mira") and Party.get_member("Mira").health > 0:
 if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 	Daze.Neutral: [[You got careless Levenor...|I messed up...|You better hang in there.|I told you to be careful!]]
 => END
+
+~ mira_complimentary_try
+% Mira.Neutral: Well If I fail once... or thrice....
+% Mira.Neutral: Um...[br]Let me check my notes...
+% Mira.Neutral: How did it go again..?
+% Mira.Neutral: Please training don’t let me down!
+=> END
+
+~ mira_complimentary_fail
+% Mira.Upset: Dammit!
+% Mira.Upset: Ughhhh-[br]I have no time for this!
+% Mira.Upset: Oh...[br]How could I fail!?
+% Mira.Upset: I thought I was nailing it….
+=> END
+
+~ mira_complimentary_mastered
+% Mira.Smile: Aced it!
+% Mira.Smile: I’ve learned the trick!
+% Mira.Smile: It makes so much sense now!
+=> END
+
+~ alcine_complimentary_try
+% Alcine.Neutral: Mmmm...
+% Alcine.Neutral: ...
+% Alcine.Neutral: Bleee...
+=> END
+
+~ alcine_complimentary_fail
+% Alcine.Upset: Sheew..
+% Alcine.Upset: Blamm!
+=> END
+
+~ alcine_complimentary_master
+% Alcine.Happy: Whimm!
+% Alcine.Happy: Wheee!
+=> END
+
+~ daze_complimentary_try
+% Daze.Neutral: Now is my chance to test this!
+% Daze.Neutral: Might as well try this...
+% Daze.Neutral: Give me a moment-
+=> END
+
+~ daze_complimentary_fail
+% Daze.Neutral: *Sigh*
+% Daze.Neutral: There's always next time...
+% Daze.Neutral: Oh- that was...[br]A [i]perfect distraction[/i] that was!
+=> END
+
+~ daze_complimentary_master
+% Daze.Neutral: This one’s my magnum opus!
+% Daze.Neutral: Yet another skill in our arcenal.
+% Daze.Neutral: I'm no longer impressed.
+=> END
+
+~ asteria_complimentary_try
+% Asteria.Neutral: I can use this, right?
+% Asteria.Neutral: It's worth a try...
+% Asteria.Neutral: I can do this..!
+=> END
+
+~ asteria_complimentary_fail
+% Asteria.Neutral: Oh it was so close!
+% Asteria.Neutral: Nooooo..!
+% Asteria.Neutral: Ah... that wasn't it.
+=> END
+
+~ asteria_complimentary_master
+% Asteria.Neutral: That wasn't that hard!
+% Asteria.Neutral: Yes, YES![br]I've got it!
+% Asteria.Neutral: Oh- that one felt perfect!
+=> END

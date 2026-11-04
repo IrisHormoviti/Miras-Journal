@@ -6,465 +6,28 @@
 [ext_resource type="Resource" uid="uid://bqwviswxxvkw2" path="res://database/Enemies/StoneGuardian.tres" id="3_s2u2d"]
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="4_t20i2"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="6_d2kvd"]
-[ext_resource type="Resource" uid="uid://8slcowrx21ki" path="res://database/Abilities/Gather.tres" id="6_t20i2"]
-[ext_resource type="Resource" uid="uid://cjbvpig26tld7" path="res://database/Sequences/Action/StoneGuardianAdapt.tres" id="8_adapt"]
-[ext_resource type="Resource" uid="uid://cvoo46s5t4di0" path="res://database/Sequences/Action/StoneGuardianLoop.tres" id="9_loop"]
 [ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="11_jwiyt"]
 [ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="12_eibu6"]
-[ext_resource type="Script" uid="uid://b2viaujc062mm" path="res://codings/Battle/Steps/Actor/troop_step.gd" id="13_4jogx"]
-[ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="14_w4e3m"]
 [ext_resource type="Script" uid="uid://brxod1kfeknjs" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="15_uvfdg"]
 [ext_resource type="Script" uid="uid://dbfmyyanaru1b" path="res://codings/Battle/Steps/Scheduling/battle_flow_step.gd" id="16_nlkaa"]
 [ext_resource type="Script" uid="uid://qj0kal4v0pn4" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="17_ce4fm"]
-[ext_resource type="Resource" uid="uid://de2ymbs4ajhqc" path="res://database/Abilities/Adaptation.tres" id="18_dwjyj"]
-[ext_resource type="Script" uid="uid://brx0s8klhefbi" path="res://codings/Battle/Steps/Presentation/overlay_step.gd" id="19_ydpb5"]
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="20_ga6if"]
-[ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="21_krhvc"]
-[ext_resource type="Resource" uid="uid://du6r33xbjfihd" path="res://database/States/AuraOverwrite.tres" id="22_n86a8"]
-[ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="23_chwvr"]
-[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="24_h02hu"]
+[ext_resource type="Resource" uid="uid://7xem2g8y8mxl" path="res://database/Sequences/Action/StoneGuardianFinisher.tres" id="21_0qh12"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="25_2wih2"]
-[ext_resource type="Script" uid="uid://bte654s5nh6vn" path="res://codings/Battle/Steps/Meta/ui_state_step.gd" id="26_g70io"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="27_mestl"]
-[ext_resource type="Script" uid="uid://cy7rvxnxpkw50" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="28_hqgee"]
-[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="29_5rqit"]
-[ext_resource type="Resource" uid="uid://cci8aukur3fo7" path="res://database/Abilities/Drill.tres" id="30_lsevo"]
-[ext_resource type="Script" uid="uid://5k3ongxwrrib" path="res://codings/Battle/Steps/Scheduling/turn_step.gd" id="31_lw77c"]
-[ext_resource type="Script" uid="uid://bkir2j2h5fpw6" path="res://codings/Battle/Steps/Conditions/state_condition.gd" id="32_ku1yl"]
-[ext_resource type="Resource" uid="uid://btmofal2vov07" path="res://database/States/AuraBreak.tres" id="33_4rxc7"]
 [ext_resource type="Script" uid="uid://1lgh0kqkf2x5" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="34_t2vt3"]
-[ext_resource type="Resource" uid="uid://cemf0nu6fbtaj" path="res://database/States/Guarding.tres" id="35_sd1am"]
 [ext_resource type="Script" uid="uid://btnsdsi8rjqnj" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="36_ol44g"]
-[ext_resource type="Script" uid="uid://bhb42mpxxarv" path="res://codings/Battle/Steps/Meta/world_step.gd" id="37_o72nh"]
 [ext_resource type="Script" uid="uid://dxycvdv0l12r3" path="res://codings/Battle/Steps/Meta/event_step.gd" id="38_60n5k"]
 [ext_resource type="Resource" uid="uid://bepaxlymwd13p" path="res://database/Abilities/SturdyGuard.tres" id="40_jmqb3"]
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="cond_be_actor"]
-[ext_resource type="Script" uid="uid://cfuw4m52tqwxx" path="res://codings/Battle/Steps/Conditions/flag_condition.gd" id="cond_be_flag"]
+[ext_resource type="Script" uid="uid://bq6h8c3vs70hp" path="res://codings/Battle/Steps/Conditions/actor_alive_condition.gd" id="cond_be_alive"]
+[ext_resource type="Script" uid="uid://2x865joteqom" path="res://codings/Battle/Steps/Conditions/all_condition.gd" id="cond_be_all"]
+[ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="cond_be_base"]
 [ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_be_stat"]
 
-[sub_resource type="Resource" id="Resource_d2kvd_ref_0"]
-resource_name = "Guardian"
+[sub_resource type="Resource" id="Resource_w4e3m"]
+resource_name = "Caster"
 script = ExtResource("cond_be_actor")
-mode = 2
-codename = &"Guardian"
-
-[sub_resource type="Resource" id="Resource_d2kvd_aura_1"]
-resource_name = "Guardian aura is at most 1"
-script = ExtResource("cond_be_stat")
-actor = SubResource("Resource_d2kvd_ref_0")
-stat = 1
-comparator = 5
-value = 1.0
-
-[sub_resource type="Resource" id="Resource_d2kvd_caster"]
-resource_name = "Guardian"
-script = ExtResource("cond_be_actor")
-mode = 2
-codename = &"Guardian"
-
-[sub_resource type="Resource" id="Resource_d2kvd"]
-script = ExtResource("3_oponu")
-condition = SubResource("Resource_d2kvd_aura_1")
-repeatable = true
-result = 2
-dialog_cue = "0"
-caster = SubResource("Resource_d2kvd_caster")
-move = ExtResource("6_t20i2")
-metadata/_custom_type_script = "uid://cn75n6xjwndk3"
-
-[sub_resource type="Resource" id="Resource_t20i2_ref_2"]
-resource_name = "Guardian"
-script = ExtResource("cond_be_actor")
-mode = 2
-codename = &"Guardian"
-
-[sub_resource type="Resource" id="Resource_t20i2_health_3"]
-resource_name = "Guardian health is less than 100"
-script = ExtResource("cond_be_stat")
-actor = SubResource("Resource_t20i2_ref_2")
-comparator = 4
-value = 100.0
-
-[sub_resource type="Resource" id="Resource_t20i2"]
-script = ExtResource("3_oponu")
-condition = SubResource("Resource_t20i2_health_3")
-repeatable = true
-result = 5
-hold_turn = true
-dialog_cue = "0"
-sequence = ExtResource("8_adapt")
-metadata/_custom_type_script = "uid://cn75n6xjwndk3"
-
-[sub_resource type="Resource" id="Resource_87ic2"]
-script = ExtResource("3_oponu")
-repeatable = true
-result = 5
-hold_turn = true
-dialog_cue = "0"
-sequence = ExtResource("9_loop")
-metadata/_custom_type_script = "uid://cn75n6xjwndk3"
-
-[sub_resource type="Resource" id="Resource_yttu5_flag_4"]
-resource_name = "flag Event/StoneGuardianFinisher = 1"
-script = ExtResource("cond_be_flag")
-expression = &"Event/StoneGuardianFinisher = 1"
-
-[sub_resource type="Resource" id="Resource_gl2jn"]
-resource_name = "Party Member 1"
-script = ExtResource("cond_be_actor")
-mode = 3
-party_index = 1
-
-[sub_resource type="Resource" id="Resource_coddm"]
-resource_name = "Party Member 1 health is greater than 0"
-script = ExtResource("cond_be_stat")
-actor = SubResource("Resource_gl2jn")
-comparator = 2
-
-[sub_resource type="Resource" id="Resource_jkd7u"]
-script = ExtResource("13_4jogx")
-mode = 2
-actor = SubResource("Resource_gl2jn")
-
-[sub_resource type="Resource" id="Resource_mq4vn"]
-script = ExtResource("14_w4e3m")
-condition = SubResource("Resource_coddm")
-if_steps = Array[ExtResource("12_eibu6")]([SubResource("Resource_jkd7u")])
-
-[sub_resource type="Resource" id="Resource_mvmnu"]
-script = ExtResource("15_uvfdg")
-mode = 7
-
-[sub_resource type="Resource" id="Resource_5k74c"]
-resource_name = "Guardian"
-script = ExtResource("cond_be_actor")
-mode = 2
-codename = &"Guardian"
-
-[sub_resource type="Resource" id="Resource_paafi"]
-script = ExtResource("16_nlkaa")
-mode = 10
-actor = SubResource("Resource_5k74c")
-
-[sub_resource type="Resource" id="Resource_50d23"]
-resource_name = "Party Leader"
-script = ExtResource("cond_be_actor")
-mode = 3
-
-[sub_resource type="Resource" id="Resource_a24u1"]
-script = ExtResource("17_ce4fm")
-actor = SubResource("Resource_50d23")
-
-[sub_resource type="Resource" id="Resource_p1dq3"]
-script = ExtResource("19_ydpb5")
-ability = ExtResource("18_dwjyj")
-
-[sub_resource type="Resource" id="Resource_jdanv"]
-resource_name = "Target"
-script = ExtResource("cond_be_actor")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_ro0na"]
-script = ExtResource("20_ga6if")
-zoom_enabled = true
-amount = 6.0
-actor = SubResource("Resource_jdanv")
-
-[sub_resource type="Resource" id="Resource_ysvru"]
-script = ExtResource("20_ga6if")
-move_enabled = true
-actor = SubResource("Resource_50d23")
-wait = true
-
-[sub_resource type="Resource" id="Resource_nef2f"]
-script = ExtResource("20_ga6if")
-move_enabled = true
-actor = SubResource("Resource_5k74c")
-offset = Vector2(0, 0)
-wait = true
-
-[sub_resource type="Resource" id="Resource_6j6kl"]
-script = ExtResource("21_krhvc")
-mode = 1
-actor = SubResource("Resource_5k74c")
-state = ExtResource("22_n86a8")
-
-[sub_resource type="Resource" id="Resource_1anby"]
-resource_name = "ffffff"
-script = ExtResource("23_chwvr")
-mode = 0
-color = Color(0.498, 0.09, 1, 1)
-
-[sub_resource type="Resource" id="Resource_pt7jj"]
-script = ExtResource("21_krhvc")
-mode = 4
-actor = SubResource("Resource_5k74c")
-color = SubResource("Resource_1anby")
-
-[sub_resource type="Resource" id="Resource_yg8cu"]
-resource_name = "ffffff"
-script = ExtResource("23_chwvr")
-mode = 0
-color = Color(0.498, 0.09, 1, 1)
-
-[sub_resource type="Resource" id="Resource_yilg6"]
-script = ExtResource("24_h02hu")
-mode = 1
-actor = SubResource("Resource_5k74c")
-value = &"Hue-Shift"
-color = SubResource("Resource_yg8cu")
-
-[sub_resource type="Resource" id="Resource_jqxr7"]
-resource_name = "ffffff"
-script = ExtResource("23_chwvr")
-mode = 0
-color = Color(0.498, 0.09, 1, 1)
-
-[sub_resource type="Resource" id="Resource_tcrwm"]
-script = ExtResource("25_2wih2")
-mode = 5
-actor = SubResource("Resource_5k74c")
-color = SubResource("Resource_jqxr7")
-
-[sub_resource type="Resource" id="Resource_0qrom"]
-script = ExtResource("26_g70io")
-mode = 4
-
-[sub_resource type="Resource" id="Resource_c6xyv"]
-script = ExtResource("27_mestl")
-process_while_paused = true
-
-[sub_resource type="Resource" id="Resource_sd1ht"]
-resource_name = "0.0"
-script = ExtResource("29_5rqit")
-source = 0
-
-[sub_resource type="Resource" id="Resource_m23s8"]
-script = ExtResource("28_hqgee")
-mode = 0
-stat = 1
-actor = SubResource("Resource_50d23")
-value = SubResource("Resource_sd1ht")
-
-[sub_resource type="Resource" id="Resource_vl0wm"]
-resource_name = "40.0"
-script = ExtResource("29_5rqit")
-source = 0
-value = 40.0
-
-[sub_resource type="Resource" id="Resource_mqytq"]
-script = ExtResource("28_hqgee")
-mode = 3
-actor = SubResource("Resource_50d23")
-value = SubResource("Resource_vl0wm")
-
-[sub_resource type="Resource" id="Resource_c47ga"]
-script = ExtResource("19_ydpb5")
-ability = ExtResource("30_lsevo")
-
-[sub_resource type="Resource" id="Resource_7epxi"]
-script = ExtResource("31_lw77c")
-actor = SubResource("Resource_5k74c")
-ability = ExtResource("30_lsevo")
-target = SubResource("Resource_50d23")
-
-[sub_resource type="Resource" id="Resource_okodj"]
-script = ExtResource("27_mestl")
-duration = 0.1
-process_while_paused = true
-
-[sub_resource type="Resource" id="Resource_pwy77"]
-resource_name = "Party Leader has state Guarding"
-script = ExtResource("32_ku1yl")
-actor = SubResource("Resource_50d23")
-state = &"Guarding"
-
-[sub_resource type="Resource" id="Resource_0ahv8"]
-script = ExtResource("25_2wih2")
-actor = SubResource("Resource_50d23")
-animation = &"Bleed"
-
-[sub_resource type="Resource" id="Resource_w52qm"]
-script = ExtResource("21_krhvc")
-actor = SubResource("Resource_50d23")
-state = ExtResource("33_4rxc7")
-wait = false
-
-[sub_resource type="Resource" id="Resource_i42d6"]
-script = ExtResource("27_mestl")
-duration = 2.0
-process_while_paused = true
-
-[sub_resource type="Resource" id="Resource_k2yjx"]
-script = ExtResource("34_t2vt3")
-file = "story_0"
-cue = "stone_guardian_my_arm"
-passive = true
-
-[sub_resource type="Resource" id="Resource_2x8cy"]
-script = ExtResource("21_krhvc")
-mode = 1
-actor = SubResource("Resource_50d23")
-state = ExtResource("35_sd1am")
-
-[sub_resource type="Resource" id="Resource_35qi8"]
-script = ExtResource("27_mestl")
-process_while_paused = true
-
-[sub_resource type="Resource" id="Resource_mptor"]
-script = ExtResource("34_t2vt3")
-file = "story_0"
-cue = "stone_guardian_guard"
-passive = true
-wait = false
-
-[sub_resource type="Resource" id="Resource_co3xu"]
-script = ExtResource("27_mestl")
-duration = 2.0
-process_while_paused = true
-
-[sub_resource type="Resource" id="Resource_ven7d"]
-resource_name = "0.0"
-script = ExtResource("29_5rqit")
-source = 0
-
-[sub_resource type="Resource" id="Resource_o4ef3"]
-script = ExtResource("28_hqgee")
-mode = 0
-stat = 1
-actor = SubResource("Resource_50d23")
-value = SubResource("Resource_ven7d")
-
-[sub_resource type="Resource" id="Resource_cmotu"]
-script = ExtResource("21_krhvc")
-mode = 1
-actor = SubResource("Resource_50d23")
-state = ExtResource("35_sd1am")
-
-[sub_resource type="Resource" id="Resource_6jrch"]
-script = ExtResource("25_2wih2")
-mode = 8
-actor = SubResource("Resource_50d23")
-outline_remove = true
-
-[sub_resource type="Resource" id="Resource_ix3ys"]
-script = ExtResource("25_2wih2")
-actor = SubResource("Resource_50d23")
-animation = &"Bleed"
-
-[sub_resource type="Resource" id="Resource_p0ky5"]
-script = ExtResource("21_krhvc")
-actor = SubResource("Resource_50d23")
-state = ExtResource("33_4rxc7")
-wait = false
-
-[sub_resource type="Resource" id="Resource_uv63x"]
-script = ExtResource("27_mestl")
-duration = 8.0
-process_while_paused = true
-
-[sub_resource type="Resource" id="Resource_727kd"]
-script = ExtResource("14_w4e3m")
-condition = SubResource("Resource_pwy77")
-if_steps = Array[ExtResource("12_eibu6")]([SubResource("Resource_2x8cy"), SubResource("Resource_35qi8"), SubResource("Resource_mptor"), SubResource("Resource_co3xu"), SubResource("Resource_o4ef3"), SubResource("Resource_cmotu"), SubResource("Resource_6jrch"), SubResource("Resource_ix3ys"), SubResource("Resource_p0ky5"), SubResource("Resource_uv63x")])
-else_steps = Array[ExtResource("12_eibu6")]([SubResource("Resource_0ahv8"), SubResource("Resource_w52qm"), SubResource("Resource_i42d6"), SubResource("Resource_k2yjx")])
-
-[sub_resource type="Resource" id="Resource_rxsj5"]
-script = ExtResource("26_g70io")
-mode = 6
-
-[sub_resource type="Resource" id="Resource_fey6j"]
-resource_name = "Target"
-script = ExtResource("cond_be_actor")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_4rd3f"]
-script = ExtResource("20_ga6if")
-zoom_enabled = true
-amount = 7.0
-actor = SubResource("Resource_fey6j")
-
-[sub_resource type="Resource" id="Resource_yyk55"]
-script = ExtResource("20_ga6if")
-move_enabled = true
-actor = SubResource("Resource_5k74c")
-wait = true
-
-[sub_resource type="Resource" id="Resource_2ykq7"]
-resource_name = "Target"
-script = ExtResource("cond_be_actor")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_ghlrb"]
-script = ExtResource("20_ga6if")
-zoom_enabled = true
-amount = 6.0
-actor = SubResource("Resource_2ykq7")
-
-[sub_resource type="Resource" id="Resource_x7gfq"]
-script = ExtResource("20_ga6if")
-move_enabled = true
-actor = SubResource("Resource_50d23")
-duration = 3.0
-wait = true
-
-[sub_resource type="Resource" id="Resource_awcsp"]
-script = ExtResource("27_mestl")
-process_while_paused = true
-
-[sub_resource type="Resource" id="Resource_qn7fh"]
-script = ExtResource("17_ce4fm")
-actor = SubResource("Resource_50d23")
-enabled = false
-
-[sub_resource type="Resource" id="Resource_hfeiu"]
-script = ExtResource("36_ol44g")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_4a0u0"]
-script = ExtResource("27_mestl")
-process_while_paused = true
-
-[sub_resource type="Resource" id="Resource_deni0"]
-script = ExtResource("34_t2vt3")
-file = "story_0"
-cue = "placeholder_daze"
-
-[sub_resource type="Resource" id="Resource_ebp2d"]
-script = ExtResource("26_g70io")
-mode = 5
-layer = 3
-
-[sub_resource type="Resource" id="Resource_0pfg7"]
-script = ExtResource("37_o72nh")
-mode = 0
-party = PackedStringArray("Mira")
-
-[sub_resource type="Resource" id="Resource_fdj5o"]
-script = ExtResource("15_uvfdg")
-silent = true
-
-[sub_resource type="Resource" id="Resource_tgr0k"]
-script = ExtResource("16_nlkaa")
-mode = 5
-
-[sub_resource type="Resource" id="Resource_fsiev"]
-script = ExtResource("38_60n5k")
-flag = &"Event/BeatStoneGuardian"
-
-[sub_resource type="Resource" id="Resource_i7gd8"]
-script = ExtResource("11_jwiyt")
-steps = Array[ExtResource("12_eibu6")]([SubResource("Resource_mq4vn"), SubResource("Resource_mvmnu"), SubResource("Resource_paafi"), SubResource("Resource_a24u1"), SubResource("Resource_p1dq3"), SubResource("Resource_ro0na"), SubResource("Resource_ysvru"), SubResource("Resource_nef2f"), SubResource("Resource_6j6kl"), SubResource("Resource_pt7jj"), SubResource("Resource_yilg6"), SubResource("Resource_tcrwm"), SubResource("Resource_0qrom"), SubResource("Resource_c6xyv"), SubResource("Resource_m23s8"), SubResource("Resource_mqytq"), SubResource("Resource_c47ga"), SubResource("Resource_7epxi"), SubResource("Resource_okodj"), SubResource("Resource_727kd"), SubResource("Resource_rxsj5"), SubResource("Resource_4rd3f"), SubResource("Resource_yyk55"), SubResource("Resource_ghlrb"), SubResource("Resource_x7gfq"), SubResource("Resource_awcsp"), SubResource("Resource_qn7fh"), SubResource("Resource_hfeiu"), SubResource("Resource_4a0u0"), SubResource("Resource_deni0"), SubResource("Resource_ebp2d"), SubResource("Resource_0pfg7"), SubResource("Resource_fdj5o"), SubResource("Resource_tgr0k"), SubResource("Resource_fsiev")])
-
-[sub_resource type="Resource" id="Resource_yttu5"]
-script = ExtResource("3_oponu")
-condition = SubResource("Resource_yttu5_flag_4")
-repeatable = true
-result = 5
-hold_turn = true
-dialog_cue = "0"
-sequence = SubResource("Resource_i7gd8")
-metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_oponu_ref_5"]
 resource_name = "Guardian"
@@ -479,11 +42,69 @@ actor = SubResource("Resource_oponu_ref_5")
 comparator = 4
 value = 200.0
 
+[sub_resource type="Resource" id="Resource_oponu_alive_6"]
+resource_name = "Guardian alive"
+script = ExtResource("cond_be_alive")
+actor = SubResource("Resource_oponu_ref_5")
+
+[sub_resource type="Resource" id="Resource_oponu_conditions_6"]
+resource_name = "(Guardian health is less than 200) and (Guardian alive)"
+script = ExtResource("cond_be_all")
+conditions = Array[ExtResource("cond_be_base")]([SubResource("Resource_oponu_health_6"), SubResource("Resource_oponu_alive_6")])
+
 [sub_resource type="Resource" id="Resource_oponu"]
+resource_name = "still standing?"
 script = ExtResource("3_oponu")
-condition = SubResource("Resource_oponu_health_6")
+condition = SubResource("Resource_oponu_conditions_6")
 dialog_file = "story_0"
 dialog_cue = "stone_guardian_still_standing"
+caster = SubResource("Resource_w4e3m")
+metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[sub_resource type="Resource" id="Resource_n2bxu"]
+resource_name = "Caster"
+script = ExtResource("cond_be_actor")
+
+[sub_resource type="Resource" id="Resource_t0nf6"]
+resource_name = "Guardian"
+script = ExtResource("cond_be_actor")
+mode = 2
+codename = &"Guardian"
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_ldepq"]
+resource_name = "Guardian health is less than 150"
+script = ExtResource("cond_be_stat")
+actor = SubResource("Resource_t0nf6")
+comparator = 4
+value = 150.0
+metadata/_custom_type_script = "uid://bkek064a7loie"
+
+[sub_resource type="Resource" id="Resource_dd7g1"]
+resource_name = "Party Member 1"
+script = ExtResource("cond_be_actor")
+mode = 3
+party_index = 1
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_4i3i6"]
+script = ExtResource("17_ce4fm")
+mode = 3
+actor = SubResource("Resource_dd7g1")
+enabled = false
+
+[sub_resource type="Resource" id="Resource_wuain"]
+script = ExtResource("11_jwiyt")
+steps = Array[ExtResource("12_eibu6")]([SubResource("Resource_4i3i6")])
+metadata/_custom_type_script = "uid://cn5b836p1hs1k"
+
+[sub_resource type="Resource" id="Resource_53d2g"]
+resource_name = "no more clutch for you"
+script = ExtResource("3_oponu")
+condition = SubResource("Resource_ldepq")
+result = 5
+caster = SubResource("Resource_n2bxu")
+sequence = SubResource("Resource_wuain")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
 [sub_resource type="Resource" id="Resource_545aw"]
@@ -507,7 +128,6 @@ party_index = 1
 script = ExtResource("17_ce4fm")
 mode = 3
 actor = SubResource("Resource_u8r4x")
-enabled = false
 
 [sub_resource type="Resource" id="Resource_yfeli"]
 resource_name = "Target"
@@ -620,19 +240,14 @@ mode = 3
 script = ExtResource("11_jwiyt")
 steps = Array[ExtResource("12_eibu6")]([SubResource("Resource_rjokp"), SubResource("Resource_7qieo"), SubResource("Resource_m81ri"), SubResource("Resource_xm2ff"), SubResource("Resource_8dhgb"), SubResource("Resource_k2uns"), SubResource("Resource_mbtw5"), SubResource("Resource_7wej2"), SubResource("Resource_k1ckc"), SubResource("Resource_85jd3"), SubResource("Resource_wjr3m"), SubResource("Resource_ublpt"), SubResource("Resource_tsnnf"), SubResource("Resource_2e3xy"), SubResource("Resource_5t0bc"), SubResource("Resource_f02c5"), SubResource("Resource_d18mm")])
 
-[sub_resource type="Resource" id="Resource_68ypa"]
-script = ExtResource("11_jwiyt")
-steps = Array[ExtResource("12_eibu6")]([SubResource("Resource_mq4vn"), SubResource("Resource_mvmnu"), SubResource("Resource_paafi"), SubResource("Resource_a24u1"), SubResource("Resource_p1dq3"), SubResource("Resource_ro0na"), SubResource("Resource_ysvru"), SubResource("Resource_nef2f"), SubResource("Resource_6j6kl"), SubResource("Resource_pt7jj"), SubResource("Resource_yilg6"), SubResource("Resource_tcrwm"), SubResource("Resource_0qrom"), SubResource("Resource_c6xyv"), SubResource("Resource_m23s8"), SubResource("Resource_mqytq"), SubResource("Resource_c47ga"), SubResource("Resource_7epxi"), SubResource("Resource_okodj"), SubResource("Resource_727kd"), SubResource("Resource_rxsj5"), SubResource("Resource_4rd3f"), SubResource("Resource_yyk55"), SubResource("Resource_ghlrb"), SubResource("Resource_x7gfq"), SubResource("Resource_awcsp"), SubResource("Resource_qn7fh"), SubResource("Resource_hfeiu"), SubResource("Resource_4a0u0"), SubResource("Resource_deni0"), SubResource("Resource_ebp2d"), SubResource("Resource_0pfg7"), SubResource("Resource_fdj5o"), SubResource("Resource_tgr0k"), SubResource("Resource_fsiev")])
-
 [resource]
 script = ExtResource("4_t20i2")
 Enemies = Array[ExtResource("2_s2u2d")]([ExtResource("3_s2u2d")])
 ScenePosition = Vector2(2543, -145)
 CanEscape = false
 entrance_sequence = SubResource("Resource_y60hd")
-victory_sequence = SubResource("Resource_68ypa")
+victory_sequence = ExtResource("21_0qh12")
 EntranceBanterIsPassive = false
 VictoryText = "Victory?"
-PartyOverride = ["Mira", "Alcine"]
-Events = Array[ExtResource("3_oponu")]([SubResource("Resource_d2kvd"), SubResource("Resource_t20i2"), SubResource("Resource_87ic2"), SubResource("Resource_yttu5"), SubResource("Resource_oponu")])
+Events = Array[ExtResource("3_oponu")]([SubResource("Resource_oponu"), SubResource("Resource_53d2g")])
 metadata/_custom_type_script = "uid://blx6fs34ughqo"

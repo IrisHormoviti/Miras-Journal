@@ -657,7 +657,6 @@ func time_transition(location := Global.room.codename()) -> void:
 		Loader.defeated.clear()
 
 	set_time(to_time)
-	Transition.unwipe()
 	await start_time_events(location)
 
 
@@ -730,7 +729,6 @@ func start_time_events(location: String) -> void:
 ## Get an id for the current date, such as "nov1_morning"
 func get_date_identifier(of_day := day, time := time_of_day) -> String:
 	return Query.get_mmm(Query.get_month(of_day)).to_lower() + Query.get_date_day(of_day) + "_" + Query.to_tod_text(time).to_lower()
-
 
 
 ## Change any parameters from the time change

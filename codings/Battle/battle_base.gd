@@ -76,6 +76,9 @@ var no_misses := false
 var interrupted := false
 ## The next turn a followup will be preformed
 var follow_up_next := false
+## True while the current actor is taking the extra move from an Aura Break.
+## A follow-up is a single action, even for actors with a multi-move turn.
+var follow_up_turn := false
 ## True while a sprung trap is being preformed, so traps can't chain forever
 var in_trap := false
 ## Traps that sprung from the current hit, waiting to counterattack
@@ -275,6 +278,16 @@ func _ready() -> void:
 	act.z_index = (Global.room.camera_index.z if is_instance_valid(Global.room) and Global.room.camera_index else 3)
 	cam.make_current()
 
+	# A battle without a wipe is visible the moment it is added to the tree.
+	# Creating the actors takes several frames, and each one starts out at
+	# Actor0's editor position before it gets a battle slot, so the party and
+	# enemies would be seen piled up and then snapping into place. Keep the
+	# scene hidden until they are all positioned.
+	var defer_reveal := not sequence.transition
+
+	if defer_reveal:
+		act.hide()
+
 	action_runner = ActionSequenceRunner.new()
 	action_runner.name = "ActionSequenceRunner"
 	action_runner.battle = self
@@ -364,12 +377,16 @@ func _ready() -> void:
 		sprite_init(i)
 		i.next_action = Actor.BtAction.UNSET
 		i.battle_log = [Actor.log_entry.new()]
+		i.turns_taken = 0
 		i.load_complimentaries()
 
 	if sequence.Music:
 		Audio.change_music_from_to(sequence.Music.track, sequence.Music.battle_start)
 
 	position_sprites()
+	if defer_reveal:
+		act.show()
+
 	if is_instance_valid(attacker): attacker.hide()
 	if not sequence.skip_entrance:
 		if sequence.entrance_sequence != null: await run_battle_sequence(sequence.entrance_sequence, null, null, false)
@@ -753,6 +770,7 @@ func recruit_party_member(codename: StringName) -> Actor:
 	member.next_move = null
 	member.next_target = null
 	member.battle_log = [Actor.log_entry.new()]
+	member.turns_taken = 0
 	member.load_complimentaries()
 	await sprite_init(member)
 	TurnOrder.push_front(member)
@@ -831,8 +849,9 @@ func _on_next_turn() -> void:
 	interrupted = false
 	#position_sprites()
 	Turn += 1
+	follow_up_turn = follow_up_next
 
-	if follow_up_next:
+	if follow_up_turn:
 		follow_up_text()
 		follow_up_next = false
 		TurnInd = TurnOrder.find(CurrentChar)
@@ -843,6 +862,7 @@ func _on_next_turn() -> void:
 			TurnInd += 1
 
 	CurrentChar = TurnOrder[TurnInd]
+	CurrentChar.turns_taken += 1
 
 	if CurrentChar.node == null:
 		_on_next_turn()
@@ -916,7 +936,13 @@ func check_for_victory() -> bool:
 func make_move() -> void:
 	if check_for_victory(): return
 	if CurrentChar.next_action == Actor.BtAction.UNSET:
-		if CurrentChar.controllable:
+		if (
+			not CurrentChar.controllable
+			and CurrentChar.turn_sequence != null
+			and not CurrentChar.turn_sequence.is_empty()
+		):
+			await run_turn_sequence(CurrentChar)
+		elif CurrentChar.controllable:
 			print_rich("[color=cornflower-blue]Control")
 			GetControl.emit()
 		else:
@@ -924,6 +950,26 @@ func make_move() -> void:
 	else:
 		print_rich("[color=cornflower-blue]Forced move")
 		confirm_next()
+
+
+## Runs an actor's authored turn. The sequence is responsible for its own
+## actions; the battle ends the turn afterwards unless the script ended the
+## battle itself (for example by showing a scripted victory).
+func run_turn_sequence(actor: Actor) -> void:
+	if actor == null or actor.turn_sequence == null or actor.turn_sequence.is_empty():
+		return
+
+	Action = true
+	await run_battle_sequence(actor.turn_sequence, actor, CurrentTarget, false)
+
+	if not is_instance_valid(self):
+		return
+
+	if battle_result != Result.UNFINISHED or AwaitVictory:
+		return
+
+	anim("", actor)
+	await end_turn()
 
 
 func _on_ai_chosen() -> void:
@@ -942,29 +988,39 @@ func confirm_next(action_anim := true) -> void:
 	print_rich("[color=cornflower-blue]Action: ", CurrentChar.next_action)
 
 	if action_anim:
-		if CurrentChar.next_move.show_cutin:
-			cut_in(CurrentChar.codename)
-
-		match CurrentChar.next_action:
-			Actor.BtAction.MAGIC:
-				focus_cam(CurrentChar)
-				zoom(5.5)
-				callout(CurrentChar.next_move)
-				var timer := get_tree().create_timer(0.5)
-				await anim("Ability")
-				if timer.time_left != 0: await timer.timeout
-
-			Actor.BtAction.ITEM:
-				focus_cam(CurrentChar)
-				zoom(5.5)
-				var pos := CurrentChar.node.get_global_transform_with_canvas().origin
-				Item.use_animation(CurrentChar.next_move.icon, CurrentChar.next_move.name, pos)
-				await Event.wait(2)
+		await play_action_animation(CurrentChar, CurrentChar.next_move, CurrentChar.next_action)
 
 	if CurrentChar.next_target == null:
 		CurrentChar.next_target = random_target(CurrentChar.next_move)
 
 	_on_battle_ui_ability_returned(CurrentChar.next_move, CurrentChar.next_target)
+
+
+## Plays the wind-up animation for an action before its ability runs. MAGIC
+## casts with the callout and a camera zoom, ITEM uses the item animation.
+## ACT and UNSET have no extra wind-up.
+func play_action_animation(actor: Actor, ability: Ability, action: int) -> void:
+	if actor == null or actor.node == null or ability == null:
+		return
+
+	if ability.show_cutin:
+		cut_in(actor.codename)
+
+	match action:
+		Actor.BtAction.MAGIC:
+			focus_cam(actor)
+			zoom(5.5)
+			callout(ability)
+			var timer := get_tree().create_timer(0.5)
+			await anim("Ability", actor)
+			if timer.time_left != 0: await timer.timeout
+
+		Actor.BtAction.ITEM:
+			focus_cam(actor)
+			zoom(5.5)
+			var pos := actor.node.get_global_transform_with_canvas().origin
+			Item.use_animation(ability.icon, ability.name, pos)
+			await Event.wait(2)
 
 
 func _input(event: InputEvent) -> void:
@@ -1250,6 +1306,15 @@ func end_turn() -> void:
 	next_turn.emit()
 
 
+## Starts the first turn when a scripted opening held it before any actor got
+## control. Without this, a dialogue that uses [method hold_turn] and then
+## [method release_turn] would unlock the turn but never ask for the next one.
+func start_turns() -> void:
+	if TurnInd != -1 or Turn > 0:
+		return
+
+	next_turn.emit()
+
 ## Battle events that do not hold the turn are run here, one after another, so
 ## their dialogues cannot open on top of each other. The queue is deliberately
 ## not awaited by end_turn: a flavor passive keeps playing while the turn moves
@@ -1372,7 +1437,7 @@ func damage(
 		# cant_die actors let Actor.damage roll the 1-5 hp clutch value; actors
 		# with only clutch_dmg stop at exactly 1 hp.
 		limiter = not target.cant_die
-		queue_sequence_for_actor(target, target.death_action_sequence, "DeathSequence")
+		queue_sequence_for_actor(target, death_sequence_for(target), "DeathSequence")
 
 	# Actual damage happens
 	target.damage(dmg, limiter)
@@ -1448,8 +1513,21 @@ func damage_feedback(target: Actor, dmg: int, color: Color, relation: Wheel.Rela
 	if elemental:
 		var base_dmg := int(dmg * target.defence * 2 * target.defence_multiplier)
 		var aur_dmg := relation_to_aura_dmg(relation, base_dmg)
+		var aura_before := target.aura
 		print(target.first_name, " takes ", aur_dmg, " aura damage")
 		target.add_aura(-aur_dmg)
+
+		# Grant the follow-up at the moment the aura breaks. Waiting until
+		# end_turn loses it when the same hit also defeats the target.
+		if (
+			aura_before > 0
+			and target.aura == 0
+			and target != CurrentChar
+			and not target.has_state("AuraBreak")
+			and not target.has_state("UnbreakingAura")
+		):
+			follow_up_next = true
+
 		pop_num(target, dmg, color)
 
 		# Show the popup text
@@ -1623,13 +1701,112 @@ func queue_action(actor: Actor, ability: Ability, target: Actor, action := Actor
 
 
 ## Runs an ability through the same runner as a normal turn action.
-func use_ability_now(actor: Actor, ability: Ability, target: Actor, consume_turn := false) -> void:
+## [param pay_cost] and [param log_action] let scripted turns behave like a
+## regular AI action without changing the free story moves that call this with
+## their defaults.
+func use_ability_now(
+	actor: Actor,
+	ability: Ability,
+	target: Actor,
+	consume_turn := false,
+	action := Actor.BtAction.ACT,
+	pay_cost := false,
+	log_action := false,
+) -> void:
 	if actor == null or ability == null:
 		return
 
+	if ability.color_same_as_actor:
+		ability.wheel_color = actor.main_color
+
 	push_acting_context(actor, ability, target)
+
+	if pay_cost:
+		actor.add_aura(-ability.aura_cost)
+
+	if log_action:
+		var entry := Actor.log_entry.new()
+		entry.ability = ability
+		entry.target = target
+		entry.turn = Turn
+		actor.battle_log.append(entry)
+
+	# Forced story actions can ask for the same wind-up the battle UI plays,
+	# for example Actor.BtAction.MAGIC to cast before the ability starts.
+	if action != Actor.BtAction.ACT and action != Actor.BtAction.UNSET:
+		await play_action_animation(actor, ability, action)
+
 	await action_runner.run_ability(ability, actor, target, consume_turn)
 	pop_acting_context()
+
+
+## Asks the AI for a move, then runs it as part of a scripted turn. The normal
+## AI path confirms through [signal ai_chosen]; [member Ai.manual] suppresses
+## that so the authored turn stays in control of the order. [param target_hint]
+## can force a single-enemy ability onto a specific actor without taking the
+## ability choice away from the AI.
+func ai_move(actor: Actor, consume_turn := false, target_hint: Actor = null) -> void:
+	if actor == null or not is_instance_valid(actor):
+		return
+
+	actor.next_action = Actor.BtAction.UNSET
+	actor.next_move = null
+	actor.next_target = null
+
+	var ai := $AI
+	ai.manual = true
+	ai.ai()
+	ai.manual = false
+
+	var ability := actor.next_move
+	var target := actor.next_target
+	var action := actor.next_action
+	actor.next_action = Actor.BtAction.UNSET
+	actor.next_move = null
+	actor.next_target = null
+
+	if ability == null:
+		return
+
+	# Authored turns use this to keep the AI's choice of move but focus a
+	# single-target enemy ability on the actor that phase is about.
+	if (
+		target_hint != null
+		and is_instance_valid(target_hint)
+		and target_hint.health > 0
+		and ability.target == Ability.T.ONE_ENEMY
+	):
+		target = target_hint
+
+	await use_ability_now(actor, ability, target, consume_turn, action, true, true)
+
+	# Damage is applied before the knockout/ death sequence finishes. When the
+	# move dropped someone, that sequence holds the turn; wait for it so a
+	# scripted turn does not start its next action (or a cutscene) on top of it.
+	await wait_for_turn_release()
+
+	if not consume_turn and is_instance_valid(actor.node):
+		anim("", actor)
+
+
+## Waits until every temporary turn hold has been released.
+func wait_for_turn_release() -> void:
+	var start_time := Time.get_ticks_msec()
+
+	while lock_turn:
+		if battle_result != Result.UNFINISHED:
+			break
+
+		# A party wipe is handled by game over, do not make the boss keep
+		# playing its turn while the defeat transition runs.
+		if filter_dead(Party.current).is_empty():
+			break
+
+		if Time.get_ticks_msec() - start_time > 20000:
+			push_warning("Turn hold was not released within 20 seconds")
+			break
+
+		await Event.wait()
 
 
 func push_acting_context(actor: Actor, ability: Ability, target: Actor) -> void:
@@ -1787,24 +1964,50 @@ func screen_shake(amount: float = 15.0, duration: float = 0.5, frequency := 0.2)
 
 
 func play_effect(animation: String, target: Variant, offset := Vector2.ZERO, flip_on_player_use := false, dont_free := false) -> void:
-	if effects.sprite_frames.has_animation(animation):
-		print_rich("[color=cornflower-blue]Playing effect ", animation)
+	var effect := spawn_effect(animation, target, offset, flip_on_player_use)
 
-		if target is not Vector2:
-			if target is Actor and is_instance_valid(target) and is_instance_valid(target.node): target = target.node.position
-			else:
-				push_error("The target of the effect ", animation, " was invalid")
-				return
+	if effect == null:
+		return
 
-		var ef: AnimatedSprite2D = effects.duplicate()
+	await await_anim(effect, animation)
+	if not dont_free and is_instance_valid(effect): effect.queue_free()
 
-		if flip_on_player_use and !CurrentChar.is_enemy: ef.flip_h = true
-		ef.name = animation
-		act.add_child(ef)
-		ef.position = target + offset
-		ef.play(animation)
-		await await_anim(ef, animation)
-		if not dont_free: ef.queue_free()
+
+## Creates and starts an effect, returning its sprite so callers can keep a
+## direct reference. Looking effects up by node name breaks when two effects
+## with the same animation overlap, since Godot renames the second node.
+func spawn_effect(
+	animation: String, target: Variant, offset := Vector2.ZERO, flip_on_player_use := false
+) -> AnimatedSprite2D:
+	if not effects.sprite_frames.has_animation(animation):
+		return null
+
+	print_rich("[color=cornflower-blue]Playing effect ", animation)
+
+	if target is not Vector2:
+		if target is Actor and is_instance_valid(target) and is_instance_valid(target.node):
+			target = target.node.position
+		else:
+			push_error("The target of the effect ", animation, " was invalid")
+			return null
+
+	var ef: AnimatedSprite2D = effects.duplicate()
+
+	if flip_on_player_use and !CurrentChar.is_enemy: ef.flip_h = true
+	ef.name = animation
+	act.add_child(ef)
+	ef.position = target + offset
+	ef.play(animation)
+	return ef
+
+
+## Frees an effect once its animation finishes, without blocking the caller.
+func free_effect_when_done(effect: AnimatedSprite2D, animation := "") -> void:
+	if effect == null:
+		return
+
+	await await_anim(effect, animation)
+	if is_instance_valid(effect): effect.queue_free()
 
 
 func cut_in(image: String = CurrentChar.codename) -> void:
@@ -1915,6 +2118,46 @@ func stop_sound(sound_name: String, actor: Actor) -> void:
 		actor.node.get_node("SFX").get_node(sound_name).stop()
 
 
+## Plays the actor's <codename>_death banter if the cue exists. Death dialogue
+## is data-driven by codename so actors don't need a per-resource field.
+func play_death_banter(target: Actor) -> void:
+	if target == null or target.codename.is_empty():
+		return
+
+	var cue := str(target.codename).to_lower() + "_death"
+	var banter := await Loader.load_res("res://database/Text/banter_battle.dialogue") as DialogueResource
+
+	if banter == null or not banter.cues.has(cue):
+		return
+
+	await Passive.open("banter_battle", cue)
+
+
+## Finds an actor's death action sequence. An explicit actor override wins;
+## otherwise database/Sequences/Action/<codename>_death.tres is used if it
+## exists, so most actors never need a death_sequence property.
+func death_sequence_for(target: Actor) -> ActionSequence:
+	if target == null:
+		return null
+
+	if target.death_action_sequence != null and not target.death_action_sequence.is_empty():
+		return target.death_action_sequence
+
+	var base: String = "res://database/Sequences/Action/"
+	var candidates: Array[String] = [
+		str(target.codename) + "_death.tres",
+		str(target.codename).to_lower() + "_death.tres",
+	]
+
+	for file in candidates:
+		var path: String = base + file
+
+		if ResourceLoader.exists(path):
+			return load(path) as ActionSequence
+
+	return null
+
+
 ## Runs when an actor is defeated, usually when HP reaches 0
 func death(target: Actor) -> void:
 	# Skip if already dead
@@ -1942,7 +2185,9 @@ func death(target: Actor) -> void:
 
 	anim("KnockOut", target)
 
-	if not target.is_enemy and filter_dead(Party.current).is_empty():
+	var last_member := not target.is_enemy and filter_dead(Party.current).is_empty()
+
+	if last_member:
 		game_over(target)
 
 	# Effects
@@ -1968,12 +2213,13 @@ func death(target: Actor) -> void:
 	target.add_state("KnockedOut")
 
 	await Event.wait(1)
-	if (
-		target.death_action_sequence != null
-		and not target.death_action_sequence.steps.is_empty()
-		and not target.cant_die
-	):
-		await run_battle_sequence(target.death_action_sequence, target, target, false)
+	if not last_member:
+		await play_death_banter(target)
+
+	var death_sequence := death_sequence_for(target)
+
+	if death_sequence != null and not target.cant_die:
+		await run_battle_sequence(death_sequence, target, target, false)
 
 	release_turn()
 
@@ -2012,6 +2258,7 @@ func game_over(target: Actor = null) -> void:
 		get_tree().paused = false
 		await Event.wait(1, false)
 
+	Loader.battle_bars(0)
 	Transition.fade_in_out(Color.WHITE, 1, 0, 2)
 	await Event.wait(3, false)
 
@@ -2512,7 +2759,7 @@ func victory_count_sp() -> void:
 	dub.queue_free()
 
 
-func victory(ignore_seq := false) -> void:
+func victory(ignore_seq := false, canvas_layer := 1) -> void:
 	if AwaitVictory: return
 	print_rich("[color=cornflower-blue]Victory!")
 	Action = true
@@ -2524,7 +2771,7 @@ func victory(ignore_seq := false) -> void:
 	if sequence.VictoryBanter != "":
 		Passive.open("banter_victory", sequence.VictoryBanter)
 
-	$Canvas.layer = 1
+	$Canvas.layer = canvas_layer
 	battle_result = Result.VICTORY
 	victory_music()
 
@@ -2929,12 +3176,24 @@ func clear_states(target: Actor) -> void:
 
 
 func aura_overwrite(tar: Actor, color: Color, turns: int = 1) -> void:
-	tar.aura_default = tar.main_color
+	# Keep the original aura when an overwrite is refreshed; otherwise the next
+	# hue shift would remember the previous shifted color as the default.
+	if not tar.has_state("AuraOverwrite"):
+		tar.aura_default = tar.main_color
+
 	tar.main_color = color
 	Global.check.emit()
 	var state := await tar.add_state("AuraOverwrite", turns)
 
 	if state != null: state.color = color
+
+	# The hue shift should be visible while the ability plays, not only when
+	# the animation returns to Idle and the glow is refreshed.
+	var glow_node := tar.node.get_node_or_null("Glow")
+
+	if glow_node is PointLight2D:
+		glow_node.color = color
+
 	if tar.node.material.get_shader_parameter("new_color") != null:
 		tar.node.material.set_shader_parameter("new_color", color)
 

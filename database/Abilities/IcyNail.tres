@@ -42,10 +42,6 @@ animation = &"Cast"
 [sub_resource type="Resource" id="Resource_3fs42"]
 script = ExtResource("6_vomdx")
 
-[sub_resource type="Resource" id="Resource_hit_2405i"]
-script = ExtResource("cond_hit")
-outcomes = 4
-
 [sub_resource type="Resource" id="Resource_vomdx"]
 resource_name = "Random Offset"
 script = ExtResource("7_hierh")
@@ -65,12 +61,7 @@ position = SubResource("Resource_vomdx")
 
 [sub_resource type="Resource" id="Resource_lyfci"]
 script = ExtResource("6_vomdx")
-random_duration = true
-random_max = 0.5
-
-[sub_resource type="Resource" id="Resource_ewjm6"]
-script = ExtResource("9_lyfci")
-amount = 5.0
+duration = 0.3
 
 [sub_resource type="Resource" id="Resource_ylbcg"]
 script = ExtResource("9_lyfci")
@@ -109,11 +100,12 @@ target = SubResource("Resource_gyae5")
 power = SubResource("Resource_3waxb")
 magic_mode = 2
 elemental = true
-hit_branch = false
+miss_branch = true
 hit_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_ylbcg"), SubResource("Resource_hjm13")])
 miss_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_i3kyo")])
 
 [sub_resource type="Resource" id="Resource_hit_2bjga"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 
@@ -132,22 +124,6 @@ script = ExtResource("14_14ep7")
 condition = SubResource("Resource_hit_2bjga")
 if_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_1yv0e")])
 
-[sub_resource type="Resource" id="Resource_oqbvb"]
-resource_name = "Target"
-script = ExtResource("3_i3sfm")
-mode = 1
-
-[sub_resource type="Resource" id="Resource_krl4x"]
-script = ExtResource("15_1yv0e")
-target = SubResource("Resource_oqbvb")
-wait = true
-
-[sub_resource type="Resource" id="Resource_2405i"]
-script = ExtResource("14_14ep7")
-condition = SubResource("Resource_hit_2405i")
-if_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_krl4x")])
-else_steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_vvwbg"), SubResource("Resource_lyfci"), SubResource("Resource_ewjm6"), SubResource("Resource_n8xm3"), SubResource("Resource_2bjga")])
-
 [sub_resource type="Resource" id="Resource_sc07r"]
 script = ExtResource("6_vomdx")
 duration = 0.2
@@ -162,7 +138,7 @@ actor = SubResource("Resource_yepk5")
 
 [sub_resource type="Resource" id="Resource_t8o83"]
 script = ExtResource("1_w5an1")
-steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_aglxm"), SubResource("Resource_0vhuv"), SubResource("Resource_3fs42"), SubResource("Resource_2405i"), SubResource("Resource_sc07r"), SubResource("Resource_lfyq2")])
+steps = Array[ExtResource("2_aglxm")]([SubResource("Resource_aglxm"), SubResource("Resource_0vhuv"), SubResource("Resource_3fs42"), SubResource("Resource_vvwbg"), SubResource("Resource_lyfci"), SubResource("Resource_n8xm3"), SubResource("Resource_2bjga"), SubResource("Resource_sc07r"), SubResource("Resource_lfyq2")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_hd34j"]
 atlas = ExtResource("1_4266k")

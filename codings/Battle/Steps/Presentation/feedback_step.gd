@@ -36,12 +36,16 @@ func run(ctx: ActionSequenceContext) -> void:
 			var effect_target: Variant = subject
 			if position != null:
 				effect_target = position.resolve(ctx, subject)
-			if wait:
-				await ctx.battle.play_effect(str(value), effect_target, offset, flip_on_player_use, dont_free)
-			else:
-				ctx.battle.play_effect(str(value), effect_target, offset, flip_on_player_use, dont_free)
-			if ctx.battle.act != null:
-				ctx.last_effect = ctx.battle.act.get_node_or_null(String(value))
+			var effect := ctx.battle.spawn_effect(str(value), effect_target, offset, flip_on_player_use)
+
+			if effect != null:
+				ctx.last_effect = effect
+
+				if wait:
+					await ctx.battle.await_anim(effect, str(value))
+					if not dont_free: effect.queue_free()
+				elif not dont_free:
+					ctx.battle.free_effect_when_done(effect, str(value))
 		Mode.POPUP:
 			if subject != null:
 				ctx.battle.pop_num(subject, str(value), color.resolve(ctx) if color != null else Color.WHITE)

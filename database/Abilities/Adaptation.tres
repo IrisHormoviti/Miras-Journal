@@ -8,6 +8,9 @@
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_e01ig"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_o3idj"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_q8coj"]
+[ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="7_adaptstate"]
+[ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="8_weakcolor"]
+[ext_resource type="Resource" path="res://database/States/Adapted.tres" id="9_adapted"]
 
 [sub_resource type="Resource" id="Resource_bkx4u"]
 resource_name = "Target"
@@ -59,13 +62,32 @@ duration = 0.4
 resource_name = "Caster"
 script = ExtResource("3_upxuo")
 
+[sub_resource type="Resource" id="Resource_weakcolor"]
+resource_name = "Weak-to color"
+script = ExtResource("8_weakcolor")
+mode = 7
+actor = SubResource("Resource_r0tcu")
+
+[sub_resource type="Resource" id="Resource_adaptstate"]
+script = ExtResource("7_adaptstate")
+mode = 4
+actor = SubResource("Resource_8kedp")
+color = SubResource("Resource_weakcolor")
+
 [sub_resource type="Resource" id="Resource_mhd1v"]
 script = ExtResource("5_o3idj")
 actor = SubResource("Resource_8kedp")
 
+[sub_resource type="Resource" id="Resource_adapted"]
+script = ExtResource("7_adaptstate")
+actor = SubResource("Resource_8kedp")
+state = ExtResource("9_adapted")
+silent = true
+wait = false
+
 [sub_resource type="Resource" id="Resource_8s02x"]
 script = ExtResource("1_bkx4u")
-steps = Array[ExtResource("2_fgcub")]([SubResource("Resource_fgcub"), SubResource("Resource_e01ig"), SubResource("Resource_q8coj"), SubResource("Resource_vxl4o"), SubResource("Resource_d6upf"), SubResource("Resource_hsnp2"), SubResource("Resource_mhd1v")])
+steps = Array[ExtResource("2_fgcub")]([SubResource("Resource_fgcub"), SubResource("Resource_e01ig"), SubResource("Resource_q8coj"), SubResource("Resource_vxl4o"), SubResource("Resource_d6upf"), SubResource("Resource_hsnp2"), SubResource("Resource_adaptstate"), SubResource("Resource_mhd1v"), SubResource("Resource_adapted")])
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_uefd8"]
 resource_local_to_scene = true

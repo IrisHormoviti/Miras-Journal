@@ -23,6 +23,13 @@ func check(ctx: ActionSequenceContext) -> bool:
 	for target in actors:
 		var has := target.has_state(str(state))
 
+		# Death is asynchronous: health drops to zero immediately, but the
+		# KnockedOut state is only added after the actor's other states have
+		# finished clearing. Treat zero health as knocked out so conditions
+		# like Heat Wave's "nothing happened" check don't fire in that gap.
+		if not has and state == &"KnockedOut" and target.health <= 0:
+			has = true
+
 		if group_match == GroupMatch.ANY and has == present:
 			return true
 

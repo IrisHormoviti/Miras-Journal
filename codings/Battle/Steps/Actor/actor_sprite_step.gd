@@ -154,7 +154,7 @@ func run(ctx: ActionSequenceContext) -> void:
 				await ctx.battle.await_anim(subject.node, animation)
 
 		Mode.AWAIT_ANIMATION:
-			await ctx.battle.await_anim(subject.node)
+			await ctx.battle.await_anim(subject.node, str(animation))
 
 
 func _actor(ctx: ActionSequenceContext) -> Actor:
@@ -257,6 +257,9 @@ func _validate_property(property: Dictionary) -> void:
 
 		Mode.Z_INDEX:
 			fields.append("z_index")
+
+		Mode.AWAIT_ANIMATION:
+			fields.append("animation")
 
 		Mode.NODE_Z_INDEX:
 			fields.append_array(["node_path", "z_index"])

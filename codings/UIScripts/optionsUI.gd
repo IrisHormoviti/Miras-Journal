@@ -783,7 +783,7 @@ func _on_save_overwrite() -> void:
 
 func _on_save_load() -> void:
 	if not save_files_loaded:
-		await Loader.ungray
+		await Transition.fade_out()
 
 	const press_speed := 4
 	var quick_load := Global.room == null

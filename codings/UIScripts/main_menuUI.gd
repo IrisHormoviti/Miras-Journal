@@ -613,8 +613,7 @@ func focus_item(node: Button) -> void:
 
 	if node.get_parent().name == "BattleItems" and item.battle_effect and item.battle_effect.wheel_color != Color.WHITE:
 		$DescPaper/Wheel.show()
-		$DescPaper/Wheel.color = item.battle_effect.wheel_color
-		$DescPaper/Wheel.draw_wheel()
+		$DescPaper/Wheel.show_atk_color(item.battle_effect.wheel_color)
 	else: $DescPaper/Wheel.hide()
 
 	var item_count: int = Item.count(item)

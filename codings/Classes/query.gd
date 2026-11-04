@@ -259,6 +259,21 @@ static func get_affinity(attacker: Color) -> Affinity:
 	return aff
 
 
+## A color the given actor color is weak against, sampled from the affinity's
+## weak band so it reads as WEAK instead of drifting into neutral.
+static func get_weak_color(from: Color) -> Color:
+	var affinity := get_affinity(from)
+
+	if affinity.weak_range.is_empty():
+		return from
+
+	# Use the middle of the band: the first hue can round just outside the
+	# range when converted back to a Color, which would make the relation read
+	# as neutral instead of weak.
+	var hue := float(affinity.weak_range[affinity.weak_range.size() / 2]) / 360.0
+	return Color.from_hsv(hue, 0.9, 1.0)
+
+
 static func get_power_rating(power: int) -> String:
 	if power < 6: return "Useless"
 	if power < 12: return "Very weak"

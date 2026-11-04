@@ -23,6 +23,7 @@ const NotConditionScript = preload("res://codings/Battle/Steps/Conditions/not_co
 const AllConditionScript = preload("res://codings/Battle/Steps/Conditions/all_condition.gd")
 const AnyConditionScript = preload("res://codings/Battle/Steps/Conditions/any_condition.gd")
 const TurnConditionScript = preload("res://codings/Battle/Steps/Conditions/turn_condition.gd")
+const ActorTurnConditionScript = preload("res://codings/Battle/Steps/Conditions/actor_turn_condition.gd")
 const StateConditionScript = preload("res://codings/Battle/Steps/Conditions/state_condition.gd")
 const HasActorConditionScript = preload("res://codings/Battle/Steps/Conditions/has_actor_condition.gd")
 const ActorEqualsConditionScript = preload("res://codings/Battle/Steps/Conditions/actor_equals_condition.gd")
@@ -71,6 +72,7 @@ func _ready() -> void:
 	await _test_aoe()
 	await _test_trap_interrupt()
 	await _test_miss()
+	await _test_action_windup()
 	await _test_auto_idle()
 	await _test_state_pose()
 	await _test_state_sequences()
@@ -82,7 +84,9 @@ func _ready() -> void:
 	_test_migrated_sequences_load()
 	_test_migrated_sequence_wiring()
 	await _test_last_sequences()
-	await _test_stone_guardian_adapt()
+	await _test_stone_guardian_pattern()
+	await _test_aura_break_followup()
+	await _test_self_target_ai_move()
 	await _test_asteria_followup()
 	await _test_new_step_modes()
 	await _test_battle_event_sequence()
@@ -571,6 +575,41 @@ func _test_auto_idle() -> void:
 		_fail("Turn did not return the caster to idle")
 
 
+## A forced action can request the same wind-up as the battle UI (for example
+## MAGIC casting) before its ability sequence starts.
+func _test_action_windup() -> void:
+	var caster := Party.Leader
+	var target := battle.Troop[0]
+
+	if caster == null or caster.node == null or target == null:
+		_fail("Battle harness has no caster for the action wind-up test")
+		return
+
+	# A hit reaction from an earlier test can still be running and would reset the
+	# caster to Idle while the wind-up plays. Let it finish first.
+	await get_tree().create_timer(0.5).timeout
+
+	var ability := Ability.nothing().duplicate() as Ability
+	ability.name = "BattleTestMagicWindup"
+	ability.callout = false
+
+	var capture := AnimationCaptureStep.new()
+	var sequence := ActionSequence.new()
+	sequence.steps.append(capture)
+	ability.action_sequence = sequence
+
+	caster.node.play(&"Idle")
+
+	await battle.use_ability_now(caster, ability, target, false, Actor.BtAction.MAGIC)
+	print("BATTLE_TEST_ACTION_WINDUP played=", capture.played, " animation=", capture.animation)
+
+	if not capture.played or capture.animation != &"Ability":
+		_fail("MAGIC wind-up did not play the ability animation")
+
+	battle.anim("", caster)
+	battle.Action = false
+
+
 func _test_state_pose() -> void:
 	var caster := Party.Leader
 
@@ -887,8 +926,8 @@ const MIGRATED_SEQUENCES := [
 	"FirstBattleAura3.tres",
 	"FirstBattleVictory.tres",
 	"ArenaGameOver.tres",
-	"StoneGuardianLoop.tres",
-	"StoneGuardianAdapt.tres",
+	"StoneGuardianFinisher.tres",
+	"StoneGuardianTurn.tres",
 	"AsteriaBossSummon.tres",
 	"AsteriaBossPhase.tres",
 	"AsteriaBossFollowup.tres",
@@ -896,7 +935,7 @@ const MIGRATED_SEQUENCES := [
 	"RedShift.tres",
 	"ActiveSupport.tres",
 	"PhoenixDive.tres",
-	"FlyAway.tres",
+	"Pterogon_death.tres",
 ]
 
 const MIGRATED_BATTLE_SEQUENCES := [
@@ -1090,87 +1129,267 @@ func _test_last_sequences() -> void:
 				ally.set_aura(saved_aura)
 				ally.remove_state("KnockedOut")
 
-	# The Pterogon's retreat is now authored data instead of a named function.
-	var flyaway := load("res://database/Sequences/Action/FlyAway.tres") as ActionSequence
+	# The Pterogon's retreat is authored data and is found from its codename.
+	var death_sequence := load("res://database/Sequences/Action/Pterogon_death.tres") as ActionSequence
 	var pterogon := load("res://database/Enemies/Pterogon.tres") as Actor
 	var has_death_step := false
 
-	if flyaway != null:
-		for step in flyaway.walk():
+	if death_sequence != null:
+		for step in death_sequence.walk():
 			if step is BattleControlStep and (step as BattleControlStep).mode == BattleControlStep.Mode.DEATH:
 				has_death_step = true
 
-	if pterogon == null or pterogon.death_action_sequence != flyaway:
-		_fail("Pterogon does not use the authored FlyAway sequence")
+	if pterogon == null or battle.death_sequence_for(pterogon) != death_sequence:
+		_fail("Pterogon does not resolve its codename-based death sequence")
 
 	if not has_death_step:
-		_fail("FlyAway does not finish the defeat")
+		_fail("Pterogon_death does not finish the defeat")
 
 	print("BATTLE_TEST_LAST_SEQUENCES ok")
 
 
-func _test_stone_guardian_adapt() -> void:
-	var guardian_data: Actor = load("res://database/Enemies/StoneGuardian.tres").duplicate()
-	var guardian := await battle.add_to_troop(guardian_data)
+func _test_stone_guardian_pattern() -> void:
+	var boss := load("res://database/BattleSeq/StoneGuardianBoss.tres") as BattleSequence
+	var finisher := load("res://database/Sequences/Action/StoneGuardianFinisher.tres") as ActionSequence
+	var turn := load("res://database/Sequences/Action/StoneGuardianTurn.tres") as ActionSequence
+	var adaptation := load("res://database/Abilities/Adaptation.tres") as Ability
+	var guardian_data: Actor = load("res://database/Enemies/StoneGuardian.tres")
 
-	if guardian == null:
-		_fail("Could not add the Stone Guardian for the sequence test")
-		return
+	if boss.Events.size() != 2:
+		_fail("Stone Guardian battle events changed unexpectedly")
 
-	var alcine := Party.Member1
+	var low_health: BattleEvent = null
 
-	if alcine == null:
-		_fail("The Stone Guardian sequence test needs Alcine in the party")
-		return
+	for event in boss.Events:
+		if event != null and event.dialog_cue == "stone_guardian_still_standing":
+			low_health = event
 
-	var drill: Ability = load("res://database/Abilities/Drill.tres")
-	var sequence := load("res://database/Sequences/Action/StoneGuardianAdapt.tres") as ActionSequence
-	var previous_current := battle.CurrentChar
-	var previous_turn_ind := battle.TurnInd
-	var previous_color := guardian.main_color
+	if (
+		low_health == null
+		or low_health.dialog_file != "story_0"
+	):
+		_fail("Stone Guardian lost its below-200 dialogue event")
 
-	guardian.attack_multiplier = 1
-	guardian.magic_multiplier = 1
-	guardian.next_move = null
-	guardian.next_target = null
+	if boss.victory_sequence != finisher:
+		_fail("Stone Guardian victory does not use the finisher cutscene")
+
+	var has_victory := false
+
+	if finisher != null:
+		for step in finisher.walk():
+			if step is BattleControlStep and step.mode == BattleControlStep.Mode.VICTORY:
+				has_victory = true
+
+				if step.canvas_layer <= 2:
+					_fail("Stone Guardian victory screen is not above the black fade")
+
+	if not has_victory:
+		_fail("Stone Guardian finisher never shows the victory screen")
+
+	if turn == null or turn.steps.is_empty():
+		_fail("Stone Guardian has no turn sequence")
+
+	if guardian_data.turn_sequence != turn:
+		_fail("Stone Guardian does not point at its turn sequence")
+
+	var gather := load("res://database/Abilities/Gather.tres") as Ability
+
+	if gather == null or not gather in guardian_data.abilities:
+		_fail("Stone Guardian cannot use Gather when its AP runs out")
+
+	if gather != null and not gather.recover_aura:
+		_fail("Gather is not valued as AP recovery")
+
+	if turn != null and not turn.steps.is_empty() and not turn.steps[0] is BranchStep:
+		_fail("Stone Guardian turn does not start with its pattern branch")
+	elif turn != null and not turn.steps.is_empty():
+		var follow_up_branch := turn.steps[0] as BranchStep
+		var follow_up_condition := follow_up_branch.condition as FollowUpCondition
+
+		if follow_up_condition == null:
+			_fail("Stone Guardian turn does not check for a follow-up turn")
+		else:
+			battle.follow_up_turn = true
+
+			if not follow_up_condition.check(_test_context(guardian_data)):
+				_fail("Stone Guardian follow-up condition did not match a follow-up turn")
+
+			battle.follow_up_turn = false
+
+			if follow_up_condition.check(_test_context(guardian_data)):
+				_fail("Stone Guardian follow-up condition matched a normal turn")
+
+		if follow_up_branch.if_steps.size() != 1:
+			_fail("Stone Guardian follow-up turn is not a single move")
+		else:
+			var phase_move := follow_up_branch.if_steps[0] as BranchStep
+
+			if phase_move == null:
+				_fail("Stone Guardian follow-up turn does not choose its target")
+			else:
+				for steps in [phase_move.if_steps, phase_move.else_steps]:
+					if (
+						steps.size() != 1
+						or not steps[0] is TurnStep
+						or (steps[0] as TurnStep).mode != TurnStep.Mode.AI_MOVE
+					):
+						_fail("Stone Guardian follow-up turn is not a single move")
+
+				if not phase_move.if_steps.is_empty():
+					var targeted_move := phase_move.if_steps[0] as TurnStep
+
+					if (
+						targeted_move == null
+						or targeted_move.target == null
+						or targeted_move.target.mode != ActorRef.Mode.PARTY_MEMBER
+						or targeted_move.target.party_index != 1
+					):
+						_fail("Stone Guardian below its phase threshold does not target Alcine")
+
+		var finisher_branch: BranchStep = null
+
+		if not follow_up_branch.else_steps.is_empty():
+			finisher_branch = follow_up_branch.else_steps[0] as BranchStep
+
+		var finisher_condition: AllCondition = null
+
+		if finisher_branch != null:
+			finisher_condition = finisher_branch.condition as AllCondition
+
+		var has_low_health := false
+		var has_alcine_down := false
+
+		if finisher_condition == null:
+			_fail("Stone Guardian finisher branch has no combined condition")
+		else:
+			for condition in finisher_condition.conditions:
+				if (
+					condition is StatCondition
+					and condition.stat == StatConditionScript.Stat.HEALTH
+					and condition.comparator == BattleCondition.Comparator.LT
+					and condition.value == 150
+				):
+					has_low_health = true
+
+				if condition is ActorAliveCondition and not condition.alive:
+					has_alcine_down = true
+
+		if not has_low_health or not has_alcine_down:
+			_fail("Stone Guardian finisher can play before Alcine is down and it is below its phase threshold")
+
+		var adapt_branch := _find_branch_with_ability(turn.steps[0], "Adaptation")
+		var adapt_condition: AllCondition = null
+
+		if adapt_branch != null:
+			adapt_condition = adapt_branch.condition as AllCondition
+
+		var has_not_adapted := false
+		var has_aura_for_adapt := false
+
+		if adapt_condition != null:
+			for condition in adapt_condition.conditions:
+				if (
+					condition is StateCondition
+					and condition.state == &"Adapted"
+					and not condition.present
+				):
+					has_not_adapted = true
+
+				if (
+					condition is StatCondition
+					and condition.stat == StatConditionScript.Stat.AURA
+					and condition.comparator == BattleCondition.Comparator.GE
+					and condition.value >= 5
+				):
+					has_aura_for_adapt = true
+
+		if not has_not_adapted:
+			_fail("Stone Guardian uses Adaptation again after it has already adapted")
+
+		if not has_aura_for_adapt:
+			_fail("Stone Guardian can use Adaptation without enough AP")
+
+		if adapt_branch != null:
+			var paid_adaptation := false
+
+			for step in adapt_branch.if_steps:
+				if (
+					step is TurnStep
+					and (step as TurnStep).ability == adaptation
+					and (step as TurnStep).pay_cost
+				):
+					paid_adaptation = true
+
+			if not paid_adaptation:
+				_fail("Stone Guardian does not spend AP when using Adaptation")
+
+	var marks_adapted := false
+
+	if adaptation != null:
+		for step in adaptation.action_sequence.walk():
+			if (
+				step is StateStep
+				and step.mode == StateStep.Mode.ADD
+				and step.state != null
+				and step.state.name == "Adapted"
+			):
+				marks_adapted = true
+
+	if not marks_adapted:
+		_fail("Adaptation does not mark the Guardian as already adapted")
+
+	var has_bleed := false
+	var has_held_drill := false
+
+	if finisher != null:
+		for step in finisher.walk():
+			if step is ActorSpriteStep and step.animation == &"Bleed":
+				has_bleed = true
+
+			if step is TurnStep and step.ability != null and step.ability.name == "Drill":
+				if step.ability.resource_path.ends_with("DrillFinisher.tres"):
+					for sub_step in step.ability.action_sequence.walk():
+						if (
+							sub_step is EffectStep
+							and sub_step.mode == EffectStep.Mode.HOLD
+							and sub_step.effect_name == &"Drill"
+						):
+							has_held_drill = true
+
+	if not has_bleed:
+		_fail("Stone Guardian finisher does not play Mira's Bleed animation")
+
+	if not has_held_drill:
+		_fail("Stone Guardian finisher does not hold the Drill effect for the cutscene")
+
+	var ctx := _test_context(Party.Leader)
+	var actor_turn = ActorTurnConditionScript.new()
+	actor_turn.actor = ActorRef.new(ActorRef.Mode.CASTER)
+	actor_turn.parity = ActorTurnConditionScript.Parity.EVEN
+	var previous_turns := Party.Leader.turns_taken
+	Party.Leader.turns_taken = 1
+
+	if actor_turn.check(ctx):
+		_fail("Actor turn condition matched the first turn as even")
+
+	Party.Leader.turns_taken = 2
+
+	if not actor_turn.check(ctx):
+		_fail("Actor turn condition did not match the second turn as even")
+
+	Party.Leader.turns_taken = previous_turns
+
+	for actor in [Party.Leader, Party.Member1]:
+		if actor == null:
+			continue
+
+		var weak := Query.get_weak_color(actor.main_color)
+
+		if battle.color_relation(actor.main_color, weak) != Wheel.Relation.WEAK:
+			_fail("Weak color for " + actor.codename + " was not actually weak")
+
 	Event.remove_flag(&"Event/StoneGuardianFinisher")
-
-	await battle.run_battle_sequence(sequence, alcine, null, false)
-
-	print(
-		"BATTLE_TEST_GUARDIAN_ADAPT atk=", guardian.attack_multiplier,
-		" mag=", guardian.magic_multiplier,
-		" next=", guardian.next_move.name if guardian.next_move != null else "<none>",
-		" target=", guardian.next_target.first_name if guardian.next_target != null else "<none>",
-		" flag=", Event.check_flag(&"Event/StoneGuardianFinisher")
-	)
-
-	if not is_equal_approx(guardian.attack_multiplier, 2.0):
-		_fail("Stone Guardian sequence did not double the attack multiplier")
-
-	if not is_equal_approx(guardian.magic_multiplier, 2.0):
-		_fail("Stone Guardian sequence did not double the magic multiplier")
-
-	if guardian.next_move != drill:
-		_fail("Stone Guardian sequence did not queue Drill")
-
-	if guardian.next_target != alcine:
-		_fail("Stone Guardian sequence did not target Alcine")
-
-	if not Event.check_flag(&"Event/StoneGuardianFinisher"):
-		_fail("Stone Guardian sequence did not set the finisher flag")
-
-	if battle.CurrentChar != guardian:
-		_fail("Stone Guardian sequence did not make the Guardian current")
-
-	if battle.TurnInd != battle.TurnOrder.find(guardian) - 1:
-		_fail("Stone Guardian sequence did not force the Guardian's turn")
-
-	# Put the harness back the way it was.
-	battle.CurrentChar = previous_current
-	battle.TurnInd = previous_turn_ind
-	guardian.main_color = previous_color
-	Event.remove_flag(&"Event/StoneGuardianFinisher")
+	print("BATTLE_TEST_GUARDIAN_PATTERN ok")
 
 
 func _test_new_step_modes() -> void:
@@ -1211,6 +1430,58 @@ func _test_new_step_modes() -> void:
 	await await_animation.run(_test_context(caster))
 
 	print("BATTLE_TEST_NEW_STEP_MODES ok")
+
+
+## Finds the branch whose immediate if-branch makes an actor use an ability.
+func _find_branch_with_ability(step: BattleStep, ability_name: String) -> BranchStep:
+	if step is SequenceStep:
+		var sequence := (step as SequenceStep).sequence
+
+		if sequence != null:
+			for child in sequence.steps:
+				var found := _find_branch_with_ability(child, ability_name)
+
+				if found != null:
+					return found
+
+		return null
+
+	if step is not BranchStep:
+		return null
+
+	var branch := step as BranchStep
+
+	for child in branch.if_steps:
+		if (
+			child is TurnStep
+			and (child as TurnStep).ability != null
+			and (child as TurnStep).ability.name == ability_name
+		):
+			return branch
+
+	for child in branch.if_steps:
+		var found := _find_branch_with_ability(child, ability_name)
+
+		if found != null:
+			return found
+
+	for child in branch.else_steps:
+		var found := _find_branch_with_ability(child, ability_name)
+
+		if found != null:
+			return found
+
+	return null
+
+
+func _weak_color_against(target: Actor) -> Color:
+	for i in 360:
+		var candidate := Color.from_hsv(float(i) / 360.0, 0.9, 1.0)
+
+		if battle.color_relation(candidate, target.main_color) == Wheel.Relation.WEAK:
+			return candidate
+
+	return Color.WHITE
 
 
 func _test_context(caster: Actor) -> ActionSequenceContext:
@@ -1346,20 +1617,26 @@ func _test_battle_event_conditions() -> void:
 
 	Event.remove_flag(flag)
 
-	# Migrated data: the Stone Guardian's first event was actor=Guardian with
-	# low_ap=1, which should now be an aura condition.
+	# The Stone Guardian's only remaining event is the one-shot below-200
+	# dialogue; its old low-aura/adaptation/finisher events were replaced by a
+	# single authored turn sequence. The dialogue must not fire after the boss
+	# is already defeated.
 	var guardian := load("res://database/BattleSeq/StoneGuardianBoss.tres") as BattleSequence
-	var aura := guardian.Events[0].condition as StatCondition
+	var low_health_event := guardian.Events[0]
+	var low_health := low_health_event.condition as AllCondition
 
-	if aura == null or aura.stat != StatConditionScript.Stat.AURA:
-		_fail("Migrated battle event did not get an aura condition")
-	elif aura.comparator != BattleCondition.Comparator.LE or aura.value != 1:
-		_fail("Migrated battle event aura condition changed")
+	if low_health == null or low_health.conditions.size() != 2:
+		_fail("Stone Guardian below-200 event lost its condition guard")
+	else:
+		var health_check := low_health.conditions[0] as StatCondition
 
-	var finisher := guardian.Events[3].condition as FlagCondition
+		if health_check == null or health_check.stat != StatConditionScript.Stat.HEALTH:
+			_fail("Stone Guardian below-200 event lost its health condition")
+		elif health_check.comparator != BattleCondition.Comparator.LT or health_check.value != 200:
+			_fail("Stone Guardian below-200 health condition changed")
 
-	if finisher == null or finisher.expression != &"Event/StoneGuardianFinisher = 1":
-		_fail("Stone Guardian victory event does not check the finisher flag")
+	if low_health_event.dialog_cue != "stone_guardian_still_standing":
+		_fail("Stone Guardian below-200 event lost its dialogue cue")
 
 	# Migrated data: SkritcherRootDaze's single FORCE_MOVE event must keep its
 	# actor and turn condition.
@@ -1408,6 +1685,75 @@ func _test_battle_event_conditions() -> void:
 		_fail("Battle event did not set its on-run flag")
 
 	Event.remove_flag(run_flag)
+
+
+func _test_aura_break_followup() -> void:
+	var saved_char := battle.CurrentChar
+	var saved_target := battle.CurrentTarget
+	var saved_ability := battle.CurrentAbility
+	var saved_follow := battle.follow_up_next
+	var target: Actor = await battle.add_to_troop(load("res://database/Enemies/Dummy.tres").duplicate())
+
+	if target == null:
+		_fail("Could not add a target for the aura-break follow-up test")
+		return
+
+	target.max_hp = 9999
+	target.set_health(9999)
+	target.max_aura = 20
+	target.set_aura(1)
+	battle.CurrentChar = Party.Leader
+	battle.CurrentTarget = target
+	battle.CurrentAbility = Ability.nothing()
+	battle.follow_up_next = false
+	var weak := _weak_color_against(target)
+	battle.damage(target, false, true, 200, false, false, false, weak)
+	print("BATTLE_TEST_AURA_FOLLOW aura=", target.aura, " follow=", battle.follow_up_next)
+
+	if target.aura != 0:
+		_fail("The aura-break test target did not lose all of its AP")
+
+	if not battle.follow_up_next:
+		_fail("Breaking an aura did not grant a follow-up")
+
+	battle.CurrentChar = saved_char
+	battle.CurrentTarget = saved_target
+	battle.CurrentAbility = saved_ability
+	battle.follow_up_next = saved_follow
+	battle.delete_actor(target)
+
+
+func _test_self_target_ai_move() -> void:
+	var saved_char := battle.CurrentChar
+	var saved_target := battle.CurrentTarget
+	var saved_ability := battle.CurrentAbility
+	var saved_turn := battle.Turn
+	var actor: Actor = await battle.add_to_troop(load("res://database/Enemies/Dummy.tres").duplicate())
+
+	if actor == null:
+		_fail("Could not add an actor for the self-target AI test")
+		return
+
+	var sturdy := load("res://database/Abilities/SturdyGuard.tres") as Ability
+	actor.health = actor.max_hp
+	actor.aura = actor.max_aura
+	actor.abilities = [sturdy]
+	actor.standard_attack = null
+	battle.CurrentChar = actor
+	battle.CurrentTarget = Party.Leader
+	battle.Turn = 900
+	actor.battle_log = [Actor.log_entry.new()]
+	await battle.ai_move(actor, false)
+	print("BATTLE_TEST_SELF_TARGET barrier=", actor.has_state("Barrier"))
+
+	if not actor.has_state("Barrier"):
+		_fail("A self-target AI move did not apply its state")
+
+	battle.CurrentChar = saved_char
+	battle.CurrentTarget = saved_target
+	battle.CurrentAbility = saved_ability
+	battle.Turn = saved_turn
+	battle.delete_actor(actor)
 
 
 func _test_asteria_followup() -> void:
@@ -1570,6 +1916,30 @@ func _test_conditions() -> void:
 	if not group_state.check(ctx):
 		_fail("Group state condition did not pass for a troop without knocked out actors")
 
+	# Heat Wave's "nothing happened" guard checks for KnockedOut. Lethal damage
+	# drops health to zero before death() gets to add that state, so the
+	# condition has to treat a zero-health actor as knocked out already.
+	var downed_group = GroupStateConditionScript.new()
+	downed_group.group = ActorGroup.Kind.TROOP
+	downed_group.include_dead = true
+	downed_group.state = &"KnockedOut"
+	downed_group.present = false
+	downed_group.group_match = GroupStateConditionScript.GroupMatch.ALL
+
+	var saved_health: Array[int] = []
+
+	for actor in battle.Troop:
+		saved_health.append(actor.health)
+		actor.health = 0
+
+	var downed_lacks_knocked_out: bool = downed_group.check(ctx)
+
+	for i in battle.Troop.size():
+		battle.Troop[i].health = saved_health[i]
+
+	if downed_lacks_knocked_out:
+		_fail("Group state condition treated zero-health actors as lacking KnockedOut")
+
 	var summons = CollectionConditionScript.new()
 	summons.collection = CollectionConditionScript.Collection.SUMMONED_ALLIES
 	summons.actor = ActorRef.new(ActorRef.Mode.CASTER)
@@ -1583,3 +1953,16 @@ func _test_conditions() -> void:
 		return
 
 	print("BATTLE_TEST_CONDITIONS ok")
+
+
+## Records the caster's animation when its ability sequence starts, so a test
+## can tell whether a requested action wind-up played before the ability.
+class AnimationCaptureStep extends BattleStep:
+	var played := false
+	var animation: StringName = &""
+
+	func run(ctx: ActionSequenceContext) -> void:
+		played = true
+
+		if ctx.caster != null and ctx.caster.node != null:
+			animation = ctx.caster.node.animation

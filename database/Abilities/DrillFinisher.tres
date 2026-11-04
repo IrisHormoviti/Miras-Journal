@@ -1,0 +1,232 @@
+[gd_resource type="Resource" script_class="Ability" format=3 uid="uid://nbah78asfd8h"]
+
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="1_v5lbr"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="2_pjvxx"]
+[ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="3_8gfkj"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="4_m86ag"]
+[ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="5_1hrkl"]
+[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="6_if15p"]
+[ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="7_ucllh"]
+[ext_resource type="Shader" uid="uid://md4cln0gg0cm" path="res://database/Abilities/color_replace.gdshader" id="8_6f65r"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="9_looqr"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="10_f7fbm"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="11_bsa57"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="12_t0cvb"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="13_w8qjq"]
+[ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="14_jtl8r"]
+[ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="15_wtqy6"]
+[ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="16_dtlbb"]
+[ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="17_fu5qd"]
+
+[sub_resource type="Resource" id="Resource_kbhup"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_sfx37"]
+script = ExtResource("4_m86ag")
+zoom_enabled = true
+actor = SubResource("Resource_kbhup")
+
+[sub_resource type="Resource" id="Resource_5837i"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_twx53"]
+script = ExtResource("4_m86ag")
+move_enabled = true
+actor = SubResource("Resource_5837i")
+duration = 1.0
+
+[sub_resource type="Resource" id="Resource_cbjf6"]
+resource_name = "Target"
+script = ExtResource("5_1hrkl")
+mode = 6
+metadata/_custom_type_script = "uid://dejg68glbtmg0"
+
+[sub_resource type="Resource" id="Resource_gbr8f"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_lhc0d"]
+script = ExtResource("6_if15p")
+effect_name = &"Drill"
+target = SubResource("Resource_gbr8f")
+position = SubResource("Resource_cbjf6")
+offset = Vector2(-100, 0)
+flip_on_player_use = true
+
+[sub_resource type="Resource" id="Resource_418mu"]
+resource_name = "Caster"
+script = ExtResource("3_8gfkj")
+
+[sub_resource type="Resource" id="Resource_h044s"]
+resource_name = "Actor Color"
+script = ExtResource("7_ucllh")
+mode = 1
+actor = SubResource("Resource_418mu")
+
+[sub_resource type="Resource" id="Resource_8pydr"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_injrn"]
+script = ExtResource("6_if15p")
+mode = 4
+effect_name = &"Drill"
+target = SubResource("Resource_8pydr")
+shader = ExtResource("8_6f65r")
+prev_color = Color(1, 0, 0, 1)
+new_color = SubResource("Resource_h044s")
+
+[sub_resource type="Resource" id="Resource_ot2al"]
+script = ExtResource("9_looqr")
+duration = 0.8
+
+[sub_resource type="Resource" id="Resource_2oi8p"]
+resource_name = "Target Position"
+script = ExtResource("5_1hrkl")
+mode = 9
+offset = Vector2(-32, 0)
+side_aware = true
+
+[sub_resource type="Resource" id="Resource_c47yo"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_1s1ic"]
+script = ExtResource("6_if15p")
+mode = 2
+effect_name = &"Drill"
+target = SubResource("Resource_c47yo")
+position = SubResource("Resource_2oi8p")
+
+[sub_resource type="Resource" id="Resource_5ikli"]
+script = ExtResource("9_looqr")
+duration = 0.1
+
+[sub_resource type="Resource" id="Resource_dm0te"]
+script = ExtResource("10_f7fbm")
+amount = 5.0
+
+[sub_resource type="Resource" id="Resource_g3uil"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_40we0"]
+script = ExtResource("11_bsa57")
+mode = 9
+actor = SubResource("Resource_g3uil")
+
+[sub_resource type="Resource" id="Resource_w2pym"]
+script = ExtResource("9_looqr")
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_3yj4h"]
+script = ExtResource("10_f7fbm")
+
+[sub_resource type="Resource" id="Resource_m4w8s"]
+resource_name = "Caster"
+script = ExtResource("3_8gfkj")
+
+[sub_resource type="Resource" id="Resource_ded7i"]
+resource_name = "Actor Color"
+script = ExtResource("7_ucllh")
+mode = 1
+actor = SubResource("Resource_m4w8s")
+
+[sub_resource type="Resource" id="Resource_8a2er"]
+script = ExtResource("10_f7fbm")
+
+[sub_resource type="Resource" id="Resource_1yrnb"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_nq5ki"]
+script = ExtResource("12_t0cvb")
+actor = SubResource("Resource_1yrnb")
+
+[sub_resource type="Resource" id="Resource_5fem0"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_t4abu"]
+script = ExtResource("13_w8qjq")
+target = SubResource("Resource_5fem0")
+
+[sub_resource type="Resource" id="Resource_3hse0"]
+resource_name = "medium"
+script = ExtResource("14_jtl8r")
+damage_scale = 1
+
+[sub_resource type="Resource" id="Resource_nhh02"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_tqak5"]
+script = ExtResource("15_wtqy6")
+target = SubResource("Resource_nhh02")
+power = SubResource("Resource_3hse0")
+magic_mode = 1
+elemental = true
+color = SubResource("Resource_ded7i")
+hit_branch = false
+hit_steps = Array[ExtResource("2_pjvxx")]([SubResource("Resource_8a2er"), SubResource("Resource_nq5ki")])
+miss_steps = Array[ExtResource("2_pjvxx")]([SubResource("Resource_t4abu")])
+
+[sub_resource type="Resource" id="Resource_vk2gh"]
+script = ExtResource("9_looqr")
+duration = 0.5
+
+[sub_resource type="Resource" id="Resource_qf3j6"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_b3aq4"]
+script = ExtResource("6_if15p")
+mode = 5
+effect_name = &"Drill"
+target = SubResource("Resource_qf3j6")
+
+[sub_resource type="Resource" id="Resource_dqqky"]
+resource_name = "Target"
+script = ExtResource("3_8gfkj")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_gq38f"]
+script = ExtResource("6_if15p")
+mode = 6
+effect_name = &"Drill"
+target = SubResource("Resource_dqqky")
+hold_frame = 22
+
+[sub_resource type="Resource" id="Resource_4587u"]
+script = ExtResource("1_v5lbr")
+steps = Array[ExtResource("2_pjvxx")]([SubResource("Resource_sfx37"), SubResource("Resource_twx53"), SubResource("Resource_lhc0d"), SubResource("Resource_injrn"), SubResource("Resource_ot2al"), SubResource("Resource_1s1ic"), SubResource("Resource_5ikli"), SubResource("Resource_dm0te"), SubResource("Resource_40we0"), SubResource("Resource_w2pym"), SubResource("Resource_3yj4h"), SubResource("Resource_tqak5"), SubResource("Resource_vk2gh"), SubResource("Resource_b3aq4"), SubResource("Resource_gq38f")])
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_klpq7"]
+resource_local_to_scene = true
+atlas = ExtResource("16_dtlbb")
+region = Rect2(144, 54, 18, 18)
+filter_clip = true
+
+[resource]
+script = ExtResource("17_fu5qd")
+name = "Drill"
+description = "Medium damage of the caster's color."
+icon = SubResource("AtlasTexture_klpq7")
+color_same_as_actor = true
+target = 1
+action_sequence = SubResource("Resource_4587u")
+aura_cost = 8
+types = Array[int]([2])
+metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

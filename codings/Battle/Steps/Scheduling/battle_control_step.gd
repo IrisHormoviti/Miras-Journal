@@ -22,12 +22,15 @@ enum Mode {
 @export var actor: ActorRef
 @export var silent := false
 @export var value := true
+## Canvas layer used by the victory screen. Raise it above a fade that should
+## stay underneath the results, such as a scripted fade-to-black.
+@export var canvas_layer := 1
 
 
 func run(ctx: ActionSequenceContext) -> void:
 	match mode:
 		Mode.VICTORY:
-			ctx.battle.victory(silent)
+			ctx.battle.victory(silent, canvas_layer)
 		Mode.DEFEAT:
 			var subject := actor.resolve(ctx) if actor != null else ctx.target
 			ctx.battle.game_over(subject)
@@ -90,6 +93,7 @@ func _validate_property(property: Dictionary) -> void:
 	match mode:
 		Mode.VICTORY:
 			visible.append("silent")
+			visible.append("canvas_layer")
 		Mode.DEFEAT:
 			visible.append("actor")
 		Mode.NO_MISSES, Mode.NO_CRITS:

@@ -70,8 +70,7 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	$StatPanel/Weapon/Icon.texture = chara.weapon.icon
 	$StatPanel/Weapon/Icon/WeaponRating.text = "Power rating: " + Query.get_power_rating(chara.weapon.power)
 
-	$StatPanel/Wheel.color = chara.main_color
-	$StatPanel/Wheel.draw_wheel()
+	$StatPanel/Wheel.show_atk_color(chara.main_color)
 	$Render.texture = await Loader.load_res(chara.render_artwork) if not chara.render_artwork.is_empty() else null
 	$Render/Shadow.texture = await chara.RenderShadow()
 	$Render.global_position = Hud.get_node("%Pages/Page" + str(Hud.focus) + "/Render").global_position
@@ -85,7 +84,7 @@ func draw_character(chara: Actor, menu := 0) -> void:
 	await Event.wait(0.1, false)
 	var anim: Animation = $AnimationPlayer.get_animation("scrollname")
 	anim.track_set_key_value(0, 1, Vector2(-$Line1/NameChain/Name3.size.x, 130))
-	$StatPanel/Wheel.draw_wheel()
+	$StatPanel/Wheel.show_atk_color(chara.main_color)
 
 	$Fade.hide()
 	$Name.hide()
@@ -222,10 +221,7 @@ func _on_ab_focus_entered() -> void:
 
 	if not is_instance_valid(ab): return
 	if ab.wheel_color != Color.WHITE and not ab.color_same_as_actor and ab.deals_damage():
-		$AbilityPanel/AttackTitle/Wheel.show()
-		$AbilityPanel/AttackTitle/Wheel.color = ab.wheel_color
-		$AbilityPanel/AttackTitle/Wheel.draw_wheel()
-		$AbilityPanel/AttackTitle/Wheel.draw_wheel()
+		$AbilityPanel/AttackTitle/Wheel.show_atk_color(ab.wheel_color)
 	else: $AbilityPanel/AttackTitle/Wheel.hide()
 	$AbilityPanel/AttackTitle.text = ab.name
 	#$AbilityPanel/AttackTitle.icon = ab.icon

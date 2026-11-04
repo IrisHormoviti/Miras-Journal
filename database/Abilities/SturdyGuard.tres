@@ -53,9 +53,11 @@ filter_clip = true
 [resource]
 script = ExtResource("2_rby1t")
 name = "Sturdy Guard"
-description = "Put up a barrier against weapon attacks for a turn."
+description = "Put up a barrier against weapon attacks for a turn.
+Also recovers aura on hit."
 icon = SubResource("AtlasTexture_rby1t")
 action_sequence = SubResource("Resource_nqgwv")
 aura_cost = 10
 types = Array[int]([3])
+recover_aura = true
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"
