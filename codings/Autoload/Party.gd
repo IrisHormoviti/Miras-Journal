@@ -28,8 +28,10 @@ func _init() -> void:
 	for i in ResourceLoader.list_directory("res://database/Party"):
 		var file: Resource = load("res://database/Party/" + i)
 
-		if file is Actor:
+		if file is PartyMember:
 			members.append(file.duplicate())
+		elif file is Actor:
+			push_error("Party resource " + i + " must use the PartyMember class")
 
 	reset_party()
 

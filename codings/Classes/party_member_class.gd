@@ -99,7 +99,7 @@ func load_from_dict(dict: Dictionary) -> void:
 
 
 func reset_static_info() -> void:
-	var og: PartyMember = load("res://database/Party/" + codename + ".tres")
+	var og := load("res://database/Party/" + codename + ".tres") as PartyMember
 
 	if og == null:
 		return

@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bw7ek8s0r2iwu" path="res://codings/Classes/ability.gd" id="1_0j6v1"]
 [ext_resource type="Texture2D" uid="uid://budghnw4lgtg4" path="res://art/Icons/Enemies/Object.png" id="2_gnglx"]
 [ext_resource type="Resource" uid="uid://xsqx8xd4ctjb" path="res://database/Abilities/Nothing.tres" id="3_hjcr8"]
-[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy.gd" id="4_sbxyk"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="4_sbxyk"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="5_aw5h3"]
 
 [resource]

@@ -232,6 +232,9 @@ func _on_ab_focus_entered() -> void:
 
 
 func _on_complimentary() -> void:
+	if not actor is PartyMember:
+		return
+
 	inactive = true
 	UI.complimentary_ui(actor)
 

@@ -822,13 +822,12 @@ func entrance() -> void:
 	else:
 		screen_shake()
 
+	# Play the party entrances in parallel with the transition, exactly like the
+	# original opening. They blend into the first turn instead of holding it up.
 	if not has_entrance_sequence() and not sequence.skip_entrance:
-		await play_party_entrances()
-
-	# An authored opening can end while an actor's Entrance animation is still
-	# playing; let it finish before moving on to the first turn.
-	if has_entrance_sequence() and not sequence.skip_entrance:
-		await await_playing_entrance_animations()
+		for i in Party.current:
+			if not i: continue
+			entrance_anim(i)
 
 	Loader.battle_bars(2)
 	await Event.wait(0.5, false)
@@ -837,40 +836,11 @@ func entrance() -> void:
 	Hud.save_box_positions()
 	await Event.wait(0.7, false)
 
-	# Always start the first turn here, after the whole opening has played. An
-	# entrance sequence may end with an END_TURN step; end_turn() defers it
-	# while entrance_in_progress is set so the transition can finish first.
+	# Always start the first turn here. An entrance sequence may end with an
+	# END_TURN step; end_turn() defers it while entrance_in_progress is set so
+	# the sequence can finish instead of cutting its animations off.
 	entrance_in_progress = false
 	if not headless_driver: next_turn.emit()
-
-
-## Plays every present party member's Entrance animation at once and waits for
-## all of them, so the next turn can't cut the last frames off.
-func play_party_entrances() -> void:
-	var pending := {"count": 0}
-
-	for i in Party.current:
-		if not i: continue
-		pending["count"] += 1
-		_finish_party_entrance(i, pending)
-
-	while pending["count"] > 0:
-		await Event.wait()
-
-
-func _finish_party_entrance(i: Actor, pending: Dictionary) -> void:
-	await entrance_anim(i)
-	pending["count"] -= 1
-
-
-## Waits for any Entrance animation an authored opening left playing.
-func await_playing_entrance_animations() -> void:
-	for i in TurnOrder:
-		if i == null or i.node == null:
-			continue
-
-		if i.node.animation == &"Entrance" and i.node.is_playing():
-			await await_anim(i.node, "Entrance")
 
 
 ## True when the battle brings its own inspector-authored opening sequence.

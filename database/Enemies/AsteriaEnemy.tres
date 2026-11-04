@@ -8,7 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://dkmfv7lb5ne4v" path="res://art/Icons/Party/Asteria.png" id="6_fw6lu"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="6_h8w5e"]
 [ext_resource type="Resource" uid="uid://d3fmjjobglnvn" path="res://database/Abilities/Attacks/AttackAsteria.tres" id="8_rr3rf"]
-[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy.gd" id="9_3alpk"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="9_3alpk"]
 [ext_resource type="Resource" uid="uid://bsdc68x2mth0w" path="res://database/Enemies/AsteriaSummonBird.tres" id="10_aktg6"]
 [ext_resource type="Resource" uid="uid://h2dsutkgob4w" path="res://database/Enemies/AsteriaSummonLion.tres" id="11_h8w5e"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="12_h8w5e"]

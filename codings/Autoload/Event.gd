@@ -16,6 +16,8 @@ var npc_list: Dictionary[String, NPC]
 var object_list: Dictionary[String, Node2D]
 ## diary entries for the journal
 var diary: Dictionary[int, PackedStringArray]
+## list of registerred enemies
+var beastiary: Array[Enemy]
 
 ## Various values for remembering game states
 ## Flag directories:

@@ -43,7 +43,7 @@ func _validate_property(property: Dictionary) -> void:
 
 func _ready() -> void:
 	if Engine.is_editor_hint():
-		load_entries()
+		load_diary_entries()
 		load_entry_for_editor()
 		return
 
@@ -73,7 +73,7 @@ func format_entry_text(text: String) -> String:
 
 func load_entry_for_editor() -> void:
 	if diary_entries.is_empty():
-		load_entries()
+		load_diary_entries()
 
 	if diary_entries.has(edit_entry_id):
 		edit_entry_text = diary_entries[edit_entry_id]
@@ -142,7 +142,7 @@ func root() -> void:
 
 
 func diary() -> void:
-	load_entries()
+	load_diary_entries()
 	stage = "diary"
 	$Journal.hide()
 	$RootMenu.hide()
@@ -396,7 +396,7 @@ func _input(_event: InputEvent) -> void:
 				display_text()
 
 
-func load_entries() -> void:
+func load_diary_entries() -> void:
 	if not FileAccess.file_exists("res://database/Text/Journal/Diary.json"):
 		return
 

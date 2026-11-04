@@ -95,11 +95,11 @@ Daze.Neutral: Leave it to me.
 ~ daze_enemy_3
 Daze.Neutral: See? I caused an [color=#57a0f9]Aura Break[/color] on it!
 Daze.Neutral: It no longer has the resources to use magic, you're safe.
-Mira.Upset: *Sigh*[br]I wanted to do something though...
+Mira.Upset: *Sigh*[br][wait=1]I wanted to do something though...
 Mira.OpenMouth: Wait I know![br][wait=1]This is my specialty!
 $> bt.ui.disable_attack = true
-$> bt.ui.disable_ability = false
-$> bt.ui.disable_item = false
+$> bt.ui.disable_ability = true
+$> bt.ui.disable_item = true
 => END
 
 

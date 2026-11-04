@@ -94,6 +94,10 @@ func save(filename: String = "Autosave", showicon := true) -> void:
 	data.diary = Event.diary
 	data.room = Global.room.scene_file_path.get_file().replace(".tscn", "")
 
+	data.beastiary.clear()
+	for i in Event.beastiary:
+		data.beastiary.append(i.codename)
+
 	if Global.room.current_subroom != null:
 		data.room += ";" + Global.room.current_subroom.name
 		data.room_name = Global.room.current_subroom.Title
@@ -154,7 +158,13 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 
 		if codename.is_empty(): continue
 
-		var mem := (await Loader.load_res("res://database/Party/" + codename + ".tres")).duplicate() as PartyMember
+		var loaded: Resource = await Loader.load_res("res://database/Party/" + codename + ".tres")
+		var mem := loaded.duplicate() as PartyMember if loaded != null else null
+
+		if mem == null:
+			push_warning("Save references an invalid party member: " + codename)
+			continue
+
 		await mem.load_from_dict(mem_dict)
 		temp_members.append(mem)
 
@@ -183,6 +193,14 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 
 		mem.health = min(mem.health, mem.max_hp)
 		mem.aura = min(mem.aura, mem.max_aura)
+
+	Event.beastiary.clear()
+	for i in data.beastiary:
+		var path := "res://database/Enemies/%s.tres"%i
+
+		if ResourceLoader.exists(path):
+			var enemy: Enemy = await load_res(path)
+			Event.beastiary.append(enemy)
 
 	if !data:
 		UI.error("This save file doen't exist", "WHERE FILE")

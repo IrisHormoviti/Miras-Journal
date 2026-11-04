@@ -5,7 +5,7 @@
 [ext_resource type="Resource" uid="uid://dsmlea0nfgq7h" path="res://database/Abilities/FluidBlast.tres" id="3_wbo3k"]
 [ext_resource type="Resource" uid="uid://i76o7dyxd0rh" path="res://database/Abilities/Tighten.tres" id="4_7xn8o"]
 [ext_resource type="Resource" uid="uid://dbs3pn78pvpuc" path="res://database/Abilities/Glimmer.tres" id="4_mbsok"]
-[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy.gd" id="4_okcgo"]
+[ext_resource type="Script" uid="uid://dbn8pkcgs63l0" path="res://codings/Classes/enemy_class.gd" id="4_okcgo"]
 [ext_resource type="Resource" uid="uid://17bbb0h04khb" path="res://database/Abilities/Attacks/CloseupAttack.tres" id="5_pfxhc"]
 [ext_resource type="Resource" uid="uid://cmt1sh6p1ibl1" path="res://database/Items/KeyItems/DefaultWeapon.tres" id="8_wbo3k"]
 
