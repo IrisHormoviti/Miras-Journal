@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://vxkkrx0cd2vs" path="res://art/Journal/Manual/AuraAffinity2.png" id="9_5hctv"]
 [ext_resource type="Texture2D" uid="uid://b3rlipd0auqsi" path="res://UI/Input/B.png" id="9_nfiq0"]
 [ext_resource type="Texture2D" uid="uid://bpv6vrrg6tboq" path="res://UI/Input/A.png" id="10_nfiq0"]
+[ext_resource type="Texture2D" uid="uid://claajwsr0jbem" path="res://UI/Journal/StatBar.png" id="10_v5wb0"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_0smgh"]
 shader = ExtResource("2_oxs8c")
@@ -471,29 +472,49 @@ theme_override_fonts/font = ExtResource("2_w8w16")
 theme_override_font_sizes/font_size = 47
 text = "The enemy's Name"
 
-[node name="AttackBar" type="ProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=238035852]
+[node name="AttackBar" type="TextureProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=1132947807]
 layout_mode = 0
-offset_left = 144.44452
-offset_top = 454.44443
-offset_right = 401.11108
-offset_bottom = 488.8889
-show_percentage = false
+offset_left = 145.55556
+offset_top = 448.88892
+offset_right = 657.55554
+offset_bottom = 536.8889
+scale = Vector2(0.5, 0.5)
+max_value = 2.0
+step = 0.1
+value = 1.0
+allow_greater = true
+nine_patch_stretch = true
+stretch_margin_bottom = 2
+texture_progress = ExtResource("10_v5wb0")
+tint_progress = Color(1, 0, 0, 1)
 
-[node name="MagicBar" type="ProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=1477380124]
+[node name="MagicBar" type="TextureProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=1098915917]
 layout_mode = 0
-offset_left = 143.33331
-offset_top = 487.77795
-offset_right = 401.11108
-offset_bottom = 522.2224
-show_percentage = false
+offset_left = 147.7778
+offset_top = 484.44446
+offset_right = 659.77783
+offset_bottom = 572.44446
+scale = Vector2(0.5, 0.5)
+max_value = 2.0
+step = 0.1
+value = 1.0
+allow_greater = true
+texture_progress = ExtResource("10_v5wb0")
+tint_progress = Color(0, 0.53333336, 0.9764706, 1)
 
-[node name="DefenceBar" type="ProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=370086731]
+[node name="DefenceBar" type="TextureProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=789961142]
 layout_mode = 0
-offset_left = 144.44446
-offset_top = 523.3333
-offset_right = 401.11108
-offset_bottom = 557.7778
-show_percentage = false
+offset_left = 147.7778
+offset_top = 518.8889
+offset_right = 659.77783
+offset_bottom = 606.8889
+scale = Vector2(0.5, 0.5)
+max_value = 2.0
+step = 0.1
+value = 1.0
+allow_greater = true
+texture_progress = ExtResource("10_v5wb0")
+tint_progress = Color(0.050980393, 0.654902, 0.4, 1)
 
 [node name="AttackLabel" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=1897398257]
 layout_mode = 0

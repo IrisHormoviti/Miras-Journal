@@ -23,6 +23,9 @@ enum Mode {
 @export var flip_on_player_use := false
 ## When false, the next step starts while the effect continues.
 @export var wait := false
+## Free the effect once its animation finishes. Off by default so later steps can
+## keep animating the spawned effect.
+@export var free_when_done := false
 @export var animation: StringName = &""
 @export var backwards := false
 @export var duration := 0.1
@@ -103,6 +106,10 @@ func _play(ctx: ActionSequenceContext) -> void:
 
 		if wait:
 			await ctx.battle.await_anim(effect, str(effect_name))
+			if free_when_done:
+				effect.queue_free()
+		elif free_when_done:
+			ctx.battle.free_effect_when_done(effect, str(effect_name))
 
 
 func _effect(ctx: ActionSequenceContext) -> AnimatedSprite2D:
@@ -151,7 +158,7 @@ func _validate_property(property: Dictionary) -> void:
 
 	match mode:
 		Mode.PLAY:
-			visible.append_array(["target", "position", "offset", "flip_on_player_use", "wait"])
+			visible.append_array(["target", "position", "offset", "flip_on_player_use", "wait", "free_when_done"])
 
 		Mode.ANIM:
 			visible.append_array(["animation", "backwards", "wait"])

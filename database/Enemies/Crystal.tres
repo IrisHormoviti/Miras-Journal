@@ -9,6 +9,11 @@
 [resource]
 script = ExtResource("3_1fp2h")
 received_sp = 1
+has_beastiary = true
+description = "This crystal has single, simple purpose. It will heal any nearby enemies and disappear.
+
+It's not even really worth destroying, but the more damage we deal to it, the less effective its heal will be."
+impression = "Weak"
 first_name = "Crystal"
 main_color = Color(0, 0.72549, 0.239216, 1)
 party_icon = ExtResource("2_1fp2h")

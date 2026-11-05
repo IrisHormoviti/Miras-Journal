@@ -9,6 +9,12 @@
 [resource]
 script = ExtResource("3_s0gi0")
 received_sp = 3
+has_beastiary = true
+description = "This little parasite is incredibly fragile, it can be defeated in a single hit.
+
+However, its burst attacks can hit the entire team at once, which is really dangerous if many of these burst at once. 
+
+Just hit it as fast as possible, don't let it get the advantage!"
 first_name = "Burst Parasite"
 main_color = Color(0.262745, 0.345098, 0.176471, 1)
 party_icon = ExtResource("3_6gxsa")

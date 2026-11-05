@@ -17,9 +17,9 @@
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="13_iv3v0"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="14_h18jo"]
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="15_4y07n"]
-[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="16_rihnb"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="17_yvppu"]
 [ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
+[ext_resource type="Script" uid="uid://6mdxslhsib5l" path="res://codings/Battle/Steps/Presentation/popup_step.gd" id="step_popup"]
 
 [sub_resource type="Resource" id="Resource_o73er"]
 resource_name = "Target"
@@ -213,8 +213,7 @@ resource_name = "Wheel Color"
 script = ExtResource("15_4y07n")
 
 [sub_resource type="Resource" id="Resource_gccer"]
-script = ExtResource("16_rihnb")
-mode = 1
+script = ExtResource("step_popup")
 actor = SubResource("Resource_kiu1y")
 value = &"CRITICAL"
 color = SubResource("Resource_63dha")

@@ -10,6 +10,12 @@
 
 [resource]
 script = ExtResource("5_qahkd")
+has_beastiary = true
+description = "This one is quite scary looking, isn't it?
+
+It's really not that strong, but its [color=%Corruption]Toxic Splash[/color] has a chance of poisoning us, which can be quite deadly.
+
+Its also able to summon minions, but nothing too dangerous."
 first_name = "Dark Sludge"
 main_color = Color(0.596078, 0.478431, 0.85098, 1)
 party_icon = ExtResource("1_l4uns")

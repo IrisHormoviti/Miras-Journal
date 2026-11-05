@@ -25,6 +25,7 @@ mode = 1
 [sub_resource type="Resource" id="Resource_yghb8"]
 script = ExtResource("4_g6dv6")
 zoom_enabled = true
+amount = 6.0
 actor = SubResource("Resource_wi5pm")
 
 [sub_resource type="Resource" id="Resource_8krdn"]
@@ -35,6 +36,7 @@ script = ExtResource("3_8krdn")
 script = ExtResource("4_g6dv6")
 move_enabled = true
 actor = SubResource("Resource_8krdn")
+offset = Vector2(0, 0)
 
 [sub_resource type="Resource" id="Resource_ltale"]
 resource_name = "Caster"
@@ -51,7 +53,6 @@ duration = 0.6
 
 [sub_resource type="Resource" id="Resource_ucs1y"]
 script = ExtResource("7_867tr")
-amount = 7.0
 duration = 0.2
 wait = true
 
@@ -76,6 +77,7 @@ mode = 1
 script = ExtResource("8_ucs1y")
 effect_name = &"RemoteHit"
 target = SubResource("Resource_qiai8")
+free_when_done = null
 
 [sub_resource type="Resource" id="Resource_muw3c"]
 script = ExtResource("6_8otpq")

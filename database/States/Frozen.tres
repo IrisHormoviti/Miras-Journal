@@ -6,10 +6,10 @@
 [ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_m6xyk"]
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_saffb"]
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_v61mm"]
-[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="6_mfqet"]
 [ext_resource type="Resource" uid="uid://xsqx8xd4ctjb" path="res://database/Abilities/Nothing.tres" id="7_plc3n"]
-[ext_resource type="Script" uid="uid://qj0kal4v0pn4" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="8_wy8nu"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="9_4krel"]
+[ext_resource type="Script" uid="uid://ddpp6wis13flc" path="res://codings/Battle/Steps/Presentation/battle_message_step.gd" id="step_battle_message"]
+[ext_resource type="Script" uid="uid://ffdgm3py3k8e" path="res://codings/Battle/Steps/Scheduling/queue_move_step.gd" id="step_queue_move"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_ir784"]
 atlas = ExtResource("1_am8fo")
@@ -27,8 +27,7 @@ move_enabled = true
 actor = SubResource("Resource_jyuih")
 
 [sub_resource type="Resource" id="Resource_pccu6"]
-script = ExtResource("6_mfqet")
-mode = 2
+script = ExtResource("step_battle_message")
 message = "frozen"
 
 [sub_resource type="Resource" id="Resource_3yx83"]
@@ -37,10 +36,9 @@ script = ExtResource("4_saffb")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_1x5e5"]
-script = ExtResource("8_wy8nu")
-mode = 6
+script = ExtResource("step_queue_move")
 actor = SubResource("Resource_3yx83")
-next_move = ExtResource("7_plc3n")
+ability = ExtResource("7_plc3n")
 
 [sub_resource type="Resource" id="Resource_eboc7"]
 resource_name = "Target"

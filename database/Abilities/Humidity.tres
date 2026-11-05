@@ -11,7 +11,6 @@
 [ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_hivcc"]
 [ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="8_nbewq"]
 [ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_5bkub"]
-[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="11_3iuey"]
 [ext_resource type="Script" uid="uid://bdfe2uwy2f7hi" path="res://codings/Battle/Steps/Flow/branch_step.gd" id="12_t2psb"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_vfi1t"]
 [ext_resource type="Resource" uid="uid://c5vyc5fu4kgon" path="res://database/States/Soaked.tres" id="14_1d3wg"]
@@ -23,6 +22,7 @@
 [ext_resource type="Script" uid="uid://bkir2j2h5fpw6" path="res://codings/Battle/Steps/Conditions/state_condition.gd" id="cond_4"]
 [ext_resource type="Script" uid="uid://dutktdwdox6d2" path="res://codings/Battle/Steps/Conditions/group_state_condition.gd" id="cond_10"]
 [ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
+[ext_resource type="Script" uid="uid://ddpp6wis13flc" path="res://codings/Battle/Steps/Presentation/battle_message_step.gd" id="step_battle_message"]
 
 [sub_resource type="Resource" id="Resource_30ss0"]
 resource_name = "Caster"
@@ -240,8 +240,7 @@ state = &"Soaked"
 present = false
 
 [sub_resource type="Resource" id="Resource_paxrb"]
-script = ExtResource("11_3iuey")
-mode = 2
+script = ExtResource("step_battle_message")
 message = "nothing_happened"
 
 [sub_resource type="Resource" id="Resource_r41da"]

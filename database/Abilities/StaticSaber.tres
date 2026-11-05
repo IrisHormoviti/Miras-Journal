@@ -138,6 +138,7 @@ script = ExtResource("11_jky7k")
 duration = 1.5
 
 [sub_resource type="Resource" id="Resource_hit_1c1su"]
+resource_name = "crit"
 script = ExtResource("cond_hit")
 outcomes = 2
 

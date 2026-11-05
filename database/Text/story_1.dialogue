@@ -72,30 +72,24 @@ $> Loader.travel_to("WitheredLeaves", Vector2(775, -211))
 ~ daze_enemy_1
 if day == 1 and Party.has_member("Mira") and Party.has_member("Daze"):
 	$>> player.look_to(Direction.LEFT)
-	$>> Passive.open("story_1", "daze_enemy_1_banter")
 	$>> player.bubble("Surprise")
 	$> camera_move(EnemyFlowent1.position + Vector2(48, 0))
 	$>> EnemyFlowent1.look_to(Direction.LEFT)
-	$> wait(2)
-	$> F1.speed = 150
-	$> F1.go_to(EnemyFlowent1.position, false, false, Direction.LEFT, 10)
-	$>> UI.intro_effect(EnemyFlowent1)
+	$> F1.speed = 200
+	$>> F1.go_to(EnemyFlowent1.position, false, false, Direction.LEFT, 10)
 	$> Battle.attacker = EnemyFlowent1
-	$> Battle.start("DazeEnemyTutorial", 1)
-	$> wait_for_battle()
+	Daze.Neutral: Leave it to me![next=0.6]
+	[hide]
+	$>> UI.intro_effect(EnemyFlowent1)
+	$>> Battle.start("DazeEnemyTutorial", 1)
 else:
 	$> give_control()
-=> END
-
-~ daze_enemy_1_banter
-Mira.Neutral: There's a monster!
-Daze.Neutral: Leave it to me.
 => END
 
 ~ daze_enemy_3
 Daze.Neutral: See? I caused an [color=#57a0f9]Aura Break[/color] on it!
 Daze.Neutral: It no longer has the resources to use magic, you're safe.
-Mira.Upset: *Sigh*[br][wait=0.5]I wanted to do something though...
+Mira.Upset: *Sigh*[br][wait=0.5]I want to do something though...
 Mira.OpenMouth: Wait I know![br][wait=0.5]This is my specialty!
 $> bt.ui.disable_attack = true
 $> bt.ui.disable_ability = true

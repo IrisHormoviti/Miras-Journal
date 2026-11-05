@@ -10,11 +10,9 @@
 [ext_resource type="Script" uid="uid://dbfmyyanaru1b" path="res://codings/Battle/Steps/Scheduling/battle_flow_step.gd" id="8_76ssb"]
 [ext_resource type="Script" uid="uid://qj0kal4v0pn4" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="9_d3sh3"]
 [ext_resource type="Resource" uid="uid://de2ymbs4ajhqc" path="res://database/Abilities/Adaptation.tres" id="10_m0okx"]
-[ext_resource type="Script" uid="uid://brx0s8klhefbi" path="res://codings/Battle/Steps/Presentation/overlay_step.gd" id="11_w6l2y"]
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="12_vrr4b"]
 [ext_resource type="Script" uid="uid://ctulif8esg3gb" path="res://codings/Battle/Steps/Combat/state_step.gd" id="13_yrhua"]
 [ext_resource type="Script" uid="uid://chy73ndgt66nv" path="res://codings/Battle/Steps/Refs/color_ref.gd" id="15_24oug"]
-[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="16_peqow"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="17_6coph"]
 [ext_resource type="Script" uid="uid://bte654s5nh6vn" path="res://codings/Battle/Steps/Meta/ui_state_step.gd" id="18_2dlyl"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="19_ppirx"]
@@ -28,6 +26,8 @@
 [ext_resource type="Resource" uid="uid://cemf0nu6fbtaj" path="res://database/States/Guarding.tres" id="27_jf0ew"]
 [ext_resource type="Script" uid="uid://btnsdsi8rjqnj" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="28_u2seq"]
 [ext_resource type="Script" uid="uid://bhb42mpxxarv" path="res://codings/Battle/Steps/Meta/world_step.gd" id="29_ce0dw"]
+[ext_resource type="Script" uid="uid://c5f6jwcsrchmv" path="res://codings/Battle/Steps/Presentation/callout_step.gd" id="step_callout"]
+[ext_resource type="Script" uid="uid://6mdxslhsib5l" path="res://codings/Battle/Steps/Presentation/popup_step.gd" id="step_popup"]
 
 [sub_resource type="Resource" id="Resource_gl2jn"]
 resource_name = "Party Member 1"
@@ -76,7 +76,7 @@ script = ExtResource("9_d3sh3")
 actor = SubResource("Resource_50d23")
 
 [sub_resource type="Resource" id="Resource_p1dq3"]
-script = ExtResource("11_w6l2y")
+script = ExtResource("step_callout")
 ability = ExtResource("10_m0okx")
 
 [sub_resource type="Resource" id="Resource_jdanv"]
@@ -127,8 +127,7 @@ mode = 7
 actor = SubResource("Resource_lo8qn")
 
 [sub_resource type="Resource" id="Resource_yilg6"]
-script = ExtResource("16_peqow")
-mode = 1
+script = ExtResource("step_popup")
 actor = SubResource("Resource_5k74c")
 value = &"Hue-Shift"
 color = SubResource("Resource_yg8cu")
@@ -166,7 +165,7 @@ actor = SubResource("Resource_50d23")
 value = SubResource("Resource_vl0wm")
 
 [sub_resource type="Resource" id="Resource_c47ga"]
-script = ExtResource("11_w6l2y")
+script = ExtResource("step_callout")
 ability = ExtResource("22_2vihy")
 
 [sub_resource type="Resource" id="Resource_7epxi"]

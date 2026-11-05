@@ -13,11 +13,17 @@ if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 => END
 
 ~ mira_analyze
-% Mira.Neutral: I'll look into it!
-% Mira.Neutral: Let's see here...
-% Mira.Neutral: Just give me a moment...
+%2 Mira.Neutral: I'll look into it!
+%2 Mira.Neutral: Let's see here...
+%2 Mira.Neutral: Just give me a moment...
+%2 Mira.Neutral: Analyzing!
+% Mira.Neutral: Let's see what you're hiding...
+% Mira.Neutral: Gotta fill in your entry...
 % Mira.Smile: I'll reveal ALL your secrets!
+% Mira.Neutral: Cover me while I analyze the enemy!
+% Mira.Neutral: Distract them![br]I'm going to analyze the enemy.
 %0.5 Mira.Smile: Mira's journal, activate!
+%0.1 Mira.smile: Gotta analyze 'em all!
 %0.1 Mira.Smile: Recording!
 => END
 
@@ -29,9 +35,19 @@ if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 % Mira.Smile: Check this out!
 => END
 
+~ mira_analyze_existing
+% Mira.Smile: Here's all the info I've got on them.
+% Mira.Smile: I've got this one in my journal!
+% Mira.Smile: Don't worry, we can beat this one!
+% Mira.Smile: We've got this!
+% Mira.Smile: It's all here!
+% Mira.Smile: I've got this all written down!
+=> END
+
 ~ mira_analyze_success_weak
 % Mira.Neutral: It's but a weakling.
 % Mira.Neutral: It's not really worth our time.
+% Mira.Neutral: Analyzing this one was a waste of time.
 => END
 
 ~ mira_analyze_success_strong
@@ -41,9 +57,10 @@ if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 => END
 
 ~ mira_analyze_fail
-Mira.Neutral: Sorry, I... I can't get any info on it.
-Mira.Neutral: W-What even is it?[br]I can't tell anything!
-Mira.Neutral: I don't know anything, sorry.
+% Mira.Upset: Sorry, I...[br][wait=0.5]I can't get any info on it.
+% Mira.Upset: W-What even is it?[br][wait=0.5]I can't tell anything!
+% Mira.Upset: I don't know anything,[wait=0.5] sorry.
+% Mira.Upset: This one is beyond my knowledge,[wait=0.5][br]I'm sorry.
 => END
 
 ~ mira_complimentary_try

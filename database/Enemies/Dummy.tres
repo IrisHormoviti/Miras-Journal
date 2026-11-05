@@ -9,12 +9,18 @@
 
 [resource]
 script = ExtResource("1_xk7u8")
+received_sp = 99
+summoned_allies = Array[ExtResource("1_xk7u8")]([ExtResource("8_s38ka")])
+has_beastiary = true
+description = "Dummy dummy dummy
+
+it's so funny
+
+in the dumb man's world"
 first_name = "Dummy"
 main_color = Color(1, 0.25098, 1, 1)
 party_icon = ExtResource("2_g2uxp")
 actor_class = "Unknown"
-received_sp = 99
-summoned_allies = Array[ExtResource("1_xk7u8")]([ExtResource("8_s38ka")])
 max_hp = 200
 max_aura = 50
 abilities = Array[ExtResource("1_ji43p")]([ExtResource("2_s38ka")])

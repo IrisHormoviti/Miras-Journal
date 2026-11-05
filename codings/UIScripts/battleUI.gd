@@ -584,9 +584,10 @@ func get_target(faction: Array[Actor], ab := CurrentChar.next_move) -> void:
 				break
 
 	if analyzing:
-		wheel.show()
-		wheel.show_atk_color(CurrentTarget.main_color)
-		move_menu()
+		wheel.hide()
+		attack_title.icon = null
+		attack_title.text = "Analyze"
+		attack_title.get_node("RichTextLabel").text = "Get inforation on a target."
 
 	animation.play("target")
 
@@ -628,23 +629,7 @@ func move_menu() -> void:
 		emit_signal('targetFoc', CurrentTarget)
 
 		var wheel: Wheel = canvas.get_node("AttackTitle/Wheel")
-
-		if analyzing:
-			wheel.show_atk_color(CurrentTarget.main_color)
-			await Event.wait()
-			wheel.show_trg_color(CurrentTarget.main_color)
-			canvas.get_node("AttackTitle/RichTextLabel").text = "HP: %d		AP: %d\nAttack: %.1f \nDefence: %.1f \nMagic: %.1f " % [
-
-				CurrentTarget.max_hp,
-				CurrentTarget.max_aura,
-				CurrentTarget.attack,
-				CurrentTarget.defence,
-				CurrentTarget.magic
-			]
-			canvas.get_node("AttackTitle").icon = CurrentTarget.party_icon
-			canvas.get_node("AttackTitle").text = CurrentTarget.first_name
-		else:
-			wheel.show_trg_color(CurrentTarget.main_color)
+		wheel.show_trg_color(CurrentTarget.main_color)
 
 		await get_tree().create_timer(0.1).timeout
 		active = true

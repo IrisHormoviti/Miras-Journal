@@ -374,11 +374,6 @@ func defeat() -> void:
 	queue_free()
 
 
-func _input(event: InputEvent) -> void:
-	if Input.is_action_just_pressed("DebugD") and SettingsManager.settings.debug_mode:
-		go_to(get_global_mouse_position(), false)
-
-
 func wall_in_front() -> bool:
 	if is_on_wall() and Direction.from(get_wall_normal()).equals(facing): return true
 	else: return false

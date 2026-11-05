@@ -10,6 +10,12 @@
 [resource]
 script = ExtResource("4_5jymb")
 received_sp = 4
+has_beastiary = true
+description = "A monster's spirit being channelled through a flower.
+
+Even if it cannot move, It's able to attack from a distance using its roots, or its [color=%Heat]Raging Fire[/color] attack.
+
+Don't fight fire with fire, but with [color=%Liquid]water[/color]."
 first_name = "Crimson Flowent"
 main_color = Color(0.558524, 0.24453369, 0.12435416, 1)
 party_icon = ExtResource("3_w3tyq")

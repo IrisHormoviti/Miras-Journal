@@ -9,12 +9,19 @@
 
 [resource]
 script = ExtResource("3_af8c6")
+custom_position = Vector2i(35, -30)
+has_beastiary = true
+description = "This bird like spirit was summoned by Asteria.
+
+Its magic, Wind based attacks are incredibly brutal!
+
+Take it down as fast as possible with Technical or Corruption magic! 
+...is what I would say if i had any."
 first_name = "Bird Summon"
 main_color = Color(0.3618105, 0.5630479, 0, 1)
 party_icon = ExtResource("2_af8c6")
 actor_class = "Mage"
 codename = &"Bird"
-custom_position = Vector2i(35, -30)
 max_hp = 50
 attack = 0.8
 magic = 2.0

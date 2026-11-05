@@ -196,3 +196,6 @@ func check_menu_buttons(event: InputEvent) -> void:
 				Textbox.open("testbush", "add_to_party")
 			elif Input.is_action_just_pressed("Debug0"):
 				Engine.time_scale = 1.0 if Engine.time_scale == 0.1 else 0.1
+			elif Input.is_action_just_pressed("DebugD"):
+				for i: String in Event.npc_list:
+					Event.npc(i).go_to(Event.npc(i).get_global_mouse_position(), false)

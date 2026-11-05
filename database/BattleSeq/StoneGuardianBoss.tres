@@ -24,6 +24,7 @@
 [ext_resource type="Script" uid="uid://2x865joteqom" path="res://codings/Battle/Steps/Conditions/all_condition.gd" id="cond_be_all"]
 [ext_resource type="Script" uid="uid://dgmis3iyb8rwo" path="res://codings/Battle/Steps/Conditions/battle_condition.gd" id="cond_be_base"]
 [ext_resource type="Script" uid="uid://bkek064a7loie" path="res://codings/Battle/Steps/Conditions/stat_condition.gd" id="cond_be_stat"]
+[ext_resource type="Script" uid="uid://ffdgm3py3k8e" path="res://codings/Battle/Steps/Scheduling/queue_move_step.gd" id="step_queue_move"]
 
 [sub_resource type="Resource" id="Resource_w4e3m"]
 resource_name = "Caster"
@@ -170,11 +171,10 @@ count = 2
 wait = false
 
 [sub_resource type="Resource" id="Resource_mbtw5"]
-script = ExtResource("17_ce4fm")
-mode = 6
+script = ExtResource("step_queue_move")
 actor = SubResource("Resource_a8wiu")
-next_action = 2
-next_move = ExtResource("40_jmqb3")
+action = 2
+ability = ExtResource("40_jmqb3")
 
 [sub_resource type="Resource" id="Resource_rhjwb"]
 resource_name = "Target"

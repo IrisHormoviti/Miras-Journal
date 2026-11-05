@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://chjrhe4gw1iu6"]
 
 [ext_resource type="Script" uid="uid://b78l65ulag6e2" path="res://codings/Battle/battle_base.gd" id="1_mokeb"]
-[ext_resource type="SpriteFrames" uid="uid://bmbis13j145si" path="res://art/BT/Alcine/AlcineBT.tres" id="4_0enhy"]
+[ext_resource type="SpriteFrames" uid="uid://betyaul8nc6fe" path="res://art/BT/Mira/MiraBT.tres" id="3_2q88m"]
 [ext_resource type="Material" uid="uid://bk3wcarpqpgmi" path="res://codings/Shaders/Pixelart.tres" id="7_ef2go"]
 [ext_resource type="Texture2D" uid="uid://da4wno1fcym1u" path="res://art/Backgrounds/Debug.png" id="8_4wnfp"]
 [ext_resource type="Shader" uid="uid://b27n7x5idg5sw" path="res://codings/Shaders/Actor.gdshader" id="9_owm6w"]
@@ -4340,9 +4340,9 @@ y_sort_enabled = true
 texture_filter = 1
 material = SubResource("ShaderMaterial_bwtm7")
 position = Vector2(-60.5, -39.5)
-sprite_frames = ExtResource("4_0enhy")
-animation = &"KnockOut"
-frame = 14
+sprite_frames = ExtResource("3_2q88m")
+animation = &"Throw"
+frame = 9
 frame_progress = 1.0
 offset = Vector2(0.5, -15.5)
 
@@ -5906,7 +5906,6 @@ theme = SubResource("Theme_5tvnb")
 theme_override_font_sizes/font_size = 15
 text = "Attack Name"
 icon = SubResource("AtlasTexture_gxtaj")
-alignment = 0
 expand_icon = true
 
 [node name="Border1" type="Panel" parent="Canvas/AttackTitle" unique_id=286790644]

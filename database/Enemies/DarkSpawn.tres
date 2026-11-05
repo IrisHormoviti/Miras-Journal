@@ -11,6 +11,11 @@
 [resource]
 script = ExtResource("5_54arq")
 received_sp = 3
+has_beastiary = true
+description = "A weak minion that can split off a sludge monster.
+
+This one can use Corruption based magic."
+impression = "Weak"
 first_name = "Dark Spawn"
 main_color = Color(0.768627, 0.654902, 0.929412, 1)
 party_icon = ExtResource("1_gfcpg")

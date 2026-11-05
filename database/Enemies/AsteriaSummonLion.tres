@@ -9,11 +9,18 @@
 
 [resource]
 script = ExtResource("3_f6gkn")
+custom_position = Vector2i(30, 30)
+has_beastiary = true
+description = "This lion-like spirit was summoned by Asteria.
+
+It's a strong closeup attacker, and also a healer.
+If left alone, it can heal Asteria back up forever!
+
+Take it down with Natural or Electric magic!"
 first_name = "Lion Summon"
 main_color = Color(0.2924576, 0.00070675195, 0.7316276, 1)
 party_icon = ExtResource("2_f6gkn")
 codename = &"Lion"
-custom_position = Vector2i(30, 30)
 max_hp = 30
 attack = 1.6
 magic = 0.8

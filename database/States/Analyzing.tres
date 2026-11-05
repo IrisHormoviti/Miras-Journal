@@ -6,47 +6,56 @@
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_0c1js"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_pbey7"]
 [ext_resource type="Script" uid="uid://47q0we3aw5v" path="res://codings/Classes/state.gd" id="6_cesq4"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="6_y5014"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_neifg"]
 atlas = ExtResource("1_neifg")
 region = Rect2(0, 72, 18, 18)
 
-[sub_resource type="Resource" id="Resource_wbfit"]
-resource_name = "Target"
+[sub_resource type="Resource" id="Resource_neifg"]
+resource_name = "Caster"
 script = ExtResource("4_0c1js")
-mode = 1
 
-[sub_resource type="Resource" id="Resource_kacsd"]
+[sub_resource type="Resource" id="Resource_y5014"]
 script = ExtResource("5_pbey7")
-mode = 8
-actor = SubResource("Resource_wbfit")
+actor = SubResource("Resource_neifg")
+animation = &"Study"
 
 [sub_resource type="Resource" id="Resource_axcjl"]
 script = ExtResource("2_y5014")
-steps = Array[ExtResource("3_74yio")]([SubResource("Resource_kacsd")])
+steps = Array[ExtResource("3_74yio")]([SubResource("Resource_y5014")])
 
-[sub_resource type="Resource" id="Resource_gf8tq"]
-resource_name = "Target"
+[sub_resource type="Resource" id="Resource_cesq4"]
+resource_name = "Caster"
 script = ExtResource("4_0c1js")
-mode = 1
 
-[sub_resource type="Resource" id="Resource_mlr2q"]
+[sub_resource type="Resource" id="Resource_kxtj0"]
+script = ExtResource("6_y5014")
+move_enabled = true
+actor = SubResource("Resource_cesq4")
+
+[sub_resource type="Resource" id="Resource_74yio"]
+resource_name = "Caster"
+script = ExtResource("4_0c1js")
+
+[sub_resource type="Resource" id="Resource_pbey7"]
 script = ExtResource("5_pbey7")
-mode = 8
-actor = SubResource("Resource_gf8tq")
-outline_remove = true
+actor = SubResource("Resource_74yio")
 
-[sub_resource type="Resource" id="Resource_i2cun"]
+[sub_resource type="Resource" id="Resource_0c1js"]
 script = ExtResource("2_y5014")
-steps = Array[ExtResource("3_74yio")]([SubResource("Resource_mlr2q")])
+steps = Array[ExtResource("3_74yio")]([SubResource("Resource_kxtj0"), SubResource("Resource_pbey7")])
+metadata/_custom_type_script = "uid://cn5b836p1hs1k"
 
 [resource]
 script = ExtResource("6_cesq4")
 name = "Analyzing"
-description = "The actor is busy analyzing an opponent. They'll have the results ready in a turn"
+description = "The actor is busy analyzing an opponent. They'll have the results ready in a turn.
+The actor is more prone to damage in this state."
 turns = 1
 icon = SubResource("AtlasTexture_neifg")
-pose = "Guard"
-aura_on_damage = 1.0
+pose = "Study"
+magic_dmg_mult = 1.5
+weapon_dmg_mult = 1.5
 on_add = SubResource("Resource_axcjl")
-on_remove = SubResource("Resource_i2cun")
+on_remove = SubResource("Resource_0c1js")

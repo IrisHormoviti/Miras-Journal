@@ -9,7 +9,6 @@ enum Mode {
 	CLUTCH_DAMAGE,
 	ABILITY_DISABLED,
 	CONTROLLABLE,
-	NEXT_ACTION,
 	NEXT_TARGET,
 }
 
@@ -20,11 +19,7 @@ enum Mode {
 @export var actor: ActorRef
 @export var enabled := true
 @export var ability_index := 0
-## The turn the actor takes on their next move.
-@export var next_action: Actor.BtAction = Actor.BtAction.ACT
-## The ability the actor will use, left empty to keep their own choice.
-@export var next_move: Ability
-## Who the actor will aim at, left empty to keep their own choice.
+## Who the actor will aim at on their next move, left empty to keep their own choice.
 @export var next_target: ActorRef
 
 
@@ -54,27 +49,15 @@ func run(ctx: ActionSequenceContext) -> void:
 		Mode.CONTROLLABLE:
 			subject.controllable = enabled
 
-		Mode.NEXT_ACTION:
-			subject.next_action = next_action
-
-			if next_move != null:
-				subject.next_move = next_move
-
-			if next_target != null:
-				subject.next_target = next_target.resolve(ctx)
-
 		Mode.NEXT_TARGET:
 			subject.next_target = next_target.resolve(ctx) if next_target != null else null
 
 
-## The actor this step acts on. Scripting a turn defaults to the caster, since a
-## next move usually describes the actor running the sequence.
+## The actor this step acts on. Targeting defaults to the target, since the actor
+## field is enough when a sequence wants to change someone else's next target.
 func _subject(ctx: ActionSequenceContext) -> Actor:
 	if actor != null:
 		return actor.resolve(ctx)
-
-	if mode == Mode.NEXT_ACTION:
-		return ctx.caster
 
 	return ctx.target
 
@@ -102,9 +85,6 @@ func _to_string() -> String:
 		Mode.CONTROLLABLE:
 			return "Controllable %s: %s" % [who, state]
 
-		Mode.NEXT_ACTION:
-			return "Next move for %s: %s" % [who, Actor.BtAction.find_key(next_action)]
-
 		Mode.NEXT_TARGET:
 			if next_target == null:
 				return "Clear %s's target" % who
@@ -114,12 +94,12 @@ func _to_string() -> String:
 	return ""
 
 
-## The label for this step's subject, matching the caster default of a next move.
+## The label for this step's subject.
 func _who() -> String:
 	if actor != null:
 		return str(actor)
 
-	return "Caster" if mode == Mode.NEXT_ACTION else "Target"
+	return "Target"
 
 
 func _validate_property(property: Dictionary) -> void:
@@ -127,8 +107,6 @@ func _validate_property(property: Dictionary) -> void:
 
 	if mode == Mode.ABILITY_DISABLED:
 		visible.append_array(["enabled", "ability_index"])
-	elif mode == Mode.NEXT_ACTION:
-		visible.append_array(["next_action", "next_move", "next_target"])
 	elif mode == Mode.NEXT_TARGET:
 		visible.append("next_target")
 	else:

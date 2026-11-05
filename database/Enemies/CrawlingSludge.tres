@@ -12,6 +12,12 @@
 [resource]
 script = ExtResource("6_1j86d")
 dropped_item = ExtResource("4_n0njt")
+has_beastiary = true
+description = "Oh, it's one of these...
+
+It's really not that strong, but quite scary... especially when it tries to jump to your face.
+
+Just... hit it with [color=%Heat]fire[/color]... that should be enough."
 first_name = "Crawling Sludge"
 main_color = Color(0.560784, 1, 0.886275, 1)
 party_icon = ExtResource("1_u1o0b")

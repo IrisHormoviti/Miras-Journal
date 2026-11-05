@@ -10,7 +10,6 @@
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="5_of0ko"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="6_127my"]
 [ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="7_xvs4g"]
-[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="9_s2mkv"]
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="10_6ju1c"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="11_7em3r"]
 [ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="11_223rs"]
@@ -21,6 +20,7 @@
 [ext_resource type="Resource" uid="uid://d05eisax2ikpg" path="res://database/States/Frozen.tres" id="18_t57ii"]
 [ext_resource type="Script" uid="uid://dhhlbmxn3f342" path="res://codings/Battle/Steps/Flow/for_each_actor_step.gd" id="aoe_each"]
 [ext_resource type="Script" uid="uid://lm8pldk2lvix" path="res://codings/Battle/Steps/Conditions/hit_outcome_condition.gd" id="cond_hit"]
+[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="step_effect"]
 
 [sub_resource type="Resource" id="Resource_86wy7"]
 resource_name = "Target"
@@ -82,10 +82,17 @@ resource_name = "Random Offset"
 script = ExtResource("7_xvs4g")
 mode = 10
 
+[sub_resource type="Resource" id="Resource_3tkpp"]
+resource_name = "Target"
+script = ExtResource("5_dmjcc")
+mode = 1
+
 [sub_resource type="Resource" id="Resource_57mot"]
-script = ExtResource("9_s2mkv")
+script = ExtResource("step_effect")
+effect_name = &"Iceicle"
+target = SubResource("Resource_3tkpp")
 position = SubResource("Resource_uu1dv")
-value = &"Iceicle"
+free_when_done = true
 
 [sub_resource type="Resource" id="Resource_83t34"]
 script = ExtResource("4_shake")
@@ -147,10 +154,17 @@ duration = 0.5
 random_duration = true
 random_max = 0.5
 
+[sub_resource type="Resource" id="Resource_26pad"]
+resource_name = "Target"
+script = ExtResource("5_dmjcc")
+mode = 1
+
 [sub_resource type="Resource" id="Resource_lm64c"]
-script = ExtResource("9_s2mkv")
+script = ExtResource("step_effect")
+effect_name = &"Iceicle"
+target = SubResource("Resource_26pad")
 position = SubResource("Resource_uu1dv")
-value = &"Iceicle"
+free_when_done = true
 
 [sub_resource type="Resource" id="Resource_ympqw"]
 script = ExtResource("6_127my")

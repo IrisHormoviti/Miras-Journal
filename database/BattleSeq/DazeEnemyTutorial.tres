@@ -7,6 +7,16 @@
 [ext_resource type="Script" uid="uid://blx6fs34ughqo" path="res://codings/Classes/battle_seq.gd" id="5_2isgh"]
 [ext_resource type="Resource" uid="uid://da5vu0jhf55sc" path="res://sound/Sets/Lost in the Ruins - Set.tres" id="5_d6nks"]
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="5_sotm4"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="7_mim0w"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="8_bdbt5"]
+[ext_resource type="Script" uid="uid://brxod1kfeknjs" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="8_q302w"]
+[ext_resource type="Script" uid="uid://bte654s5nh6vn" path="res://codings/Battle/Steps/Meta/ui_state_step.gd" id="9_q302w"]
+[ext_resource type="Script" uid="uid://btnsdsi8rjqnj" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="12_42f48"]
+[ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="13_0yn1v"]
+[ext_resource type="Script" uid="uid://1lgh0kqkf2x5" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="14_q0u61"]
+[ext_resource type="Script" uid="uid://5k3ongxwrrib" path="res://codings/Battle/Steps/Scheduling/turn_step.gd" id="15_0yn1v"]
+[ext_resource type="Resource" uid="uid://06q2mwpgupg3" path="res://database/Abilities/StaticSaber.tres" id="16_q0u61"]
+[ext_resource type="Script" uid="uid://ffdgm3py3k8e" path="res://codings/Battle/Steps/Scheduling/queue_move_step.gd" id="17_878e5"]
 [ext_resource type="Script" uid="uid://coxefyervyqwt" path="res://codings/Battle/Steps/Conditions/turn_condition.gd" id="cond_be_turn"]
 
 [sub_resource type="Resource" id="Resource_2isgh"]
@@ -19,6 +29,7 @@ script = ExtResource("cond_be_turn")
 turn_min = 2
 
 [sub_resource type="Resource" id="Resource_xovcb"]
+resource_name = "dialog"
 script = ExtResource("4_sotm4")
 condition = SubResource("Resource_xovcb_turn_0")
 result = 1
@@ -28,6 +39,115 @@ dialog_cue = "daze_enemy_3"
 caster = SubResource("Resource_2isgh")
 metadata/_custom_type_script = "uid://cn75n6xjwndk3"
 
+[sub_resource type="Resource" id="Resource_1mwup"]
+resource_name = "Caster"
+script = ExtResource("5_sotm4")
+
+[sub_resource type="Resource" id="Resource_878e5"]
+resource_name = "turn >= 5"
+script = ExtResource("cond_be_turn")
+turn_min = 5
+metadata/_custom_type_script = "uid://coxefyervyqwt"
+
+[sub_resource type="Resource" id="Resource_42f48"]
+script = ExtResource("9_q302w")
+mode = 3
+
+[sub_resource type="Resource" id="Resource_m8mpx"]
+script = ExtResource("7_mim0w")
+steps = Array[ExtResource("8_bdbt5")]([SubResource("Resource_42f48")])
+metadata/_custom_type_script = "uid://cn5b836p1hs1k"
+
+[sub_resource type="Resource" id="Resource_fmyuw"]
+resource_name = "restore the buttons"
+script = ExtResource("4_sotm4")
+condition = SubResource("Resource_878e5")
+result = 5
+caster = SubResource("Resource_1mwup")
+sequence = SubResource("Resource_m8mpx")
+metadata/_custom_type_script = "uid://cn75n6xjwndk3"
+
+[sub_resource type="Resource" id="Resource_m6abo"]
+script = ExtResource("12_42f48")
+count = 4
+wait = false
+
+[sub_resource type="Resource" id="Resource_ngu45"]
+resource_name = "Random Enemy"
+script = ExtResource("5_sotm4")
+mode = 6
+
+[sub_resource type="Resource" id="Resource_hmku2"]
+script = ExtResource("13_0yn1v")
+zoom_enabled = true
+amount = 6.0
+move_enabled = true
+actor = SubResource("Resource_ngu45")
+offset = Vector2(-10, 0)
+
+[sub_resource type="Resource" id="Resource_3vlhg"]
+script = ExtResource("12_42f48")
+count = 3
+
+[sub_resource type="Resource" id="Resource_l4lkr"]
+script = ExtResource("14_q0u61")
+file = "banter_entrance"
+cue = "daze_enemy_tutorial"
+
+[sub_resource type="Resource" id="Resource_jf7x5"]
+resource_name = "Party Member 1"
+script = ExtResource("5_sotm4")
+mode = 3
+party_index = 1
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_kjg12"]
+resource_name = "Random Enemy"
+script = ExtResource("5_sotm4")
+mode = 6
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_cx3vl"]
+script = ExtResource("15_0yn1v")
+mode = 3
+actor = SubResource("Resource_jf7x5")
+ability = ExtResource("16_q0u61")
+target = SubResource("Resource_kjg12")
+pay_cost = true
+
+[sub_resource type="Resource" id="Resource_q0u61"]
+resource_name = "Random Enemy"
+script = ExtResource("5_sotm4")
+mode = 6
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_36uwb"]
+script = ExtResource("15_0yn1v")
+mode = 2
+actor = SubResource("Resource_q0u61")
+
+[sub_resource type="Resource" id="Resource_hf22r"]
+script = ExtResource("8_q302w")
+mode = 5
+
+[sub_resource type="Resource" id="Resource_ha31w"]
+resource_name = "Party Member 1"
+script = ExtResource("5_sotm4")
+mode = 3
+party_index = 1
+metadata/_custom_type_script = "uid://dd3ha3vpos8w7"
+
+[sub_resource type="Resource" id="Resource_agcga"]
+script = ExtResource("17_878e5")
+actor = SubResource("Resource_ha31w")
+ability = ExtResource("16_q0u61")
+action = 2
+
+[sub_resource type="Resource" id="Resource_4nyfu"]
+script = ExtResource("7_mim0w")
+steps = Array[ExtResource("8_bdbt5")]([SubResource("Resource_m6abo"), SubResource("Resource_hmku2"), SubResource("Resource_3vlhg"), SubResource("Resource_l4lkr"), SubResource("Resource_cx3vl"), SubResource("Resource_36uwb"), SubResource("Resource_hf22r"), SubResource("Resource_agcga")])
+metadata/_custom_type_script = "uid://cn5b836p1hs1k"
+
 [resource]
 script = ExtResource("5_2isgh")
 Enemies = Array[ExtResource("2_d6nks")]([ExtResource("3_cdfhe")])
@@ -35,8 +155,8 @@ ScenePosition = Vector2(416, -141)
 Detransition = true
 EscPosition = Vector2i(28, -8)
 CanEscape = false
-EntranceBanter = "daze_enemy_tutorial"
+entrance_sequence = SubResource("Resource_4nyfu")
 EntranceBanterIsPassive = false
-PartyOverride = ["Daze", "Mira"]
-Events = Array[ExtResource("4_sotm4")]([SubResource("Resource_xovcb")])
+PartyOverride = ["Mira", "Daze"]
+Events = Array[ExtResource("4_sotm4")]([SubResource("Resource_xovcb"), SubResource("Resource_fmyuw")])
 metadata/_custom_type_script = "uid://blx6fs34ughqo"

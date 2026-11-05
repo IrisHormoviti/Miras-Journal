@@ -7,7 +7,7 @@ static var ElementColor: Dictionary[String, Color] = {
 	liquid = Color.hex(0x57a0f9ff), technical = Color.hex(0x7f17ffff), corruption = Color.hex(0xc333c3ff),
 	physical = Color.hex(0xd3446dff),
 
-	attack = Color.hex(0xdf3737ff), magic = Color.hex(0x5a68dfff), defence = Color.hex(0x40f178ff) }
+	attack = Color.hex(0xdf3737ff), magic = Color.hex(0x5a68dfff), defence = Color.hex(0x40f178ff)}
 
 
 static func colorize(string: String) -> String:
@@ -20,6 +20,7 @@ static func colorize(string: String) -> String:
 		string = colorize_replace(state_element_verbs(elname), string, i)
 		string = colorize_replace(state_element_verbed(elname), string, i)
 		string = colorize_replace(state_element_verb(elname), string, i)
+
 	return string
 
 
@@ -76,8 +77,8 @@ static func colorize_explicit(stri: String) -> String:
 		var color: Color = ElementColor.get(elname)
 		color.v = min(color.v, 0.8)
 
-		for name: String in [elname, elname.capitalize(), elname.to_upper()]:
-			stri = stri.replace("[color=%" + name + "]", "[color=" + color.to_html() + "]")
+		for color_name: String in [elname, elname.capitalize(), elname.to_upper()]:
+			stri = stri.replace("[color=%" + color_name + "]", "[color=" + color.to_html() + "]")
 
 	return stri
 
@@ -89,6 +90,7 @@ static func colorize_replace(elname: String, stri: String, i: String) -> String:
 		out_color.a = 1
 		var hex_out: String = out_color.to_html()
 		return stri.replacen(elname, "[outline_size=12][outline_color=" + hex_out + "][color=" + hex + "]" + elname + "[/color][/outline_color][/outline_size]")
+
 	return stri
 
 
@@ -107,6 +109,7 @@ static func state_element_verb(string: String) -> String:
 		"defence": return "guard"
 		"attack": return "knock out"
 		"magic": return "Aura break"
+
 	return string
 
 
@@ -126,6 +129,7 @@ static func state_element_verbs(string: String) -> String:
 		"defence": return "guards"
 		"attack": return "knocks out"
 		"magic": return "breaks their Aura"
+
 	return string
 
 
@@ -145,6 +149,7 @@ static func state_element_verbed(string: String) -> String:
 		"defence": return "guarded"
 		"attack": return "knocked out"
 		"magic": return "Aura broken"
+
 	return string
 
 
@@ -164,4 +169,5 @@ static func state_element_verbing(string: String) -> String:
 		"defence": return "guarding"
 		"attack": return "knocking out"
 		"magic": return "breaking their Aura"
+
 	return string

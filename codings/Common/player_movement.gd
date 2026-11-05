@@ -430,14 +430,9 @@ func controllable() -> bool:
 
 
 func attack() -> void:
-	if not Item.check_item("LightweightAxe") or Event.check_flag("Player/NoBag"):
-		Audio.buzzer_sound()
-		return
-
 	if dashing: await stop_dash()
 	reset_speed()
-	speed = 40
-	local_controllable = false
+
 	$DirectionMarker/Finder/Shape.disabled = true
 	$Attack/AttackPreview.collision_layer = collision_layer
 	$Attack/AttackPreview.collision_mask = collision_mask
@@ -449,72 +444,97 @@ func attack() -> void:
 	var dir_name := facing.to_string()
 	$Attack.rotation = facing.vector.angle()
 
-	if RealVelocity.length() > 1:
-		set_anim("Attack" + dir_name + "Walk", false, false)
-		await Event.wait(0.4)
-	else:
-		await set_anim("Attack" + dir_name + "Windup", true, false)
+	if not Item.check_item("LightweightAxe") or Event.check_flag("Player/NoBag"):
+		## Follower attack
+		var alternate_attacker: int = Event.get_flag("Player/Attacker")
 
-	winding_attack = true
-
-	while Input.is_action_pressed("OVAttack") or not checked:
-		direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down", 0.4)
-
-		if direction != Vector2.ZERO and RealVelocity.length() > 0.1:
-			var mation := "Attack" + dir_name + "Walk"
-
-			if sprite.animation != mation:
-				set_anim(mation, false, false)
+		if alternate_attacker == 0:
+			Audio.buzzer_sound()
 		else:
-			var mation := "Attack" + dir_name + "Windup"
-			sprite.animation = mation
-			sprite.frame = 1
-
-		check_before_attack()
-		if not winding_attack:
-			attacking = false
-			state = S.IDLE
-			set_anim()
-			# The attack was interrupted (e.g. a battle or cutscene started).
-			# Leave the hitboxes off, or they stay live and break anything the
-			# player walks past afterward.
-			$Attack/AttackPreview/CollisionShape2D.disabled = true
+			var follower := Global.room.followers[alternate_attacker-1]
+			follower.dont_follow = true
+			follower.speed = 250
+			await follower.go_to(position + facing.vector * 32)
+			$Attack/CollisionShape2D.disabled = false
+			await Event.wait(1)
+			follower.dont_follow = false
+			follower.state = NPC.S.CONTROLLED
 			$Attack/CollisionShape2D.disabled = true
-			speed = WALK_SPEED
-			return
 
-		checked = true
+		local_controllable = true
+		return
+	else:
+		## Regular attack
+		local_controllable = false
+		speed = 40
+
+		if RealVelocity.length() > 1:
+			set_anim("Attack" + dir_name + "Walk", false, false)
+			await Event.wait(0.4)
+		else:
+			await set_anim("Attack" + dir_name + "Windup", true, false)
+
+		winding_attack = true
+
+		while Input.is_action_pressed("OVAttack") or not checked:
+			direction = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down", 0.4)
+
+			if direction != Vector2.ZERO and RealVelocity.length() > 0.1:
+				var mation := "Attack" + dir_name + "Walk"
+
+				if sprite.animation != mation:
+					set_anim(mation, false, false)
+			else:
+				var mation := "Attack" + dir_name + "Windup"
+				sprite.animation = mation
+				sprite.frame = 1
+
+			check_before_attack()
+			if not winding_attack:
+				attacking = false
+				state = S.IDLE
+				set_anim()
+				# The attack was interrupted (e.g. a battle or cutscene started).
+				# Leave the hitboxes off, or they stay live and break anything the
+				# player walks past afterward.
+				$Attack/AttackPreview/CollisionShape2D.disabled = true
+				$Attack/CollisionShape2D.disabled = true
+				speed = WALK_SPEED
+				return
+
+			checked = true
+			await get_tree().physics_frame
+
+		winding_attack = false
+		$Attack/CollisionShape2D.disabled = false
+		var hits := false
+		state = S.CUSTOM
+		direction = Vector2.ZERO
 		await get_tree().physics_frame
+		for i: Node2D in $Attack/AttackPreview.get_overlapping_bodies():
+			#print(i)
+			if not (i is NPC or i is Follower or i is Mira):
+				hits = true
 
-	winding_attack = false
-	$Attack/CollisionShape2D.disabled = false
-	var hits := false
-	state = S.CUSTOM
-	direction = Vector2.ZERO
-	await get_tree().physics_frame
-	for i: Node2D in $Attack/AttackPreview.get_overlapping_bodies():
-		#print(i)
-		if not (i is NPC or i is Follower or i is Mira):
-			hits = true
+		#print("pt1: " + str(hits))
+		for i: Node2D in $Attack.get_overlapping_bodies():
+			#print(i)
+			if (i is NPC or i is Follower) and not i is Mira:
+				hits = false
 
-	#print("pt1: " + str(hits))
-	for i: Node2D in $Attack.get_overlapping_bodies():
-		#print(i)
-		if (i is NPC or i is Follower) and not i is Mira:
-			hits = false
+		#print("pt2: " + str(hits))
+		var audio := preload("res://sound/SFX/Swing.ogg")
+		var anim := "Attack" + facing.to_string()
 
-	#print("pt2: " + str(hits))
-	var audio := preload("res://sound/SFX/Swing.ogg")
-	var anim := "Attack" + facing.to_string()
+		if hits:
+			anim = "Attack" + facing.to_string() + "Hit"
+			audio = preload("res://sound/SFX/AxeBlock.ogg")
+			Controller.rumble(0.3, 0.3, 0.1, 0.1)
 
-	if hits:
-		anim = "Attack" + facing.to_string() + "Hit"
-		audio = preload("res://sound/SFX/AxeBlock.ogg")
-		Controller.rumble(0.3, 0.3, 0.1, 0.1)
+		$Audio.stream = audio
+		$Audio.play()
+		await set_anim(anim, true)
 
-	$Audio.stream = audio
-	$Audio.play()
-	await set_anim(anim, true)
 	local_controllable = true
 	$DirectionMarker/Finder/Shape.disabled = false
 

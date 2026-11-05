@@ -8,7 +8,6 @@
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="7_n8a33"]
 [ext_resource type="Script" uid="uid://1lgh0kqkf2x5" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="8_bgc5p"]
 [ext_resource type="Script" uid="uid://dxycvdv0l12r3" path="res://codings/Battle/Steps/Meta/event_step.gd" id="9_j33xh"]
-[ext_resource type="Script" uid="uid://brx0s8klhefbi" path="res://codings/Battle/Steps/Presentation/overlay_step.gd" id="10_u3koe"]
 [ext_resource type="Script" uid="uid://btnsdsi8rjqnj" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="11_mv4is"]
 [ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="12_hai3k"]
 [ext_resource type="Script" uid="uid://cy7rvxnxpkw50" path="res://codings/Battle/Steps/Combat/stat_step.gd" id="13_pweaq"]
@@ -18,6 +17,7 @@
 [ext_resource type="Script" uid="uid://div6ippuwwmdo" path="res://codings/Battle/Steps/Flow/random_step.gd" id="17_yhs48"]
 [ext_resource type="Script" uid="uid://cfuw4m52tqwxx" path="res://codings/Battle/Steps/Conditions/flag_condition.gd" id="cond_1"]
 [ext_resource type="Script" uid="uid://beh4aghsjhson" path="res://codings/Battle/Steps/Conditions/has_actor_condition.gd" id="cond_14"]
+[ext_resource type="Script" uid="uid://cdti5u6ekeeaw" path="res://codings/Battle/Steps/Presentation/cut_in_step.gd" id="step_cut_in"]
 
 [sub_resource type="Resource" id="Resource_5r8m0"]
 resource_name = "Asteria"
@@ -69,8 +69,7 @@ value = 5
 script = ExtResource("6_8cbfk")
 
 [sub_resource type="Resource" id="Resource_btbuq"]
-script = ExtResource("10_u3koe")
-mode = 1
+script = ExtResource("step_cut_in")
 actor = SubResource("Resource_5r8m0")
 image = &"Asteria"
 wait = true

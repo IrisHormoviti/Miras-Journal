@@ -237,25 +237,16 @@ func show_beastiary_entry(enemy: Enemy) -> void:
 	display_beastiary_entry(enemy)
 
 	if battle_entry:
-		center_battle_journal()
 		animate_battle_entry_in()
 
 	show()
 
 
-func center_battle_journal() -> void:
-	var half_width: float = get_viewport().get_visible_rect().size.x * 0.5
-	var back: TextureRect = $JournalBack
-	var shift: float = half_width - (back.position.x + back.size.x * 0.5)
-	back.position.x += shift
-	$Pages.position.x += shift
-
-
 func animate_battle_entry_in() -> void:
 	var back: TextureRect = $JournalBack
 	var pages: Control = $Pages
-	var back_target: Vector2 = back.position
-	var pages_target: Vector2 = pages.position
+	var back_target: Vector2 = Vector2(71, -100)
+	var pages_target: Vector2 = Vector2(233, 54)
 	back.position = back_target + Vector2(0, 900)
 	pages.position = pages_target + Vector2(0, 900)
 	$Fader.modulate = Color(0, 0, 0, 0)
@@ -308,8 +299,14 @@ func display_beastiary_entry(enemy: Enemy) -> void:
 	var name_label: Label = summary.get_node("NameLabel")
 	var picture: TextureRect = summary.get_node("TextureRect")
 
+	var main_color: Color = enemy.main_color
+	main_color.v = min(main_color.v, 0.5)
+
+	var secondary_color: Color = enemy.secondary_color
+	secondary_color.v = min(secondary_color.v, 0.5)
+
 	name_label.text = enemy.first_name
-	name_label.add_theme_color_override("font_color", enemy.main_color)
+	name_label.add_theme_color_override("font_color", main_color)
 	picture.texture = enemy.doodle if enemy.doodle != null else enemy.party_icon
 
 	for entry: Array in [
@@ -317,18 +314,17 @@ func display_beastiary_entry(enemy: Enemy) -> void:
 		["MagicBar", enemy.magic],
 		["DefenceBar", enemy.defence],
 	]:
-		var bar: ProgressBar = summary.get_node(entry[0])
-		bar.max_value = 2
-		bar.value = clampf(float(entry[1]), 0, 2)
+		var bar: TextureProgressBar = summary.get_node(entry[0])
+		bar.value = float(entry[1])
 
 	var power := enemy.weapon.power if enemy.weapon != null else 0
 	summary.get_node("WeaponPower").text = str(power)
 	text_r.text = Colorizer.colorize(text_replacement(enemy.description))
 
-	summary.get_node("HealthLabel").text = "Health: %dHP" % enemy.max_hp
-	summary.get_node("AuraLabel").text = "Aura: %dAP" % enemy.max_hp
-	summary.get_node("HealthLabel").add_theme_color_override("font_color", enemy.main_color)
-	summary.get_node("AuraLabel").add_theme_color_override("font_color", enemy.secondary_color)
+	summary.get_node("HealthLabel").text = "Health: %d HP" % enemy.max_hp
+	summary.get_node("AuraLabel").text = "Aura: %d AP" % enemy.max_aura
+	summary.get_node("HealthLabel").add_theme_color_override("font_color", main_color)
+	summary.get_node("AuraLabel").add_theme_color_override("font_color", secondary_color)
 
 
 func load_enemy(codename: String) -> Enemy:

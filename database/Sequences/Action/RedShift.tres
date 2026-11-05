@@ -1,29 +1,31 @@
 [gd_resource type="Resource" script_class="ActionSequence" format=3 uid="uid://746jroiguivx"]
 
-[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="seq"]
-[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="step"]
+[ext_resource type="Script" uid="uid://g6m27yq3uw4c" path="res://codings/Battle/Steps/Presentation/sound_step.gd" id="9_wk8yn"]
+[ext_resource type="Script" uid="uid://bq5w2mrtn8xdp" path="res://codings/Battle/Steps/Combat/miss_step.gd" id="10_utqxg"]
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="actor"]
-[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="sprite"]
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="camera"]
-[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="shake"]
-[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="effect"]
-[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="wait"]
 [ext_resource type="Script" uid="uid://bvfq4c04adr1d" path="res://codings/Battle/Steps/Combat/damage_step.gd" id="damage"]
+[ext_resource type="Script" uid="uid://c0wycllujccjw" path="res://codings/Battle/Steps/Presentation/effect_step.gd" id="effect"]
+[ext_resource type="Script" uid="uid://cn5b836p1hs1k" path="res://codings/Battle/Steps/Core/action_sequence_class.gd" id="seq"]
+[ext_resource type="Script" uid="uid://dcgpqm4bykrmh" path="res://codings/Battle/Steps/Camera/camera_shake_step.gd" id="shake"]
+[ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="sprite"]
+[ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="step"]
 [ext_resource type="Script" uid="uid://bauq2mkx5erh8" path="res://codings/Battle/Steps/Refs/value_ref.gd" id="value"]
+[ext_resource type="Script" uid="uid://bpbte2j6kwisc" path="res://codings/Battle/Steps/Flow/wait_step.gd" id="wait"]
 
 [sub_resource type="Resource" id="Resource_caster"]
 resource_name = "Caster"
 script = ExtResource("actor")
 
-[sub_resource type="Resource" id="Resource_target"]
-resource_name = "Target"
-script = ExtResource("actor")
-mode = 1
-
 [sub_resource type="Resource" id="Resource_cast"]
 script = ExtResource("sprite")
 actor = SubResource("Resource_caster")
 animation = &"Cast"
+
+[sub_resource type="Resource" id="Resource_target"]
+resource_name = "Target"
+script = ExtResource("actor")
+mode = 1
 
 [sub_resource type="Resource" id="Resource_zoom"]
 script = ExtResource("camera")
@@ -51,8 +53,29 @@ script = ExtResource("shake")
 amount = 8.0
 duration = 0.1
 
+[sub_resource type="Resource" id="Resource_objk5"]
+script = ExtResource("shake")
+
+[sub_resource type="Resource" id="Resource_qk4ol"]
+resource_name = "Target"
+script = ExtResource("actor")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_mj72r"]
+script = ExtResource("9_wk8yn")
+actor = SubResource("Resource_qk4ol")
+
+[sub_resource type="Resource" id="Resource_yiovb"]
+resource_name = "Target"
+script = ExtResource("actor")
+mode = 1
+
+[sub_resource type="Resource" id="Resource_2bssp"]
+script = ExtResource("10_utqxg")
+target = SubResource("Resource_yiovb")
+
 [sub_resource type="Resource" id="Resource_power"]
-resource_name = "state count x8 +8"
+resource_name = "state count x8.0 +8.0"
 script = ExtResource("value")
 source = 2
 stat = 10
@@ -67,10 +90,11 @@ power = SubResource("Resource_power")
 magic_mode = 2
 elemental = true
 hit_branch = false
+hit_steps = Array[ExtResource("step")]([SubResource("Resource_objk5"), SubResource("Resource_mj72r")])
+miss_steps = Array[ExtResource("step")]([SubResource("Resource_2bssp")])
 
 [sub_resource type="Resource" id="Resource_wait_1"]
 script = ExtResource("wait")
-duration = 1.0
 
 [sub_resource type="Resource" id="Resource_idle"]
 script = ExtResource("sprite")

@@ -6,11 +6,11 @@
 [ext_resource type="Script" uid="uid://cowuym37214qt" path="res://codings/Battle/Steps/Core/battle_step.gd" id="3_3mmnq"]
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="4_bhniy"]
 [ext_resource type="Script" uid="uid://ipjg106xfgst" path="res://codings/Battle/Steps/Camera/camera_step.gd" id="5_0wse0"]
-[ext_resource type="Script" uid="uid://ngnmvvpnjahu" path="res://codings/Battle/Steps/Presentation/feedback_step.gd" id="6_myd75"]
 [ext_resource type="Resource" uid="uid://xsqx8xd4ctjb" path="res://database/Abilities/Nothing.tres" id="7_wji3h"]
-[ext_resource type="Script" uid="uid://qj0kal4v0pn4" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="8_w3ft4"]
 [ext_resource type="Script" uid="uid://dbwr3h2q3mhk4" path="res://codings/Battle/Steps/Actor/actor_sprite_step.gd" id="9_p5ac0"]
 [ext_resource type="Script" uid="uid://div6ippuwwmdo" path="res://codings/Battle/Steps/Flow/random_step.gd" id="10_5v03j"]
+[ext_resource type="Script" uid="uid://ddpp6wis13flc" path="res://codings/Battle/Steps/Presentation/battle_message_step.gd" id="step_battle_message"]
+[ext_resource type="Script" uid="uid://ffdgm3py3k8e" path="res://codings/Battle/Steps/Scheduling/queue_move_step.gd" id="step_queue_move"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6wibv"]
 atlas = ExtResource("1_mf0vm")
@@ -28,8 +28,7 @@ move_enabled = true
 actor = SubResource("Resource_7yyke")
 
 [sub_resource type="Resource" id="Resource_tpj51"]
-script = ExtResource("6_myd75")
-mode = 2
+script = ExtResource("step_battle_message")
 message = "shock"
 
 [sub_resource type="Resource" id="Resource_b3rmx"]
@@ -38,10 +37,9 @@ script = ExtResource("4_bhniy")
 mode = 1
 
 [sub_resource type="Resource" id="Resource_8i4j6"]
-script = ExtResource("8_w3ft4")
-mode = 6
+script = ExtResource("step_queue_move")
 actor = SubResource("Resource_b3rmx")
-next_move = ExtResource("7_wji3h")
+ability = ExtResource("7_wji3h")
 
 [sub_resource type="Resource" id="Resource_kyuji"]
 resource_name = "Target"

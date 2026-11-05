@@ -6,7 +6,7 @@
 [ext_resource type="Script" uid="uid://dxycvdv0l12r3" path="res://codings/Battle/Steps/Meta/event_step.gd" id="4_wfp02"]
 [ext_resource type="Script" uid="uid://dd3ha3vpos8w7" path="res://codings/Battle/Steps/Refs/actor_ref.gd" id="5_owtq4"]
 [ext_resource type="Resource" uid="uid://du1gofmain0gg" path="res://database/Abilities/InnerFocus.tres" id="6_gylx0"]
-[ext_resource type="Script" uid="uid://qj0kal4v0pn4" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="7_xaaa0"]
+[ext_resource type="Script" uid="uid://ffdgm3py3k8e" path="res://codings/Battle/Steps/Scheduling/queue_move_step.gd" id="step_queue_move"]
 
 [sub_resource type="Resource" id="Resource_mw7ps"]
 script = ExtResource("3_8l3n6")
@@ -25,11 +25,10 @@ mode = 2
 codename = &"CrawlingSludge"
 
 [sub_resource type="Resource" id="Resource_f7v3e"]
-script = ExtResource("7_xaaa0")
-mode = 6
+script = ExtResource("step_queue_move")
 actor = SubResource("Resource_743em")
-next_action = 2
-next_move = ExtResource("6_gylx0")
+action = 2
+ability = ExtResource("6_gylx0")
 
 [resource]
 script = ExtResource("1_7e51y")

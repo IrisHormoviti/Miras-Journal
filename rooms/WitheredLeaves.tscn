@@ -668,6 +668,7 @@ flag_should_be = true
 add_the_flag = true
 return_control = false
 ShowTextbox = true
+textbox_mode = "Passive"
 text_file = "story_1"
 text_cue = "daze_enemy_1"
 

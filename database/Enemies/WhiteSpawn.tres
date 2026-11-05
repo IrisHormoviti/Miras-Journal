@@ -12,6 +12,11 @@
 script = ExtResource("5_4gq0h")
 dropped_item = ExtResource("3_r050w")
 received_sp = 2
+has_beastiary = true
+description = "A weak minion that can split off a sludge monster.
+
+This one can use Spiritual based magic."
+impression = "Weak"
 first_name = "White Spawn"
 main_color = Color(0.768627, 1, 0.85098, 1)
 party_icon = ExtResource("1_udw1f")

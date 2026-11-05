@@ -1392,14 +1392,35 @@ func begin_analysis(analyzer: Actor, _enemy: Enemy) -> void:
 	if analyzer == null or analyzer.health == 0 or analyzer.node == null:
 		return
 
+	zoom(6)
+	focus_cam(analyzer)
 	await analyzer.add_state("Analyzing", 1, analyzer, true, true)
+	
 	await Passive.open("banter_battle", "mira_analyze")
 
 
 func show_analysis_result(enemy: Enemy, newly_discovered: bool) -> void:
+	var impression: String = ""
+
+	match enemy.impression:
+		"Strong":
+			impression = "_strong"
+
+		"Weak":
+			impression = "_weak"
+
+	get_analyzer().node.pause()
+	get_analyzer().node.animation = "Study"
+	
 	if newly_discovered:
 		Event.register_beastiary(enemy.codename)
-		Passive.open("banter_battle", "mira_analyze_success")
+
+		Passive.open("banter_battle", "mira_analyze_success" + impression)
+	else:
+		Passive.open(
+			"banter_battle", 
+			"mira_analyze_existing" if impression.is_empty() else "mira_analyze_success" + impression
+		)
 
 	var restore_enemy_ui := is_instance_valid(enemy_ui) and enemy_ui.visible
 
@@ -1407,7 +1428,8 @@ func show_analysis_result(enemy: Enemy, newly_discovered: bool) -> void:
 		enemy_ui.hide()
 
 	await UI.beastiary_entry(enemy)
-
+	
+	anim("", get_analyzer())
 	if restore_enemy_ui and is_instance_valid(enemy_ui):
 		enemy_ui.show()
 

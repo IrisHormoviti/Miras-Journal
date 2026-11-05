@@ -23,3 +23,4 @@ class_name Enemy
 ## The text shown.
 @export_multiline var description: String
 @export var doodle: Texture
+@export_enum("Normal", "Strong", "Weak") var impression: String = "Normal"

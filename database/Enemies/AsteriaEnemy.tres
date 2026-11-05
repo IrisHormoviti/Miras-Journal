@@ -4,7 +4,6 @@
 [ext_resource type="Resource" uid="uid://cbh1if1c4xskl" path="res://database/Abilities/PhantomGuard.tres" id="2_433ji"]
 [ext_resource type="Resource" uid="uid://i76o7dyxd0rh" path="res://database/Abilities/Tighten.tres" id="3_birmr"]
 [ext_resource type="Resource" uid="uid://csw8febwm47rj" path="res://database/Abilities/RedShift.tres" id="4_tbw3j"]
-[ext_resource type="Resource" uid="uid://b28b6eda2u4a" path="res://database/Text/Profiles/AsteriaBox.tres" id="5_g0f5o"]
 [ext_resource type="Texture2D" uid="uid://dkmfv7lb5ne4v" path="res://art/Icons/Party/Asteria.png" id="6_fw6lu"]
 [ext_resource type="Texture2D" uid="uid://bqbuf3hq8oxm6" path="res://art/Icons/Items.png" id="6_h8w5e"]
 [ext_resource type="Resource" uid="uid://d3fmjjobglnvn" path="res://database/Abilities/Attacks/AttackAsteria.tres" id="8_rr3rf"]
@@ -28,14 +27,22 @@ wheel_color = Color(0.6901961, 0.39607844, 0.6862745, 1)
 action_sequence = ExtResource("13_follow")
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"
 
-[sub_resource type="Curve" id="Curve_7hmow"]
-_limits = [0.0, 500.0, 7.0, 50.0]
-bake_resolution = 50
-_data = [Vector2(7, 84.5508), -3.47912, -3.47912, 0, 0, Vector2(9.74468, 46.5668), 43.9126, 43.9126, 0, 0, Vector2(16.0658, 181.885), -36.9382, -36.9382, 0, 0, Vector2(50, 500), 0.0, 0.0, 0, 0]
-point_count = 4
-
 [resource]
 script = ExtResource("9_3alpk")
+health_bar = true
+summoned_allies = Array[ExtResource("9_3alpk")]([ExtResource("10_aktg6"), ExtResource("11_h8w5e")])
+custom_position = Vector2i(76, 0)
+followup_ability = SubResource("Resource_5mg01")
+has_beastiary = true
+description = "A young frayse girl, able to summon powerful spirits.
+She's a lot stronger than she looks!
+
+She's even using some kind of trick to heal herself instantly... I don't really understand what it is.
+
+Her [color=%Corruption]Red-Shift[/color] will deal more damage the more aliments someone has.
+
+It's strange that she's primarily using Corruption magic while having a Physical affinity... is her power coming from another entity?"
+impression = "Strong"
 health = 130
 aura = 47
 first_name = "Asteria"
@@ -44,9 +51,6 @@ party_icon = ExtResource("6_fw6lu")
 actor_class = "Mage"
 codename = &"Asteria"
 pronouns = "she"
-health_bar = true
-summoned_allies = Array[ExtResource("9_3alpk")]([ExtResource("10_aktg6"), ExtResource("11_h8w5e")])
-custom_position = Vector2i(76, 0)
 secondary_color = Color(0.69189, 0.395577, 0.688155, 1)
 max_hp = 90
 max_aura = 47
@@ -56,7 +60,6 @@ defence = 0.8
 speed = 4.0
 abilities = Array[ExtResource("1_lcqvh")]([ExtResource("2_433ji"), ExtResource("3_birmr"), ExtResource("4_tbw3j")])
 standard_attack = ExtResource("8_rr3rf")
-followup_ability = SubResource("Resource_5mg01")
 offset = Vector2(-4, -15)
 shadow = true
 flip_h = true

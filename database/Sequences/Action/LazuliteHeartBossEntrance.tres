@@ -9,11 +9,11 @@
 [ext_resource type="Resource" uid="uid://jhodmr4cx3we" path="res://database/States/UnbreakingAura.tres" id="7"]
 [ext_resource type="Script" uid="uid://btnsdsi8rjqnj" path="res://codings/Battle/Steps/Presentation/screen_step.gd" id="8"]
 [ext_resource type="Script" uid="uid://1lgh0kqkf2x5" path="res://codings/Battle/Steps/Presentation/dialogue_step.gd" id="9"]
-[ext_resource type="Script" uid="uid://qj0kal4v0pn4" path="res://codings/Battle/Steps/Actor/actor_flag_step.gd" id="10"]
 [ext_resource type="Resource" uid="uid://xsqx8xd4ctjb" path="res://database/Abilities/Nothing.tres" id="11"]
 [ext_resource type="Script" uid="uid://brxod1kfeknjs" path="res://codings/Battle/Steps/Scheduling/battle_control_step.gd" id="12"]
 [ext_resource type="Script" uid="uid://dejg68glbtmg0" path="res://codings/Battle/Steps/Refs/position_ref.gd" id="13"]
 [ext_resource type="Script" uid="uid://bx8uo7d4ycpyy" path="res://codings/Battle/Steps/Actor/move_step.gd" id="14"]
+[ext_resource type="Script" uid="uid://ffdgm3py3k8e" path="res://codings/Battle/Steps/Scheduling/queue_move_step.gd" id="step_queue_move"]
 
 [sub_resource type="Resource" id="Resource_member1"]
 resource_name = "Party Member 1"
@@ -110,9 +110,8 @@ cue = "lazulite_heart_intro"
 passive = true
 
 [sub_resource type="Resource" id="Resource_mira_next"]
-script = ExtResource("10")
-mode = 6
-next_move = ExtResource("11")
+script = ExtResource("step_queue_move")
+ability = ExtResource("11")
 
 [sub_resource type="Resource" id="Resource_alcine"]
 resource_name = "Alcine"
@@ -121,10 +120,9 @@ mode = 2
 codename = &"Alcine"
 
 [sub_resource type="Resource" id="Resource_alcine_next"]
-script = ExtResource("10")
-mode = 6
+script = ExtResource("step_queue_move")
 actor = SubResource("Resource_alcine")
-next_target = SubResource("Resource_right")
+target = SubResource("Resource_right")
 
 [sub_resource type="Resource" id="Resource_no_misses"]
 script = ExtResource("12")
