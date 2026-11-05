@@ -35,6 +35,7 @@ signal ability_returned(ab: Ability, tar: Actor)
 signal targeted
 signal targetFoc(ind: Actor)
 signal analyze
+signal analyze_target(tar: Actor)
 signal rooted
 
 
@@ -575,6 +576,13 @@ func get_target(faction: Array[Actor], ab := CurrentChar.next_move) -> void:
 	if (CurrentTarget not in faction):
 		CurrentTarget = faction[0]
 
+	if analyzing and (CurrentTarget == null or not CurrentTarget.is_enemy):
+		for i in faction:
+			if i.is_enemy:
+				CurrentTarget = i
+				LastTarget = i
+				break
+
 	if analyzing:
 		wheel.show()
 		wheel.show_atk_color(CurrentTarget.main_color)
@@ -734,9 +742,13 @@ func _on_battle_next_turn() -> void:
 
 func _on_targeted() -> void:
 	if analyzing:
-		UI.member_details(CurrentChar.next_target)
-		stage = "analyze"
-		PrevStage = "analyze"
+		var tar := CurrentTarget
+		CurrentChar.next_action = Actor.BtAction.UNSET
+		CurrentChar.next_move = null
+		CurrentChar.next_target = null
+		analyzing = false
+		await close()
+		analyze_target.emit(tar)
 	elif CurrentChar.next_action == Actor.BtAction.ITEM_GIVE:
 		give_item(given_item)
 	else:

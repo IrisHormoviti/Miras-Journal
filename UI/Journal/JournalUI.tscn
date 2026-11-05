@@ -10,6 +10,7 @@
 [ext_resource type="FontVariation" uid="uid://b26p56yb7cgso" path="res://UI/Fonts/cyrenia-button.tres" id="7_relpl"]
 [ext_resource type="Shader" uid="uid://bpx7sdi81bvy6" path="res://codings/Shaders/Unshaded.gdshader" id="8_0smgh"]
 [ext_resource type="Texture2D" uid="uid://b43smhauepc6i" path="res://UI/Journal/NotebookLines.png" id="8_5mnlf"]
+[ext_resource type="Texture2D" uid="uid://vxkkrx0cd2vs" path="res://art/Journal/Manual/AuraAffinity2.png" id="9_5hctv"]
 [ext_resource type="Texture2D" uid="uid://b3rlipd0auqsi" path="res://UI/Input/B.png" id="9_nfiq0"]
 [ext_resource type="Texture2D" uid="uid://bpv6vrrg6tboq" path="res://UI/Input/A.png" id="10_nfiq0"]
 
@@ -351,7 +352,6 @@ missing memory...
 "
 
 [node name="Fader" type="ColorRect" parent="." unique_id=677650292]
-visible = false
 modulate = Color(1, 1, 1, 0)
 light_mask = 0
 material = SubResource("ShaderMaterial_0smgh")
@@ -416,6 +416,7 @@ expand_mode = 1
 
 [node name="TextL" type="RichTextLabel" parent="Pages/PageL" unique_id=1600387505]
 unique_name_in_owner = true
+visible = false
 z_index = 1
 layout_mode = 0
 offset_left = 55.0
@@ -441,6 +442,135 @@ magic.
 "
 scroll_active = false
 autowrap_mode = 0
+
+[node name="BeastiarySummary" type="Control" parent="Pages/PageL" unique_id=2000254768]
+anchors_preset = 0
+offset_left = 53.333336
+offset_top = 40.0
+offset_right = 471.11115
+offset_bottom = 668.8889
+
+[node name="TextureRect" type="TextureRect" parent="Pages/PageL/BeastiarySummary" unique_id=327510593]
+layout_mode = 0
+offset_left = 7.7777786
+offset_top = 30.000046
+offset_right = 413.33334
+offset_bottom = 381.11115
+texture = ExtResource("9_5hctv")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="NameLabel" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=1858650879]
+layout_mode = 0
+offset_left = 2.2222223
+offset_top = -13.33333
+offset_right = 414.22223
+offset_bottom = 51.66667
+theme_override_colors/font_color = Color(0.94162434, 0.0007229239, 0.9416182, 1)
+theme_override_fonts/font = ExtResource("2_w8w16")
+theme_override_font_sizes/font_size = 47
+text = "The enemy's Name"
+
+[node name="AttackBar" type="ProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=238035852]
+layout_mode = 0
+offset_left = 144.44452
+offset_top = 454.44443
+offset_right = 401.11108
+offset_bottom = 488.8889
+show_percentage = false
+
+[node name="MagicBar" type="ProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=1477380124]
+layout_mode = 0
+offset_left = 143.33331
+offset_top = 487.77795
+offset_right = 401.11108
+offset_bottom = 522.2224
+show_percentage = false
+
+[node name="DefenceBar" type="ProgressBar" parent="Pages/PageL/BeastiarySummary" unique_id=370086731]
+layout_mode = 0
+offset_left = 144.44446
+offset_top = 523.3333
+offset_right = 401.11108
+offset_bottom = 557.7778
+show_percentage = false
+
+[node name="AttackLabel" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=1897398257]
+layout_mode = 0
+offset_left = 3.333334
+offset_top = 455.55563
+offset_right = 107.333336
+offset_bottom = 500.55563
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_fonts/font = ExtResource("2_w8w16")
+theme_override_font_sizes/font_size = 32
+text = "Attack"
+
+[node name="WeaponLabel" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=786338057]
+layout_mode = 0
+offset_left = -2.2222219
+offset_top = 595.5558
+offset_right = 224.77777
+offset_bottom = 640.5558
+theme_override_colors/font_color = Color(0, 0, 0, 0.74100006)
+theme_override_fonts/font = ExtResource("2_w8w16")
+theme_override_font_sizes/font_size = 32
+text = "Weapon Power:"
+
+[node name="HealthLabel" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=366283495]
+layout_mode = 0
+offset_top = 385.55563
+offset_right = 226.66666
+offset_bottom = 430.55563
+theme_override_colors/font_color = Color(0, 0, 0, 0.74100006)
+theme_override_fonts/font = ExtResource("2_w8w16")
+theme_override_font_sizes/font_size = 32
+text = "Health: 100HP"
+
+[node name="AuraLabel" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=499320473]
+layout_mode = 0
+offset_left = 227.77782
+offset_top = 386.6667
+offset_right = 415.88892
+offset_bottom = 431.6667
+theme_override_colors/font_color = Color(0, 0, 0, 0.74100006)
+theme_override_fonts/font = ExtResource("2_w8w16")
+theme_override_font_sizes/font_size = 32
+text = "Aura: 20AP"
+horizontal_alignment = 2
+
+[node name="WeaponPower" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=1404287608]
+layout_mode = 0
+offset_left = 243.33334
+offset_top = 590.0002
+offset_right = 412.22226
+offset_bottom = 639.0002
+theme_override_colors/font_color = Color(0, 0, 0, 0.74100006)
+theme_override_fonts/font = ExtResource("2_yay85")
+theme_override_font_sizes/font_size = 48
+text = "24"
+
+[node name="MagicLabel" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=421988503]
+layout_mode = 0
+offset_left = 4.4444447
+offset_top = 491.1112
+offset_right = 108.44444
+offset_bottom = 536.1112
+theme_override_colors/font_color = Color(0, 0.53341913, 0.97620624, 1)
+theme_override_fonts/font = ExtResource("2_w8w16")
+theme_override_font_sizes/font_size = 32
+text = "Magic"
+
+[node name="DefenceLabel" type="Label" parent="Pages/PageL/BeastiarySummary" unique_id=389821540]
+layout_mode = 0
+offset_left = 3.333334
+offset_top = 525.5555
+offset_right = 128.33333
+offset_bottom = 570.5555
+theme_override_colors/font_color = Color(2.3584068e-06, 0.63806814, 0.3709309, 1)
+theme_override_fonts/font = ExtResource("2_w8w16")
+theme_override_font_sizes/font_size = 32
+text = "Defence"
 
 [node name="PageR" type="TextureRect" parent="Pages" unique_id=367926668]
 layout_mode = 0
@@ -490,7 +620,6 @@ It must be so far from my
 home.
 "
 scroll_active = false
-autowrap_mode = 0
 
 [node name="RootMenu" type="VBoxContainer" parent="." unique_id=1463312290]
 visible = false

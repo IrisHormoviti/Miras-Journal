@@ -4298,13 +4298,16 @@ physics_interpolation_mode = 2
 texture_filter = 2
 script = ExtResource("1_mokeb")
 BattleText = Dictionary[String, String]({
+"analyze_busy": "[analyzer] is already analyzing a n enemy.",
+"analyze_no_analyzer": "Nobody in the party can analyze enemies.",
+"analyze_will": "[analyzer] will analyze [tar] on [analyzer_their] turn.",
 "busy": "[insert] is busy.",
 "cant_recover": "[cur] can't get up.",
 "confusion_hit_ally": "[cur] hits an ally in confusion!",
-"confusion_hit_self": "[cur] hits [cur_themself] in Confusion!",
-"confusion_lose_control": "[cur] loses control in Confusion!",
-"confusion_miss": "[cur misses [cur_their] target in Confusion!",
-"confusion_recover": "[cur] snaps out of Confusion!",
+"confusion_hit_self": "[cur] hits [cur_themself] in confusion!",
+"confusion_lose_control": "[cur] loses control in confusion!",
+"confusion_miss": "[cur misses [cur_their] target in confusion!",
+"confusion_recover": "[cur] snaps out of confusion!",
 "dispel": "[tar]'s [insert] state was dispelled!",
 "dispel_fail": "[tar] has no states to dispel.",
 "frozen": "[cur] can't move from the cold!",
@@ -6109,6 +6112,7 @@ texture = ExtResource("54_qjfeq")
 [connection signal="ability_returned" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_ability_returned"]
 [connection signal="ability_returned" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_ability_returned"]
 [connection signal="analyze" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_analyze"]
+[connection signal="analyze_target" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_analyze_target"]
 [connection signal="attack" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_attack"]
 [connection signal="command" from="Canvas/UIContainer/ControllerBattleUI" to="." method="_on_battle_ui_command"]
 [connection signal="command" from="Canvas/UIContainer/ControllerBattleUI" to="Canvas/UIContainer/ControllerBattleUI" method="_on_command"]

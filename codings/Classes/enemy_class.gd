@@ -16,3 +16,10 @@ class_name Enemy
 ## Optional sequence that drives this actor's whole turn instead of the AI.
 ## Useful for bosses that take several actions or follow a scripted pattern.
 @export var turn_sequence: ActionSequence
+
+@export_group("Beastiary")
+## This enemy can be analyzed to be added to the journal
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var has_beastiary: bool = false
+## The text shown.
+@export_multiline var description: String
+@export var doodle: Texture

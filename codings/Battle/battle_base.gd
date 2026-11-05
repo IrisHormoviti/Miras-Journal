@@ -30,6 +30,8 @@ static var battle_result: Result = Result.UNFINISHED
 
 ## Used for battle messages
 @export var BattleText: Dictionary[String, String]
+## Codename of the party member who performs Analyze.
+@export var analyzer_codename: StringName = &"Mira"
 ## Array of the enemies of this battle.
 ## Enemies can be added or removed throughout
 var Troop: Array[Actor]
@@ -51,6 +53,9 @@ var Action: bool
 ## True after the victory screen is shown,
 ## and is waiting for the player to continue
 var AwaitVictory := false
+## True once the victory screen flow has started, so a late duplicate victory
+## call cannot build a second screen while pending analysis is on display.
+var victory_screen_started := false
 ## Used for the SP counting in the victory screen
 var count_sp: int
 ## SP that will be earned after winning
@@ -100,6 +105,8 @@ var previewing := false
 ## An entrance sequence's END_TURN step must not start the first turn while
 ## this is set, or it races the opening and cuts it short.
 var entrance_in_progress := false
+var pending_analyze_start: Enemy = null
+var pending_analyze_result: Enemy = null
 
 @onready var ui: Control = %ControllerBattleUI
 @onready var canvas: CanvasLayer = $Canvas
@@ -840,6 +847,7 @@ func entrance() -> void:
 	# END_TURN step; end_turn() defers it while entrance_in_progress is set so
 	# the sequence can finish instead of cutting its animations off.
 	entrance_in_progress = false
+
 	if not headless_driver: next_turn.emit()
 
 
@@ -909,6 +917,10 @@ func _on_next_turn() -> void:
 	if CurrentChar.is_enemy: enemy_ui._on_battle_ui_target_foc(CurrentChar)
 	else: enemy_ui.all_enemy_ui()
 	await handle_states()
+
+	if await handle_analysis_turn():
+		return
+
 	make_move()
 
 
@@ -1208,11 +1220,18 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 ## Certain strings are replaced, as seen below
 func battle_msg(id: String, insert := "MISSING", insert2 := "MISSING2") -> String:
 	var target := CurrentTarget if CurrentTarget else Troop[0]
+	var analyzer := get_analyzer()
 	var text := BattleText[id]
 	text = text.replace("[cur]", CurrentChar.first_name)
 	text = text.replace("[tar]", target.first_name)
 	text = text.replace("[insert]", insert)
 	text = text.replace("[insert2]", insert2)
+
+	if analyzer != null:
+		text = text.replace("[analyzer]", analyzer.first_name)
+
+		for pronoun in ["themself", "they", "them", "their"] as PackedStringArray:
+			text = text.replace("[analyzer_" + pronoun + "]", analyzer.get_pronoun(pronoun))
 
 	for pronoun in ["themself", "they", "them", "their"] as PackedStringArray:
 		text = text.replace("[cur_" + pronoun + "]", CurrentChar.get_pronoun(pronoun))
@@ -1220,6 +1239,193 @@ func battle_msg(id: String, insert := "MISSING", insert2 := "MISSING2") -> Strin
 
 	UI.toast(text)
 	return text
+
+
+func get_analyzer() -> Actor:
+	for i in Party.current:
+		if i != null and i.codename == analyzer_codename:
+			return i
+
+	return null
+
+
+func is_analyzing_anything() -> bool:
+	return pending_analyze_start != null or pending_analyze_result != null
+
+
+func analyzer_can_analyze(analyzer: Actor = null) -> bool:
+	if analyzer == null:
+		analyzer = get_analyzer()
+
+	if analyzer == null:
+		return false
+
+	return (
+		analyzer.health > 0
+		and not analyzer.has_state("Knocked Out")
+		and analyzer.next_move == null
+	)
+
+
+func handle_analysis_turn() -> bool:
+	var analyzer := get_analyzer()
+
+	if analyzer == null or CurrentChar != analyzer:
+		return false
+
+	if pending_analyze_result != null:
+		var target := pending_analyze_result
+		pending_analyze_result = null
+
+		if target != null:
+			CurrentTarget = target
+
+			if not analyzer_can_analyze(analyzer):
+				await Passive.open("banter_battle", "mira_analyze_fail")
+				return false
+
+			await show_analysis_result(target, true)
+
+		return false
+
+	if pending_analyze_start != null:
+		var target := pending_analyze_start
+		pending_analyze_start = null
+
+		if target != null:
+			CurrentTarget = target
+
+			if not analyzer_can_analyze(analyzer):
+				await Passive.open("banter_battle", "mira_analyze_fail")
+				return false
+
+			pending_analyze_result = target
+			Action = true
+			anim(&"Idle", analyzer)
+			await begin_analysis(analyzer, target)
+
+		end_turn()
+		return true
+
+	return false
+
+
+func _on_battle_ui_analyze_target(tar: Actor) -> void:
+	await analyze_target(tar)
+
+
+func analyze_target(tar: Actor) -> void:
+	if tar == null:
+		restore_analysis_ui()
+		return
+
+	var analyzer := get_analyzer()
+
+	if analyzer == null:
+		CurrentTarget = tar
+		battle_msg("analyze_no_analyzer")
+		restore_analysis_ui()
+		return
+
+	if not tar.is_enemy:
+		CurrentTarget = tar
+		await UI.member_details(tar)
+
+		while UI.is_open("MemberDetails"):
+			await Event.wait()
+
+		restore_analysis_ui()
+		return
+
+	CurrentTarget = tar
+
+	if not analyzer_can_analyze(analyzer):
+		await Passive.open("banter_battle", "mira_analyze_fail")
+		restore_analysis_ui()
+		return
+
+	var enemy := tar as Enemy
+
+	if enemy == null or not enemy.has_beastiary:
+		CurrentTarget = tar
+		await Passive.open("banter_battle", "mira_analyze_fail")
+		restore_analysis_ui()
+		return
+
+	CurrentTarget = enemy
+
+	if Event.has_beastiary_entry(enemy.codename):
+		await show_analysis_result(enemy, false)
+		restore_analysis_ui()
+		return
+
+	if is_analyzing_anything():
+		battle_msg("analyze_busy")
+		restore_analysis_ui()
+		return
+
+	if CurrentChar == analyzer:
+		pending_analyze_result = enemy
+		await begin_analysis(analyzer, enemy)
+		end_turn()
+		return
+
+	pending_analyze_start = enemy
+	battle_msg("analyze_will")
+	restore_analysis_ui()
+
+
+func restore_analysis_ui() -> void:
+	if CurrentChar != null:
+		CurrentChar.next_action = Actor.BtAction.UNSET
+		CurrentChar.next_move = null
+		CurrentChar.next_target = null
+
+	if is_instance_valid(ui):
+		if CurrentChar != null:
+			ui.CurrentChar = CurrentChar
+
+		ui.root.emit()
+
+
+func begin_analysis(analyzer: Actor, _enemy: Enemy) -> void:
+	if analyzer == null or analyzer.health == 0 or analyzer.node == null:
+		return
+
+	await analyzer.add_state("Analyzing", 1, analyzer, true, true)
+	await Passive.open("banter_battle", "mira_analyze")
+
+
+func show_analysis_result(enemy: Enemy, newly_discovered: bool) -> void:
+	if newly_discovered:
+		Event.register_beastiary(enemy.codename)
+		Passive.open("banter_battle", "mira_analyze_success")
+
+	var restore_enemy_ui := is_instance_valid(enemy_ui) and enemy_ui.visible
+
+	if restore_enemy_ui:
+		enemy_ui.hide()
+
+	await UI.beastiary_entry(enemy)
+
+	if restore_enemy_ui and is_instance_valid(enemy_ui):
+		enemy_ui.show()
+
+
+func show_pending_analysis_before_victory() -> void:
+	var target := pending_analyze_result
+
+	if target == null:
+		target = pending_analyze_start
+
+	pending_analyze_result = null
+	pending_analyze_start = null
+
+	if target == null:
+		return
+
+	CurrentTarget = target
+	await show_analysis_result(target, true)
 
 
 func jump_to(
@@ -2787,13 +2993,16 @@ func victory_count_sp() -> void:
 
 
 func victory(ignore_seq := false, canvas_layer := 1) -> void:
-	if AwaitVictory: return
+	if AwaitVictory or victory_screen_started: return
 	print_rich("[color=cornflower-blue]Victory!")
 	Action = true
 
 	if sequence.victory_sequence != null and not ignore_seq:
 		await run_battle_sequence(sequence.victory_sequence, Party.Leader, null, false)
 		return
+
+	victory_screen_started = true
+	await show_pending_analysis_before_victory()
 
 	if sequence.VictoryBanter != "":
 		Passive.open("banter_victory", sequence.VictoryBanter)

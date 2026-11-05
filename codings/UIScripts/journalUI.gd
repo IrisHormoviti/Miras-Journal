@@ -1,6 +1,8 @@
 @tool
 extends CanvasLayer
 
+signal closed
+
 const orange_color := Color("#e3936e")
 
 @export_tool_button("Next Page", "PageNext") var next_page_btn: Callable = next_page_editor
@@ -31,6 +33,13 @@ var stage: String
 var current_pages: Array[String]
 var page_index: int = 0
 var page_day: int = 0
+var entry_enemy: Enemy = null
+var battle_entry := false
+var battle_tween: Tween
+var closing := false
+var list_template: Button
+var current_beastiary := ""
+var beastiary_index := -1
 @onready var page_indicator: PanelContainer = $PageIndicator
 @onready var text_l: RichTextLabel = %TextL
 @onready var text_r: RichTextLabel = %TextR
@@ -49,6 +58,12 @@ func _ready() -> void:
 
 	$Close.icon = Controller.get_scheme().CancelIcon
 	$Select.icon = Controller.get_scheme().ConfirmIcon
+	list_template = $List/List/Listing0
+
+	if entry_enemy != null:
+		show_beastiary_entry(entry_enemy)
+		return
+
 	diary_load_day_list()
 	root()
 
@@ -137,8 +152,11 @@ func root() -> void:
 	t.tween_property($RootMenu, "position:x", 254, 0.6).from(400)
 	$Select.show()
 
-	t.tween_property(UI.get_node("MainMenu"), "offset:x", 0, 0.5)
-	t.tween_property(Global.camera, "offset:x", 100, 0.5)
+	if UI.is_open("MainMenu"):
+		t.tween_property(UI.get_node("MainMenu"), "offset:x", 0, 0.5)
+
+	if is_instance_valid(Global.camera):
+		t.tween_property(Global.camera, "offset:x", 100, 0.5)
 
 
 func diary() -> void:
@@ -151,33 +169,243 @@ func diary() -> void:
 	$List.show()
 	$Select.hide()
 	page_indicator.show()
+	show_diary_pages()
+	diary_load_day_list()
 	var t: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
 	t.tween_property($Close, "position:x", 320, 0.5).set_ease(Tween.EASE_OUT)
 	t.tween_property($List, "position:x", 0, 0.5).from(-300)
 
-	t.tween_property(UI.get_node("MainMenu"), "offset:x", -165, 0.5)
-	t.tween_property(Global.camera, "offset:x", 150, 0.5)
+	if UI.is_open("MainMenu"):
+		t.tween_property(UI.get_node("MainMenu"), "offset:x", -165, 0.5)
 
-	$List/List.get_children()[-1].grab_focus()
+	if is_instance_valid(Global.camera):
+		t.tween_property(Global.camera, "offset:x", 150, 0.5)
+
+	var first := first_listing()
+
+	if first != null:
+		first.grab_focus()
 
 
 func beastiary() -> void:
 	stage = "beastiary"
+	current_beastiary = ""
+	beastiary_index = -1
 	$Journal.hide()
 	$RootMenu.hide()
 	$JournalBack.show()
 	$Pages.show()
 	$List.show()
 	$Select.hide()
+	page_indicator.hide()
+	beastiary_load_list()
 
 	var t: Tween = create_tween().set_ease(Tween.EASE_OUT).set_trans(Tween.TRANS_QUART).set_parallel()
 	t.tween_property($Close, "position:x", 320, 0.5).set_ease(Tween.EASE_OUT)
 	t.tween_property($List, "position:x", 0, 0.5).from(-300)
 
-	t.tween_property(UI.get_node("MainMenu"), "offset:x", -165, 0.5)
-	t.tween_property(Global.camera, "offset:x", 150, 0.5)
+	if UI.is_open("MainMenu"):
+		t.tween_property(UI.get_node("MainMenu"), "offset:x", -165, 0.5)
 
-	$List/List.get_children()[-1].grab_focus()
+	if is_instance_valid(Global.camera):
+		t.tween_property(Global.camera, "offset:x", 150, 0.5)
+
+	var first := first_listing()
+
+	if first != null:
+		first.grab_focus()
+	else:
+		show_empty_beastiary()
+
+
+func show_beastiary_entry(enemy: Enemy) -> void:
+	if enemy == null:
+		return
+
+	stage = "beastiary_entry"
+	entry_enemy = enemy
+	current_beastiary = str(enemy.codename)
+	$Journal.hide()
+	$RootMenu.hide()
+	$JournalBack.show()
+	$Pages.show()
+	$List.hide()
+	$Select.hide()
+	page_indicator.hide()
+	$Close.show()
+	$Close.position.x = 320
+	display_beastiary_entry(enemy)
+
+	if battle_entry:
+		center_battle_journal()
+		animate_battle_entry_in()
+
+	show()
+
+
+func center_battle_journal() -> void:
+	var half_width: float = get_viewport().get_visible_rect().size.x * 0.5
+	var back: TextureRect = $JournalBack
+	var shift: float = half_width - (back.position.x + back.size.x * 0.5)
+	back.position.x += shift
+	$Pages.position.x += shift
+
+
+func animate_battle_entry_in() -> void:
+	var back: TextureRect = $JournalBack
+	var pages: Control = $Pages
+	var back_target: Vector2 = back.position
+	var pages_target: Vector2 = pages.position
+	back.position = back_target + Vector2(0, 900)
+	pages.position = pages_target + Vector2(0, 900)
+	$Fader.modulate = Color(0, 0, 0, 0)
+	battle_tween = create_tween()
+	battle_tween.set_parallel()
+	battle_tween.set_ease(Tween.EASE_OUT)
+	battle_tween.set_trans(Tween.TRANS_QUART)
+	battle_tween.tween_property(back, "position", back_target, 0.8)
+	battle_tween.tween_property(pages, "position", pages_target, 0.8)
+	battle_tween.tween_property($Fader, "modulate", Color(0, 0, 0, 0.7), 0.5)
+	battle_tween.tween_property($Close, "position", Vector2(31, 742), 0.5).from(Vector2(31, 900))
+
+
+func animate_battle_entry_out() -> void:
+	if is_instance_valid(battle_tween):
+		battle_tween.kill()
+
+	var t := create_tween()
+	t.set_parallel()
+	t.set_ease(Tween.EASE_IN)
+	t.set_trans(Tween.TRANS_QUART)
+	t.tween_property($JournalBack, "position", $JournalBack.position + Vector2(0, 900), 0.5)
+	t.tween_property($Pages, "position", $Pages.position + Vector2(0, 900), 0.5)
+	t.tween_property($Fader, "modulate", Color(0, 0, 0, 0), 0.4)
+	await t.finished
+
+
+func show_empty_beastiary() -> void:
+	show_beastiary_pages()
+	text_r.text = "No beasts have been recorded yet."
+	$Pages/PageL/BeastiarySummary/NameLabel.text = "Beastiary"
+	$Pages/PageL/BeastiarySummary/TextureRect.texture = null
+
+
+func show_diary_pages() -> void:
+	$Pages/PageL/TextL.show()
+	$Pages/PageL/BeastiarySummary.hide()
+	text_r.show()
+
+
+func show_beastiary_pages() -> void:
+	$Pages/PageL/TextL.hide()
+	$Pages/PageL/BeastiarySummary.show()
+	text_r.show()
+
+
+func display_beastiary_entry(enemy: Enemy) -> void:
+	show_beastiary_pages()
+	var summary: Control = $Pages/PageL/BeastiarySummary
+	var name_label: Label = summary.get_node("NameLabel")
+	var picture: TextureRect = summary.get_node("TextureRect")
+
+	name_label.text = enemy.first_name
+	name_label.add_theme_color_override("font_color", enemy.main_color)
+	picture.texture = enemy.doodle if enemy.doodle != null else enemy.party_icon
+
+	for entry: Array in [
+		["AttackBar", enemy.attack],
+		["MagicBar", enemy.magic],
+		["DefenceBar", enemy.defence],
+	]:
+		var bar: ProgressBar = summary.get_node(entry[0])
+		bar.max_value = 2
+		bar.value = clampf(float(entry[1]), 0, 2)
+
+	var power := enemy.weapon.power if enemy.weapon != null else 0
+	summary.get_node("WeaponPower").text = str(power)
+	text_r.text = Colorizer.colorize(text_replacement(enemy.description))
+
+	summary.get_node("HealthLabel").text = "Health: %dHP" % enemy.max_hp
+	summary.get_node("AuraLabel").text = "Aura: %dAP" % enemy.max_hp
+	summary.get_node("HealthLabel").add_theme_color_override("font_color", enemy.main_color)
+	summary.get_node("AuraLabel").add_theme_color_override("font_color", enemy.secondary_color)
+
+
+func load_enemy(codename: String) -> Enemy:
+	var path := "res://database/Enemies/%s.tres" % codename
+
+	if not ResourceLoader.exists(path):
+		return null
+
+	return ResourceLoader.load(path, "", ResourceLoader.CACHE_MODE_IGNORE) as Enemy
+
+
+func first_listing() -> Button:
+	for child in $List/List.get_children():
+		if child is Button and child != list_template:
+			return child
+
+	return null
+
+
+func clear_list() -> void:
+	for child in $List/List.get_children():
+		if child == list_template:
+			continue
+
+		$List/List.remove_child(child)
+		child.queue_free()
+
+	list_template.hide()
+
+
+func make_listing() -> Button:
+	var dub := list_template.duplicate() as Button
+	dub.name = "Listing"
+	dub.show()
+	return dub
+
+
+func beastiary_load_list() -> void:
+	clear_list()
+
+	var entries := Event.beastiary.duplicate()
+	entries.reverse()
+
+	for codename: String in entries:
+		var enemy := load_enemy(codename)
+		var dub := make_listing()
+		dub.name = codename
+		dub.text = enemy.first_name if enemy != null else codename
+		dub.set_meta("EnemyCodename", codename)
+		$List/List.add_child(dub)
+
+
+func beastiary_focus(codename: String) -> void:
+	if codename.is_empty() or codename == current_beastiary:
+		return
+
+	var new_index := -1
+
+	for child in $List/List.get_children():
+		if child is Button and child != list_template and str(child.get_meta("EnemyCodename", "")) == codename:
+			new_index = child.get_index()
+			break
+
+	var old_index := beastiary_index
+	beastiary_index = new_index
+	current_beastiary = codename
+
+	if old_index != -1 and new_index != -1 and new_index != old_index:
+		if new_index > old_index:
+			turn_page_R()
+		else:
+			turn_page_L()
+
+	var enemy := load_enemy(codename)
+
+	if enemy != null:
+		display_beastiary_entry(enemy)
 
 
 func add_test_entries() -> void:
@@ -188,16 +416,15 @@ func add_test_entries() -> void:
 
 
 func diary_load_day_list() -> void:
+	clear_list()
+
 	if Event.diary.is_empty(): add_test_entries()
 
 	for i: int in Event.diary:
-		var dub: Button = $List/List/Listing0.duplicate()
+		var dub := make_listing()
 		dub.name = str(i)
 		dub.text = "%s %s" % [Query.get_mmm(Query.get_month(i)), Query.get_date_day(i)]
 		$List/List.add_child(dub)
-		dub.show()
-
-	$List/List/Listing0.queue_free()
 
 
 func diary_focus(day: int) -> void:
@@ -351,7 +578,18 @@ func turn_page_L() -> void:
 
 
 func close() -> void:
-	UI.get_node("MainMenu")._root()
+	if closing:
+		return
+
+	closing = true
+
+	if battle_entry:
+		await animate_battle_entry_out()
+
+	if UI.is_open("MainMenu"):
+		UI.get_node("MainMenu")._root()
+
+	closed.emit()
 	queue_free()
 
 
@@ -361,8 +599,11 @@ func _on_back_pressed() -> void:
 		"root":
 			close()
 
-		"diary":
+		"diary", "beastiary":
 			root()
+
+		"beastiary_entry":
+			close()
 
 
 func insert_images(text: String) -> String:
@@ -414,4 +655,9 @@ func load_diary_entries() -> void:
 
 func diary_focus_button() -> void:
 	var foc: Control = get_viewport().gui_get_focus_owner()
+
+	if stage == "beastiary":
+		beastiary_focus(str(foc.get_meta("EnemyCodename", foc.name)))
+		return
+
 	diary_focus(int(foc.name))

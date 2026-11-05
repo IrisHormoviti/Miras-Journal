@@ -16,8 +16,24 @@ var npc_list: Dictionary[String, NPC]
 var object_list: Dictionary[String, Node2D]
 ## diary entries for the journal
 var diary: Dictionary[int, PackedStringArray]
-## list of registerred enemies
-var beastiary: Array[Enemy]
+## Codenames of the enemies registerred in the beastiary. Stored as strings so
+## the enemy resources do not have to stay loaded between battles.
+var beastiary: Array[String]
+
+
+## True when the enemy with this codename is already in the beastiary.
+func has_beastiary_entry(codename: StringName) -> bool:
+	return str(codename) in beastiary
+
+
+## Adds an enemy codename to the beastiary. Returns false when it is already
+## registered, so callers can tell a new discovery from a known enemy.
+func register_beastiary(codename: StringName) -> bool:
+	if codename.is_empty() or has_beastiary_entry(codename):
+		return false
+
+	beastiary.append(str(codename))
+	return true
 
 ## Various values for remembering game states
 ## Flag directories:

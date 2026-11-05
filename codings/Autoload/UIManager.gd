@@ -57,6 +57,20 @@ func member_details(chara: Actor, menu := 0) -> void:
 	dub.draw_character(chara, menu)
 
 
+func beastiary_entry(enemy: Enemy) -> void:
+	if enemy == null:
+		return
+
+	Hud.hide_all()
+	var journal: CanvasLayer = (await Loader.load_res("res://UI/Journal/JournalUI.tscn")).instantiate()
+	journal.entry_enemy = enemy
+	journal.battle_entry = true
+	add_child(journal)
+
+	if journal.has_signal("closed"):
+		await journal.closed
+
+
 func complimentary_ui(chara: Actor) -> void:
 	var member := chara as PartyMember
 

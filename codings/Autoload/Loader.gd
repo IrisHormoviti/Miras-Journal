@@ -94,9 +94,7 @@ func save(filename: String = "Autosave", showicon := true) -> void:
 	data.diary = Event.diary
 	data.room = Global.room.scene_file_path.get_file().replace(".tscn", "")
 
-	data.beastiary.clear()
-	for i in Event.beastiary:
-		data.beastiary.append(i.codename)
+	data.beastiary = Event.beastiary.duplicate()
 
 	if Global.room.current_subroom != null:
 		data.room += ";" + Global.room.current_subroom.name
@@ -194,13 +192,13 @@ func load_game(filename: String = "Autosave", sound := true, predefined := false
 		mem.health = min(mem.health, mem.max_hp)
 		mem.aura = min(mem.aura, mem.max_aura)
 
-	Event.beastiary.clear()
-	for i in data.beastiary:
-		var path := "res://database/Enemies/%s.tres"%i
+	Event.beastiary = data.beastiary.duplicate()
 
-		if ResourceLoader.exists(path):
-			var enemy: Enemy = await load_res(path)
-			Event.beastiary.append(enemy)
+	# Drop entries whose enemy resource no longer exists, so a content update
+	# cannot leave dead codenames in the journal.
+	for i: String in Event.beastiary.duplicate():
+		if not ResourceLoader.exists("res://database/Enemies/%s.tres" % i):
+			Event.beastiary.erase(i)
 
 	if !data:
 		UI.error("This save file doen't exist", "WHERE FILE")

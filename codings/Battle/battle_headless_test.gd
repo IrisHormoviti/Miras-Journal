@@ -94,6 +94,8 @@ func _ready() -> void:
 	await _test_battle_events_run_in_order()
 	await _test_battle_event_conditions()
 	await _test_conditions()
+	await _test_beastiary_analysis()
+	await _test_pending_analysis_before_victory()
 
 	print("BATTLE_TEST_DONE failed=", failed)
 	await _finish(1 if failed else 0)
@@ -1973,6 +1975,132 @@ func _test_conditions() -> void:
 		return
 
 	print("BATTLE_TEST_CONDITIONS ok")
+
+
+func _test_beastiary_analysis() -> void:
+	var analyzer := battle.get_analyzer()
+
+	if analyzer == null:
+		_fail("Battle has no configured analyzer")
+		return
+
+	if battle.Troop.is_empty():
+		_fail("Battle has no enemy to analyze")
+		return
+
+	var enemy := battle.Troop[0] as Enemy
+
+	if enemy == null:
+		_fail("Battle target is not an enemy")
+		return
+
+	var had_beastiary := enemy.has_beastiary
+	enemy.has_beastiary = true
+	Event.beastiary.clear()
+
+	if not Event.register_beastiary(enemy.codename):
+		_fail("Beastiary did not register a new enemy codename")
+
+	if not Event.has_beastiary_entry(enemy.codename):
+		_fail("Beastiary lookup did not find a registered codename")
+
+	if Event.register_beastiary(enemy.codename):
+		_fail("Beastiary registered the same codename twice")
+
+	Event.beastiary.clear()
+
+	var other: Actor = null
+
+	for i in Party.current:
+		if i != null and i != analyzer:
+			other = i
+			break
+
+	if other == null:
+		_fail("Battle needs a second party member for the analysis test")
+		enemy.has_beastiary = had_beastiary
+		return
+
+	var previous_char := battle.CurrentChar
+	battle.CurrentChar = other
+	await battle.analyze_target(enemy)
+
+	if battle.pending_analyze_start != enemy:
+		_fail("Analyze on another actor's turn did not queue the analyzer")
+
+	if battle.pending_analyze_result != null:
+		_fail("Analyze on another actor's turn produced immediate results")
+
+	if Event.has_beastiary_entry(enemy.codename):
+		_fail("Queued analysis registered the enemy before the results turn")
+
+	var saved_move := analyzer.next_move
+	var saved_health := analyzer.health
+	analyzer.next_move = Ability.nothing()
+
+	if battle.analyzer_can_analyze(analyzer):
+		_fail("Busy analyzer was allowed to analyze")
+
+	analyzer.next_move = saved_move
+	analyzer.health = 0
+
+	if battle.analyzer_can_analyze(analyzer):
+		_fail("Downed analyzer was allowed to analyze")
+
+	analyzer.health = saved_health
+	battle.pending_analyze_start = null
+	battle.CurrentChar = previous_char
+	enemy.has_beastiary = had_beastiary
+	Event.beastiary.clear()
+	print("BATTLE_TEST_BEASTIARY_ANALYSIS ok")
+
+
+func _test_pending_analysis_before_victory() -> void:
+	if battle.Troop.is_empty():
+		_fail("Battle has no enemy for the pending analysis victory test")
+		return
+
+	var enemy := battle.Troop[0] as Enemy
+
+	if enemy == null:
+		_fail("Battle target is not an enemy for the pending analysis victory test")
+		return
+
+	var had_beastiary := enemy.has_beastiary
+	enemy.has_beastiary = true
+	Event.beastiary.clear()
+	battle.pending_analyze_result = enemy
+	battle.victory(true)
+
+	var seen := false
+	var deadline := Time.get_ticks_msec() + 15000
+
+	while Time.get_ticks_msec() < deadline:
+		if UI.is_open("JournalUI"):
+			seen = true
+			await Event.wait(0.2, false)
+			UI.get_node("JournalUI")._on_back_pressed()
+			break
+
+		await Event.wait(0.1, false)
+
+	await Event.wait(0.5, false)
+
+	if not seen:
+		_fail("Pending analysis was not shown before the victory screen")
+
+	if not Event.has_beastiary_entry(enemy.codename):
+		_fail("Pending analysis did not register the enemy before victory")
+
+	if battle.pending_analyze_result != null or battle.pending_analyze_start != null:
+		_fail("Pending analysis was not cleared before the victory screen")
+
+	if not battle.victory_screen_started:
+		_fail("Victory did not continue after showing pending analysis")
+
+	Event.beastiary.clear()
+	enemy.has_beastiary = had_beastiary
+	print("BATTLE_TEST_VICTORY_ANALYSIS ok")
 
 
 ## Records the caster's animation when its ability sequence starts, so a test

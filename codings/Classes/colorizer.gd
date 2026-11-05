@@ -11,10 +11,10 @@ static var ElementColor: Dictionary[String, Color] = {
 
 
 static func colorize(string: String) -> String:
+	string = colorize_element_spans(string)
+
 	for i: String in ElementColor.keys():
 		var elname: String = i
-		#str = colorize_replace(elname, str, i)
-		string = string.replace("[color=%" + i + "]", "[color=" + ElementColor.get(i).to_html() + "]")
 		string = colorize_replace(elname.capitalize(), string, i)
 		string = colorize_replace(state_element_verbing(elname), string, i)
 		string = colorize_replace(state_element_verbs(elname), string, i)
@@ -23,12 +23,62 @@ static func colorize(string: String) -> String:
 	return string
 
 
+## Expands [color=%element]...[/color] into the same outlined markup that
+## automatic element words use. Element names are matched case-insensitively.
+static func colorize_element_spans(stri: String) -> String:
+	var regex := RegEx.new()
+	regex.compile("\\[color=%([A-Za-z]+)\\]")
+	var offset := 0
+
+	while true:
+		var match := regex.search(stri, offset)
+
+		if match == null:
+			break
+
+		var elname := match.get_string(1).to_lower()
+		var open_end := match.get_end()
+
+		if not ElementColor.has(elname):
+			offset = open_end
+			continue
+
+		var close := stri.find("[/color]", open_end)
+		var color: Color = ElementColor[elname]
+		var hex := color.to_html()
+
+		if close == -1:
+			var plain := "[color=" + hex + "]"
+			stri = stri.substr(0, match.get_start()) + plain + stri.substr(open_end)
+			offset = match.get_start() + plain.length()
+			continue
+
+		var out_color := color / 3
+		out_color.a = 1
+		var text := stri.substr(open_end, close - open_end)
+		var replacement := (
+			"[outline_size=12][outline_color=" + out_color.to_html() + "]"
+			+ "[color=" + hex + "]" + text + "[/color]"
+			+ "[/outline_color][/outline_size]"
+		)
+		stri = (
+			stri.substr(0, match.get_start())
+			+ replacement
+			+ stri.substr(close + "[/color]".length())
+		)
+		offset = match.get_start() + replacement.length()
+
+	return stri
+
+
 static func colorize_explicit(stri: String) -> String:
 	for elname: String in ElementColor.keys():
-		if "[color=%" + elname + "]" in stri:
-			var color: Color = ElementColor.get(elname)
-			color.v = min(color.v, 0.8)
-			stri = stri.replace("[color=%" + elname + "]", "[color=" + color.to_html() + "]")
+		var color: Color = ElementColor.get(elname)
+		color.v = min(color.v, 0.8)
+
+		for name: String in [elname, elname.capitalize(), elname.to_upper()]:
+			stri = stri.replace("[color=%" + name + "]", "[color=" + color.to_html() + "]")
+
 	return stri
 
 
