@@ -39,14 +39,13 @@ mode = 2
 codename = &"Mira"
 
 [sub_resource type="Resource" id="Resource_join_health"]
-resource_name = "Mira health is less than 60"
+resource_name = "Mira health is greater than 0"
 script = ExtResource("15_stat")
 actor = SubResource("Resource_join_mira")
-comparator = 4
-value = 60.0
+comparator = 2
 
 [sub_resource type="Resource" id="Resource_join_condition"]
-resource_name = "all 3 conditions"
+resource_name = "(flag AlcineFollow4 = 1) and (turn >= 5) and (Mira health is greater than 0)"
 script = ExtResource("12_all")
 conditions = Array[ExtResource("13_condition")]([SubResource("Resource_join_flag"), SubResource("Resource_join_turn"), SubResource("Resource_join_health")])
 
@@ -99,7 +98,7 @@ comparator = 4
 value = 30.0
 
 [sub_resource type="Resource" id="Resource_warning_condition"]
-resource_name = "all 2 conditions"
+resource_name = "(flag AlcineFollow4 != 1) and (Mira health is less than 30)"
 script = ExtResource("12_all")
 conditions = Array[ExtResource("13_condition")]([SubResource("Resource_warning_flag"), SubResource("Resource_warning_health")])
 
