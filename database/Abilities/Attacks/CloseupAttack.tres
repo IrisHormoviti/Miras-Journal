@@ -175,3 +175,4 @@ success_chance = 0.95
 types = Array[int]([1])
 callout = false
 recover_aura = true
+complimentary_practice = null

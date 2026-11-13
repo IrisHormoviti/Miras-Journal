@@ -355,7 +355,7 @@ func _on_attack() -> void:
 
 
 func _on_ability() -> void:
-	if CurrentChar.abilities.is_empty(): return
+	if CurrentChar.get_abilities().is_empty(): return
 	stage = &"ability"
 	PrevStage = &"root"
 
@@ -394,7 +394,7 @@ func _on_ability() -> void:
 	else:
 		$DescPaper/Cost.hide()
 
-	$DescPaper/Title.text = Abilities[foc.get_index()].name
+	$DescPaper/Title.text = CurrentChar.ability_display_name(Abilities[foc.get_index()])
 	CurrentChar.next_move = CurrentChar.get_abilities()[foc.get_index()]
 	await animation.animation_finished
 	move_menu()
@@ -565,7 +565,7 @@ func get_target(faction: Array[Actor], ab := CurrentChar.next_move) -> void:
 			wheel.hide()
 
 		attack_title.get_node("RichTextLabel").text = Colorizer.colorize(ab.description)
-		attack_title.text = ab.name
+		attack_title.text = CurrentChar.ability_display_name(ab)
 		attack_title.icon = ab.icon
 
 	if LastTarget == null or not LastTarget in faction:
@@ -665,7 +665,7 @@ func move_menu() -> void:
 		if ab.color_same_as_actor or color == Color.WHITE: color = CurrentChar.main_color
 		$DescPaper/Title.add_theme_color_override("font_color",
 		color - Color(0.2, 0.2, 0.2, 0))
-		$DescPaper/Title.text = ab.name
+		$DescPaper/Title.text = CurrentChar.ability_display_name(ab)
 		CurrentChar.next_move = foc.get_meta("Ability")
 
 		if ab.aura_cost != 0:
@@ -986,7 +986,7 @@ func fetch_abilities() -> void:
 
 func update_ab(dub: Button) -> void:
 	var ab: Ability = dub.get_meta("Ability")
-	dub.text = ab.name
+	dub.text = CurrentChar.ability_display_name(ab)
 
 	if dub is WaveButton:
 		if ab.color_same_as_actor:

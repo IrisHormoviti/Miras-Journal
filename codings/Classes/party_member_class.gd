@@ -3,6 +3,16 @@ class_name PartyMember
 
 ## A playable party member. Party-only data and progression live here
 
+## Bounds for a Complimentary Ability's chance to work while it is still being
+## practiced. The value rises toward [constant COMPLIMENTARY_MASTER_CHANCE] as
+## the remaining successes approach zero, then loses some chance for every step
+## the ability's color is away from the actor's own aura color.
+const COMPLIMENTARY_BASE_CHANCE := 0.5
+const COMPLIMENTARY_MASTER_CHANCE := 0.95
+const COMPLIMENTARY_COLOR_PENALTY := 0.3
+const COMPLIMENTARY_MIN_CHANCE := 0.05
+const COMPLIMENTARY_MAX_CHANCE := 0.95
+
 ## Used for textboxes for this character and their box with their stats. If left null, the box will be automatically generated.
 @export var character_box_profile: BoxProfile
 ## Used in the party menu
@@ -23,7 +33,11 @@ class_name PartyMember
 @export_group("Skills")
 ## The abilities that can be unlocked by leveling up
 @export var learnable_abilities: Array[Ability]
+## Equipped Complimentary Abilities, rebuilt from [member complimentary_list].
 @export var complimentaries: Array[Ability]
+## Per-ability Complimentary progress for this member. See
+## [method complimentary_remaining] and the other helpers below for the sign
+## convention.
 @export var complimentary_list: Dictionary[String, int]
 
 @export_subgroup("Progression")
@@ -40,6 +54,114 @@ func is_party_member() -> bool:
 
 func get_complimentary_abilities() -> Array[Ability]:
 	return complimentaries
+
+
+## The name to show for an ability in the party and battle menus. A
+## Complimentary Ability that still needs practice gets a question mark, so a
+## half-learned skill is easy to tell apart from a mastered one.
+func ability_display_name(ability: Ability) -> String:
+	if ability == null:
+		return ""
+
+	if (
+		complimentary_list.has(ability.filename)
+		and complimentary_remaining(ability.filename) > 0
+	):
+		return ability.name + "?"
+
+	return ability.name
+
+
+## The raw signed value stored for a Complimentary Ability. Positive values are
+## equipped and count the successes still needed; negative values are benched
+## and store -(needed + 1), so -1 is a benched mastered ability.
+func complimentary_value(id: String) -> int:
+	return int(complimentary_list.get(id, 0))
+
+
+func is_complimentary_equipped(id: String) -> bool:
+	return complimentary_list.has(id) and complimentary_value(id) >= 0
+
+
+## How many successful casts this member still needs before mastering the
+## ability. Zero means mastered.
+func complimentary_remaining(id: String) -> int:
+	if not complimentary_list.has(id):
+		return 0
+
+	var value := complimentary_value(id)
+	return value if value >= 0 else absi(value) - 1
+
+
+## Whether the ability is equipped and still needs practice. Mastered abilities
+## and abilities assigned to another member are not training.
+func is_complimentary_training(ability: Ability) -> bool:
+	if ability == null:
+		return false
+
+	var id := ability.filename
+	return is_complimentary_equipped(id) and complimentary_remaining(id) > 0
+
+
+func equip_complimentary(ability: Ability) -> void:
+	if ability == null:
+		return
+
+	var id := ability.filename
+	var remaining := (
+		complimentary_remaining(id)
+		if complimentary_list.has(id)
+		else maxi(1, ability.complimentary_practice)
+	)
+	complimentary_list[id] = remaining
+
+
+func unequip_complimentary(ability: Ability) -> void:
+	if ability == null:
+		return
+
+	var id := ability.filename
+	complimentary_list[id] = -(complimentary_remaining(id) + 1)
+
+
+## Records one successful attempt and returns the number of successes still
+## needed. Reaching zero masters the ability for this member only.
+func record_complimentary_success(ability: Ability) -> int:
+	if ability == null:
+		return 0
+
+	var id := ability.filename
+	var remaining := maxi(0, complimentary_remaining(id) - 1)
+	complimentary_list[id] = remaining
+	return remaining
+
+
+## Chance that a training cast works. Practice makes it more reliable, while a
+## color further from the member's aura makes it harder.
+func complimentary_success_chance(ability: Ability) -> float:
+	if ability == null:
+		return 0.0
+
+	var practice := maxi(1, ability.complimentary_practice)
+	var remaining := clampi(complimentary_remaining(ability.filename), 0, practice)
+	var closeness := 1.0 - float(remaining) / float(practice)
+	var chance := lerpf(COMPLIMENTARY_BASE_CHANCE, COMPLIMENTARY_MASTER_CHANCE, closeness)
+	chance -= complimentary_color_distance(ability) * COMPLIMENTARY_COLOR_PENALTY
+	return clampf(chance, COMPLIMENTARY_MIN_CHANCE, COMPLIMENTARY_MAX_CHANCE)
+
+
+## How far the ability's wheel color sits from this member's aura color, from
+## zero for a matching color to one for the opposite hue. Hue carries most of
+## the weight, with saturation as a smaller secondary difference.
+func complimentary_color_distance(ability: Ability) -> float:
+	if ability == null or ability.color_same_as_actor:
+		return 0.0
+
+	var color := ability.wheel_color
+	var hue_gap := absf(color.h - main_color.h)
+	hue_gap = minf(hue_gap, 1.0 - hue_gap) / 0.5
+	var saturation_gap := absf(color.s - main_color.s)
+	return clampf(hue_gap * 0.75 + saturation_gap * 0.25, 0.0, 1.0)
 
 
 func add_SP(x: int) -> void:
@@ -151,8 +273,13 @@ func load_complimentaries() -> void:
 	complimentaries = []
 
 	for i in complimentary_list:
-		if complimentary_list.get(i) > 0:
-			complimentaries.append(await Query.get_ability(i))
+		if not is_complimentary_equipped(i):
+			continue
+
+		var ability := await Query.get_ability(i)
+
+		if ability != null:
+			complimentaries.append(ability)
 
 
 func level_up_to(lv: int) -> void:

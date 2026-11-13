@@ -88,3 +88,4 @@ target = 3
 action_sequence = SubResource("Resource_t2woy")
 aura_cost = 3
 types = Array[int]([8])
+complimentary_practice = null

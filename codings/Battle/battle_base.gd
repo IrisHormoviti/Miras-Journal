@@ -1112,7 +1112,7 @@ func callout(ab: Ability = CurrentAbility) -> void:
 	callout_onscreen = true
 
 	if ab.color_same_as_actor: ab.wheel_color = CurrentChar.main_color
-	$Canvas/Callout.text = ab.name
+	$Canvas/Callout.text = CurrentChar.ability_display_name(ab) if CurrentChar != null else ab.name
 	$Canvas/Callout.add_theme_color_override("font_color", ab.wheel_color)
 	tc.tween_property(
 		$Canvas/Callout, "position", Vector2(37, 636), 2).from(Vector2(400, 636))
@@ -1163,15 +1163,27 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 		end_turn()
 		return
 
-	if ab.remove_item_on_use != null:
-		Item.remove_item(ab.remove_item_on_use)
-
 	if ab == null:
 		end_turn()
 		return
 
 	if ab.color_same_as_actor:
 		ab.wheel_color = CurrentChar.main_color
+
+	var member := CurrentChar as PartyMember
+	var training := member != null and member.is_complimentary_training(ab)
+
+	if training:
+		if ab.callout and CurrentChar.controllable:
+			callout(ab)
+
+		if not await attempt_complimentary(CurrentChar, ab):
+			anim("", CurrentChar)
+			end_turn()
+			return
+
+	if ab.remove_item_on_use != null:
+		Item.remove_item(ab.remove_item_on_use)
 
 	if ab.target == 1:
 		if tar and tar.has_state("Knocked Out"):
@@ -1207,13 +1219,70 @@ func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
 
 	if has_sequence:
 		CurrentChar.add_aura(-CurrentAbility.aura_cost)
-		if CurrentAbility.callout and CurrentChar.controllable:
+		if CurrentAbility.callout and CurrentChar.controllable and not training:
 			callout()
 
 		action_runner.run_ability(ab, CurrentChar, CurrentTarget)
 	else:
 		end_turn()
 		return
+
+
+## Runs a practice attempt for a Complimentary Ability that is not mastered yet.
+## Shows the actor studying, plays the try/fail/mastered banter, and returns true
+## when the cast should continue.
+func attempt_complimentary(actor: Actor, ability: Ability) -> bool:
+	var member := actor as PartyMember
+
+	if member == null:
+		return true
+
+	if actor.node != null:
+		focus_cam(actor)
+		zoom(5.5)
+		play_study(actor)
+
+	var cue := "%s_complimentary_" % String(actor.codename).to_snake_case()
+	await open_banter("banter_battle", cue + "try")
+
+	if randf() >= member.complimentary_success_chance(ability):
+		await open_banter("banter_battle", cue + "fail")
+		return false
+
+	if member.record_complimentary_success(ability) == 0:
+		await open_banter("banter_battle", cue + "mastered")
+
+	return true
+
+
+## Opens a banter cue when the dialogue file actually has one. Members without
+## practice lines are skipped instead of breaking the attempt.
+func open_banter(file: String, cue: String) -> bool:
+	var dialogue := await Loader.load_res("res://database/Text/" + file + ".dialogue") as DialogueResource
+
+	if dialogue == null or not dialogue.get_cues().has(cue):
+		return false
+
+	await Passive.open(file, cue)
+	return true
+
+
+## Shows the Study pose for a practice attempt. Only Mira has a dedicated Study
+## animation for now, so fall back to the casting animation or idle.
+func play_study(actor: Actor) -> void:
+	if actor == null or actor.node == null:
+		return
+
+	var frames := actor.node.sprite_frames
+
+	if frames == null:
+		return
+
+	for animation: StringName in [&"Study", &"Ability", &"Cast", &"Idle"]:
+		if frames.has_animation(animation):
+			actor.node.play(animation)
+			pixel_perfectize(actor)
+			return
 
 
 ## Used for showing toasts. These can be set in BattleText from the editor.
@@ -1971,6 +2040,20 @@ func use_ability_now(
 
 	push_acting_context(actor, ability, target)
 
+	var member := actor as PartyMember
+	var training := member != null and member.is_complimentary_training(ability)
+
+	if training:
+		if ability.callout and actor.controllable:
+			callout(ability)
+
+		if not await attempt_complimentary(actor, ability):
+			pop_acting_context()
+
+			if consume_turn and is_instance_valid(self):
+				end_turn()
+			return
+
 	if pay_cost:
 		actor.add_aura(-ability.aura_cost)
 
@@ -1983,7 +2066,7 @@ func use_ability_now(
 
 	# Forced story actions can ask for the same wind-up the battle UI plays,
 	# for example Actor.BtAction.MAGIC to cast before the ability starts.
-	if action != Actor.BtAction.ACT and action != Actor.BtAction.UNSET:
+	if action != Actor.BtAction.ACT and action != Actor.BtAction.UNSET and not training:
 		await play_action_animation(actor, ability, action)
 
 	await action_runner.run_ability(ability, actor, target, consume_turn)

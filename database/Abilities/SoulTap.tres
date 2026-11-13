@@ -175,3 +175,4 @@ target = 1
 action_sequence = SubResource("Resource_7wtd2")
 aura_cost = 3
 types = Array[int]([1])
+complimentary_practice = null

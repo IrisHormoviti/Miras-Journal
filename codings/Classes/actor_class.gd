@@ -333,6 +333,12 @@ func get_abilities(include_compl := true, include_attack := false) -> Array[Abil
 	return rtn
 
 
+## The name to show for an ability in menus. Party members override this to add
+## a question mark while a Complimentary Ability is still being practiced.
+func ability_display_name(ability: Ability) -> String:
+	return ability.name if ability != null else ""
+
+
 ## Party members override this with their equipped complimentary abilities.
 func get_complimentary_abilities() -> Array[Ability]:
 	return []

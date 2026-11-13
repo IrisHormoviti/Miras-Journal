@@ -68,6 +68,12 @@ enum T {SELF = 0, ONE_ENEMY = 1, AOE_ENEMIES = 2, ONE_ALLY = 3, AOE_ALLIES = 4, 
 ## When dealing damage, aura is recovered
 @export var recover_aura: bool = false
 
+@export_category("Complimentary")
+## Successful casts needed to master this ability for a party member. Only used
+## by Complimentary Abilities. The member starts at this value when they equip
+## the ability, and each successful practice cast lowers it by one.
+@export_range(1, 99, 1) var complimentary_practice := 3
+
 @export_storage var disabled := false
 
 var filename: String = "":

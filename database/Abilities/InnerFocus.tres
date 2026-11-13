@@ -87,3 +87,4 @@ wheel_color = Color(0.352941, 0.407843, 0.87451, 1)
 action_sequence = SubResource("Resource_kbfdc")
 aura_cost = 3
 types = Array[int]([9])
+complimentary_practice = null

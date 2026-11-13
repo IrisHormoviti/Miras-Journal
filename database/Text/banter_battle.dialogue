@@ -94,7 +94,7 @@ if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 % Alcine.Upset: Blamm!
 => END
 
-~ alcine_complimentary_master
+~ alcine_complimentary_mastered
 % Alcine.Happy: Whimm!
 % Alcine.Happy: Wheee!
 => END
@@ -111,7 +111,7 @@ if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 % Daze.Neutral: Oh- that was...[br]A [i]perfect distraction[/i] that was!
 => END
 
-~ daze_complimentary_master
+~ daze_complimentary_mastered
 % Daze.Neutral: This one’s my magnum opus!
 % Daze.Neutral: Yet another skill in our arcenal.
 % Daze.Neutral: I'm no longer impressed.
@@ -129,7 +129,7 @@ if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 % Asteria.Neutral: Ah... that wasn't it.
 => END
 
-~ asteria_complimentary_master
+~ asteria_complimentary_mastered
 % Asteria.Neutral: That wasn't that hard!
 % Asteria.Neutral: Yes, YES![br]I've got it!
 % Asteria.Neutral: Oh- that one felt perfect!

@@ -194,7 +194,7 @@ func fetch_abilities(chara: Actor) -> void:
 		var dub: Control = %Ab0.duplicate()
 		dub.show()
 		%AbilityList.add_child(dub)
-		dub.text = i.name
+		dub.text = chara.ability_display_name(i)
 		dub.get_node("Icon").texture = i.icon
 
 		if i.aura_cost != 0:
@@ -226,7 +226,7 @@ func _on_ab_focus_entered() -> void:
 	if ab.wheel_color != Color.WHITE and not ab.color_same_as_actor and ab.deals_damage():
 		$AbilityPanel/AttackTitle/Wheel.show_atk_color(ab.wheel_color)
 	else: $AbilityPanel/AttackTitle/Wheel.hide()
-	$AbilityPanel/AttackTitle.text = ab.name
+	$AbilityPanel/AttackTitle.text = actor.ability_display_name(ab)
 	#$AbilityPanel/AttackTitle.icon = ab.icon
 	$AbilityPanel/AttackTitle/RichTextLabel.text = Colorizer.colorize(ab.description)
 

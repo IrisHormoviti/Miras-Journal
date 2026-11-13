@@ -132,6 +132,8 @@ func complimentary() -> void:
 	await await_next()
 	$Border2/Text.text = Colorizer.colorize("...And the further they are from the user's aura color, the harder they are to learn.")
 	await await_next()
+	$Border2/Text.text = Colorizer.colorize("Successful attempts count toward mastery. Until then, the name ends in a [b]?[/b].")
+	await await_next()
 	$Border2/Text.text = Colorizer.colorize("But with enough practice, anyone can master them!")
 	await await_next()
 	$Border2/Text.text = Colorizer.colorize("To equip one, go to the party menu, select a member, go to Abilities, then \"Set Complimentary\".")

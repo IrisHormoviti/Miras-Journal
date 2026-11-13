@@ -88,4 +88,5 @@ target = 3
 action_sequence = SubResource("Resource_e2cuq")
 aura_cost = 2
 types = Array[int]([9])
+complimentary_practice = null
 metadata/_custom_type_script = "uid://bw7ek8s0r2iwu"

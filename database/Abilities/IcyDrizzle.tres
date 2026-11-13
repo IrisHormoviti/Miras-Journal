@@ -275,3 +275,4 @@ success_chance = 0.8
 crit_chance = 0.2
 types = Array[int]([2, 4])
 group = "cold_aoe"
+complimentary_practice = null

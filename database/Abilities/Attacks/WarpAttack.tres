@@ -270,3 +270,4 @@ crit_chance = 0.2
 types = Array[int]([1])
 callout = false
 recover_aura = true
+complimentary_practice = null

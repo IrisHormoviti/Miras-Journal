@@ -54,10 +54,13 @@ By spending time with other people, you can unlock [b]Complimentary Abilities[/b
 
 These abilities can be used by anyone in your party, even by multiple members at once!
 
-However, a new skill always needs practice.
-Complimentary Abilities may not succeed the first time used. 
-The further they are from the user's aura color, the harder they are to learn.
-But with enough practice, anyone can master them!
+A newly equipped Complimentary Ability is not mastered yet. Its name is shown with a [b]?[/b] in the menu until it is.
+
+When a party member uses an unmastered Complimentary Ability, they will study it. The attempt may fail. Each successful cast counts toward mastery, and the ability works normally once enough successes have been earned. Most need three successful casts, but some may ask for more.
+
+The closer an ability is to mastery, the more likely it is to work. Abilities whose aura color is further from the user's own color are harder to learn.
+
+Each party member masters a Complimentary Ability separately, so one member can have it mastered while another is still practicing.
 
 To equip one, go to the Party menu, 
 select a member, go to Abilities, 

@@ -82,6 +82,7 @@ func _ready() -> void:
 	_test_enemy_preview_setup()
 	_test_branch_outcomes()
 	_test_actor_types()
+	await _test_complimentary_learning()
 	_test_migrated_sequences_load()
 	_test_migrated_sequence_wiring()
 	await _test_last_sequences()
@@ -971,6 +972,93 @@ func _test_actor_types() -> void:
 		_fail("Party leader is not a PartyMember")
 
 	print("BATTLE_TEST_ACTOR_TYPES ok")
+
+
+## Checks the per-member Complimentary progress helpers without opening a
+## passive box. The battle attempt itself is driven by the normal turn flow.
+func _test_complimentary_learning() -> void:
+	var member := Party.Leader as PartyMember
+	var ability := load("res://database/Abilities/FluidBlast.tres") as Ability
+
+	if member == null or ability == null:
+		_fail("Complimentary test needs a party member and FluidBlast")
+		return
+
+	var saved := member.complimentary_list.duplicate()
+	var saved_wheel := ability.wheel_color
+	var saved_same := ability.color_same_as_actor
+	var saved_practice := ability.complimentary_practice
+	var id := ability.filename
+
+	battle.play_study(member)
+
+	if member.node == null or member.node.animation != &"Study":
+		_fail("A Complimentary practice attempt should use the Study pose")
+
+	member.node.play("Idle")
+	member.complimentary_list.clear()
+	ability.complimentary_practice = 3
+	ability.color_same_as_actor = false
+	ability.wheel_color = member.main_color
+	member.complimentary_list[id] = 3
+
+	if not member.is_complimentary_training(ability):
+		_fail("A newly equipped Complimentary should still be training")
+
+	if not member.ability_display_name(ability).ends_with("?"):
+		_fail("A training Complimentary should show a question mark")
+
+	var fresh_chance := member.complimentary_success_chance(ability)
+	member.complimentary_list[id] = 1
+	var near_chance := member.complimentary_success_chance(ability)
+
+	if near_chance <= fresh_chance:
+		_fail("Complimentary success chance should rise as practice approaches mastery")
+
+	ability.wheel_color = Color.from_hsv(fposmod(member.main_color.h + 0.5, 1.0), 1.0, 1.0)
+	var far_chance := member.complimentary_success_chance(ability)
+
+	if far_chance >= near_chance:
+		_fail("Complimentary success chance should fall when the color is further away")
+
+	member.complimentary_list[id] = 0
+
+	if member.is_complimentary_training(ability):
+		_fail("A mastered Complimentary should not be training")
+
+	if member.ability_display_name(ability).ends_with("?"):
+		_fail("A mastered Complimentary should not show a question mark")
+
+	await member.load_complimentaries()
+	var loaded := false
+
+	for equipped in member.complimentaries:
+		if equipped.filename == id:
+			loaded = true
+			break
+
+	if not loaded:
+		_fail("A mastered Complimentary should still load as an equipped ability")
+
+	member.unequip_complimentary(ability)
+
+	if member.complimentary_remaining(id) != 0:
+		_fail("Unequipping should preserve a mastered Complimentary")
+
+	member.equip_complimentary(ability)
+
+	if member.complimentary_remaining(id) != 0:
+		_fail("Re-equipping should keep a mastered Complimentary mastered")
+
+	member.complimentary_list.clear()
+
+	for key: String in saved:
+		member.complimentary_list[key] = int(saved[key])
+
+	ability.wheel_color = saved_wheel
+	ability.color_same_as_actor = saved_same
+	ability.complimentary_practice = saved_practice
+	await member.load_complimentaries()
 
 
 func _test_migrated_sequences_load() -> void:

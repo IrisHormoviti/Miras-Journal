@@ -136,3 +136,4 @@ action_sequence = SubResource("Resource_xal8m")
 aura_cost = 10
 success_chance = 0.5
 types = Array[int]([6])
+complimentary_practice = null

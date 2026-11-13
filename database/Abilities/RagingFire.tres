@@ -193,3 +193,4 @@ aura_cost = 18
 crit_chance = 0.4
 types = Array[int]([2, 13])
 group = "fire_attack"
+complimentary_practice = null

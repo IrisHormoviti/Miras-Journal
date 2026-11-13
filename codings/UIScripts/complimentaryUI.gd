@@ -15,7 +15,7 @@ func draw_character(character: PartyMember) -> void:
 	##Test
 	#Global.complimentaries = ["FluidBlast", "RedShift", "Dispel"]
 	#chara.skill_level = 10
-	#chara.complimentary_list = {"FluidBlast":1, "RedShift":1}
+	#chara.complimentary_list = {"FluidBlast":3, "RedShift":0}
 
 	slots = chara.skill_level / 10 + 1
 	await chara.load_complimentaries()
@@ -59,7 +59,7 @@ func fetch_all_abilities() -> void:
 		var dub: Button = %Ab0.duplicate()
 		dub.show()
 		%AbilityList.add_child(dub)
-		dub.text = i.name
+		dub.text = chara.ability_display_name(i)
 		dub.get_node("Icon").texture = i.icon
 
 		if i.aura_cost != 0:
@@ -74,7 +74,10 @@ func fetch_all_abilities() -> void:
 
 func fetch_equiped_abilities() -> void:
 	await chara.load_complimentaries()
+
 	while chara.complimentaries.size() > slots:
+		var extra: Ability = chara.complimentaries[-1]
+		chara.unequip_complimentary(extra)
 		chara.complimentaries.remove_at(-1)
 
 	var Abilities := chara.complimentaries
@@ -100,7 +103,7 @@ func update_equipped() -> void:
 		if dub.has_meta("Ability"):
 			var i: Ability = dub.get_meta("Ability")
 			dub.disabled = false
-			dub.text = i.name
+			dub.text = chara.ability_display_name(i)
 			dub.get_node("Icon").texture = i.icon
 
 			if i.aura_cost != 0:
@@ -159,7 +162,7 @@ func _render_list_focus(foc: Control) -> void:
 	_draw_ability_wheel(%Wheel, ab)
 
 	if not is_instance_valid(ab): return
-	%AttackTitle.text = ab.name
+	%AttackTitle.text = chara.ability_display_name(ab)
 	%AttackTitle/RichTextLabel.text = Colorizer.colorize(ab.description)
 
 
@@ -254,11 +257,10 @@ func _list_ability_pressed() -> void:
 		var slot: Button = $Equipped.get_child(active_slot)
 		var prev_ab: Ability = slot.get_meta("Ability") if slot.has_meta("Ability") and slot.get_meta("Ability") != null else null
 
-		if ab.filename in chara.complimentary_list:
-			chara.complimentary_list.set(ab.filename, abs(chara.complimentary_list.get(ab.filename)))
-		else: chara.complimentary_list.set(ab.filename, 1)
+		chara.equip_complimentary(ab)
+
 		if prev_ab != null:
-			chara.complimentary_list.set(prev_ab.filename, -abs(chara.complimentary_list.get(prev_ab.filename)))
+			chara.unequip_complimentary(prev_ab)
 
 		slot.set_meta("Ability", ab)
 		update_equipped()

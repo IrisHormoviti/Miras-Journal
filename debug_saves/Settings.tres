@@ -1,9 +1,10 @@
 [gd_resource type="Resource" script_class="Setting" format=3]
 
+[ext_resource type="Resource" path="res://UI/Input/None.tres" id="1_jsc2i"]
 [ext_resource type="Script" path="res://codings/Classes/settings.gd" id="1_rpdr8"]
 
 [resource]
 script = ExtResource("1_rpdr8")
 player_name = "Iris"
-master_volume = -13.0
+control_scheme_override = ExtResource("1_jsc2i")
 debug_mode = true
