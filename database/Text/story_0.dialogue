@@ -34,7 +34,6 @@ The sky has all these weird lines going across.
 [hide]
 $> play_video("FirstCutscene-3a")
 $> wait(1)
-Maybe following the direction of this river will help me find my way.
 ...
 I can't really feel movment in any one direction.
 Is this a lake?
@@ -628,7 +627,7 @@ What do I ask?
 	Daze.Neutral: I apologize, but no. Was it important?
 	Mira.Neutral: Quite a bit...
 	I should go back and look for them later.
-- Ask for some water?
+- Ask for some water
 	Mira.Neutral: You got any water?
 	Daze.Neutral: Here.
 	He brings a bottle of water. I drink it all quickly.

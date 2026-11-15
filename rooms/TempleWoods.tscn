@@ -1086,6 +1086,7 @@ texture_scale = 2.0
 [node name="EvTutorialBag" parent="Event" unique_id=1019876011 instance=ExtResource("36_2q7ov")]
 position = Vector2(1423, 373)
 add_the_flag = true
+take_control = false
 PopTutorial = true
 tutorial_name = "bag"
 

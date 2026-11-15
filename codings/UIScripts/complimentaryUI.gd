@@ -138,7 +138,7 @@ func refresh() -> void:
 
 
 func _ability_has_wheel(ab: Ability) -> bool:
-	return (
+	return(
 		is_instance_valid(ab)
 		and ab.wheel_color != Color.WHITE
 		and not ab.color_same_as_actor
@@ -198,8 +198,9 @@ func _process(delta: float) -> void:
 func _on_back_pressed() -> void:
 	if $AbilityPanel.visible:
 		$AbilityPanel.hide()
-		$Equipped.get_child(active_slot).grab_focus()
-		_render_equipped_focus($Equipped.get_child(active_slot) as Control)
+		if $Equipped.get_child_count() > active_slot:
+			$Equipped.get_child(active_slot).grab_focus()
+			_render_equipped_focus($Equipped.get_child(active_slot) as Control)
 	else:
 		if UI.is_open("MemberDetails"):
 			UI.get_node("MemberDetails").fetch_abilities(chara)
