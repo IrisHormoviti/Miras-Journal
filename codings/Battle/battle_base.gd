@@ -281,6 +281,12 @@ func _ready() -> void:
 	if sequence == null and not Engine.is_editor_hint():
 		setup_standalone_preview()
 
+	$Canvas/Cutin.hide()
+	$Canvas/VictoryText.modulate = Color.TRANSPARENT
+	$Canvas/SPGain.hide()
+	$Canvas/Callout.hide()
+	$Canvas/VictoryItems.hide()
+
 	modal_dialogue_count = 0
 
 	# Re-parent Act node
@@ -343,14 +349,11 @@ func _ready() -> void:
 		cam.global_position = Global.camera.global_position
 		cam.zoom = Global.camera.zoom
 
-	$Canvas/Cutin.hide()
 	act.get_node("Actor0").sprite_frames = await Party.Leader.get_BT()
 	act.get_node("Actor0").animation = &"Entrance"
 	act.get_node("Actor0").frame = 0
 	act.get_node("Actor0/Shadow").modulate = Color.WHITE
-	$Canvas/VictoryText.modulate = Color.TRANSPARENT
-	$Canvas/SPGain.hide()
-	$Canvas/VictoryItems.hide()
+
 	if Global.room: Global.room.show()
 	for i in range(1, 4):
 		if Party.has_member_index(i):
@@ -1098,42 +1101,55 @@ func callout(ab: Ability = CurrentAbility) -> void:
 	if not ab.callout:
 		return
 
+	
+	callout_onscreen = true
+	var callout_label: Label = $Canvas/Callout
+	var callout_fail_label: Label = $Canvas/Callout/FailLabel
+	
+	callout_fail_label.hide()
+	callout_label.rotation_degrees = 0
+	callout_label.show()
 	var tc := create_tween()
 	tc.set_ease(Tween.EASE_OUT)
 	tc.set_trans(Tween.TRANS_QUINT)
 	if callout_onscreen:
-		tc.tween_property($Canvas/Callout, "modulate", Color.TRANSPARENT, 0.2)
+		tc.tween_property(callout_label, "modulate", Color.TRANSPARENT, 0.2)
 		await tc.finished
 		tc.kill()
 		tc = create_tween()
 		tc.set_ease(Tween.EASE_OUT)
 		tc.set_trans(Tween.TRANS_QUINT)
 
-	callout_onscreen = true
-
 	if ab.color_same_as_actor: ab.wheel_color = CurrentChar.main_color
-	$Canvas/Callout.text = CurrentChar.ability_display_name(ab) if CurrentChar != null else ab.name
-	$Canvas/Callout.add_theme_color_override("font_color", ab.wheel_color)
-	tc.tween_property(
-		$Canvas/Callout, "position", Vector2(37, 636), 2).from(Vector2(400, 636))
+	callout_label.text = CurrentChar.ability_display_name(ab) if CurrentChar != null else ab.name
+	callout_label.add_theme_color_override("font_color", ab.wheel_color)
+	tc.tween_property(callout_label, "position", Vector2(37, 636), 2).from(Vector2(400, 636))
 
-	tc.parallel().tween_property(
-		$Canvas/Callout, "modulate", Color.WHITE, 2).from(Color.TRANSPARENT)
+	tc.parallel().tween_property(callout_label, "modulate", Color.WHITE, 2).from(Color.TRANSPARENT)
 
-	#await tc.finished
-	#print_rich("[color=cornflower-blue]call")
-	tc.set_ease(Tween.EASE_IN)
-	if CurrentChar.controllable:
-		tc.tween_property(
-			$Canvas/Callout, "position", Vector2(-200, 636), 0.5).set_delay(1)
-	else: tc.tween_property(
-		$Canvas/Callout, "position", Vector2(-200, 636), 0.5).set_delay(4)
 
-	tc.parallel().tween_property(
-		$Canvas/Callout, "modulate", Color.TRANSPARENT, 0.5)
+func callout_exit(fail := false) -> void:
+	var callout_label: Label = $Canvas/Callout
+	var callout_fail_label: Label = $Canvas/Callout/FailLabel
+	
+	if callout_onscreen:
+		callout_onscreen = false
 
-	await tc.finished
-	callout_onscreen = false
+		if fail:
+			callout_fail_label.modulate.a = 0
+			callout_fail_label.show()
+			var tc := create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUINT)
+			tc.set_parallel()
+			tc.tween_property(callout_fail_label, "modulate:a", 1, 0.3)
+			tc.tween_property(callout_fail_label, "scale", Vector2.ONE, 0.3).from(Vector2(2, 2))
+			tc.tween_property(callout_label, "position:y", 200, 0.8).as_relative().set_delay(0.2)
+			tc.tween_property(callout_label, "rotation_degrees", 25, 0.8).as_relative().set_delay(0.2)
+			await tc.finished
+		else:
+			var tc := create_tween().set_ease(Tween.EASE_IN).set_trans(Tween.TRANS_QUINT)
+			tc.tween_property(callout_label, "position", Vector2(-200, 636), 0.5)
+			tc.parallel().tween_property(callout_label, "modulate", Color.TRANSPARENT, 0.5)
+			await tc.finished
 
 
 func _on_battle_ui_ability_returned(ab: Ability, tar: Actor) -> void:
@@ -1238,25 +1254,31 @@ func attempt_complimentary(actor: Actor, ability: Ability) -> bool:
 		return true
 
 	if actor.node != null:
+		Loader.battle_bars(3)
 		focus_cam(actor)
-		zoom(5.5)
-		play_study(actor)
+		zoom(6)
+		anim("Study", actor)
 
 	var cue := "%s_complimentary_" % String(actor.codename).to_snake_case()
-	await open_banter("banter_battle", cue + "try")
+	open_banter("banter_battle", cue + "try")
+	await Event.wait(2)
 
 	if randf() >= member.complimentary_success_chance(ability):
-		await open_banter("banter_battle", cue + "fail")
+		anim("", actor)
+		await callout_exit(true)
+		open_banter("banter_battle", cue + "fail")
 		return false
 
 	if member.record_complimentary_success(ability) == 0:
-		await open_banter("banter_battle", cue + "mastered")
+		(func() -> void:
+			await next_turn
+			open_banter("banter_battle", cue + "mastered")
+		).call_deferred()
 
 	return true
 
 
-## Opens a banter cue when the dialogue file actually has one. Members without
-## practice lines are skipped instead of breaking the attempt.
+## Opens a banter cue when the dialogue file actually has one
 func open_banter(file: String, cue: String) -> bool:
 	var dialogue := await Loader.load_res("res://database/Text/" + file + ".dialogue") as DialogueResource
 
@@ -1265,24 +1287,6 @@ func open_banter(file: String, cue: String) -> bool:
 
 	await Passive.open(file, cue)
 	return true
-
-
-## Shows the Study pose for a practice attempt. Only Mira has a dedicated Study
-## animation for now, so fall back to the casting animation or idle.
-func play_study(actor: Actor) -> void:
-	if actor == null or actor.node == null:
-		return
-
-	var frames := actor.node.sprite_frames
-
-	if frames == null:
-		return
-
-	for animation: StringName in [&"Study", &"Ability", &"Cast", &"Idle"]:
-		if frames.has_animation(animation):
-			actor.node.play(animation)
-			pixel_perfectize(actor)
-			return
 
 
 ## Used for showing toasts. These can be set in BattleText from the editor.
@@ -1593,6 +1597,7 @@ func end_turn() -> void:
 		await Event.wait(0.5)
 		await sequence.call_events()
 
+	callout_exit()
 	sequence.reset_events()
 	TurnOrder.sort_custom(speed_sort)
 
@@ -2052,6 +2057,7 @@ func use_ability_now(
 
 			if consume_turn and is_instance_valid(self):
 				end_turn()
+
 			return
 
 	if pay_cost:

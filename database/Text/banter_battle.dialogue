@@ -67,19 +67,19 @@ if Party.has_member("Daze") and Party.get_member("Daze").health > 0:
 % Mira.Neutral: Well If I fail once... or thrice....
 % Mira.Neutral: Um...[br]Let me check my notes...
 % Mira.Neutral: How did it go again..?
-% Mira.Neutral: Please training don’t let me down!
+% Mira.Neutral: Please training don't let me down!
 => END
 
 ~ mira_complimentary_fail
 % Mira.Upset: Dammit!
 % Mira.Upset: Ughhhh-[br]I have no time for this!
-% Mira.Upset: Oh...[br]How could I fail!?
-% Mira.Upset: I thought I was nailing it….
+% Mira.Upset: Oh...
+% Mira.Upset: I thought I was nailing it....
 => END
 
 ~ mira_complimentary_mastered
 % Mira.Smile: Aced it!
-% Mira.Smile: I’ve learned the trick!
+% Mira.Smile: I've learned the trick!
 % Mira.Smile: It makes so much sense now!
 => END
 

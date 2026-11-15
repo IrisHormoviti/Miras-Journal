@@ -5675,7 +5675,6 @@ texture = ExtResource("45_sxqe5")
 expand_mode = 1
 
 [node name="Callout" type="Label" parent="Canvas" unique_id=1464272626]
-modulate = Color(1, 1, 1, 0)
 anchors_preset = 2
 anchor_top = 1.0
 anchor_bottom = 1.0
@@ -5688,6 +5687,20 @@ theme_override_fonts/font = SubResource("FontVariation_g3phn")
 theme_override_font_sizes/font_size = 116
 text = "Ability Name"
 vertical_alignment = 1
+
+[node name="FailLabel" type="Label" parent="Canvas/Callout" unique_id=1598493763]
+visible = false
+layout_mode = 0
+offset_left = 204.99998
+offset_top = 33.0
+offset_right = 375.0
+offset_bottom = 134.0
+rotation = -0.8034218
+pivot_offset_ratio = Vector2(0.5, 0.5)
+theme_override_colors/font_color = Color(0.99999994, 0.21499556, 0.16167533, 1)
+theme_override_fonts/font = ExtResource("12_2samf")
+theme_override_font_sizes/font_size = 100
+text = "FAIL"
 
 [node name="VictoryText" type="Label" parent="Canvas" unique_id=602554288]
 modulate = Color(1, 1, 1, 0)

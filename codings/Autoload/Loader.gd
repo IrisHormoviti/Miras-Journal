@@ -565,6 +565,7 @@ func battle_bars(x: int, time: float = 0.5, easing := Tween.EASE_IN_OUT) -> void
 		3:
 			t.tween_property($Can/Bars/Down, "global_position", Vector2(-235, 550), time)
 			t.tween_property($Can/Bars/Up, "global_position", Vector2(-156, -850), time)
+			t.tween_property($Can/Bars, "self_modulate", Color(1, 1, 1, 0.9), time)
 
 		4:
 			t.tween_property($Can/Bars/Down, "global_position", Vector2(-235, 133), time)
