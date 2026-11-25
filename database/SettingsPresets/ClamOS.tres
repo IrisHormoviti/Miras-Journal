@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="Setting" format=3]
+
+[ext_resource type="Script" path="res://codings/Classes/settings.gd" id="1_settings"]
+
+[resource]
+script = ExtResource("1_settings")
+resource_name = "ClamOS"
+fullscreen = true
+last_used_device = "ClamOS Gamepad"
+upscale_factor = 0.5
+fps = 60
+vsync = true
+glow_effect = false
+blur_effect = false
+dynamic_lights = false

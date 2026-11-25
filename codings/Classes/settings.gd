@@ -14,12 +14,13 @@ class_name Setting
 @export_category("Display")
 @export var fullscreen := false
 @export var upscaled_res := true
-@export var upscale_factor: float = 1.0
+@export var upscale_factor: float = 1
 @export var high_res_textures := false
 @export var fps: int = 0
 @export var vsync: bool = true
 @export var glow_effect: bool = true
 @export var blur_effect: bool = true
+@export var dynamic_lights: bool = true
 @export_category("Audio")
 @export var master_volume: float = 0.0
 @export var music_volume: float = 0.0

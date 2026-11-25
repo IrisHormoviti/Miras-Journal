@@ -41,7 +41,12 @@ func is_party_member() -> bool:
 
 		return codename
 ## Determines the power of weapon attacks, and can override the actors standard attack
-@export var weapon: WeaponItem = preload("res://database/Items/KeyItems/DefaultWeapon.tres")
+@export var weapon: WeaponItem = null
+
+func _init() -> void:
+	if weapon == null:
+		weapon = load("res://database/Items/KeyItems/DefaultWeapon.tres")
+
 ##Used in system text, 0: subjective, 1: objective, 2: possessive, 3: -self
 @export_enum("it", "he", "she", "they") var pronouns: String = "it"
 

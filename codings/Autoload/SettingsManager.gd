@@ -2,13 +2,25 @@ extends Node
 
 const settings_path := "user://Settings.tres"
 
+## Envs that identify a device that the game ships a preset for
+const DEVICE_DEFAULTS: Dictionary[String, String] = {
+	"CLAM_GUEST": "res://database/SettingsPresets/ClamOS.tres",
+	"STEAMDECK": "res://database/SettingsPresets/SteamDeck.tres",
+}
+
 var settings: Setting
 
 signal settings_changed
 
 
 func _ready() -> void:
+	get_tree().node_added.connect(_on_node_added)
 	init_settings()
+
+
+func _on_node_added(node: Node) -> void:
+	if settings and node is Light2D:
+		node.enabled = settings.dynamic_lights
 
 
 func init_settings() -> void:
@@ -57,6 +69,32 @@ func apply_settings() -> void:
 	else:
 		DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
 
+	Engine.max_fps = settings.fps
+
+	var container := get_node_or_null("/root/GameViewport") as SubViewportContainer
+
+	if container:
+		var shrink := 1
+
+		if settings.upscale_factor > 0.0 and settings.upscale_factor < 1.0:
+			shrink = max(1, int(round(1.0 / settings.upscale_factor)))
+
+		container.stretch_shrink = shrink
+		var viewport := container.get_node_or_null("SubViewport") as SubViewport
+
+		if viewport:
+			if shrink > 1:
+				viewport.size_2d_override = Vector2i(
+					int(ProjectSettings.get_setting("display/window/size/viewport_width")),
+					int(ProjectSettings.get_setting("display/window/size/viewport_height")))
+
+				viewport.size_2d_override_stretch = true
+			else:
+				viewport.size_2d_override = Vector2i.ZERO
+
+	_apply_dynamic_lights()
+	Controller.handle_remaps()
+
 	if SteamManager.using_steam:
 		settings.player_name = SteamManager.player_name
 	else:
@@ -80,13 +118,16 @@ func reset_settings() -> void:
 
 
 func customize_default_settings() -> void:
+	for env: String in DEVICE_DEFAULTS:
+		if OS.get_environment(env) == "1":
+			apply_defaults(DEVICE_DEFAULTS[env])
+			return
+
 	if SteamManager.using_steam:
 		var steam := Engine.get_singleton("Steam")
 
-		if OS.get_environment("STEAMDECK") == "1" or steam.isSteamRunningOnSteamDeck():
-			settings.control_scheme_enum = 7
-			settings.control_scheme_override = load("res://UI/Input/SteamDeck.tres")
-			print_rich("[color=dark_magenta]Running on Steam Deck, setting control scheme")
+		if steam.isSteamRunningOnSteamDeck():
+			apply_defaults(DEVICE_DEFAULTS["STEAMDECK"])
 
 		if steam.isSteamInBigPictureMode():
 			fullscreen(true)
@@ -94,6 +135,16 @@ func customize_default_settings() -> void:
 
 	if OS.to_string() == "macOS":
 		settings.upscaled_res = false
+
+
+func apply_defaults(path: String) -> void:
+	var preset: Setting = load(path)
+
+	if not preset:
+		return
+
+	settings = preset.duplicate()
+	print_rich("[color=dark_magenta]Applying ", preset.resource_name, " defaults")
 
 
 func fullscreen(tog: bool = !settings.fullscreen) -> void:
@@ -117,3 +168,18 @@ func fullscreen(tog: bool = !settings.fullscreen) -> void:
 	await get_tree().create_timer(0.15).timeout
 	get_window().grab_focus()
 	save_settings()
+
+
+func _apply_dynamic_lights() -> void:
+	if not settings:
+		return
+
+	_apply_lights(get_tree().root)
+
+
+func _apply_lights(node: Node) -> void:
+	if node is Light2D:
+		node.enabled = settings.dynamic_lights
+
+	for child in node.get_children():
+		_apply_lights(child)

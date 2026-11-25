@@ -6,6 +6,7 @@ const SCHEMES: Dictionary[Variant, Variant] = {
 	"None": "res://UI/Input/None.tres",
 	"Keyboard": "res://UI/Input/Keyboard.tres",
 	"Nintendo": "res://UI/Input/Nintendo.tres",
+	"NintendoClassic": "res://UI/Input/NintendoClassic.tres",
 	"Generic": "res://UI/Input/Generic.tres",
 	"Xbox": "res://UI/Input/Xbox.tres",
 	"PlayStation": "res://UI/Input/PlayStation.tres",
@@ -15,6 +16,8 @@ const SCHEMES: Dictionary[Variant, Variant] = {
 
 ## Currently active device, such as "Nintendo Switch" or "Keyboard"
 var device: String = ""
+## A scheme forced by the launcher (`--scheme <name>` or MIRA_SCHEME).
+var forced_scheme: String = ""
 ## Last frame that an input event was received
 var last_input := 0
 
@@ -23,10 +26,21 @@ var scheme_cache := {}
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	var args := OS.get_cmdline_user_args()
+	for i in args.size():
+		var arg := args[i]
+		if arg == "--scheme" and i + 1 < args.size():
+			forced_scheme = args[i + 1]
+		elif arg.begins_with("--scheme="):
+			forced_scheme = arg.trim_prefix("--scheme=")
+	if forced_scheme.is_empty():
+		forced_scheme = OS.get_environment("MIRA_SCHEME").strip_edges()
 	handle_remaps()
 
 
 func get_scheme() -> ControlScheme:
+	if not forced_scheme.is_empty() and SCHEMES.has(forced_scheme):
+		return get_scheme_from_string(forced_scheme)
 	if !SettingsManager.settings: return get_scheme_from_string("None")
 	if not SettingsManager.settings.control_scheme_auto:
 		return SettingsManager.settings.control_scheme_override
@@ -49,6 +63,9 @@ func get_scheme_from_string(type: String) -> ControlScheme:
 func get_scheme_from_device() -> String:
 	if device == "Keyboard":
 		return "Keyboard"
+
+	if "ClamOS" in device:
+		return "NintendoClassic"
 
 	if "Nintendo" in device or "Pro Controller" in device or "GameCube" in device:
 		return "Nintendo"

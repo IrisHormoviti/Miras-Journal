@@ -1,0 +1,11 @@
+[gd_resource type="Resource" script_class="Setting" format=3 uid="uid://cbe357hh5yqhm"]
+
+[ext_resource type="Resource" uid="uid://c3ryci4mcw7ea" path="res://UI/Input/SteamDeck.tres" id="1_cxtbs"]
+[ext_resource type="Script" uid="uid://b13afdtvlf35s" path="res://codings/Classes/settings.gd" id="1_settings"]
+
+[resource]
+resource_name = "SteamDeck"
+script = ExtResource("1_settings")
+control_scheme_override = ExtResource("1_cxtbs")
+last_used_device = "Steam Virtual Gamepad"
+fullscreen = true

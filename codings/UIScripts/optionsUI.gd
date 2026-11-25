@@ -509,7 +509,12 @@ func _on_focus_changed(control: Control) -> void:
 func load_settings(no_check := false) -> void:
 	if stage == "game_settings" or no_check:
 		%SettingsVbox/AutoHideHUD/MenuBar.selected = SettingsManager.settings.auto_hide_hud
-		%SettingsVbox/ControlScheme/MenuBar.selected = SettingsManager.settings.control_scheme_enum
+		var scheme_menu := %SettingsVbox/ControlScheme/MenuBar as OptionButton
+		var scheme_id := 0 if SettingsManager.settings.control_scheme_auto else SettingsManager.settings.control_scheme_enum
+		for i in scheme_menu.item_count:
+			if scheme_menu.get_item_id(i) == scheme_id:
+				scheme_menu.selected = i
+				break
 		%SettingsVbox/Fullscreen/CheckButton.button_pressed = SettingsManager.settings.fullscreen
 
 		%SettingsVbox/Master/Slider.value = SettingsManager.settings.master_volume
@@ -525,6 +530,7 @@ func load_settings(no_check := false) -> void:
 		%SettingsVbox/DebugMode/DebugMode.button_pressed = SettingsManager.settings.debug_mode
 		%SettingsVbox/Vsync/CheckButton.button_pressed = SettingsManager.settings.vsync
 		%SettingsVbox/GlowEffect/CheckButton.button_pressed = SettingsManager.settings.glow_effect
+		%SettingsVbox/DynamicLights/CheckButton.button_pressed = SettingsManager.settings.dynamic_lights
 		%SettingsVbox/HighResTextures/CheckButton.button_pressed = SettingsManager.settings.high_res_textures
 		%SettingsVbox/TextSpeed/MenuBar.selected = SettingsManager.settings.text_speed
 		%SettingsVbox/UpscaledResolution/CheckButton.button_pressed = SettingsManager.settings.upscaled_res
@@ -537,11 +543,7 @@ func load_settings(no_check := false) -> void:
 			60: %SettingsVbox/FPS/MenuBar.selected = 2
 			144: %SettingsVbox/FPS/MenuBar.selected = 3
 
-		match SettingsManager.settings.upscale_factor:
-			0.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 0
-			1.0: %SettingsVbox/UpscaleFactor/MenuBar.selected = 1
-			1.5: %SettingsVbox/UpscaleFactor/MenuBar.selected = 2
-			2.0: %SettingsVbox/UpscaleFactor/MenuBar.selected = 3
+		%SettingsVbox/UpscaleFactor/MenuBar.selected = 0 if SettingsManager.settings.upscale_factor < 1.0 else 1
 
 		%SettingsVbox/ControlPreview/A.set_deferred("texture", Controller.get_scheme().AbilityIcon)
 		%SettingsVbox/ControlPreview/B.set_deferred("texture", Controller.get_scheme().AttackIcon)
@@ -592,7 +594,6 @@ func load_save_files() -> void:
 		draw_file(await Loader.load_res("user://Autosave.tres"), %Files/File0)
 	else:
 		%Files/File0.hide()
-		UI.toast("No Autosave data found.")
 
 	var sorted := %Files.get_children()
 	sorted.sort_custom(file_sort)
@@ -993,14 +994,14 @@ func _on_credits(source: Button) -> void:
 	match source.name:
 		"Credits":
 			var file := FileAccess.open("res://credits.txt", FileAccess.READ)
-			text = file.get_as_text()
+			text = file.get_as_text() if file else "Credits are unavailable in this build."
 
 		"GodotLicense":
 			text = Engine.get_license_text()
 
 		"ProjectLicense":
 			var file := FileAccess.open("res://LICENSE.md", FileAccess.READ)
-			text = file.get_as_text()
+			text = file.get_as_text() if file else "The license is unavailable in this build."
 
 	$GalleryPanel/Credits/RichTextLabel.text = text
 	$GalleryPanel/Credits.grab_focus()
@@ -1050,6 +1051,8 @@ func _on_control_scheme(index: int) -> void:
 
 		8:
 			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/None.tres")
+		9:
+			SettingsManager.settings.control_scheme_override = await Loader.load_res("res://UI/Input/NintendoClassic.tres")
 
 	load_settings()
 
@@ -1157,6 +1160,11 @@ func _vsync(toggle: bool) -> void:
 
 func _gloweffect(toggle: bool) -> void:
 	SettingsManager.settings.glow_effect = toggle
+	confirm()
+
+
+func _on_dynamic_lights(toggle: bool) -> void:
+	SettingsManager.settings.dynamic_lights = toggle
 	confirm()
 
 

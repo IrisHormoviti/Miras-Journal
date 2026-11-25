@@ -1318,25 +1318,27 @@ mouse_filter = 1
 theme = SubResource("Theme_6ne1i")
 expand_icon = true
 selected = 0
-item_count = 9
+item_count = 10
 popup/item_0/text = "Auto"
 popup/item_0/id = 0
 popup/item_1/text = "Keyboard"
 popup/item_1/id = 1
 popup/item_2/text = "Nintendo"
 popup/item_2/id = 2
-popup/item_3/text = "Xbox"
-popup/item_3/id = 3
-popup/item_4/text = "Xbox 360"
-popup/item_4/id = 4
-popup/item_5/text = "PlayStation"
-popup/item_5/id = 5
-popup/item_6/text = "PlayStation 3"
-popup/item_6/id = 6
-popup/item_7/text = "Steam"
-popup/item_7/id = 7
-popup/item_8/text = "No prompts"
-popup/item_8/id = 8
+popup/item_3/text = "SNES / NDS"
+popup/item_3/id = 9
+popup/item_4/text = "Xbox"
+popup/item_4/id = 3
+popup/item_5/text = "Xbox 360"
+popup/item_5/id = 4
+popup/item_6/text = "PlayStation"
+popup/item_6/id = 5
+popup/item_7/text = "PlayStation 3"
+popup/item_7/id = 6
+popup/item_8/text = "Steam"
+popup/item_8/id = 7
+popup/item_9/text = "No prompts"
+popup/item_9/id = 8
 
 [node name="ControlPreview" type="Control" parent="SidePanel/ScrollContainer/SettingsVbox" unique_id=1894395867]
 custom_minimum_size = Vector2(0, 200)
@@ -1593,7 +1595,6 @@ button_pressed = true
 alignment = 2
 
 [node name="UpscaleFactor" type="HBoxContainer" parent="SidePanel/ScrollContainer/SettingsVbox" unique_id=258566776]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 64
 
@@ -1603,23 +1604,22 @@ size_flags_horizontal = 3
 mouse_filter = 1
 theme = SubResource("Theme_6ne1i")
 theme_override_colors/font_color = Color(0, 0, 0, 1)
-text = "Resolution"
+text = "World resolution"
 
 [node name="MenuBar" type="OptionButton" parent="SidePanel/ScrollContainer/SettingsVbox/UpscaleFactor" unique_id=1388815484]
+editor_description = "Scales the world's resolution.
+
+This is meant for running on really low powered hardware, you should probably keep it at 1x on a regular PC."
 layout_mode = 2
 mouse_filter = 1
 theme = SubResource("Theme_6ne1i")
 expand_icon = true
 selected = 1
-item_count = 4
-popup/item_0/text = "0.5"
+item_count = 2
+popup/item_0/text = "0.5x"
 popup/item_0/id = 0
-popup/item_1/text = "1"
+popup/item_1/text = "1x"
 popup/item_1/id = 1
-popup/item_2/text = "1.5"
-popup/item_2/id = 2
-popup/item_3/text = "2"
-popup/item_3/id = 3
 
 [node name="HighResTextures" type="HBoxContainer" parent="SidePanel/ScrollContainer/SettingsVbox" unique_id=1158978083]
 layout_mode = 2
@@ -1665,7 +1665,6 @@ theme = SubResource("Theme_6ne1i")
 alignment = 2
 
 [node name="FPS" type="HBoxContainer" parent="SidePanel/ScrollContainer/SettingsVbox" unique_id=277585794]
-visible = false
 layout_mode = 2
 theme_override_constants/separation = 64
 
@@ -1678,6 +1677,7 @@ theme_override_colors/font_color = Color(0, 0, 0, 1)
 text = "Framerate limit"
 
 [node name="MenuBar" type="OptionButton" parent="SidePanel/ScrollContainer/SettingsVbox/FPS" unique_id=1435488156]
+editor_description = "Limits the framerate."
 layout_mode = 2
 mouse_filter = 1
 theme = SubResource("Theme_6ne1i")
@@ -1708,6 +1708,28 @@ text = "Glow effect"
 
 [node name="CheckButton" type="CheckButton" parent="SidePanel/ScrollContainer/SettingsVbox/GlowEffect" unique_id=2060267726]
 editor_description = "Lights will emmit a glow effect when together."
+layout_mode = 2
+mouse_filter = 1
+theme = SubResource("Theme_6ne1i")
+alignment = 2
+
+[node name="DynamicLights" type="HBoxContainer" parent="SidePanel/ScrollContainer/SettingsVbox" unique_id=1786125626]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 64
+
+[node name="Label" type="Label" parent="SidePanel/ScrollContainer/SettingsVbox/DynamicLights" unique_id=751102305]
+layout_mode = 2
+size_flags_horizontal = 3
+mouse_filter = 1
+theme = SubResource("Theme_6ne1i")
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+text = "Dynamic lights"
+
+[node name="CheckButton" type="CheckButton" parent="SidePanel/ScrollContainer/SettingsVbox/DynamicLights" unique_id=1551635031]
+editor_description = "Makes lighting look a lot better.
+
+Turning them off is much faster."
 layout_mode = 2
 mouse_filter = 1
 theme = SubResource("Theme_6ne1i")
@@ -2608,6 +2630,7 @@ texture = ExtResource("26_375bk")
 [connection signal="item_selected" from="SidePanel/ScrollContainer/SettingsVbox/FPS/MenuBar" to="." method="_fps"]
 [connection signal="pressed" from="SidePanel/ScrollContainer/SettingsVbox/FPS/MenuBar" to="." method="confirm"]
 [connection signal="toggled" from="SidePanel/ScrollContainer/SettingsVbox/GlowEffect/CheckButton" to="." method="_gloweffect"]
+[connection signal="toggled" from="SidePanel/ScrollContainer/SettingsVbox/DynamicLights/CheckButton" to="." method="_on_dynamic_lights"]
 [connection signal="toggled" from="SidePanel/ScrollContainer/SettingsVbox/BlurEffect/CheckButton" to="." method="_blur_effect"]
 [connection signal="toggled" from="SidePanel/ScrollContainer/SettingsVbox/AdjustImage" to="." method="_on_adjust_image"]
 [connection signal="focus_entered" from="SidePanel/ScrollContainer/SettingsVbox/BCSadjust/BrtSlider" to="." method="_show_image_test"]
